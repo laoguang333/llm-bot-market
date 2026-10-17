@@ -96,6 +96,7 @@ change_sd = 0
 [world.news.disclosure]
 lead_ticks = 10
 stages = [[0, 1.0]]
+range_widths = []
 [[stocks]]
 name = "A"
 sector = "s"
@@ -374,10 +375,18 @@ fn news_arrives_before_it_takes_effect() {
     };
     let shared = Shared::new(&cfg, 11, &factory).unwrap();
     shared.run().unwrap();
+    let truth: HashMap<(u32, usize), Money> = shared
+        .world
+        .events
+        .iter()
+        .flat_map(|e| e.changes.iter().map(move |&(s, d)| ((e.id, s), d)))
+        .collect();
     let mut total = 0;
+    let mut ranged = 0;
     for log in logs.lock().iter() {
         let mut first_seen: HashMap<u32, Tick> = HashMap::new();
         let mut public_seen: HashMap<u32, u32> = HashMap::new();
+        let mut last_width: HashMap<(u32, usize), Money> = HashMap::new();
         for o in log.lock().iter() {
             for n in &o.news {
                 assert!(
@@ -387,6 +396,21 @@ fn news_arrives_before_it_takes_effect() {
                     o.tick
                 );
                 first_seen.entry(n.id).or_insert(o.tick);
+                for c in &n.changes {
+                    let d = truth[&(n.id, c.stock)];
+                    assert!(
+                        c.low <= d && d <= c.high,
+                        "range must contain the true change"
+                    );
+                    let w = c.high - c.low;
+                    if n.public {
+                        assert_eq!(w, 0, "public news is exact");
+                    } else if w > 0 {
+                        ranged += 1;
+                    }
+                    let prev = last_width.insert((n.id, c.stock), w);
+                    assert!(prev.is_none_or(|p| w <= p), "ranges narrow at later stages");
+                }
                 if n.public {
                     assert!(o.tick >= n.public_tick);
                     *public_seen.entry(n.id).or_default() += 1;
@@ -401,5 +425,6 @@ fn news_arrives_before_it_takes_effect() {
         );
         total += first_seen.len();
     }
+    assert!(ranged > 0, "private deliveries carry ranges");
     assert!(total > 0, "some news was generated");
 }

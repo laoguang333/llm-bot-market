@@ -4,7 +4,7 @@
 //! see news once it is delivered to them and season changes as they happen.
 
 use crate::config::Config;
-use bot_api::{Money, NewsItem, NewsLayer, Season, Tick};
+use bot_api::{Change, Money, NewsItem, NewsLayer, Season, Tick};
 use rand::{Rng, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 use rand_distr::{Distribution, Normal};
@@ -14,32 +14,21 @@ pub struct Event {
     pub id: u32,
     pub layer: NewsLayer,
     pub sector: Option<usize>,
+    /// True (stock, change in dividend).
     pub changes: Vec<(usize, Money)>,
+    /// Standard deviation of each change, aligned with `changes`; scales the private ranges.
+    pub sigma: Vec<f64>,
     pub first_reveal: Tick,
     pub public_tick: Tick,
     pub effective: Tick,
-}
-
-impl Event {
-    pub fn view(&self, public: bool) -> NewsItem {
-        NewsItem {
-            id: self.id,
-            layer: self.layer,
-            sector: self.sector,
-            changes: self.changes.clone(),
-            first_reveal_tick: self.first_reveal,
-            public_tick: self.public_tick,
-            effective_tick: self.effective,
-            public,
-        }
-    }
 }
 
 #[derive(Clone, Copy, Debug)]
 pub struct Delivery {
     pub tick: Tick,
     pub event: u32,
-    pub public: bool,
+    /// Disclosure stage; the last stage is the public one.
+    pub stage: usize,
 }
 
 pub struct World {
@@ -53,6 +42,9 @@ pub struct World {
     pub initial_dividends: Vec<Money>,
     /// Per account, ascending by tick.
     pub deliveries: Vec<Vec<Delivery>>,
+    seed: u64,
+    range_widths: Vec<f64>,
+    public_stage: usize,
 }
 
 fn mix(mut x: u64) -> u64 {
@@ -147,6 +139,7 @@ impl World {
             for (layer, sector, aff, sd) in candidates {
                 let x = Normal::new(0.0, sd * sm).unwrap().sample(&mut rng);
                 let mut changes = Vec::new();
+                let mut sigma = Vec::new();
                 for (i, loading) in aff {
                     let base = div[i].max(initial[i] / 2).max(1) as f64;
                     let mut delta = (base * loading * x).round() as Money;
@@ -154,6 +147,7 @@ impl World {
                     if delta != 0 {
                         div[i] += delta;
                         changes.push((i, delta));
+                        sigma.push(base * loading.abs() * sd * sm);
                         timelines[i].push((t + lead, div[i]));
                     }
                 }
@@ -169,6 +163,7 @@ impl World {
                         sector
                     },
                     changes,
+                    sigma,
                     first_reveal: t,
                     public_tick: t + public_offset,
                     effective: t + lead,
@@ -176,32 +171,35 @@ impl World {
             }
         }
 
+        // A privately informed account hears at its first stage and again at every later one.
+        let stages = &news.disclosure.stages;
+        let public_stage = stages.len() - 1;
         let mut deliveries = vec![Vec::new(); n_accounts];
         for (a, list) in deliveries.iter_mut().enumerate() {
             for ev in &events {
                 let u = unit(seed, ev.id as u64, a as u64);
-                let private = news
-                    .disclosure
-                    .stages
+                let first = stages[..public_stage]
                     .iter()
-                    .find(|(_, frac)| *frac < 1.0 && u < *frac)
-                    .map(|(off, _)| ev.first_reveal + off);
-                if let Some(pt) = private {
-                    if pt < ev.public_tick {
-                        list.push(Delivery {
-                            tick: pt,
-                            event: ev.id,
-                            public: false,
-                        });
+                    .position(|(_, frac)| u < *frac);
+                if let Some(k) = first {
+                    for (j, (off, _)) in stages.iter().enumerate().take(public_stage).skip(k) {
+                        let tick = ev.first_reveal + off;
+                        if tick < ev.public_tick {
+                            list.push(Delivery {
+                                tick,
+                                event: ev.id,
+                                stage: j,
+                            });
+                        }
                     }
                 }
                 list.push(Delivery {
                     tick: ev.public_tick,
                     event: ev.id,
-                    public: true,
+                    stage: public_stage,
                 });
             }
-            list.sort_by_key(|d| (d.tick, d.event));
+            list.sort_by_key(|d| (d.tick, d.event, d.stage));
         }
 
         World {
@@ -213,6 +211,53 @@ impl World {
             timelines,
             initial_dividends: initial,
             deliveries,
+            seed,
+            range_widths: news.disclosure.range_widths.clone(),
+            public_stage,
+        }
+    }
+
+    /// A news item as `account` sees it at disclosure `stage`: a range that contains the true
+    /// change, with width from the stage and the truth at a random position, or the exact
+    /// change at the public stage.
+    pub fn view(&self, event: u32, account: usize, stage: usize) -> NewsItem {
+        let ev = &self.events[event as usize];
+        let public = stage >= self.public_stage;
+        let changes = ev
+            .changes
+            .iter()
+            .zip(&ev.sigma)
+            .enumerate()
+            .map(|(k, (&(stock, delta), &sigma))| {
+                if public {
+                    return Change {
+                        stock,
+                        low: delta,
+                        high: delta,
+                    };
+                }
+                let width = (self.range_widths[stage] * sigma).round() as Money;
+                let salt = (account as u64) << 32 | (stage as u64) << 16 | k as u64;
+                let below = (unit(self.seed ^ 0x7a9e_5b1d, ev.id as u64, salt) * (width + 1) as f64)
+                    as Money;
+                let low = delta - below.min(width);
+                Change {
+                    stock,
+                    low,
+                    high: low + width,
+                }
+            })
+            .collect();
+        NewsItem {
+            id: ev.id,
+            layer: ev.layer,
+            sector: ev.sector,
+            changes,
+            stage,
+            first_reveal_tick: ev.first_reveal,
+            public_tick: ev.public_tick,
+            effective_tick: ev.effective,
+            public,
         }
     }
 

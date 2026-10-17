@@ -212,6 +212,9 @@ impl Bot for Fund {
     fn on_tick(&mut self, obs: &Observation) -> Vec<Action> {
         self.know.update(obs);
         let pending: Vec<_> = self.know.pending().collect();
+        // buy against the low end of what it knows about pending news, sell against the high end
+        let low: Vec<_> = self.know.pending_with(Estimate::Low).collect();
+        let high: Vec<_> = self.know.pending_with(Estimate::High).collect();
         let r = &self.rules;
         let n = obs.books.len();
         let t = r.tick_size;
@@ -221,14 +224,15 @@ impl Bot for Fund {
         for (s, b) in obs.books.iter().enumerate() {
             let v = value(r, obs, s, &pending);
             values[s] = v;
+            let (v_lo, v_hi) = (value(r, obs, s, &low), value(r, obs, s, &high));
             let (vb, va) = if self.combo {
                 let sh = &obs.account.shares;
                 (
-                    v + combo_adjust(r, obs.tick, sh, s, true),
-                    v + combo_adjust(r, obs.tick, sh, s, false),
+                    v_lo + combo_adjust(r, obs.tick, sh, s, true),
+                    v_hi + combo_adjust(r, obs.tick, sh, s, false),
                 )
             } else {
-                (v, v)
+                (v_lo, v_hi)
             };
             let price = b.mid().unwrap_or(b.mark) as f64;
             // 1 at value, 0 at `exit` x value, up to `leverage` when cheap
@@ -306,12 +310,17 @@ impl Bot for Sniper {
     fn on_tick(&mut self, obs: &Observation) -> Vec<Action> {
         self.know.update(obs);
         let pending: Vec<_> = self.know.pending().collect();
+        let low: Vec<_> = self.know.pending_with(Estimate::Low).collect();
+        let high: Vec<_> = self.know.pending_with(Estimate::High).collect();
         let r = &self.rules;
         let eq = obs.account.equity.max(0) as f64;
         let mut acts = Vec::new();
         let mut repay = obs.account.cash < 0;
         for (s, b) in obs.books.iter().enumerate() {
-            let v = value(r, obs, s, &pending);
+            // an edge counts only if it holds across the whole range it knows
+            let v_lo = value(r, obs, s, &low);
+            let v_hi = value(r, obs, s, &high);
+            let v = v_lo;
             if let Some(ask) = b.best_ask() {
                 let edge = 1.0 - ask as f64 / v;
                 if edge > self.threshold {
@@ -326,6 +335,7 @@ impl Bot for Sniper {
                     continue;
                 }
             }
+            let v = v_hi;
             if let Some(bid) = b.best_bid() {
                 let edge = bid as f64 / v - 1.0;
                 let held = obs.account.sellable[s];

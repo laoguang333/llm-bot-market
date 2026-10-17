@@ -307,8 +307,9 @@ impl News {
 impl Bot for News {
     fn on_tick(&mut self, obs: &Observation) -> Vec<Action> {
         for n in &obs.news {
-            for &(s, d) in &n.changes {
-                let rel = d as f64 / obs.books[s].dividend.max(1) as f64;
+            for c in &n.changes {
+                let s = c.stock;
+                let rel = c.mid() / obs.books[s].dividend.max(1) as f64;
                 if !n.public && rel.abs() >= self.min_change && self.seen.insert(n.id) {
                     self.plans.push((n.id, s, if rel > 0.0 { 3 } else { -3 }));
                 } else if n.public {

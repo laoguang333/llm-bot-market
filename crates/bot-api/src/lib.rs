@@ -163,6 +163,10 @@ pub struct Rules {
     pub news_lead_ticks: Tick,
     /// [offset from first reveal, cumulative fraction informed]
     pub news_stages: Vec<(Tick, f64)>,
+    /// Range width at each private stage, in standard deviations of that stock's change
+    /// for this layer and season: `max(dividend, initial / 2) * loading * change_sd * size_mult`.
+    /// The true change sits at a uniformly random position inside each account's range.
+    pub news_range_widths: Vec<f64>,
     pub season_calm_to_turbulent: f64,
     pub season_turbulent_to_calm: f64,
     pub season_turbulent_rate_mult: f64,
@@ -317,13 +321,31 @@ pub enum NewsLayer {
     Stock,
 }
 
+/// What one account knows about a news item's effect on one stock: the change in dividend
+/// per share is somewhere in `low..=high`. Exact (`low == high`) once the news is public.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Change {
+    pub stock: usize,
+    pub low: Money,
+    pub high: Money,
+}
+
+impl Change {
+    pub fn mid(&self) -> f64 {
+        (self.low + self.high) as f64 / 2.0
+    }
+}
+
+/// A news item as delivered to one account. A privately informed account receives it again
+/// at every later disclosure stage with a narrower range, and once more when it is public.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct NewsItem {
     pub id: u32,
     pub layer: NewsLayer,
     pub sector: Option<usize>,
-    /// (stock, change in dividend per share)
-    pub changes: Vec<(usize, Money)>,
+    pub changes: Vec<Change>,
+    /// Disclosure stage this delivery belongs to (index into `Rules::news_stages`).
+    pub stage: usize,
     pub first_reveal_tick: Tick,
     pub public_tick: Tick,
     pub effective_tick: Tick,

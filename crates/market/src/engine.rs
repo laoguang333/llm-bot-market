@@ -401,7 +401,7 @@ impl<'a> Shared<'a> {
         let deliveries = &w.deliveries[a.idx];
         while a.delivery_cursor < deliveries.len() && deliveries[a.delivery_cursor].tick <= tick {
             let d = deliveries[a.delivery_cursor];
-            a.inbox.news.push(w.events[d.event as usize].view(d.public));
+            a.inbox.news.push(w.view(d.event, a.idx, d.stage));
             a.delivery_cursor += 1;
         }
         while a.season_cursor < w.season_changes.len()

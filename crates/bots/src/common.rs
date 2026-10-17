@@ -3,36 +3,67 @@
 use bot_api::*;
 use std::collections::HashMap;
 
-/// Tracks news this bot has heard, and derives dividend expectations.
+/// What this bot knows about one news item.
+pub struct Heard {
+    /// stock -> (low, high): the intersection of every range received so far.
+    pub ranges: HashMap<usize, (Money, Money)>,
+    pub effective: Tick,
+    pub public: bool,
+}
+
+/// Tracks news this bot has heard, and derives dividend expectations. Each later delivery of
+/// the same item narrows the range; the intersection of all of them still contains the truth.
 #[derive(Default)]
 pub struct Knowledge {
-    /// news id -> (changes, effective tick, public)
-    pub heard: HashMap<u32, (Vec<(usize, Money)>, Tick, bool)>,
+    pub heard: HashMap<u32, Heard>,
+}
+
+/// Which estimate of a pending change to use.
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub enum Estimate {
+    Low,
+    Mid,
+    High,
 }
 
 impl Knowledge {
     pub fn update(&mut self, obs: &Observation) {
         for n in &obs.news {
-            self.heard
-                .insert(n.id, (n.changes.clone(), n.effective_tick, n.public));
+            let h = self.heard.entry(n.id).or_insert_with(|| Heard {
+                ranges: HashMap::new(),
+                effective: n.effective_tick,
+                public: false,
+            });
+            h.public |= n.public;
+            for c in &n.changes {
+                let r = h.ranges.entry(c.stock).or_insert((c.low, c.high));
+                *r = (r.0.max(c.low), r.1.min(c.high));
+                if r.0 > r.1 {
+                    *r = (c.low, c.high); // cannot happen with honest ranges; trust the newest
+                }
+            }
         }
         let t = obs.tick;
-        self.heard.retain(|_, v| v.1 > t);
+        self.heard.retain(|_, v| v.effective > t);
     }
 
-    /// Changes not yet in effect, as (stock, delta, effective tick).
+    /// Changes not yet in effect, as (stock, estimated delta, effective tick).
+    pub fn pending_with(&self, est: Estimate) -> impl Iterator<Item = (usize, Money, Tick)> + '_ {
+        self.heard.values().flat_map(move |h| {
+            h.ranges.iter().map(move |(&s, &(lo, hi))| {
+                let d = match est {
+                    Estimate::Low => lo,
+                    Estimate::Mid => (lo + hi) / 2,
+                    Estimate::High => hi,
+                };
+                (s, d, h.effective)
+            })
+        })
+    }
+
+    /// Midpoint estimates of changes not yet in effect.
     pub fn pending(&self) -> impl Iterator<Item = (usize, Money, Tick)> + '_ {
-        self.heard
-            .values()
-            .flat_map(|(ch, eff, _)| ch.iter().map(move |(s, d)| (*s, *d, *eff)))
-    }
-
-    /// Pending changes known only privately (not yet public).
-    pub fn private_pending(&self) -> impl Iterator<Item = (usize, Money, Tick)> + '_ {
-        self.heard
-            .values()
-            .filter(|v| !v.2)
-            .flat_map(|(ch, eff, _)| ch.iter().map(move |(s, d)| (*s, *d, *eff)))
+        self.pending_with(Estimate::Mid)
     }
 }
 

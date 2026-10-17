@@ -184,6 +184,13 @@ pub struct LayerCfg {
 pub struct DisclosureCfg {
     pub lead_ticks: Tick,
     pub stages: Vec<(Tick, f64)>,
+    /// Range width per private stage (every stage but the last), in standard deviations of
+    /// the change. 0 means exact.
+    #[serde(default = "default_range_widths")]
+    pub range_widths: Vec<f64>,
+}
+fn default_range_widths() -> Vec<f64> {
+    vec![3.0, 1.5]
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -307,6 +314,10 @@ impl Config {
         {
             bail!("news.disclosure.stages must end with fraction 1.0 no later than lead_ticks");
         }
+        let d = &self.world.news.disclosure;
+        if d.range_widths.len() != d.stages.len() - 1 || d.range_widths.iter().any(|w| *w < 0.0) {
+            bail!("news.disclosure.range_widths needs one non-negative width per private stage");
+        }
         for s in &self.stocks {
             if !self.world.sectors.contains(&s.sector) {
                 bail!("stock {} has unknown sector {}", s.name, s.sector);
@@ -407,6 +418,7 @@ impl Config {
             news_stock: layer(&self.world.news.stock),
             news_lead_ticks: self.world.news.disclosure.lead_ticks,
             news_stages: self.world.news.disclosure.stages.clone(),
+            news_range_widths: self.world.news.disclosure.range_widths.clone(),
             season_calm_to_turbulent: self.world.seasons.calm_to_turbulent,
             season_turbulent_to_calm: self.world.seasons.turbulent_to_calm,
             season_turbulent_rate_mult: self.world.seasons.turbulent_rate_mult,

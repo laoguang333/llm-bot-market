@@ -58,6 +58,9 @@ change_sd = 0.12
 [world.news.disclosure]
 lead_ticks = 120
 stages = [[0, 0.05], [30, 0.25], [60, 1.0]]
+# Private stages give each informed account its own range around the true change, this
+# many standard deviations of the change wide; the public stage is exact.
+range_widths = [3.0, 1.5]
 
 [scoring]
 terminal_ratio = 0.5
