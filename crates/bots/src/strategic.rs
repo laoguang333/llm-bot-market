@@ -475,13 +475,13 @@ impl Rider {
             know: Knowledge::default(),
             fast: p.clone(),
             slow: p,
-            fa: 2.0 / (s.param("fast", 10.0) + 1.0),
-            sa: 2.0 / (s.param("slow", 60.0) + 1.0),
-            threshold: s.param("threshold", 0.003),
-            cap: s.param("cap", 2.0),
+            fa: 2.0 / (jittered(s, "fast", 10.0, 0.3) + 1.0),
+            sa: 2.0 / (jittered(s, "slow", 60.0, 0.3) + 1.0),
+            threshold: jittered(s, "threshold", 0.003, 0.3),
+            cap: jittered(s, "cap", 2.0, 0.3),
             leverage: s.param("leverage", 2.0),
             size_frac: s.param("size_frac", 0.05),
-            exit_before: s.param("exit_before", 300.0) as Tick,
+            exit_before: jittered(s, "exit_before", 300.0, 0.3) as Tick,
         }
     }
 }
@@ -527,93 +527,6 @@ impl Bot for Rider {
             }
         }
         acts.truncate(r.max_actions_per_tick);
-        acts
-    }
-}
-
-// ---------------------------------------------------------------------------
-
-/// Two accounts of one owner trading with each other to earn the idle-fee credit at the cost
-/// of the trade fee only. Accounts pair up by their `#i` suffix: even `i` with `i + 1`.
-/// Each round one posts a sell inside the spread and the partner lifts it on the next tick;
-/// roles alternate so neither ends up with a position. Holds its initial shares otherwise.
-pub struct WashPair {
-    rules: Rules,
-    even: bool,
-    rounds: u32,
-    cover: f64,
-}
-
-impl WashPair {
-    pub fn new(s: &Start) -> Self {
-        let i: u32 = s
-            .account
-            .rsplit('#')
-            .next()
-            .and_then(|x| x.parse().ok())
-            .unwrap_or(0);
-        Self {
-            rules: s.rules.clone(),
-            even: i.is_multiple_of(2),
-            rounds: s.param("rounds", 8.0) as u32,
-            cover: s.param("cover", 1.3),
-        }
-    }
-}
-
-impl Bot for WashPair {
-    fn on_tick(&mut self, obs: &Observation) -> Vec<Action> {
-        let r = &self.rules;
-        let p = r.idle_period;
-        let phase = obs.tick % p;
-        let mut acts = Vec::new();
-        // drop stale posts
-        for o in &obs.open_orders {
-            if obs.tick > o.placed_tick + 2 {
-                acts.push(Action::Cancel {
-                    order_id: o.order_id,
-                });
-            }
-        }
-        // rounds at phases 5, 9, 13, ...: post on the first tick, lift on the next
-        if phase < 5 || (phase - 5) % 4 > 1 || (phase - 5) / 4 >= self.rounds {
-            return acts;
-        }
-        let round = (obs.tick / p) * self.rounds + (phase - 5) / 4;
-        // each stock in turn; on a given stock the seller alternates from one pass to the next,
-        // so neither account drifts out of any stock
-        let n = obs.books.len() as u32;
-        let s = (round % n) as usize;
-        let poster = (round / n).is_multiple_of(2) == self.even;
-        let lifting = (phase - 5) % 4 == 1;
-        let b = &obs.books[s];
-        let est_equity = obs.account.equity.max(0) as f64;
-        let need = est_equity * r.idle_rate / r.credit_ratio * self.cover / self.rounds as f64;
-        if obs.account.idle.due <= 0 {
-            return acts;
-        }
-        if !lifting && poster {
-            // inside the spread when there is room, else join the best ask
-            let t = r.tick_size;
-            let px = match (b.best_bid(), b.best_ask()) {
-                (Some(bb), Some(ba)) if ba - bb >= 2 * t => (bb + ba) / 2,
-                (_, Some(ba)) => ba - t,
-                (Some(bb), None) => bb + t.max(bb / 200),
-                (None, None) => b.last,
-            };
-            let q = ((need / px as f64) as Qty).min(obs.account.sellable[s]);
-            if q > 0 {
-                acts.push(Action::limit(s, Side::Sell, px, q));
-            }
-        } else if lifting && !poster {
-            // the partner's ask is at or a little above the best ask (others may have undercut it)
-            let Some(ba) = b.best_ask() else { return acts };
-            let px = round_tick(r, ba as f64 * 1.004);
-            let q = ((need / ba as f64) as Qty).min(buy_room(&obs.account, r, px, 2.0));
-            if q > 0 {
-                acts.push(Action::ioc(s, Side::Buy, px, q));
-            }
-        }
         acts
     }
 }

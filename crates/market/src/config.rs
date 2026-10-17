@@ -242,6 +242,8 @@ impl Default for ScoringCfg {
 pub struct BotGroupCfg {
     /// Built-in bot name.
     pub bot: String,
+    /// Who wrote the bot. Each owner has exactly one account; when omitted the account
+    /// is named `{bot}#{i}` and is its own owner.
     pub owner: Option<String>,
     #[serde(default = "one_usize")]
     pub count: usize,
@@ -323,7 +325,13 @@ impl Config {
                 bail!("combo units must be positive");
             }
         }
+        let mut owners = std::collections::HashSet::new();
         for g in &self.bots {
+            if let Some(o) = &g.owner {
+                if g.count != 1 || !owners.insert(o.clone()) {
+                    bail!("owner {o}: each owner has exactly one account (count = 1, owner names unique)");
+                }
+            }
             if g.cash < 0 || g.cash > MAX_CASH || g.shares_each < 0 || g.shares_each > MAX_SHARES {
                 bail!("bot group {}: cash or shares out of range", g.bot);
             }

@@ -98,8 +98,9 @@ impl<'a> Shared<'a> {
         let n_stocks = cfg.stocks.len();
         let mut accounts = Vec::new();
         for g in &cfg.bots {
-            let owner = g.owner.clone().unwrap_or_else(|| g.bot.clone());
             for i in 0..g.count {
+                // one account per owner: without an explicit owner each account is its own
+                let owner = g.owner.clone().unwrap_or_else(|| format!("{}#{i}", g.bot));
                 let mut shares = vec![g.shares_each; n_stocks];
                 for (name, q) in &g.shares {
                     shares[cfg.stock_index(name)?] = *q;
@@ -107,7 +108,7 @@ impl<'a> Shared<'a> {
                 let idx = accounts.len();
                 accounts.push(Account::new(
                     idx,
-                    format!("{owner}/{}#{i}", g.bot),
+                    owner.clone(),
                     owner.clone(),
                     g.bot.clone(),
                     g.cash,

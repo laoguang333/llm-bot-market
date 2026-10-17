@@ -97,3 +97,18 @@ pub fn buy_room(acct: &AccountView, rules: &Rules, price: Price, target_leverage
     let cap = (target_leverage * acct.equity as f64) as Money - acct.gross - acct.reserved_buy;
     affordable(rules, cap.min(acct.buying_power), price).max(0)
 }
+
+/// Like `Start::param`, but an unset parameter gets its default scaled by a per-account
+/// factor in [1 - spread, 1 + spread], so copies of one bot do not all act on the same tick.
+pub fn jittered(start: &Start, key: &str, default: f64, spread: f64) -> f64 {
+    if let Some(v) = start.params.get(key) {
+        return *v;
+    }
+    let mut h = start.seed ^ 0x9e37_79b9_7f4a_7c15;
+    for b in key.bytes() {
+        h = (h ^ b as u64).wrapping_mul(0x100_0000_01b3);
+    }
+    h ^= h >> 29;
+    let u = (h % 1_000_000) as f64 / 1_000_000.0;
+    default * (1.0 + spread * (2.0 * u - 1.0))
+}

@@ -194,9 +194,13 @@ impl Bot for Value {
     }
 }
 
-/// Fast/slow moving-average trend follower.
+/// Fast/slow moving-average trend follower. Stops buying above `cap` times value and takes
+/// profit above `exit` times value, so it cannot pump a stock forever on its own buying.
 pub struct Momentum {
     rules: Rules,
+    know: Knowledge,
+    cap: f64,
+    exit: f64,
     fast: Vec<f64>,
     slow: Vec<f64>,
     fa: f64,
@@ -217,13 +221,16 @@ impl Momentum {
             .collect();
         Self {
             rules: s.rules.clone(),
+            know: Knowledge::default(),
+            cap: jittered(s, "cap", 1.25, 0.08),
+            exit: jittered(s, "exit", 1.6, 0.1),
             fast: p.clone(),
             slow: p,
-            fa: 2.0 / (s.param("fast", 20.0) + 1.0),
-            sa: 2.0 / (s.param("slow", 120.0) + 1.0),
-            threshold: s.param("threshold", 0.004),
+            fa: 2.0 / (jittered(s, "fast", 20.0, 0.3) + 1.0),
+            sa: 2.0 / (jittered(s, "slow", 120.0, 0.3) + 1.0),
+            threshold: jittered(s, "threshold", 0.004, 0.3),
             lot: s.param("lot", 15.0) as Qty,
-            every: s.param("every", 5.0) as Tick,
+            every: jittered(s, "every", 5.0, 0.3) as Tick,
             max_leverage: s.param("max_leverage", 1.5),
         }
     }
@@ -231,6 +238,7 @@ impl Momentum {
 
 impl Bot for Momentum {
     fn on_tick(&mut self, obs: &Observation) -> Vec<Action> {
+        self.know.update(obs);
         for (s, tr) in obs.trades.iter().enumerate() {
             for t in tr {
                 let p = t.price as f64;
@@ -241,10 +249,13 @@ impl Bot for Momentum {
         if !obs.tick.is_multiple_of(self.every) || obs.tick < 100 {
             return vec![];
         }
+        let pending: Vec<_> = self.know.pending().collect();
         let mut acts = Vec::new();
         for (s, b) in obs.books.iter().enumerate() {
+            let v = hold_value(&self.rules, obs.tick, s, b.dividend, &pending);
             let sig = self.fast[s] / self.slow[s] - 1.0;
-            if sig > self.threshold {
+            let price = mid_or_last(b) as f64;
+            if sig > self.threshold && price < v * self.cap {
                 if let Some(ask) = b.best_ask() {
                     let px = round_tick(&self.rules, ask as f64 * 1.002);
                     let q =
@@ -254,7 +265,7 @@ impl Bot for Momentum {
                         acts.push(Action::ioc(s, Side::Buy, px, q));
                     }
                 }
-            } else if sig < -self.threshold {
+            } else if sig < -self.threshold || price > v * self.exit {
                 if let Some(bid) = b.best_bid() {
                     let q = self.lot.min(obs.account.sellable[s]);
                     if q > 0 {
@@ -339,35 +350,55 @@ impl Bot for News {
     }
 }
 
-/// Buys once and holds.
+/// Long-term holder: spends its cash on stocks priced near value, holds them for the
+/// dividends, and sells some when the market pays well above value.
 pub struct Hold {
     rules: Rules,
+    know: Knowledge,
     every: Tick,
+    buy_below: f64,
+    sell_above: f64,
 }
 
 impl Hold {
     pub fn new(s: &Start) -> Self {
         Self {
             rules: s.rules.clone(),
+            know: Knowledge::default(),
             every: s.param("every", 50.0) as Tick,
+            buy_below: s.param("buy_below", 1.15),
+            sell_above: s.param("sell_above", 1.5),
         }
     }
 }
 
 impl Bot for Hold {
     fn on_tick(&mut self, obs: &Observation) -> Vec<Action> {
+        self.know.update(obs);
         if obs.tick < 10 || !obs.tick.is_multiple_of(self.every) {
             return vec![];
         }
+        let pending: Vec<_> = self.know.pending().collect();
         let n = obs.books.len() as i64;
         let mut acts = vec![Action::CancelAll { stock: None }];
         let budget = obs.account.cash.max(0) / n;
         for (s, b) in obs.books.iter().enumerate() {
+            let v = hold_value(&self.rules, obs.tick, s, b.dividend, &pending);
+            let cap = round_tick(&self.rules, v * self.buy_below);
             if let Some(ask) = b.best_ask() {
-                let px = round_tick(&self.rules, ask as f64 * 1.01);
+                let px = round_tick(&self.rules, ask as f64 * 1.01).min(cap);
                 let q = affordable(&self.rules, budget, px);
                 if q > 0 {
                     acts.push(Action::limit(s, Side::Buy, px, q));
+                }
+            }
+            let floor = round_tick(&self.rules, v * self.sell_above);
+            if b.best_bid().is_some_and(|bid| bid >= floor) {
+                let q = (obs.account.shares[s] / 4)
+                    .max(1)
+                    .min(obs.account.shares[s]);
+                if q > 0 {
+                    acts.push(Action::limit(s, Side::Sell, floor, q));
                 }
             }
         }

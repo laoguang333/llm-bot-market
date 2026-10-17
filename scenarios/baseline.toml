@@ -171,42 +171,36 @@ bonus = -20
 
 [[bots]]
 bot = "maker"
-owner = "baseline-maker"
 count = 6
 cash = 2_000_000
 shares_each = 20
 
 [[bots]]
 bot = "value"
-owner = "baseline-value"
 count = 8
 cash = 2_000_000
 shares_each = 20
 
 [[bots]]
 bot = "momentum"
-owner = "baseline-momentum"
 count = 6
 cash = 2_000_000
 shares_each = 20
 
 [[bots]]
 bot = "news"
-owner = "baseline-news"
 count = 6
 cash = 2_000_000
 shares_each = 20
 
 [[bots]]
 bot = "noise"
-owner = "baseline-noise"
 count = 10
 cash = 2_000_000
 shares_each = 20
 
 [[bots]]
 bot = "hold"
-owner = "baseline-hold"
 count = 4
 cash = 2_000_000
 shares_each = 20
