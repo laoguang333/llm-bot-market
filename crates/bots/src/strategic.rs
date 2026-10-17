@@ -716,6 +716,8 @@ impl Bot for Hunter {
 /// - Steps one tick in front of the best bid or ask when that is still inside its own limits.
 /// - Takes the book when it is `edge` past the whole value range (private news).
 /// - Tops up the idle-fee credit before each charge.
+///
+/// The window, quantile and margin are scaled a little per account (unless set explicitly).
 pub struct Shark {
     rules: Rules,
     know: Knowledge,
@@ -734,9 +736,9 @@ impl Shark {
             rules: s.rules.clone(),
             know: Knowledge::default(),
             history: vec![VecDeque::new(); s.rules.stocks.len()],
-            window: s.param("window", 600.0).max(2.0) as usize,
-            quantile: s.param("quantile", 0.35),
-            margin: s.param("margin", 0.01),
+            window: jittered(s, "window", 600.0, 0.3).max(2.0) as usize,
+            quantile: jittered(s, "quantile", 0.35, 0.15),
+            margin: jittered(s, "margin", 0.01, 0.3),
             edge: s.param("edge", 0.02),
             leverage: s.param("leverage", 2.0),
             order_frac: s.param("order_frac", 0.04),
@@ -822,5 +824,99 @@ impl Bot for Shark {
             want[s].take = Some((side, p, q));
         }
         requote(obs, r, &want, 0.002)
+    }
+}
+
+// ---------------------------------------------------------------------------
+
+/// Drift: trades the continuation after a price jump.
+/// When the mid has risen more than `trigger` over the last `lookback` ticks (net of the slide
+/// a dividend payment causes), it buys a position and holds it for `hold` ticks: in this market a
+/// jump is usually the first trades on news that is still spreading, and the price keeps going
+/// for a while. A new jump while holding extends the hold. A fall of more than `stop` over the
+/// lookback ends it early, since falls also keep going. It crosses the spread both ways.
+/// It does not buy above `cap` times its value estimate.
+pub struct Drift {
+    rules: Rules,
+    know: Knowledge,
+    mids: Vec<VecDeque<f64>>,
+    until: Vec<Tick>,
+    lookback: usize,
+    trigger: f64,
+    stop: f64,
+    hold: Tick,
+    cap: f64,
+    leverage: f64,
+    size: f64,
+}
+
+impl Drift {
+    pub fn new(s: &Start) -> Self {
+        Self {
+            rules: s.rules.clone(),
+            know: Knowledge::default(),
+            mids: vec![VecDeque::new(); s.rules.stocks.len()],
+            until: vec![0; s.rules.stocks.len()],
+            lookback: s.param("lookback", 20.0).max(1.0) as usize,
+            trigger: s.param("trigger", 0.01),
+            stop: s.param("stop", 0.02),
+            hold: s.param("hold", 150.0) as Tick,
+            cap: s.param("cap", 1.2),
+            leverage: s.param("leverage", 2.0),
+            size: s.param("size", 0.25),
+        }
+    }
+}
+
+impl Bot for Drift {
+    fn on_tick(&mut self, obs: &Observation) -> Vec<Action> {
+        self.know.update(obs);
+        let r = &self.rules;
+        let pending: Vec<_> = self.know.pending().collect();
+        let t_mid = self.know.terminal(r, Estimate::Mid);
+        let eq = obs.account.equity.max(0) as f64;
+        let mut acts = Vec::new();
+        for (s, b) in obs.books.iter().enumerate() {
+            let now = mid_or_last(b) as f64;
+            let m = &mut self.mids[s];
+            m.push_back(now);
+            if m.len() > self.lookback + 1 {
+                m.pop_front();
+            }
+            if m.len() <= self.lookback || m[0] <= 0.0 || now <= 0.0 {
+                continue;
+            }
+            // a holder gets the dividend while the price slides by about as much each period
+            let slide = b.dividend as f64 / now / r.dividend_period as f64 * self.lookback as f64;
+            let moved = (now / m[0]).ln() + slide;
+            let v = value(r, obs, s, &pending, t_mid);
+            if moved > self.trigger && now < v * self.cap {
+                self.until[s] = obs.tick + self.hold;
+            } else if moved < -self.stop {
+                self.until[s] = 0;
+            }
+            let have = obs.account.shares[s];
+            if obs.tick < self.until[s] {
+                // `size` of equity per position, capped by leverage
+                let target = (eq * self.size / now) as Qty;
+                if target > have {
+                    if let Some(a) = b.best_ask() {
+                        let q = (target - have).min(buy_room(&obs.account, r, a, self.leverage));
+                        if q > 0 {
+                            acts.push(Action::ioc(s, Side::Buy, a, q));
+                        }
+                    }
+                }
+            } else if have > 0 {
+                if let Some(bp) = b.best_bid() {
+                    let q = obs.account.sellable[s];
+                    if q > 0 {
+                        acts.push(Action::ioc(s, Side::Sell, bp, q));
+                    }
+                }
+            }
+        }
+        acts.truncate(r.max_actions_per_tick);
+        acts
     }
 }

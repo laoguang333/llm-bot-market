@@ -10,7 +10,7 @@ cargo build --release
 ./target/release/llm-market run scenarios/tournament.toml --out runs/t1
 # 在 20 个随机世界里各跑一局，输出每个策略的平均排名百分位 ± 标准差
 ./target/release/llm-market series scenarios/tournament.toml --out runs/series --seeds 20
-# 基准市场 v2（含 hunter；旧版是 baseline-v1.toml）：参数和人数都随机的对照 bot，输出 9 项市场验收的通过率
+# 基准市场 v3（含 hunter 和 shark；旧版是 baseline-v1.toml、baseline-v2.toml）：参数和人数都随机的对照 bot，输出 9 项市场验收的通过率
 ./target/release/llm-market series scenarios/baseline.toml --out runs/base --seeds 20
 # 打穿测试：一个挑战者账户加入基准市场，在留出种子 1001–1020 上跑
 ./target/release/llm-market challenge scenarios/baseline.toml --bot shark --out runs/ch-shark --seeds 20

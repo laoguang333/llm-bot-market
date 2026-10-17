@@ -21,6 +21,7 @@ pub const NAMES: &[&str] = &[
     "rider",
     "hunter",
     "shark",
+    "drift",
 ];
 
 /// `start` with extra parameter defaults; parameters set in the scenario win.
@@ -59,6 +60,7 @@ pub fn factory(name: &str, start: &Start) -> Option<Box<dyn Bot>> {
         "rider" => Box::new(strategic::Rider::new(start)),
         "hunter" => Box::new(strategic::Hunter::new(start)),
         "shark" => Box::new(strategic::Shark::new(start)),
+        "drift" => Box::new(strategic::Drift::new(start)),
         _ => return None,
     })
 }
