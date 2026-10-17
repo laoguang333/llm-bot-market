@@ -187,9 +187,10 @@ shares_each = 20
 
 [[bots]]
 bot = "grid"
-count = 4
-cash = 2_000_000
-shares_each = 20
+count = 6
+# grid traders run larger accounts, as in the baseline market
+cash = 4_000_000
+shares_each = 120
 
 [[bots]]
 bot = "fund"
@@ -227,3 +228,8 @@ count = 4
 cash = 2_000_000
 shares_each = 20
 
+[[bots]]
+bot = "hunter"
+count = 4
+cash = 2_000_000
+shares_each = 20

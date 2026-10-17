@@ -13,7 +13,7 @@ cargo build --release
 # 基准市场：参数和人数都随机的对照 bot，输出 9 项市场验收的通过率
 ./target/release/llm-market series scenarios/baseline.toml --out runs/base --seeds 20
 # 打穿测试：一个挑战者账户加入基准市场，在留出种子 1001–1020 上跑
-./target/release/llm-market challenge scenarios/baseline.toml --bot sniper --out runs/ch-sniper --seeds 20
+./target/release/llm-market challenge scenarios/baseline.toml --bot hunter --out runs/ch-hunter --seeds 20
 # 列出内置 bot
 ./target/release/llm-market bots
 ```

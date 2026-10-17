@@ -561,3 +561,146 @@ impl Bot for Rider {
         acts
     }
 }
+
+// ---------------------------------------------------------------------------
+
+/// Hunter: rides trends, but only while the price is close to what the stock is worth.
+/// - Buys on an up-trend while the price is under `cap` times the low end of its value range,
+///   sells when the trend turns or the price passes `cap` times the high end.
+/// - Snipes private news: takes the book when it is `edge` past the whole value range.
+/// - In the last stretch it does not dump everything: it keeps what trades below the low end
+///   of its value (the terminal payout is worth more) and sells what trades above the high end.
+/// - Tops up the idle-fee credit before each charge.
+///
+/// Trend parameters and the cap are scaled a little per account (unless set explicitly), so
+/// several hunters do not trade in lockstep.
+pub struct Hunter {
+    rules: Rules,
+    know: Knowledge,
+    fast: Vec<f64>,
+    slow: Vec<f64>,
+    fa: f64,
+    sa: f64,
+    threshold: f64,
+    cap: f64,
+    edge: f64,
+    leverage: f64,
+    size_frac: f64,
+    endgame: Tick,
+}
+
+impl Hunter {
+    pub fn new(s: &Start) -> Self {
+        let p: Vec<f64> = s
+            .rules
+            .stocks
+            .iter()
+            .map(|x| x.initial_price as f64)
+            .collect();
+        Self {
+            rules: s.rules.clone(),
+            know: Knowledge::default(),
+            fast: p.clone(),
+            slow: p,
+            fa: 2.0 / (jittered(s, "fast", 10.0, 0.2) + 1.0),
+            sa: 2.0 / (jittered(s, "slow", 60.0, 0.2) + 1.0),
+            threshold: jittered(s, "threshold", 0.003, 0.2),
+            cap: jittered(s, "cap", 1.25, 0.04),
+            edge: s.param("edge", 0.04),
+            leverage: s.param("leverage", 1.5),
+            size_frac: s.param("size_frac", 0.05),
+            endgame: s.param("endgame", 300.0) as Tick,
+        }
+    }
+}
+
+impl Bot for Hunter {
+    fn on_tick(&mut self, obs: &Observation) -> Vec<Action> {
+        self.know.update(obs);
+        let r = &self.rules;
+        for (s, tr) in obs.trades.iter().enumerate() {
+            for t in tr {
+                let p = t.price as f64;
+                self.fast[s] += self.fa * (p - self.fast[s]);
+                self.slow[s] += self.sa * (p - self.slow[s]);
+            }
+        }
+        let pending: Vec<_> = self.know.pending().collect();
+        let low: Vec<_> = self.know.pending_with(Estimate::Low).collect();
+        let high: Vec<_> = self.know.pending_with(Estimate::High).collect();
+        let (t_lo, t_mid, t_hi) = (
+            self.know.terminal(r, Estimate::Low),
+            self.know.terminal(r, Estimate::Mid),
+            self.know.terminal(r, Estimate::High),
+        );
+        let late = obs.tick + self.endgame >= obs.ticks_total;
+        let eq = obs.account.equity.max(0) as f64;
+        let mut acts = Vec::new();
+        for (s, b) in obs.books.iter().enumerate() {
+            let v_lo = value(r, obs, s, &low, t_lo);
+            let v_hi = value(r, obs, s, &high, t_hi);
+            let sig = self.fast[s] / self.slow[s] - 1.0;
+            let held = obs.account.sellable[s];
+            let lot = |px: f64, mult: f64| ((eq * self.size_frac * mult / px) as Qty).max(1);
+            let (ask, bid) = (b.best_ask(), b.best_bid());
+            // news or terminal edge beyond the whole range: take it
+            if let Some(a) = ask.filter(|&a| (a as f64) < v_lo * (1.0 - self.edge)) {
+                let q = lot(a as f64, 2.0).min(buy_room(&obs.account, r, a, self.leverage));
+                if q > 0 {
+                    acts.push(Action::ioc(s, Side::Buy, a, q));
+                }
+                continue;
+            }
+            if let Some(bp) = bid.filter(|&p| (p as f64) > v_hi * (1.0 + self.edge) && held > 0) {
+                acts.push(Action::ioc(
+                    s,
+                    Side::Sell,
+                    bp,
+                    lot(bp as f64, 2.0).min(held),
+                ));
+                continue;
+            }
+            if late {
+                // keep what is cheap against its terminal payout, sell the rest at the bid
+                if let Some(bp) = bid.filter(|&p| held > 0 && (p as f64) >= v_lo) {
+                    acts.push(Action::ioc(
+                        s,
+                        Side::Sell,
+                        bp,
+                        lot(bp as f64, 1.0).min(held),
+                    ));
+                }
+                continue;
+            }
+            if sig > self.threshold && self.fast[s] < v_lo * self.cap {
+                if let Some(a) = ask {
+                    let px = round_tick(r, a as f64 * 1.002);
+                    let q = lot(px as f64, 1.0).min(buy_room(&obs.account, r, px, self.leverage));
+                    if q > 0 {
+                        acts.push(Action::ioc(s, Side::Buy, px, q));
+                    }
+                }
+            } else if held > 0 && (sig < -self.threshold || self.fast[s] > v_hi * self.cap) {
+                if let Some(bp) = bid {
+                    let px = round_tick(r, bp as f64 * 0.998);
+                    acts.push(Action::ioc(
+                        s,
+                        Side::Sell,
+                        px,
+                        lot(px as f64, 1.0).min(held),
+                    ));
+                }
+            }
+        }
+        if acts.is_empty() {
+            let values: Vec<f64> = (0..obs.books.len())
+                .map(|s| value(r, obs, s, &pending, t_mid))
+                .collect();
+            if let Some((s, side, p, q)) = credit_topup(obs, r, &values, 0.012) {
+                acts.push(Action::ioc(s, side, p, q));
+            }
+        }
+        acts.truncate(r.max_actions_per_tick);
+        acts
+    }
+}
