@@ -404,6 +404,12 @@ impl<'a> Shared<'a> {
             a.inbox.news.push(w.view(d.event, a.idx, d.stage));
             a.delivery_cursor += 1;
         }
+        while a.hint_cursor < w.hints_due(tick) {
+            a.inbox
+                .terminal_hints
+                .push(w.terminal_hint(a.idx, a.hint_cursor));
+            a.hint_cursor += 1;
+        }
         while a.season_cursor < w.season_changes.len()
             && w.season_changes[a.season_cursor].0 <= tick
         {
@@ -687,6 +693,7 @@ impl<'a> Shared<'a> {
             news: inbox.news,
             season_changes: inbox.season_changes,
             income: inbox.income,
+            terminal_hints: inbox.terminal_hints,
         }
     }
 

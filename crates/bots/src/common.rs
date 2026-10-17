@@ -16,6 +16,8 @@ pub struct Heard {
 #[derive(Default)]
 pub struct Knowledge {
     pub heard: HashMap<u32, Heard>,
+    /// Intersection of the private ranges for the number of terminal payments.
+    pub terminal: Option<(i64, i64)>,
 }
 
 /// Which estimate of a pending change to use.
@@ -28,6 +30,10 @@ pub enum Estimate {
 
 impl Knowledge {
     pub fn update(&mut self, obs: &Observation) {
+        for &(lo, hi) in &obs.terminal_hints {
+            let r = self.terminal.get_or_insert((lo, hi));
+            *r = (r.0.max(lo), r.1.min(hi));
+        }
         for n in &obs.news {
             let h = self.heard.entry(n.id).or_insert_with(|| Heard {
                 ranges: HashMap::new(),
@@ -61,6 +67,21 @@ impl Knowledge {
         })
     }
 
+    /// Terminal payments by estimate: the public range intersected with the private hints.
+    pub fn terminal(&self, rules: &Rules, est: Estimate) -> f64 {
+        let (mut lo, mut hi) = (rules.terminal_payments_min, rules.terminal_payments_max);
+        if let Some((a, b)) = self.terminal {
+            if a.max(lo) <= b.min(hi) {
+                (lo, hi) = (a.max(lo), b.min(hi));
+            }
+        }
+        match est {
+            Estimate::Low => lo as f64,
+            Estimate::Mid => (lo + hi) as f64 / 2.0,
+            Estimate::High => hi as f64,
+        }
+    }
+
     /// Midpoint estimates of changes not yet in effect.
     pub fn pending(&self) -> impl Iterator<Item = (usize, Money, Tick)> + '_ {
         self.pending_with(Estimate::Mid)
@@ -76,12 +97,14 @@ pub fn payments_after(rules: &Rules, tick: Tick, until: Tick) -> i64 {
 }
 
 /// Value of one share held to the end, given the current dividend and known pending changes.
+/// `terminal` is the (estimated) number of terminal payments.
 pub fn hold_value(
     rules: &Rules,
     tick: Tick,
     stock: usize,
     dividend: Money,
     pending: &[(usize, Money, Tick)],
+    terminal: f64,
 ) -> f64 {
     let total = rules.ticks_total;
     let mut d = dividend as f64;
@@ -103,7 +126,7 @@ pub fn hold_value(
         d += delta as f64;
     }
     v += d * payments_after(rules, from, total) as f64;
-    v + d * rules.terminal_payments as f64
+    v + d * terminal
 }
 
 pub fn mid_or_last(b: &BookView) -> Price {

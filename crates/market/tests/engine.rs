@@ -428,3 +428,40 @@ fn news_arrives_before_it_takes_effect() {
     assert!(ranged > 0, "private deliveries carry ranges");
     assert!(total > 0, "some news was generated");
 }
+
+#[test]
+fn terminal_hints_contain_the_hidden_payment_count() {
+    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../scenarios/baseline.toml");
+    let mut cfg = Config::load(std::path::Path::new(path)).unwrap();
+    cfg.ticks = 2100;
+    cfg.schedule.threads = 1;
+    cfg.bots.truncate(1);
+    cfg.bots[0].count = 5;
+    let logs: Mutex<Vec<Log>> = Mutex::new(vec![]);
+    let factory = |_: &str, _s: &Start| -> Option<Box<dyn Bot>> {
+        let log: Log = Arc::new(Mutex::new(Vec::new()));
+        logs.lock().push(log.clone());
+        Some(Box::new(Scripted {
+            log,
+            script: Box::new(|_| vec![]),
+        }))
+    };
+    let shared = Shared::new(&cfg, 5, &factory).unwrap();
+    shared.run().unwrap();
+    let n = shared.world.terminal_payments;
+    let (lo, hi) = cfg.scoring.terminal_payments.unwrap();
+    assert!(lo <= n && n <= hi);
+    for log in logs.lock().iter() {
+        let hints: Vec<(Tick, (i64, i64))> = log
+            .lock()
+            .iter()
+            .flat_map(|o| o.terminal_hints.iter().map(move |h| (o.tick, *h)))
+            .collect();
+        let ticks: Vec<Tick> = hints.iter().map(|h| h.0).collect();
+        assert_eq!(ticks, vec![0, 1000, 2000]);
+        for (k, (_, (a, b))) in hints.iter().enumerate() {
+            assert!(*a <= n && n <= *b, "hint must contain the truth");
+            assert_eq!(b - a, cfg.scoring.terminal_hints[k].1);
+        }
+    }
+}

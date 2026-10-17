@@ -12,13 +12,20 @@ use crate::common::*;
 use bot_api::*;
 
 /// Dividend payments still to come, in-game and terminal.
-fn payments_left(rules: &Rules, tick: Tick) -> i64 {
-    payments_after(rules, tick, rules.ticks_total) + rules.terminal_payments
+fn payments_left(rules: &Rules, tick: Tick, terminal: f64) -> f64 {
+    payments_after(rules, tick, rules.ticks_total) as f64 + terminal
 }
 
 /// Marginal combo value of buying (`buy`) or giving up (`!buy`) one share of `stock`.
-fn combo_adjust(rules: &Rules, tick: Tick, shares: &[Qty], stock: usize, buy: bool) -> f64 {
-    let p = payments_left(rules, tick) as f64;
+fn combo_adjust(
+    rules: &Rules,
+    tick: Tick,
+    terminal: f64,
+    shares: &[Qty],
+    stock: usize,
+    buy: bool,
+) -> f64 {
+    let p = payments_left(rules, tick, terminal);
     let mut adj = 0.0;
     for c in rules.combos.iter().filter(|c| c.end_tick >= tick) {
         let (mine, my_units, other, other_units) = if c.a == stock {
@@ -129,8 +136,14 @@ fn requote(obs: &Observation, rules: &Rules, want: &[Want], tol_frac: f64) -> Ve
     out
 }
 
-fn value(rules: &Rules, obs: &Observation, s: usize, pending: &[(usize, Money, Tick)]) -> f64 {
-    hold_value(rules, obs.tick, s, obs.books[s].dividend, pending)
+fn value(
+    rules: &Rules,
+    obs: &Observation,
+    s: usize,
+    pending: &[(usize, Money, Tick)],
+    terminal: f64,
+) -> f64 {
+    hold_value(rules, obs.tick, s, obs.books[s].dividend, pending, terminal)
 }
 
 // ---------------------------------------------------------------------------
@@ -216,20 +229,23 @@ impl Bot for Fund {
         let low: Vec<_> = self.know.pending_with(Estimate::Low).collect();
         let high: Vec<_> = self.know.pending_with(Estimate::High).collect();
         let r = &self.rules;
+        let t_lo = self.know.terminal(r, Estimate::Low);
+        let t_mid = self.know.terminal(r, Estimate::Mid);
+        let t_hi = self.know.terminal(r, Estimate::High);
         let n = obs.books.len();
         let t = r.tick_size;
         let eq = obs.account.equity.max(0) as f64;
         let mut want = vec![Want::default(); n];
         let mut values = vec![0.0; n];
         for (s, b) in obs.books.iter().enumerate() {
-            let v = value(r, obs, s, &pending);
+            let v = value(r, obs, s, &pending, t_mid);
             values[s] = v;
-            let (v_lo, v_hi) = (value(r, obs, s, &low), value(r, obs, s, &high));
+            let (v_lo, v_hi) = (value(r, obs, s, &low, t_lo), value(r, obs, s, &high, t_hi));
             let (vb, va) = if self.combo {
                 let sh = &obs.account.shares;
                 (
-                    v_lo + combo_adjust(r, obs.tick, sh, s, true),
-                    v_hi + combo_adjust(r, obs.tick, sh, s, false),
+                    v_lo + combo_adjust(r, obs.tick, t_lo, sh, s, true),
+                    v_hi + combo_adjust(r, obs.tick, t_hi, sh, s, false),
                 )
             } else {
                 (v_lo, v_hi)
@@ -313,13 +329,16 @@ impl Bot for Sniper {
         let low: Vec<_> = self.know.pending_with(Estimate::Low).collect();
         let high: Vec<_> = self.know.pending_with(Estimate::High).collect();
         let r = &self.rules;
+        let t_lo = self.know.terminal(r, Estimate::Low);
+        let t_mid = self.know.terminal(r, Estimate::Mid);
+        let t_hi = self.know.terminal(r, Estimate::High);
         let eq = obs.account.equity.max(0) as f64;
         let mut acts = Vec::new();
         let mut repay = obs.account.cash < 0;
         for (s, b) in obs.books.iter().enumerate() {
             // an edge counts only if it holds across the whole range it knows
-            let v_lo = value(r, obs, s, &low);
-            let v_hi = value(r, obs, s, &high);
+            let v_lo = value(r, obs, s, &low, t_lo);
+            let v_hi = value(r, obs, s, &high, t_hi);
             let v = v_lo;
             if let Some(ask) = b.best_ask() {
                 let edge = 1.0 - ask as f64 / v;
@@ -354,7 +373,7 @@ impl Bot for Sniper {
         }
         if acts.is_empty() {
             let values: Vec<f64> = (0..obs.books.len())
-                .map(|s| value(r, obs, s, &pending))
+                .map(|s| value(r, obs, s, &pending, t_mid))
                 .collect();
             if let Some((s, side, p, q)) = credit_topup(obs, r, &values, 0.012) {
                 acts.push(Action::ioc(s, side, p, q));
@@ -397,13 +416,14 @@ impl Bot for Harvester {
         self.know.update(obs);
         let pending: Vec<_> = self.know.pending().collect();
         let r = &self.rules;
+        let t_mid = self.know.terminal(r, Estimate::Mid);
         let t = r.tick_size;
         let n = obs.books.len();
         let eq = obs.account.equity.max(0) as f64;
         let mut want = vec![Want::default(); n];
         let mut values = vec![0.0; n];
         for (s, b) in obs.books.iter().enumerate() {
-            let v = value(r, obs, s, &pending);
+            let v = value(r, obs, s, &pending, t_mid);
             values[s] = v;
             let (Some(bb), Some(ba)) = (b.best_bid(), b.best_ask()) else {
                 // empty side: quote around value
@@ -501,6 +521,7 @@ impl Bot for Rider {
         self.know.update(obs);
         let pending: Vec<_> = self.know.pending().collect();
         let r = &self.rules;
+        let t_mid = self.know.terminal(r, Estimate::Mid);
         for (s, tr) in obs.trades.iter().enumerate() {
             for t in tr {
                 let p = t.price as f64;
@@ -512,7 +533,7 @@ impl Bot for Rider {
         let eq = obs.account.equity.max(0) as f64;
         let mut acts = Vec::new();
         for (s, b) in obs.books.iter().enumerate() {
-            let v = value(r, obs, s, &pending);
+            let v = value(r, obs, s, &pending, t_mid);
             let sig = self.fast[s] / self.slow[s] - 1.0;
             let held = obs.account.sellable[s];
             if !late && sig > self.threshold && (self.fast[s] < v * self.cap) {

@@ -42,6 +42,9 @@ pub struct World {
     pub initial_dividends: Vec<Money>,
     /// Per account, ascending by tick.
     pub deliveries: Vec<Vec<Delivery>>,
+    /// Number of terminal payments, drawn from the public range and not announced.
+    pub terminal_payments: i64,
+    terminal_hints: Vec<(Tick, i64)>,
     seed: u64,
     range_widths: Vec<f64>,
     public_stage: usize,
@@ -211,10 +214,30 @@ impl World {
             timelines,
             initial_dividends: initial,
             deliveries,
+            terminal_payments: {
+                let (lo, hi) = cfg.terminal_payments_range();
+                lo + (unit(seed ^ 0x7e57_1a1, 0, 0) * (hi - lo + 1) as f64) as i64
+            }
+            .min(cfg.terminal_payments_range().1),
+            terminal_hints: cfg.scoring.terminal_hints.clone(),
             seed,
             range_widths: news.disclosure.range_widths.clone(),
             public_stage,
         }
+    }
+
+    /// Number of terminal-payment hints due by `tick`.
+    pub fn hints_due(&self, tick: Tick) -> usize {
+        self.terminal_hints.iter().filter(|h| h.0 <= tick).count()
+    }
+
+    /// Hint `k` for `account`: a range of the given width containing the true number of
+    /// terminal payments, the truth at a random position.
+    pub fn terminal_hint(&self, account: usize, k: usize) -> (i64, i64) {
+        let w = self.terminal_hints[k].1;
+        let below = (unit(self.seed ^ 0x41d7, account as u64, k as u64) * (w + 1) as f64) as i64;
+        let low = self.terminal_payments - below.min(w);
+        (low, low + w)
     }
 
     /// A news item as `account` sees it at disclosure `stage`: a range that contains the true

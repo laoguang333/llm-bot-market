@@ -175,7 +175,14 @@ impl Bot for Value {
         let pending: Vec<_> = self.know.pending().collect();
         let mut acts = vec![Action::CancelAll { stock: None }];
         for (s, b) in obs.books.iter().enumerate() {
-            let v = hold_value(&self.rules, obs.tick, s, b.dividend, &pending);
+            let v = hold_value(
+                &self.rules,
+                obs.tick,
+                s,
+                b.dividend,
+                &pending,
+                self.know.terminal(&self.rules, Estimate::Mid),
+            );
             let bid = round_tick(&self.rules, v * (1.0 - self.margin));
             let ask = round_tick(&self.rules, v * (1.0 + self.margin));
             let qb = self.lot.min(
@@ -252,7 +259,14 @@ impl Bot for Momentum {
         let pending: Vec<_> = self.know.pending().collect();
         let mut acts = Vec::new();
         for (s, b) in obs.books.iter().enumerate() {
-            let v = hold_value(&self.rules, obs.tick, s, b.dividend, &pending);
+            let v = hold_value(
+                &self.rules,
+                obs.tick,
+                s,
+                b.dividend,
+                &pending,
+                self.know.terminal(&self.rules, Estimate::Mid),
+            );
             let sig = self.fast[s] / self.slow[s] - 1.0;
             let price = mid_or_last(b) as f64;
             if sig > self.threshold && price < v * self.cap {
@@ -384,7 +398,14 @@ impl Bot for Hold {
         let mut acts = vec![Action::CancelAll { stock: None }];
         let budget = obs.account.cash.max(0) / n;
         for (s, b) in obs.books.iter().enumerate() {
-            let v = hold_value(&self.rules, obs.tick, s, b.dividend, &pending);
+            let v = hold_value(
+                &self.rules,
+                obs.tick,
+                s,
+                b.dividend,
+                &pending,
+                self.know.terminal(&self.rules, Estimate::Mid),
+            );
             let cap = round_tick(&self.rules, v * self.buy_below);
             if let Some(ask) = b.best_ask() {
                 let px = round_tick(&self.rules, ask as f64 * 1.01).min(cap);

@@ -175,8 +175,14 @@ pub struct Rules {
     pub skip_decision_lag: Tick,
     /// Liquidation period length in ticks after trading ends.
     pub terminal_ticks: Tick,
-    /// Dividend payments counted in the terminal value.
-    pub terminal_payments: i64,
+    /// The number of dividend payments counted in the terminal value is drawn uniformly from
+    /// `terminal_payments_min..=terminal_payments_max` at the start and not announced.
+    pub terminal_payments_min: i64,
+    pub terminal_payments_max: i64,
+    /// (tick, width): at each of these ticks every account privately receives its own range
+    /// `[low, low + width]` that contains the true number of terminal payments, with the
+    /// truth at a random position. Ranges are delivered in `Observation::terminal_hints`.
+    pub terminal_hints: Vec<(Tick, i64)>,
     /// Always "rank_percentile": accounts are ranked by final equity.
     pub objective: String,
 }
@@ -189,9 +195,9 @@ impl Rules {
     pub fn buy_reserve_per_share(&self, price: Price) -> Money {
         price + (price * self.trade_fee_bps + 9_999) / 10_000
     }
-    /// Value at the end of the game of holding these shares with the given dividends.
-    pub fn terminal_value(&self, shares: &[Qty], dividends: &[Money]) -> Money {
-        let n = self.terminal_payments;
+    /// Value at the end of the game of holding these shares with the given dividends and
+    /// `n` terminal payments.
+    pub fn terminal_value(&self, shares: &[Qty], dividends: &[Money], n: i64) -> Money {
         let mut v: Money = shares.iter().zip(dividends).map(|(s, d)| s * d * n).sum();
         for c in &self.combos {
             if c.active(self.ticks_total) {
@@ -438,6 +444,8 @@ pub struct Observation {
     pub news: Vec<NewsItem>,
     pub season_changes: Vec<(Tick, bool)>,
     pub income: Vec<Income>,
+    /// Private ranges (low, high) for the number of terminal payments received this tick.
+    pub terminal_hints: Vec<(i64, i64)>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]

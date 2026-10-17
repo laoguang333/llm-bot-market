@@ -231,6 +231,11 @@ fn one_qty() -> Qty {
 #[serde(deny_unknown_fields, default)]
 pub struct ScoringCfg {
     pub terminal_ratio: f64,
+    /// Range the number of terminal payments is drawn from. Default: fixed at
+    /// `terminal_ratio * ticks / dividend_period`.
+    pub terminal_payments: Option<(i64, i64)>,
+    /// (tick, width) of the private ranges for the number of terminal payments.
+    pub terminal_hints: Vec<(Tick, i64)>,
     pub objective: String,
     pub series_seeds: u32,
 }
@@ -238,6 +243,8 @@ impl Default for ScoringCfg {
     fn default() -> Self {
         Self {
             terminal_ratio: 0.5,
+            terminal_payments: None,
+            terminal_hints: Vec::new(),
             objective: "rank_percentile".into(),
             series_seeds: 20,
         }
@@ -314,6 +321,10 @@ impl Config {
         {
             bail!("news.disclosure.stages must end with fraction 1.0 no later than lead_ticks");
         }
+        let (lo, hi) = self.terminal_payments_range();
+        if lo < 0 || hi < lo || self.scoring.terminal_hints.iter().any(|h| h.1 < 0) {
+            bail!("scoring.terminal_payments must be 0 <= min <= max; hint widths >= 0");
+        }
         let d = &self.world.news.disclosure;
         if d.range_widths.len() != d.stages.len() - 1 || d.range_widths.iter().any(|w| *w < 0.0) {
             bail!("news.disclosure.range_widths needs one non-negative width per private stage");
@@ -354,6 +365,13 @@ impl Config {
             }
         }
         Ok(())
+    }
+
+    pub fn terminal_payments_range(&self) -> (i64, i64) {
+        self.scoring.terminal_payments.unwrap_or_else(|| {
+            let n = (self.terminal_ticks() / self.world.dividend_period) as i64;
+            (n, n)
+        })
     }
 
     pub fn terminal_ticks(&self) -> Tick {
@@ -426,7 +444,9 @@ impl Config {
             max_tick_skew: self.schedule.max_tick_skew,
             skip_decision_lag: self.schedule.skip_decision_lag,
             terminal_ticks,
-            terminal_payments: (terminal_ticks / self.world.dividend_period) as i64,
+            terminal_payments_min: self.terminal_payments_range().0,
+            terminal_payments_max: self.terminal_payments_range().1,
+            terminal_hints: self.scoring.terminal_hints.clone(),
             objective: self.scoring.objective.clone(),
         }
     }

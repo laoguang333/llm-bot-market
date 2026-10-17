@@ -54,6 +54,7 @@ pub struct Inbox {
     pub news: Vec<NewsItem>,
     pub season_changes: Vec<(Tick, bool)>,
     pub income: Vec<Income>,
+    pub terminal_hints: Vec<(i64, i64)>,
 }
 
 #[derive(Clone, Debug, Default, serde::Serialize)]
@@ -100,6 +101,7 @@ pub struct Account {
     pub tape_seen: Vec<usize>,
     pub delivery_cursor: usize,
     pub season_cursor: usize,
+    pub hint_cursor: usize,
     pub skipped_since: u32,
     pub consecutive_errors: u32,
     pub stats: Stats,
@@ -141,6 +143,7 @@ impl Account {
             tape_seen: vec![0; n],
             delivery_cursor: 0,
             season_cursor: 0,
+            hint_cursor: 0,
             skipped_since: 0,
             consecutive_errors: 0,
             stats: Stats::default(),

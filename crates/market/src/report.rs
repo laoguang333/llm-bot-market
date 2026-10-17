@@ -146,7 +146,7 @@ pub fn run_match(
     }
     for (i, acc) in shared.accounts.iter().enumerate() {
         let a = acc.lock();
-        let tv = rules.terminal_value(&a.shares, &final_div);
+        let tv = rules.terminal_value(&a.shares, &final_div, shared.world.terminal_payments);
         accounts.push(AccountResult {
             account: a.name.clone(),
             owner: a.owner.clone(),
@@ -183,7 +183,7 @@ pub fn run_match(
     let result = MatchResult {
         seed,
         ticks: cfg.ticks,
-        terminal_payments: rules.terminal_payments,
+        terminal_payments: shared.world.terminal_payments,
         threads: run.threads,
         wall_seconds: run.wall_seconds,
         audits: shared.audits.load(Ordering::Relaxed),
@@ -371,7 +371,7 @@ pub fn reference_value(shared: &Shared, stock: usize, tick: Tick) -> Money {
     let d = shared.world.dividend(stock, tick);
     let remaining = (r.ticks_total.saturating_sub(1) / r.dividend_period)
         .saturating_sub(tick / r.dividend_period) as i64;
-    d * (remaining + r.terminal_payments)
+    d * (remaining + shared.world.terminal_payments)
 }
 
 fn correlation(a: &[f64], b: &[f64]) -> f64 {

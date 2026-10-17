@@ -64,6 +64,10 @@ range_widths = [3.0, 1.5]
 
 [scoring]
 terminal_ratio = 0.5
+# The number of terminal payments is drawn from this range and not announced. Each account
+# privately gets its own range of the given width containing the truth at these ticks.
+terminal_payments = [20, 40]
+terminal_hints = [[0, 12], [1000, 8], [2000, 4]]
 objective = "rank_percentile"
 series_seeds = 20
 
