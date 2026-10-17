@@ -36,6 +36,10 @@ pub struct MarketCfg {
     pub tick_size: Price,
     pub book_depth: usize,
     pub trade_tape_limit: usize,
+    /// When set, each stock opens at its expected hold value (initial dividend times in-game
+    /// payments plus the midpoint of the terminal payment range) times a random factor in
+    /// [1 - opening_spread, 1 + opening_spread], instead of its configured initial_price.
+    pub opening_spread: Option<f64>,
 }
 impl Default for MarketCfg {
     fn default() -> Self {
@@ -43,6 +47,7 @@ impl Default for MarketCfg {
             tick_size: 1,
             book_depth: 10,
             trade_tape_limit: 200,
+            opening_spread: None,
         }
     }
 }
@@ -261,6 +266,8 @@ pub struct BotGroupCfg {
     pub owner: Option<String>,
     #[serde(default = "one_usize")]
     pub count: usize,
+    /// When set, each world draws the number of accounts uniformly from count..=count_max.
+    pub count_max: Option<usize>,
     pub cash: Money,
     /// Shares of every stock.
     #[serde(default)]
@@ -350,9 +357,12 @@ impl Config {
         let mut owners = std::collections::HashSet::new();
         for g in &self.bots {
             if let Some(o) = &g.owner {
-                if g.count != 1 || !owners.insert(o.clone()) {
+                if g.count != 1 || g.count_max.is_some() || !owners.insert(o.clone()) {
                     bail!("owner {o}: each owner has exactly one account (count = 1, owner names unique)");
                 }
+            }
+            if g.count_max.is_some_and(|m| m < g.count) {
+                bail!("bot group {}: count_max below count", g.bot);
             }
             if g.cash < 0 || g.cash > MAX_CASH || g.shares_each < 0 || g.shares_each > MAX_SHARES {
                 bail!("bot group {}: cash or shares out of range", g.bot);

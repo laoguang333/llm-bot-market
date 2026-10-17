@@ -1,5 +1,6 @@
 //! llm-market run SCENARIO --out DIR [--seed N]
 //! llm-market series SCENARIO --out DIR [--seeds N] [--first-seed N]
+//! llm-market challenge SCENARIO --bot NAME --out DIR [--seeds N] [--first-seed N]
 
 use anyhow::{bail, Context, Result};
 use market::config::Config;
@@ -11,6 +12,7 @@ fn usage() -> ! {
     eprintln!(
         "usage:\n  llm-market run <scenario.toml> --out <dir> [--seed N] [--ticks N] [--threads N]\n  \
          llm-market series <scenario.toml> --out <dir> [--seeds N] [--first-seed N] [--threads N]\n  \
+         llm-market challenge <scenario.toml> --bot <name> --out <dir> [--seeds N] [--first-seed N] [--cash C] [--shares S]\n  \
          llm-market bots"
     );
     std::process::exit(2);
@@ -68,6 +70,18 @@ fn print_match(r: &MatchResult) {
         r.threads,
         r.wall_seconds
     );
+    let failed: Vec<String> = r
+        .quality
+        .checks
+        .iter()
+        .filter(|c| !c.pass)
+        .map(|c| format!("{} {:.3}", c.name, c.value))
+        .collect();
+    if failed.is_empty() {
+        println!("market quality: pass");
+    } else {
+        println!("market quality: FAIL ({})", failed.join(", "));
+    }
     let mut rows: Vec<_> = r.by_strategy.iter().collect();
     rows.sort_by(|a, b| b.1.mean_percentile.total_cmp(&a.1.mean_percentile));
     println!(
@@ -110,54 +124,147 @@ fn main() -> Result<()> {
         "series" => {
             let a = parse(&args[1..]);
             let cfg = load(&a)?;
-            if a.out.exists() {
-                bail!("output directory {} already exists", a.out.display());
-            }
-            let n: u64 = a
+            let (n, first) = seeds(&a, &cfg, 1)?;
+            run_series(&cfg, &a.out, n, first)?;
+        }
+        "challenge" => {
+            // one account of the challenger joins the scenario's market, like any other owner
+            let a = parse(&args[1..]);
+            let mut cfg = load(&a)?;
+            let bot = a.flags.get("bot").cloned().unwrap_or_else(|| usage());
+            let mut g = cfg.bots[0].clone();
+            g.bot = bot.clone();
+            g.owner = Some("challenger".into());
+            g.count = 1;
+            g.count_max = None;
+            g.params = Default::default();
+            g.cash = a
                 .flags
-                .get("seeds")
+                .get("cash")
                 .map(|s| s.parse())
                 .transpose()?
-                .unwrap_or(cfg.scoring.series_seeds as u64);
-            let first: u64 = a
+                .unwrap_or(2_000_000);
+            g.shares_each = a
                 .flags
-                .get("first-seed")
+                .get("shares")
                 .map(|s| s.parse())
                 .transpose()?
-                .unwrap_or(1);
-            std::fs::create_dir_all(&a.out)?;
-            let mut results = Vec::new();
-            for seed in first..first + n {
-                let dir = a.out.join(format!("seed-{seed}"));
-                let r = run_match(&cfg, seed, &bots::factory, Some(&dir))?;
-                print_match(&r);
-                results.push(r);
-            }
-            let summary = market_series(&results);
+                .unwrap_or(20);
+            g.shares = Default::default();
+            cfg.bots.push(g);
+            cfg.validate()?;
+            let (n, first) = seeds(&a, &cfg, 1001)?;
+            let (results, _) = run_series(&cfg, &a.out, n, first)?;
+            let pct: Vec<f64> = results
+                .iter()
+                .map(|r| {
+                    r.accounts
+                        .iter()
+                        .find(|x| x.owner == "challenger")
+                        .unwrap()
+                        .percentile
+                })
+                .collect();
+            let (m, sd) = mean_sd(&pct);
+            let top25 = pct.iter().filter(|p| **p >= 75.0).count() as f64 / pct.len() as f64;
+            let pass = m >= 90.0 && top25 >= 0.8;
+            println!(
+                "\nchallenger {bot}: mean percentile {m:.1} ± {sd:.1}, top 25% in {:.0}% of worlds -> {}",
+                top25 * 100.0,
+                if pass { "BEATS the market" } else { "does not beat the market" }
+            );
+            println!("(bar: mean >= 90 and top 25% in at least 80% of worlds)");
             std::fs::write(
-                a.out.join("series.json"),
-                serde_json::to_string_pretty(&summary)?,
+                a.out.join("challenge.json"),
+                serde_json::to_string_pretty(&serde_json::json!({
+                    "bot": bot, "seeds": results.iter().map(|r| r.seed).collect::<Vec<_>>(),
+                    "percentiles": pct, "mean": m, "sd": sd, "top25_share": top25, "pass": pass,
+                }))?,
             )?;
-            println!("\nseries over {n} worlds (mean ± sd of rank percentile)");
-            let mut rows: Vec<_> = summary["by_strategy"].as_object().unwrap().iter().collect();
-            rows.sort_by(|x, y| {
-                y.1["mean"]
-                    .as_f64()
-                    .unwrap()
-                    .total_cmp(&x.1["mean"].as_f64().unwrap())
-            });
-            for (k, v) in rows {
-                println!(
-                    "{:<18}{:>8.1} ± {:>5.1}",
-                    k,
-                    v["mean"].as_f64().unwrap(),
-                    v["sd"].as_f64().unwrap()
-                );
-            }
         }
         _ => usage(),
     }
     Ok(())
+}
+
+fn seeds(a: &Args, cfg: &Config, default_first: u64) -> Result<(u64, u64)> {
+    let n = a
+        .flags
+        .get("seeds")
+        .map(|s| s.parse())
+        .transpose()?
+        .unwrap_or(cfg.scoring.series_seeds as u64);
+    let first = a
+        .flags
+        .get("first-seed")
+        .map(|s| s.parse())
+        .transpose()?
+        .unwrap_or(default_first);
+    Ok((n, first))
+}
+
+fn run_series(
+    cfg: &Config,
+    out: &std::path::Path,
+    n: u64,
+    first: u64,
+) -> Result<(Vec<MatchResult>, serde_json::Value)> {
+    if out.exists() {
+        bail!("output directory {} already exists", out.display());
+    }
+    std::fs::create_dir_all(out)?;
+    let mut results = Vec::new();
+    for seed in first..first + n {
+        let r = run_match(
+            cfg,
+            seed,
+            &bots::factory,
+            Some(&out.join(format!("seed-{seed}"))),
+        )?;
+        print_match(&r);
+        results.push(r);
+    }
+    let summary = market_series(&results);
+    std::fs::write(
+        out.join("series.json"),
+        serde_json::to_string_pretty(&summary)?,
+    )?;
+    println!("\nseries over {n} worlds (mean ± sd of rank percentile)");
+    let mut rows: Vec<_> = summary["by_strategy"].as_object().unwrap().iter().collect();
+    rows.sort_by(|x, y| {
+        y.1["mean"]
+            .as_f64()
+            .unwrap()
+            .total_cmp(&x.1["mean"].as_f64().unwrap())
+    });
+    for (k, v) in rows {
+        println!(
+            "{:<18}{:>8.1} ± {:>5.1}",
+            k,
+            v["mean"].as_f64().unwrap(),
+            v["sd"].as_f64().unwrap()
+        );
+    }
+    println!("\nmarket quality over {n} worlds (median value, share of worlds passing)");
+    for q in summary["quality"].as_array().unwrap() {
+        println!(
+            "{:<22}{:>10.3}  {} {:<8}{:>5.0}%",
+            q["name"].as_str().unwrap(),
+            q["median"].as_f64().unwrap_or(f64::NAN),
+            if q["at_least"].as_bool().unwrap() {
+                ">="
+            } else {
+                "<="
+            },
+            q["threshold"].as_f64().unwrap(),
+            q["pass_share"].as_f64().unwrap() * 100.0
+        );
+    }
+    println!(
+        "all checks pass in {:.0}% of worlds",
+        summary["quality_pass_share"].as_f64().unwrap() * 100.0
+    );
+    Ok((results, summary))
 }
 
 fn mean_sd(xs: &[f64]) -> (f64, f64) {
@@ -200,8 +307,24 @@ fn market_series(results: &[MatchResult]) -> serde_json::Value {
         let (m, sd) = mean_sd(v);
         serde_json::json!({"mean": m, "sd": sd, "per_world": v})
     };
+    let n = results.len() as f64;
+    let quality: Vec<serde_json::Value> = results[0]
+        .quality
+        .checks
+        .iter()
+        .enumerate()
+        .map(|(i, c)| {
+            let mut v: Vec<f64> = results.iter().map(|r| r.quality.checks[i].value).filter(|x| x.is_finite()).collect();
+            v.sort_by(f64::total_cmp);
+            let med = v.get(v.len() / 2).copied().unwrap_or(f64::NAN);
+            let pass = results.iter().filter(|r| r.quality.checks[i].pass).count() as f64 / n;
+            serde_json::json!({"name": c.name, "median": med, "threshold": c.threshold, "at_least": c.at_least, "pass_share": pass})
+        })
+        .collect();
     serde_json::json!({
         "worlds": results.iter().map(|r| r.seed).collect::<Vec<_>>(),
+        "quality": quality,
+        "quality_pass_share": results.iter().filter(|r| r.quality.pass).count() as f64 / n,
         "by_strategy": by_strategy.iter().map(|(k, v)| (k.clone(), stat(v))).collect::<serde_json::Map<_, _>>(),
         "by_owner": by_owner.iter().map(|(k, v)| (k.clone(), stat(v))).collect::<serde_json::Map<_, _>>(),
         "by_account": by_account.iter().map(|(k, (o, s, v))| {

@@ -86,6 +86,19 @@ pub struct Shared<'a> {
     pub initial_cash: Money,
     pub initial_shares: Vec<Qty>,
     pub audits: AtomicU64,
+    pub book_samples: Mutex<Vec<BookSample>>,
+}
+
+/// Order book snapshot for market-quality statistics.
+#[derive(Clone, Copy, Debug)]
+pub struct BookSample {
+    pub tick: Tick,
+    pub stock: usize,
+    pub bid: Option<Price>,
+    pub ask: Option<Price>,
+    /// Resting notional within 2% of the mid on each side.
+    pub bid_depth: Money,
+    pub ask_depth: Money,
 }
 
 pub struct RunOutput {
@@ -96,9 +109,24 @@ pub struct RunOutput {
 impl<'a> Shared<'a> {
     pub fn new(cfg: &'a Config, seed: u64, factory: &BotFactory<'_>) -> Result<Shared<'a>> {
         let n_stocks = cfg.stocks.len();
+        // with count_max, each world draws its own number of accounts per group
+        let counts: Vec<usize> = cfg
+            .bots
+            .iter()
+            .enumerate()
+            .map(|(gi, g)| match g.count_max {
+                Some(max) if max > g.count => {
+                    let h = (seed ^ 0xc0_4e7).wrapping_mul(0x9e3779b97f4a7c15)
+                        ^ (gi as u64 + 1).wrapping_mul(0xd1b54a32d192ed03);
+                    let h = (h ^ (h >> 31)).wrapping_mul(0xbf58476d1ce4e5b9);
+                    g.count + ((h >> 33) as usize) % (max - g.count + 1)
+                }
+                _ => g.count,
+            })
+            .collect();
         let mut accounts = Vec::new();
-        for g in &cfg.bots {
-            for i in 0..g.count {
+        for (g, &count) in cfg.bots.iter().zip(&counts) {
+            for i in 0..count {
                 // one account per owner: without an explicit owner each account is its own
                 let owner = g.owner.clone().unwrap_or_else(|| format!("{}#{i}", g.bot));
                 let mut shares = vec![g.shares_each; n_stocks];
@@ -121,13 +149,16 @@ impl<'a> Shared<'a> {
             .map(|s| accounts.iter().map(|a| a.shares[s]).sum())
             .collect();
         let initial_cash = accounts.iter().map(|a| a.cash).sum();
-        let rules = cfg.rules(&initial_shares);
         let world = World::generate(cfg, seed, n);
+        let mut rules = cfg.rules(&initial_shares);
+        for (st, &p) in rules.stocks.iter_mut().zip(&world.opening_prices) {
+            st.initial_price = p;
+        }
 
         // create bots
         let mut idx = 0;
-        for g in &cfg.bots {
-            for _ in 0..g.count {
+        for (g, &count) in cfg.bots.iter().zip(&counts) {
+            for _ in 0..count {
                 let a = &mut accounts[idx];
                 let start = Start {
                     account: a.name.clone(),
@@ -155,15 +186,15 @@ impl<'a> Shared<'a> {
         let idle = (0..n as u32).map(|i| Reverse((0, i))).collect();
         let check = cfg.schedule.check_interval;
         Ok(Shared {
-            markets: cfg
-                .stocks
+            markets: world
+                .opening_prices
                 .iter()
-                .map(|s| Mutex::new(StockMarket::new(s.initial_price, cfg.margin.mark_window)))
+                .map(|&p| Mutex::new(StockMarket::new(p, cfg.margin.mark_window)))
                 .collect(),
-            marks: cfg
-                .stocks
+            marks: world
+                .opening_prices
                 .iter()
-                .map(|s| AtomicI64::new(s.initial_price))
+                .map(|&p| AtomicI64::new(p))
                 .collect(),
             accounts: accounts.into_iter().map(Mutex::new).collect(),
             mailboxes: (0..n).map(|_| Mutex::new(Vec::new())).collect(),
@@ -186,6 +217,7 @@ impl<'a> Shared<'a> {
             initial_cash,
             initial_shares,
             audits: AtomicU64::new(0),
+            book_samples: Mutex::new(Vec::new()),
         })
     }
 
@@ -292,7 +324,41 @@ impl<'a> Shared<'a> {
 
     // ---- one personal tick ------------------------------------------------
 
+    fn sample_books(&self, tick: Tick) {
+        let mut out = Vec::with_capacity(self.markets.len());
+        for (stock, m) in self.markets.iter().enumerate() {
+            let m = m.lock();
+            let (bid, ask) = (m.best(Side::Buy), m.best(Side::Sell));
+            let (mut bid_depth, mut ask_depth) = (0, 0);
+            if let (Some(b), Some(a)) = (bid, ask) {
+                let mid = (a + b) as f64 / 2.0;
+                for l in m.depth(Side::Buy, 100) {
+                    if (l.price as f64) >= mid * 0.98 {
+                        bid_depth += l.price * l.qty;
+                    }
+                }
+                for l in m.depth(Side::Sell, 100) {
+                    if (l.price as f64) <= mid * 1.02 {
+                        ask_depth += l.price * l.qty;
+                    }
+                }
+            }
+            out.push(BookSample {
+                tick,
+                stock,
+                bid,
+                ask,
+                bid_depth,
+                ask_depth,
+            });
+        }
+        self.book_samples.lock().extend(out);
+    }
+
     fn step(&self, idx: usize, tick: Tick, reference: Tick) {
+        if idx == 0 && tick.is_multiple_of(10) {
+            self.sample_books(tick);
+        }
         let mut guard = self.accounts[idx].lock();
         let a = &mut *guard;
         self.drain_mailbox(a);

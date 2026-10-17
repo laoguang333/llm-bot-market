@@ -19,6 +19,10 @@ pub struct AccountResult {
     pub shares: Vec<Qty>,
     pub terminal_value: Money,
     pub equity: Money,
+    /// Initial cash plus initial shares at the opening prices.
+    pub initial_equity: Money,
+    /// equity / initial_equity; accounts are ranked by this, so different endowments compare.
+    pub return_ratio: f64,
     pub initial_cash: Money,
     pub initial_shares: Vec<Qty>,
     pub rank: usize,
@@ -51,9 +55,19 @@ pub struct MatchResult {
     pub shares_burned: Vec<Qty>,
     pub treasury: Money,
     pub trades: usize,
+    pub quality: crate::quality::Quality,
     pub by_strategy: BTreeMap<String, GroupResult>,
     pub by_owner: BTreeMap<String, GroupResult>,
     pub accounts: Vec<AccountResult>,
+}
+
+fn initial_equity(shared: &Shared, a: &crate::account::Account) -> Money {
+    a.initial_cash
+        + a.initial_shares
+            .iter()
+            .zip(&shared.world.opening_prices)
+            .map(|(q, p)| q * p)
+            .sum::<Money>()
 }
 
 /// Percentiles with ties averaged: best = 100, worst = 0.
@@ -155,6 +169,8 @@ pub fn run_match(
             shares: a.shares.clone(),
             terminal_value: tv,
             equity: a.cash + tv,
+            initial_equity: initial_equity(&shared, &a),
+            return_ratio: (a.cash + tv) as f64 / initial_equity(&shared, &a).max(1) as f64,
             initial_cash: a.initial_cash,
             initial_shares: a.initial_shares.clone(),
             rank: 0,
@@ -164,7 +180,16 @@ pub fn run_match(
             notional_by_counterparty: std::mem::take(&mut by_cp[i]),
         });
     }
-    let ranks = rank_percentiles(&accounts.iter().map(|a| a.equity).collect::<Vec<_>>());
+    // rank by return on the opening endowment (same order as final equity when endowments match)
+    let ranks = rank_percentiles(
+        &accounts
+            .iter()
+            .map(|a| {
+                (a.cash + a.terminal_value) as i128 * 1_000_000 / a.initial_equity.max(1) as i128
+            })
+            .map(|x| x as Money)
+            .collect::<Vec<_>>(),
+    );
     for (a, (r, p)) in accounts.iter_mut().zip(ranks) {
         a.rank = r;
         a.percentile = p;
@@ -198,6 +223,7 @@ pub fn run_match(
             .collect(),
         treasury: shared.treasury.load(Ordering::Relaxed),
         trades: n_trades,
+        quality: crate::quality::measure(&shared),
         by_strategy: group(&accounts, |a| a.strategy.clone()),
         by_owner: group(&accounts, |a| a.owner.clone()),
         accounts,
@@ -299,6 +325,22 @@ fn write_outputs(cfg: &Config, shared: &Shared, result: &MatchResult, dir: &Path
         }
     }
     std::fs::write(dir.join("trades.csv"), csv)?;
+
+    let mut csv = String::from("tick,stock,bid,ask,bid_depth_2pct,ask_depth_2pct\n");
+    for b in shared.book_samples.lock().iter() {
+        let opt = |p: Option<Price>| p.map(|x| x.to_string()).unwrap_or_default();
+        writeln!(
+            csv,
+            "{},{},{},{},{},{}",
+            b.tick,
+            names[b.stock],
+            opt(b.bid),
+            opt(b.ask),
+            b.bid_depth,
+            b.ask_depth
+        )?;
+    }
+    std::fs::write(dir.join("books.csv"), csv)?;
 
     let mut csv = String::from("id,layer,sector,first_reveal,public_tick,effective,changes\n");
     for e in &shared.world.events {
@@ -402,7 +444,7 @@ fn report_html(cfg: &Config, shared: &Shared, result: &MatchResult) -> Result<St
     let mut stocks = Vec::new();
     let mut closes: Vec<Vec<f64>> = Vec::new();
     for s in 0..n_stocks {
-        let mut last = cfg.stocks[s].initial_price;
+        let mut last = shared.world.opening_prices[s];
         let mut close_series = Vec::new();
         for bar in bars(shared, s, cfg.ticks, W) {
             if let Some(x) = bar {
@@ -410,7 +452,7 @@ fn report_html(cfg: &Config, shared: &Shared, result: &MatchResult) -> Result<St
             }
             close_series.push(last as f64);
         }
-        let mut last = cfg.stocks[s].initial_price;
+        let mut last = shared.world.opening_prices[s];
         let mut candles = Vec::new();
         for (i, bar) in bars(shared, s, cfg.ticks, cw).iter().enumerate() {
             let t = i as Tick * cw;

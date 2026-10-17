@@ -5,6 +5,9 @@ seed = 7
 
 [market]
 tick_size = 1
+# Each stock opens at its expected hold value times a random factor in [0.85, 1.15];
+# the initial_price values below are then unused.
+opening_spread = 0.15
 book_depth = 10
 trade_tape_limit = 200
 
@@ -66,8 +69,8 @@ range_widths = [3.0, 1.5]
 terminal_ratio = 0.5
 # The number of terminal payments is drawn from this range and not announced. Each account
 # privately gets its own range of the given width containing the truth at these ticks.
-terminal_payments = [20, 40]
-terminal_hints = [[0, 12], [1000, 8], [2000, 4]]
+terminal_payments = [10, 50]
+terminal_hints = [[0, 30], [1000, 16], [2000, 6]]
 objective = "rank_percentile"
 series_seeds = 20
 

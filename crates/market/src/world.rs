@@ -42,6 +42,8 @@ pub struct World {
     pub initial_dividends: Vec<Money>,
     /// Per account, ascending by tick.
     pub deliveries: Vec<Vec<Delivery>>,
+    /// Opening price of each stock.
+    pub opening_prices: Vec<Money>,
     /// Number of terminal payments, drawn from the public range and not announced.
     pub terminal_payments: i64,
     terminal_hints: Vec<(Tick, i64)>,
@@ -214,6 +216,24 @@ impl World {
             timelines,
             initial_dividends: initial,
             deliveries,
+            opening_prices: cfg
+                .stocks
+                .iter()
+                .enumerate()
+                .map(|(i, st)| match cfg.market.opening_spread {
+                    None => st.initial_price,
+                    Some(spread) => {
+                        let (lo, hi) = cfg.terminal_payments_range();
+                        let payments = ((ticks.saturating_sub(1)) / cfg.world.dividend_period)
+                            as f64
+                            + (lo + hi) as f64 / 2.0;
+                        let u = unit(seed ^ 0x09e7, i as u64, 1) * 2.0 - 1.0;
+                        let t = cfg.market.tick_size.max(1);
+                        let p = st.dividend as f64 * payments * (1.0 + spread * u);
+                        ((p / t as f64).round() as Money * t).max(t)
+                    }
+                })
+                .collect(),
             terminal_payments: {
                 let (lo, hi) = cfg.terminal_payments_range();
                 lo + (unit(seed ^ 0x7e57_1a1, 0, 0) * (hi - lo + 1) as f64) as i64

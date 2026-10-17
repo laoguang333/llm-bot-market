@@ -5,10 +5,13 @@ use bot_api::*;
 use rand::{Rng, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 
-/// Random small limit orders near the current price.
+/// Random small limit orders near the current price, which each account blends with its own
+/// value estimate by a different amount.
 pub struct Noise {
     rng: ChaCha8Rng,
     rules: Rules,
+    know: Knowledge,
+    value_weight: f64,
     prob: f64,
     max_qty: Qty,
     spread: f64,
@@ -20,16 +23,21 @@ impl Noise {
         Self {
             rng: ChaCha8Rng::seed_from_u64(s.seed),
             rules: s.rules.clone(),
-            prob: s.param("prob", 0.3),
-            max_qty: s.param("max_qty", 20.0) as Qty,
-            spread: s.param("spread", 0.01),
-            ttl: s.param("ttl", 30.0) as Tick,
+            know: Knowledge::default(),
+            value_weight: jittered(s, "value_weight", 0.25, 1.0),
+            prob: jittered(s, "prob", 0.3, 0.6),
+            max_qty: jittered(s, "max_qty", 20.0, 0.6) as Qty,
+            spread: jittered(s, "spread", 0.01, 0.7),
+            ttl: jittered(s, "ttl", 30.0, 0.6) as Tick,
         }
     }
 }
 
 impl Bot for Noise {
     fn on_tick(&mut self, obs: &Observation) -> Vec<Action> {
+        self.know.update(obs);
+        let pending: Vec<_> = self.know.pending().collect();
+        let terminal = self.know.terminal(&self.rules, Estimate::Mid);
         let mut acts: Vec<Action> = obs
             .open_orders
             .iter()
@@ -42,7 +50,9 @@ impl Bot for Noise {
             if self.rng.gen::<f64>() > self.prob {
                 continue;
             }
-            let reference = mid_or_last(b) as f64;
+            let v = hold_value(&self.rules, obs.tick, s, b.dividend, &pending, terminal);
+            let reference =
+                (1.0 - self.value_weight) * mid_or_last(b) as f64 + self.value_weight * v;
             let price = round_tick(
                 &self.rules,
                 reference * (1.0 + self.rng.gen_range(-1.0..1.0) * self.spread),
@@ -76,13 +86,18 @@ impl Bot for Noise {
     }
 }
 
-/// Two-sided quotes around a smoothed price, skewed against inventory.
+/// Two-sided quotes around a smoothed price, skewed against inventory. Each account leans
+/// its reference toward its own value estimate by a different amount.
 pub struct Maker {
     rules: Rules,
+    know: Knowledge,
+    alpha: f64,
+    value_weight: f64,
     spread: f64,
     size: Qty,
     refresh: Tick,
     skew: f64,
+    depth_gap: f64,
     reference: Vec<f64>,
     base: Vec<Qty>,
 }
@@ -91,10 +106,14 @@ impl Maker {
     pub fn new(s: &Start) -> Self {
         Self {
             rules: s.rules.clone(),
-            spread: s.param("spread", 0.006),
-            size: s.param("size", 15.0) as Qty,
-            refresh: s.param("refresh", 5.0) as Tick,
-            skew: s.param("skew", 0.015),
+            know: Knowledge::default(),
+            alpha: jittered(s, "alpha", 0.1, 0.6),
+            value_weight: jittered(s, "value_weight", 0.3, 1.0),
+            spread: jittered(s, "spread", 0.006, 0.6),
+            size: jittered(s, "size", 30.0, 0.5) as Qty,
+            refresh: jittered(s, "refresh", 5.0, 0.6) as Tick,
+            skew: jittered(s, "skew", 0.04, 0.6),
+            depth_gap: jittered(s, "depth_gap", 0.012, 0.4),
             reference: s
                 .rules
                 .stocks
@@ -108,14 +127,17 @@ impl Maker {
 
 impl Bot for Maker {
     fn on_tick(&mut self, obs: &Observation) -> Vec<Action> {
+        self.know.update(obs);
         for (s, tr) in obs.trades.iter().enumerate() {
             for t in tr {
-                self.reference[s] = 0.9 * self.reference[s] + 0.1 * t.price as f64;
+                self.reference[s] += self.alpha * (t.price as f64 - self.reference[s]);
             }
         }
-        if !obs.tick.is_multiple_of(self.refresh) {
+        if !obs.tick.is_multiple_of(self.refresh.max(1)) {
             return vec![];
         }
+        let pending: Vec<_> = self.know.pending().collect();
+        let terminal = self.know.terminal(&self.rules, Estimate::Mid);
         let mut acts = vec![Action::CancelAll { stock: None }];
         let n = obs.books.len() as f64;
         for (s, b) in obs.books.iter().enumerate() {
@@ -123,6 +145,8 @@ impl Bot for Maker {
             if let Some(m) = b.mid() {
                 r = 0.5 * r + 0.5 * m as f64;
             }
+            let v = hold_value(&self.rules, obs.tick, s, b.dividend, &pending, terminal);
+            r = (1.0 - self.value_weight) * r + self.value_weight * v;
             let inv = ((obs.account.shares[s] - self.base[s]) as f64 / self.base[s] as f64)
                 .clamp(-1.0, 1.0);
             let mid = r * (1.0 - inv * self.skew);
@@ -141,6 +165,21 @@ impl Bot for Maker {
             }
             if qa > 0 {
                 acts.push(Action::limit(s, Side::Sell, ask, qa));
+            }
+            // a second, deeper layer further out
+            let bid2 = round_tick(&self.rules, mid * (1.0 - self.depth_gap));
+            let ask2 = round_tick(&self.rules, mid * (1.0 + self.depth_gap));
+            let qb2 = self.size.min(affordable(
+                &self.rules,
+                (power_share - qb * bid).min(obs.account.cash.max(0) / n as i64 - qb * bid),
+                bid2,
+            ));
+            let qa2 = self.size.min(obs.account.shares[s] - qa);
+            if qb2 > 0 && bid2 < bid {
+                acts.push(Action::limit(s, Side::Buy, bid2, qb2));
+            }
+            if qa2 > 0 && ask2 > ask {
+                acts.push(Action::limit(s, Side::Sell, ask2, qa2));
             }
         }
         acts
@@ -162,9 +201,9 @@ impl Value {
         Self {
             rules: s.rules.clone(),
             know: Knowledge::default(),
-            margin: s.param("margin", 0.03),
-            max_leverage: s.param("max_leverage", 1.0),
-            lot: s.param("lot", 20.0) as Qty,
+            margin: jittered(s, "margin", 0.03, 0.7),
+            max_leverage: jittered(s, "max_leverage", 1.0, 0.5),
+            lot: jittered(s, "lot", 20.0, 0.5) as Qty,
         }
     }
 }
@@ -229,16 +268,16 @@ impl Momentum {
         Self {
             rules: s.rules.clone(),
             know: Knowledge::default(),
-            cap: jittered(s, "cap", 1.25, 0.08),
-            exit: jittered(s, "exit", 1.6, 0.1),
+            cap: jittered(s, "cap", 1.05, 0.1),
+            exit: jittered(s, "exit", 1.4, 0.15),
             fast: p.clone(),
             slow: p,
-            fa: 2.0 / (jittered(s, "fast", 20.0, 0.3) + 1.0),
-            sa: 2.0 / (jittered(s, "slow", 120.0, 0.3) + 1.0),
-            threshold: jittered(s, "threshold", 0.004, 0.3),
-            lot: s.param("lot", 15.0) as Qty,
-            every: jittered(s, "every", 5.0, 0.3) as Tick,
-            max_leverage: s.param("max_leverage", 1.5),
+            fa: 2.0 / (jittered(s, "fast", 20.0, 0.6) + 1.0),
+            sa: 2.0 / (jittered(s, "slow", 120.0, 0.5) + 1.0),
+            threshold: jittered(s, "threshold", 0.004, 0.6),
+            lot: jittered(s, "lot", 15.0, 0.5) as Qty,
+            every: jittered(s, "every", 5.0, 0.6) as Tick,
+            max_leverage: jittered(s, "max_leverage", 1.5, 0.3),
         }
     }
 }
@@ -310,8 +349,8 @@ impl News {
     pub fn new(s: &Start) -> Self {
         Self {
             rules: s.rules.clone(),
-            lot: s.param("lot", 30.0) as Qty,
-            min_change: s.param("min_change", 0.03),
+            lot: jittered(s, "lot", 30.0, 0.5) as Qty,
+            min_change: jittered(s, "min_change", 0.03, 0.6),
             plans: Vec::new(),
             seen: Default::default(),
         }
@@ -366,7 +405,7 @@ impl Bot for News {
 }
 
 /// Long-term holder: spends its cash on stocks priced near value, holds them for the
-/// dividends, and sells some when the market pays well above value.
+/// dividends, and keeps an ask well above value for a quarter of each holding.
 pub struct Hold {
     rules: Rules,
     know: Knowledge,
@@ -380,9 +419,9 @@ impl Hold {
         Self {
             rules: s.rules.clone(),
             know: Knowledge::default(),
-            every: s.param("every", 50.0) as Tick,
-            buy_below: s.param("buy_below", 1.15),
-            sell_above: s.param("sell_above", 1.5),
+            every: jittered(s, "every", 50.0, 0.5) as Tick,
+            buy_below: jittered(s, "buy_below", 1.0, 0.1),
+            sell_above: jittered(s, "sell_above", 1.3, 0.15),
         }
     }
 }
@@ -414,8 +453,10 @@ impl Bot for Hold {
                     acts.push(Action::limit(s, Side::Buy, px, q));
                 }
             }
-            let floor = round_tick(&self.rules, v * self.sell_above);
-            if b.best_bid().is_some_and(|bid| bid >= floor) {
+            // a standing ask well above value for part of the holding
+            let floor =
+                round_tick(&self.rules, v * self.sell_above).max(cap + self.rules.tick_size);
+            {
                 let q = (obs.account.shares[s] / 4)
                     .max(1)
                     .min(obs.account.shares[s]);
