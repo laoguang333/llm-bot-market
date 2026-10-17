@@ -35,9 +35,9 @@
 | 公开进度参考 | 全体账户已完成 tick 的下中位数。 |
 | 国库 | 收取所有费用、支付所有股息的对手账户，可以为负。 |
 
-金额以整数"分"表示，股数为整数；内部计算用 i64/i128 并检查溢出，release 构建也不允许静默环绕。
+金额以整数"分"表示，股数为整数，统一用 i64。溢出检查可以开关：用 Cargo profile 的 `overflow-checks` 控制，debug 和测试构建默认开启，release 构建默认关闭以免影响性能，需要排查时可以在 release 下打开。场景校验阶段对初始现金、股数、价格上限做一次范围检查，保证正常运行不会接近 i64 上限。
 
-参考 STS：AGENTS.md "必须保持的经济与执行契约"第 7 条（整数与溢出）。
+参考 STS：AGENTS.md "必须保持的经济与执行契约"第 7 条（整数结算；本项目不沿用其 release 必须检查溢出的要求）。
 
 ## 3. 市场规则
 
@@ -380,7 +380,7 @@ params = { required_yield = 0.01 }
 | 本项目 | STS 中可参考的位置 | 说明 |
 |---|---|---|
 | workspace 结构、CLI | `Cargo.toml`、`crates/sim-cli`、`crates/sim-core` | 独立 workspace，core + cli 分层 |
-| 整数结算、溢出、核账 | AGENTS.md 契约第 7、12 条，`economy.rs` | 守恒核账做法 |
+| 整数结算、核账 | AGENTS.md 契约第 7、12 条，`economy.rs` | 守恒核账做法（溢出检查改为可开关） |
 | 个人 tick、落后跳过 | `docs/AUTONOMOUS_BACKEND.md`、契约第 9 条、`engine.rs` | 下中位数参考、跳过只结算 |
 | 新闻分批披露、信息边界 | `docs/INFORMATION_LAB.md`、`docs/PRIVATE_SIGNAL_LAB.md`、`information.rs` | 个人窗口、渐进披露 |
 | 股息世界、新闻季节 | `tools/make_crowd_lab.py`、`docs/CROWD_LAB.md` | 随机游走加跳跃、市场季节 |
