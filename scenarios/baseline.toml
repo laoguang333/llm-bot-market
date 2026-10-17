@@ -181,10 +181,10 @@ b = "E3"
 bonus = -20
 
 [[bots]]
-bot = "maker"
+bot = "grid"
 count = 6
 count_max = 10
-# market makers are better capitalised than the rest of the crowd
+# grid traders run larger accounts than the rest of the crowd
 cash = 4_000_000
 shares_each = 120
 

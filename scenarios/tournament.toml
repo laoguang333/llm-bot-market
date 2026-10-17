@@ -180,7 +180,7 @@ b = "E3"
 bonus = -20
 
 [[bots]]
-bot = "maker"
+bot = "grid"
 count = 4
 cash = 2_000_000
 shares_each = 20

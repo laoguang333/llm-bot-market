@@ -109,18 +109,24 @@ pub fn measure(shared: &Shared) -> Quality {
         // price against value, on bucket closes carried forward
         let mut p = shared.world.opening_prices[s];
         let mut rel = Vec::with_capacity(n_buckets);
+        let mut pub_rel = Vec::with_capacity(n_buckets);
         for (i, c) in close.iter().enumerate() {
             if let Some(c) = c {
                 p = *c;
             }
-            let r = reference_value(shared, s, i as Tick * BUCKET).max(1) as f64;
+            let t = i as Tick * BUCKET;
+            let r = reference_value(shared, s, t).max(1) as f64;
             rel.push((p as f64 / r).ln());
+            pub_rel.push((p as f64 / public_value(shared, s, t).max(1.0)).ln());
         }
         dev.push(median(rel.iter().map(|x| x.abs()).collect()));
         extreme.push(rel.iter().filter(|x| x.abs() > 2f64.ln()).count() as f64 / rel.len() as f64);
         let mut cross = 0;
         let mut sign = 0i8;
-        for x in &rel {
+        // crossings are counted against the value the crowd can know (see public_value), so a world
+        // whose hidden count is far from the middle is not marked down for a mispricing nobody
+        // can see yet
+        for x in &pub_rel {
             // a crossing needs a 5% excursion to the other side, so jitter at value does not count
             let s2 = if *x > 0.05 {
                 1
@@ -175,4 +181,23 @@ pub fn measure(shared: &Shared) -> Quality {
         pass: checks.iter().all(|c| c.pass),
         checks,
     }
+}
+
+/// Hold value of one share as far as the crowd can know it: the hidden number of terminal payments
+/// starts at the middle of its public range and moves toward the truth as the private hints narrow.
+fn public_value(shared: &Shared, stock: usize, tick: Tick) -> f64 {
+    let r = &shared.rules;
+    let d = shared.world.dividend(stock, tick) as f64;
+    let remaining = (r.ticks_total.saturating_sub(1) / r.dividend_period)
+        .saturating_sub(tick / r.dividend_period) as f64;
+    let span = (r.terminal_payments_max - r.terminal_payments_min).max(1) as f64;
+    let width = r
+        .terminal_hints
+        .iter()
+        .filter(|h| h.0 <= tick)
+        .map(|h| h.1 as f64)
+        .fold(span, f64::min);
+    let mid = (r.terminal_payments_min + r.terminal_payments_max) as f64 / 2.0;
+    let known = mid + (1.0 - width / span) * (shared.world.terminal_payments as f64 - mid);
+    d * (remaining + known)
 }

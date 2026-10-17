@@ -8,7 +8,7 @@ use bot_api::{Bot, Start};
 
 pub const NAMES: &[&str] = &[
     "noise",
-    "maker",
+    "grid",
     "value",
     "momentum",
     "news",
@@ -33,7 +33,7 @@ fn with_defaults(start: &Start, defaults: &[(&str, f64)]) -> Start {
 pub fn factory(name: &str, start: &Start) -> Option<Box<dyn Bot>> {
     Some(match name {
         "noise" => Box::new(baseline::Noise::new(start)),
-        "maker" => Box::new(baseline::Maker::new(start)),
+        "grid" => Box::new(baseline::Grid::new(start)),
         "value" => Box::new(baseline::Value::new(start)),
         "momentum" => Box::new(baseline::Momentum::new(start)),
         "news" => Box::new(baseline::News::new(start)),

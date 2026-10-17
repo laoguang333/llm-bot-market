@@ -24,7 +24,7 @@ impl Noise {
             rng: ChaCha8Rng::seed_from_u64(s.seed),
             rules: s.rules.clone(),
             know: Knowledge::default(),
-            value_weight: jittered(s, "value_weight", 0.25, 1.0),
+            value_weight: jittered(s, "value_weight", 0.5, 0.8),
             prob: jittered(s, "prob", 0.3, 0.6),
             max_qty: jittered(s, "max_qty", 20.0, 0.6) as Qty,
             spread: jittered(s, "spread", 0.01, 0.7),
@@ -86,100 +86,165 @@ impl Bot for Noise {
     }
 }
 
-/// Two-sided quotes around a smoothed price, skewed against inventory. Each account leans
-/// its reference toward its own value estimate by a different amount.
-pub struct Maker {
+/// Grid trader: a ladder of price levels a fixed percentage apart around an anchor. It keeps a
+/// buy on the nearest levels below the last price and a sell on the nearest levels above, so it
+/// buys on the way down and sells one level up. It does not follow the price; only when the price
+/// has stayed outside the ladder for a while does it lay a new ladder around the current price.
+pub struct Grid {
+    rng: ChaCha8Rng,
     rules: Rules,
     know: Knowledge,
-    alpha: f64,
+    step: f64,
+    levels: i32,
+    lot: Qty,
+    active: usize,
+    patience: Tick,
+    reset: Tick,
     value_weight: f64,
-    spread: f64,
-    size: Qty,
-    refresh: Tick,
-    skew: f64,
-    depth_gap: f64,
-    reference: Vec<f64>,
-    base: Vec<Qty>,
+    anchor_noise: f64,
+    last_reset: Vec<Tick>,
+    anchor: Vec<f64>,
+    outside_since: Vec<Option<Tick>>,
 }
 
-impl Maker {
+impl Grid {
     pub fn new(s: &Start) -> Self {
+        let mut rng = ChaCha8Rng::seed_from_u64(s.seed ^ 0x9e37);
+        let n = s.rules.stocks.len();
+        let value_weight = jittered(s, "value_weight", 0.8, 0.25).clamp(0.0, 1.0);
+        let anchor_noise = jittered(s, "anchor_noise", 0.06, 0.5);
+        let terminal = Knowledge::default().terminal(&s.rules, Estimate::Mid);
+        let anchor = (0..n)
+            .map(|k| {
+                let v = hold_value(
+                    &s.rules,
+                    0,
+                    k,
+                    s.rules.stocks[k].initial_dividend,
+                    &[],
+                    terminal,
+                );
+                let p = s.rules.stocks[k].initial_price as f64;
+                (value_weight * v + (1.0 - value_weight) * p)
+                    * (1.0 + rng.gen_range(-1.0..1.0) * anchor_noise)
+            })
+            .collect();
         Self {
+            rng,
             rules: s.rules.clone(),
             know: Knowledge::default(),
-            alpha: jittered(s, "alpha", 0.1, 0.6),
-            value_weight: jittered(s, "value_weight", 0.3, 1.0),
-            spread: jittered(s, "spread", 0.006, 0.6),
-            size: jittered(s, "size", 30.0, 0.5) as Qty,
-            refresh: jittered(s, "refresh", 5.0, 0.6) as Tick,
-            skew: jittered(s, "skew", 0.04, 0.6),
-            depth_gap: jittered(s, "depth_gap", 0.012, 0.4),
-            reference: s
-                .rules
-                .stocks
-                .iter()
-                .map(|x| x.initial_price as f64)
-                .collect(),
-            base: s.shares.iter().map(|&q| q.max(1)).collect(),
+            step: jittered(s, "step", 0.006, 0.5),
+            levels: jittered(s, "levels", 8.0, 0.4).round().max(2.0) as i32,
+            lot: jittered(s, "lot", 15.0, 0.5).max(1.0) as Qty,
+            active: (s.rules.max_open_orders / s.rules.stocks.len().max(1) / 2).max(1),
+            patience: jittered(s, "patience", 150.0, 0.6) as Tick,
+            reset: jittered(s, "reset", 250.0, 0.6) as Tick,
+            value_weight,
+            anchor_noise,
+            last_reset: vec![0; n],
+            anchor,
+            outside_since: vec![None; n],
         }
+    }
+
+    fn level(&self, s: usize, k: i32) -> Price {
+        round_tick(&self.rules, self.anchor[s] * (1.0 + self.step).powi(k))
     }
 }
 
-impl Bot for Maker {
+impl Bot for Grid {
     fn on_tick(&mut self, obs: &Observation) -> Vec<Action> {
         self.know.update(obs);
-        for (s, tr) in obs.trades.iter().enumerate() {
-            for t in tr {
-                self.reference[s] += self.alpha * (t.price as f64 - self.reference[s]);
-            }
-        }
-        if !obs.tick.is_multiple_of(self.refresh.max(1)) {
-            return vec![];
-        }
         let pending: Vec<_> = self.know.pending().collect();
         let terminal = self.know.terminal(&self.rules, Estimate::Mid);
-        let mut acts = vec![Action::CancelAll { stock: None }];
-        let n = obs.books.len() as f64;
+        let mut want: Vec<(usize, Side, Price, Qty)> = vec![];
         for (s, b) in obs.books.iter().enumerate() {
-            let mut r = self.reference[s];
-            if let Some(m) = b.mid() {
-                r = 0.5 * r + 0.5 * m as f64;
+            let p = mid_or_last(b);
+            if p <= 0 {
+                continue;
             }
-            let v = hold_value(&self.rules, obs.tick, s, b.dividend, &pending, terminal);
-            r = (1.0 - self.value_weight) * r + self.value_weight * v;
-            let inv = ((obs.account.shares[s] - self.base[s]) as f64 / self.base[s] as f64)
-                .clamp(-1.0, 1.0);
-            let mid = r * (1.0 - inv * self.skew);
-            let bid = round_tick(&self.rules, mid * (1.0 - self.spread / 2.0));
-            let ask = round_tick(&self.rules, mid * (1.0 + self.spread / 2.0))
-                .max(bid + self.rules.tick_size);
-            let power_share = (obs.account.buying_power as f64 / n) as Money;
-            let qb = self.size.min(affordable(
-                &self.rules,
-                power_share.min(obs.account.cash.max(0) / n as i64),
-                bid,
-            ));
-            let qa = self.size.min(obs.account.shares[s]);
-            if qb > 0 {
-                acts.push(Action::limit(s, Side::Buy, bid, qb));
+            let (lo, hi) = (self.level(s, -self.levels), self.level(s, self.levels));
+            if p < lo || p > hi {
+                self.outside_since[s].get_or_insert(obs.tick);
+            } else {
+                self.outside_since[s] = None;
             }
-            if qa > 0 {
-                acts.push(Action::limit(s, Side::Sell, ask, qa));
+            let stale = self.outside_since[s].is_some_and(|t| obs.tick - t > self.patience);
+            // every so often, or once the price has left the ladder for a while, the owner re-lays
+            // it around a blend of what they think the stock is worth and where it trades
+            if stale || obs.tick - self.last_reset[s] > self.reset {
+                let v = hold_value(&self.rules, obs.tick, s, b.dividend, &pending, terminal);
+                let jitter = 1.0 + self.rng.gen_range(-1.0..1.0) * self.anchor_noise;
+                self.anchor[s] =
+                    (self.value_weight * v + (1.0 - self.value_weight) * p as f64) * jitter;
+                self.last_reset[s] = obs.tick;
+                self.outside_since[s] = None;
             }
-            // a second, deeper layer further out
-            let bid2 = round_tick(&self.rules, mid * (1.0 - self.depth_gap));
-            let ask2 = round_tick(&self.rules, mid * (1.0 + self.depth_gap));
-            let qb2 = self.size.min(affordable(
-                &self.rules,
-                (power_share - qb * bid).min(obs.account.cash.max(0) / n as i64 - qb * bid),
-                bid2,
-            ));
-            let qa2 = self.size.min(obs.account.shares[s] - qa);
-            if qb2 > 0 && bid2 < bid {
-                acts.push(Action::limit(s, Side::Buy, bid2, qb2));
+            let mut held = obs.account.shares[s];
+            // a ladder holds one lot for each level above the price; after the ladder moves down,
+            // the shares it no longer wants are sold near the current price
+            let target = self.lot
+                * (-self.levels..=self.levels)
+                    .filter(|&k| self.level(s, k) > p)
+                    .count() as Qty;
+            if held > target {
+                let n = (held - target).min(2 * self.lot);
+                let price = b.bids.first().map_or(p, |l| l.price.max(p - p * 5 / 1000));
+                want.push((s, Side::Sell, price, n));
+                held -= n;
             }
-            if qa2 > 0 && ask2 > ask {
-                acts.push(Action::limit(s, Side::Sell, ask2, qa2));
+            let mut sells = 0;
+            let mut buys = 0;
+            // nearest levels above the price: sells, while there are shares to sell
+            for k in -self.levels..=self.levels {
+                let q = self.level(s, k);
+                if q > p && sells < self.active && held > 0 {
+                    let n = self.lot.min(held);
+                    want.push((s, Side::Sell, q, n));
+                    held -= n;
+                    sells += 1;
+                }
+            }
+            for k in (-self.levels..=self.levels).rev() {
+                let q = self.level(s, k);
+                if q < p && buys < self.active {
+                    want.push((s, Side::Buy, q, self.lot));
+                    buys += 1;
+                }
+            }
+        }
+        // keep resting orders that are still wanted, cancel the rest, place what is missing
+        let mut acts = vec![];
+        let mut budget = self.rules.max_actions_per_tick;
+        for o in &obs.open_orders {
+            if let Some(i) = want
+                .iter()
+                .position(|w| w.0 == o.stock && w.1 == o.side && w.2 == o.price)
+            {
+                want.swap_remove(i);
+            } else if budget > 0 {
+                acts.push(Action::Cancel {
+                    order_id: o.order_id,
+                });
+                budget -= 1;
+            }
+        }
+        let mut room =
+            (obs.account.buying_power.min(obs.account.cash.max(0)) as f64 * 0.9) as Money;
+        for (s, side, price, qty) in want {
+            if budget == 0 {
+                break;
+            }
+            let qty = if side == Side::Buy {
+                let q = qty.min(affordable(&self.rules, room, price));
+                room -= q * self.rules.buy_reserve_per_share(price);
+                q
+            } else {
+                qty
+            };
+            if qty > 0 {
+                acts.push(Action::limit(s, side, price, qty));
+                budget -= 1;
             }
         }
         acts
@@ -420,7 +485,7 @@ impl Hold {
             rules: s.rules.clone(),
             know: Knowledge::default(),
             every: jittered(s, "every", 50.0, 0.5) as Tick,
-            buy_below: jittered(s, "buy_below", 1.0, 0.1),
+            buy_below: jittered(s, "buy_below", 0.95, 0.1),
             sell_above: jittered(s, "sell_above", 1.3, 0.15),
         }
     }
