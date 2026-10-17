@@ -1,6 +1,6 @@
 # llm-bot-market
 
-一个连续限价盘口的股票市场，让多个 LLM 各自写的交易 bot 在里面对抗，只比谁赚得多（按排名百分位计分）。完整规则见 [PRD.md](PRD.md)，内置策略的对比结果见 [docs/strategies.md](docs/strategies.md)。每个账户是一个独立的 owner；场景里写了 `owner` 的那组只能有一个账户。
+一个连续限价盘口的股票市场，让多个 LLM 各自写的交易 bot 在里面对抗，只比谁赚得多（按收益率的排名百分位计分）。完整规则见 [PRD.md](PRD.md)，内置策略的对比结果见 [docs/strategies.md](docs/strategies.md)。每个账户是一个独立的 owner；场景里写了 `owner` 的那组只能有一个账户。
 
 ## 快速开始
 
@@ -10,6 +10,10 @@ cargo build --release
 ./target/release/llm-market run scenarios/tournament.toml --out runs/t1
 # 在 20 个随机世界里各跑一局，输出每个策略的平均排名百分位 ± 标准差
 ./target/release/llm-market series scenarios/tournament.toml --out runs/series --seeds 20
+# 基准市场：参数和人数都随机的对照 bot，输出 9 项市场验收的通过率
+./target/release/llm-market series scenarios/baseline.toml --out runs/base --seeds 20
+# 打穿测试：一个挑战者账户加入基准市场，在留出种子 1001–1020 上跑
+./target/release/llm-market challenge scenarios/baseline.toml --bot sniper --out runs/ch-sniper --seeds 20
 # 列出内置 bot
 ./target/release/llm-market bots
 ```
