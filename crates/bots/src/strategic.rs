@@ -920,3 +920,121 @@ impl Bot for Drift {
         acts
     }
 }
+
+// ---------------------------------------------------------------------------
+
+/// Tracker: follows the few accounts that hear news first.
+/// News reaches about 5% of accounts first, and they start buying before the price moves. The
+/// trade feed shows each trade's aggressive side (not who traded), so Tracker watches, per stock,
+/// aggressive buying over the last `window` ticks against its usual level over the 200 ticks
+/// before. When that excess is more than `trigger` times the usual volume while the price has
+/// moved less than `flat`, it buys `size` of equity and holds for `hold` ticks.
+/// With `core = 1` it runs Shark the rest of the time and keeps Shark from selling a stock it
+/// is holding on a signal.
+pub struct Tracker {
+    rules: Rules,
+    core: Option<Shark>,
+    flows: Vec<VecDeque<(f64, f64)>>,
+    mids: Vec<VecDeque<f64>>,
+    until: Vec<Tick>,
+    window: usize,
+    trigger: f64,
+    flat: f64,
+    hold: Tick,
+    size: f64,
+    leverage: f64,
+}
+
+impl Tracker {
+    pub fn new(s: &Start) -> Self {
+        let n = s.rules.stocks.len();
+        Self {
+            rules: s.rules.clone(),
+            core: (s.param("core", 1.0) > 0.0).then(|| Shark::new(s)),
+            flows: vec![VecDeque::new(); n],
+            mids: vec![VecDeque::new(); n],
+            until: vec![0; n],
+            window: s.param("window_flow", 20.0).max(1.0) as usize,
+            trigger: s.param("trigger", 2.0),
+            flat: s.param("flat", 0.01),
+            hold: s.param("hold", 100.0) as Tick,
+            size: s.param("size", 0.25),
+            leverage: s.param("leverage", 2.0),
+        }
+    }
+
+    /// Updates the per-stock history and says whether informed buying shows in it now.
+    fn signal(&mut self, s: usize, trades: &[Trade], mid: f64) -> bool {
+        let (mut signed, mut vol) = (0.0, 0.0);
+        for t in trades {
+            let q = (t.price * t.qty) as f64;
+            signed += if t.aggressor == Side::Buy { q } else { -q };
+            vol += q;
+        }
+        let w = self.window;
+        let f = &mut self.flows[s];
+        f.push_back((signed, vol));
+        if f.len() > 200 + w {
+            f.pop_front();
+        }
+        let m = &mut self.mids[s];
+        m.push_back(mid);
+        if m.len() > w + 1 {
+            m.pop_front();
+        }
+        if f.len() < 200 + w || m[0] <= 0.0 || mid <= 0.0 {
+            return false;
+        }
+        let (past, recent) = (f.iter().take(200), f.iter().skip(200));
+        let (mut base_s, mut base_v) = (0.0, 0.0);
+        for x in past {
+            base_s += x.0;
+            base_v += x.1;
+        }
+        let excess = recent.map(|x| x.0).sum::<f64>() - base_s / 200.0 * w as f64;
+        let usual = base_v / 200.0 * w as f64 + 1.0;
+        excess / usual > self.trigger && (mid / m[0]).ln().abs() < self.flat
+    }
+}
+
+impl Bot for Tracker {
+    fn on_tick(&mut self, obs: &Observation) -> Vec<Action> {
+        for (s, b) in obs.books.iter().enumerate() {
+            if self.signal(s, &obs.trades[s], mid_or_last(b) as f64) {
+                self.until[s] = obs.tick + self.hold;
+            }
+        }
+        let r = &self.rules;
+        let eq = obs.account.equity.max(0) as f64;
+        let mut acts = Vec::new();
+        for (s, b) in obs.books.iter().enumerate() {
+            let have = obs.account.shares[s];
+            if obs.tick < self.until[s] {
+                let target = (eq * self.size / mid_or_last(b).max(1) as f64) as Qty;
+                if let Some(a) = b.best_ask().filter(|_| target > have) {
+                    let q = (target - have).min(buy_room(&obs.account, r, a, self.leverage));
+                    if q > 0 {
+                        acts.push(Action::ioc(s, Side::Buy, a, q));
+                    }
+                }
+            } else if self.core.is_none() && have > 0 {
+                if let Some(bp) = b.best_bid() {
+                    acts.push(Action::ioc(s, Side::Sell, bp, obs.account.sellable[s]));
+                }
+            }
+        }
+        if let Some(core) = &mut self.core {
+            let until = &self.until;
+            acts.extend(core.on_tick(obs).into_iter().filter(|a| match a {
+                Action::Limit {
+                    stock,
+                    side: Side::Sell,
+                    ..
+                } => obs.tick >= until[*stock],
+                _ => true,
+            }));
+        }
+        acts.truncate(r.max_actions_per_tick);
+        acts
+    }
+}
