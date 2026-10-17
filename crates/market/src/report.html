@@ -38,8 +38,8 @@ th:first-child, td:first-child { text-align: left; }
 <h2>各策略平均排名百分位</h2>
 <div class="panel scroll"><table id="strategies"></table></div>
 
-<h2>个股（5 tick K 线）</h2>
-<div class="legend">灰色虚线：持有到底的参考价值（剩余局内股息 + 清算期股息）。绿/红竖线：新闻生效（股息上调/下调），浅色带：新闻从首次披露到公开。黄色底：动荡期。</div>
+<h2 id="kh">个股 K 线</h2>
+<div class="legend">灰色虚线：持有到底的参考价值（剩余局内股息 + 清算期股息）。细线：最新成交价，没有成交的时段画成浅色水平线。顶部 ▲▼：新闻生效（股息上调/下调），其左侧短条是从首次披露到公开的时段。黄色底：动荡期。</div>
 <div class="grid2" id="charts"></div>
 
 <h2>收益相关矩阵（5 tick 收益，剔除前 200 tick）</h2>
@@ -49,6 +49,7 @@ th:first-child, td:first-child { text-align: left; }
 <script>
 const D = /*DATA*/null;
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+document.getElementById('kh').textContent = `个股（${D.width} tick K 线）`;
 document.getElementById('meta').textContent =
   `种子 ${D.seed} · ${D.ticks} tick · ${D.accounts} 个账户 · ${D.trades} 笔成交 · ${D.threads} 线程 · 墙钟 ${D.wall.toFixed(2)} 秒`;
 
@@ -77,14 +78,18 @@ function draw(canvas, s) {
   const pad = (hi - lo) * 0.05 || 1; lo -= pad; hi += pad;
   const x = i => padL + (i + 0.5) * (w - padL - padR) / n;
   const xt = t => x(t / D.width - 0.5);
-  const y = p => 6 + (hi - p) / (hi - lo) * (priceH - 6);
+  const y = p => 18 + (hi - p) / (hi - lo) * (priceH - 18);
   g.fillStyle = css('--turb');
   for (const [a, b] of spans) g.fillRect(xt(a), 0, xt(b) - xt(a), priceH);
   for (const [r, p, e, d] of s.news) {
-    g.fillStyle = d > 0 ? 'rgba(27,175,122,0.10)' : 'rgba(227,73,72,0.10)';
-    g.fillRect(xt(r), 0, Math.max(1, xt(p) - xt(r)), priceH);
-    g.strokeStyle = d > 0 ? css('--up') : css('--down'); g.lineWidth = 1;
-    g.beginPath(); g.moveTo(xt(e), 0); g.lineTo(xt(e), priceH); g.stroke();
+    const col = d > 0 ? css('--up') : css('--down');
+    g.fillStyle = col; g.globalAlpha = 0.35;
+    g.fillRect(xt(r), 2, Math.max(1, xt(p) - xt(r)), 3);
+    g.globalAlpha = 1; g.beginPath();
+    const xe = xt(e);
+    if (d > 0) { g.moveTo(xe, 6); g.lineTo(xe - 4, 13); g.lineTo(xe + 4, 13); }
+    else { g.moveTo(xe, 13); g.lineTo(xe - 4, 6); g.lineTo(xe + 4, 6); }
+    g.fill();
   }
   g.strokeStyle = css('--grid'); g.fillStyle = css('--text-2'); g.font = '11px system-ui';
   for (let i = 0; i <= 4; i++) {
@@ -94,6 +99,11 @@ function draw(canvas, s) {
   }
   g.setLineDash([4, 3]); g.strokeStyle = css('--ref'); g.lineWidth = 1.5; g.beginPath();
   c.forEach((k, i) => i ? g.lineTo(x(i), y(k[5])) : g.moveTo(x(i), y(k[5]))); g.stroke(); g.setLineDash([]);
+  g.lineWidth = 1;
+  for (let i = 1; i < n; i++) {
+    g.strokeStyle = c[i][0] === null ? css('--grid') : css('--text-2');
+    g.beginPath(); g.moveTo(x(i - 1), y(c[i - 1][3])); g.lineTo(x(i), y(c[i][3])); g.stroke();
+  }
   const bw = Math.max(1, (w - padL - padR) / n * 0.7);
   c.forEach((k, i) => {
     if (k[0] === null) return;

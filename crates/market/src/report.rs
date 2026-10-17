@@ -273,12 +273,17 @@ fn write_outputs(cfg: &Config, shared: &Shared, result: &MatchResult, dir: &Path
     }
     std::fs::write(dir.join("bars.csv"), csv)?;
 
-    let mut csv = String::from("tick,stock,price,qty,aggressor\n");
+    let acct_names: Vec<String> = shared
+        .accounts
+        .iter()
+        .map(|a| a.lock().name.clone())
+        .collect();
+    let mut csv = String::from("tick,stock,price,qty,aggressor,taker,maker\n");
     for (s, m) in shared.markets.iter().enumerate() {
         for e in &m.lock().tape {
             writeln!(
                 csv,
-                "{},{},{},{},{}",
+                "{},{},{},{},{},{},{}",
                 e.tick,
                 names[s],
                 e.price,
@@ -287,7 +292,9 @@ fn write_outputs(cfg: &Config, shared: &Shared, result: &MatchResult, dir: &Path
                     "buy"
                 } else {
                     "sell"
-                }
+                },
+                acct_names[e.taker as usize],
+                acct_names[e.maker as usize]
             )?;
         }
     }
@@ -388,17 +395,25 @@ fn correlation(a: &[f64], b: &[f64]) -> f64 {
 }
 
 fn report_html(cfg: &Config, shared: &Shared, result: &MatchResult) -> Result<String> {
+    // returns for the correlation matrix use 5-tick closes; candles are wide enough for ~150 per chart
     const W: Tick = 5;
+    let cw: Tick = (cfg.ticks / 150).div_ceil(W).max(1) * W;
     let n_stocks = cfg.stocks.len();
     let mut stocks = Vec::new();
     let mut closes: Vec<Vec<f64>> = Vec::new();
     for s in 0..n_stocks {
-        let b = bars(shared, s, cfg.ticks, W);
+        let mut last = cfg.stocks[s].initial_price;
+        let mut close_series = Vec::new();
+        for bar in bars(shared, s, cfg.ticks, W) {
+            if let Some(x) = bar {
+                last = x.close;
+            }
+            close_series.push(last as f64);
+        }
         let mut last = cfg.stocks[s].initial_price;
         let mut candles = Vec::new();
-        let mut close_series = Vec::new();
-        for (i, bar) in b.iter().enumerate() {
-            let t = i as Tick * W;
+        for (i, bar) in bars(shared, s, cfg.ticks, cw).iter().enumerate() {
+            let t = i as Tick * cw;
             let reference = reference_value(shared, s, t);
             match bar {
                 Some(x) => {
@@ -409,7 +424,6 @@ fn report_html(cfg: &Config, shared: &Shared, result: &MatchResult) -> Result<St
                 }
                 None => candles.push(serde_json::json!([null, null, null, last, 0, reference])),
             }
-            close_series.push(last as f64);
         }
         closes.push(close_series);
         let news: Vec<_> = shared
@@ -459,7 +473,7 @@ fn report_html(cfg: &Config, shared: &Shared, result: &MatchResult) -> Result<St
         .map(|(t, s)| serde_json::json!([t, s]))
         .collect();
     let data = serde_json::json!({
-        "seed": result.seed, "ticks": cfg.ticks, "width": W, "stocks": stocks, "corr": corr, "combos": combos,
+        "seed": result.seed, "ticks": cfg.ticks, "width": cw, "stocks": stocks, "corr": corr, "combos": combos,
         "seasons": seasons, "by_strategy": result.by_strategy, "wall": result.wall_seconds, "threads": result.threads,
         "accounts": result.accounts.len(), "trades": result.trades,
     });
