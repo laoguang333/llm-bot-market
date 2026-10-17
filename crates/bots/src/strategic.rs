@@ -10,6 +10,7 @@
 
 use crate::common::*;
 use bot_api::*;
+use std::collections::VecDeque;
 
 /// Dividend payments still to come, in-game and terminal.
 fn payments_left(rules: &Rules, tick: Tick, terminal: f64) -> f64 {
@@ -702,5 +703,124 @@ impl Bot for Hunter {
         }
         acts.truncate(r.max_actions_per_tick);
         acts
+    }
+}
+
+// ---------------------------------------------------------------------------
+
+/// Shark: a value trader whose quotes follow the band the price has actually been trading in.
+/// - Keeps the ratio price / value over the last `window` ticks per stock, bids at its
+///   `quantile` and asks at its `1 - quantile` (at least `2 * margin` apart). In a world that
+///   trades at a steady premium (or discount) it still buys the dips and sells the rallies
+///   inside that band, where a fixed-margin value trader would sit out.
+/// - Steps one tick in front of the best bid or ask when that is still inside its own limits.
+/// - Takes the book when it is `edge` past the whole value range (private news).
+/// - Tops up the idle-fee credit before each charge.
+pub struct Shark {
+    rules: Rules,
+    know: Knowledge,
+    history: Vec<VecDeque<f64>>,
+    window: usize,
+    quantile: f64,
+    margin: f64,
+    edge: f64,
+    leverage: f64,
+    order_frac: f64,
+}
+
+impl Shark {
+    pub fn new(s: &Start) -> Self {
+        Self {
+            rules: s.rules.clone(),
+            know: Knowledge::default(),
+            history: vec![VecDeque::new(); s.rules.stocks.len()],
+            window: s.param("window", 600.0).max(2.0) as usize,
+            quantile: s.param("quantile", 0.35),
+            margin: s.param("margin", 0.01),
+            edge: s.param("edge", 0.02),
+            leverage: s.param("leverage", 2.0),
+            order_frac: s.param("order_frac", 0.04),
+        }
+    }
+}
+
+impl Bot for Shark {
+    fn on_tick(&mut self, obs: &Observation) -> Vec<Action> {
+        self.know.update(obs);
+        let r = &self.rules;
+        let pending: Vec<_> = self.know.pending().collect();
+        let low: Vec<_> = self.know.pending_with(Estimate::Low).collect();
+        let high: Vec<_> = self.know.pending_with(Estimate::High).collect();
+        let (t_lo, t_mid, t_hi) = (
+            self.know.terminal(r, Estimate::Low),
+            self.know.terminal(r, Estimate::Mid),
+            self.know.terminal(r, Estimate::High),
+        );
+        let n = obs.books.len();
+        let t = r.tick_size;
+        let eq = obs.account.equity.max(0) as f64;
+        let mut want = vec![Want::default(); n];
+        let mut values = vec![0.0; n];
+        for (s, b) in obs.books.iter().enumerate() {
+            let v = value(r, obs, s, &pending, t_mid);
+            values[s] = v;
+            let price = b.mid().unwrap_or(b.mark) as f64;
+            let have = obs.account.shares[s];
+            let lot = ((eq * self.order_frac / price.max(1.0)) as Qty).max(1);
+
+            let h = &mut self.history[s];
+            h.push_back(price / v.max(1.0));
+            if h.len() > self.window {
+                h.pop_front();
+            }
+            let (lo, hi) = if h.len() * 2 >= self.window {
+                let mut xs: Vec<f64> = h.iter().copied().collect();
+                xs.sort_by(f64::total_cmp);
+                let at = |q: f64| xs[((xs.len() - 1) as f64 * q) as usize];
+                let lo = at(self.quantile);
+                (lo, at(1.0 - self.quantile).max(lo + 2.0 * self.margin))
+            } else {
+                (1.0 - self.margin, 1.0 + self.margin)
+            };
+            let mut bid = round_tick(r, v * lo);
+            let mut ask = round_tick(r, v * hi);
+            if let Some(bb) = b.best_bid() {
+                bid = bid.min(bb + t);
+            }
+            if let Some(ba) = b.best_ask() {
+                ask = ask.max(ba - t);
+            }
+            if bid >= ask {
+                bid = ask - t;
+            }
+            let qb = lot.min(buy_room(&obs.account, r, bid, self.leverage) / n as Qty);
+            want[s].bid = (qb > 0).then_some((bid, qb));
+            want[s].ask = (have > 0).then_some((ask, lot.min(have)));
+
+            let v_lo = value(r, obs, s, &low, t_lo);
+            let v_hi = value(r, obs, s, &high, t_hi);
+            if let Some(a) = b
+                .best_ask()
+                .filter(|&a| (a as f64) < v_lo * (1.0 - self.edge))
+            {
+                let q = (lot * 2).min(buy_room(&obs.account, r, a, self.leverage));
+                want[s].bid = None;
+                want[s].take = Some((Side::Buy, a, q));
+            } else if let Some(bp) = b
+                .best_bid()
+                .filter(|&p| (p as f64) > v_hi * (1.0 + self.edge) && have > 0)
+            {
+                want[s].ask = None;
+                want[s].take = Some((Side::Sell, bp, (lot * 2).min(obs.account.sellable[s])));
+            }
+        }
+        if let Some((s, side, p, q)) = credit_topup(obs, r, &values, 0.012) {
+            match side {
+                Side::Buy => want[s].ask = None,
+                Side::Sell => want[s].bid = None,
+            }
+            want[s].take = Some((side, p, q));
+        }
+        requote(obs, r, &want, 0.002)
     }
 }

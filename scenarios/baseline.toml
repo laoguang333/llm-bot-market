@@ -1,4 +1,5 @@
-# Baseline market: 10 stocks in 3 sectors, built-in reference bots. Each world draws
+# Baseline market v2: 10 stocks in 3 sectors, built-in reference bots, now including hunter
+# (v1, without hunter, is baseline-v1.toml). Each world draws
 # how many accounts of each kind there are, and every account draws its own parameters.
 # Money in integer cents. Dividends are paid every 50 ticks; at 1% of price per period.
 ticks = 3000
@@ -220,5 +221,12 @@ shares_each = 20
 bot = "hold"
 count = 3
 count_max = 8
+cash = 2_000_000
+shares_each = 20
+
+[[bots]]
+bot = "hunter"
+count = 2
+count_max = 5
 cash = 2_000_000
 shares_each = 20
