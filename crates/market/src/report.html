@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Market Run Report</title>
+<style>
+:root {
+  --surface: #fcfcfb; --panel: #ffffff; --text: #0b0b0b; --text-2: #52514e; --grid: #e6e5e1;
+  --up: #1baf7a; --down: #e34948; --ref: #8a8984; --accent: #2a78d6; --turb: rgba(237,161,0,0.10);
+}
+@media (prefers-color-scheme: dark) {
+  :root { --surface: #1a1a19; --panel: #222220; --text: #f0efec; --text-2: #c3c2b7; --grid: #3a3a37;
+    --up: #199e70; --down: #e66767; --ref: #9a9990; --accent: #3987e5; --turb: rgba(201,133,0,0.16); }
+}
+body { margin: 0; background: var(--surface); color: var(--text); font: 14px/1.5 system-ui, sans-serif; }
+main { max-width: 1200px; margin: 0 auto; padding: 16px; }
+h1 { font-size: 20px; margin: 8px 0 4px; }
+h2 { font-size: 16px; margin: 24px 0 8px; }
+.meta { color: var(--text-2); font-size: 13px; }
+.panel { background: var(--panel); border: 1px solid var(--grid); border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+.stock-title { display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 4px; }
+.stock-title span { color: var(--text-2); font-weight: 400; font-size: 12px; }
+canvas { width: 100%; display: block; }
+table { border-collapse: collapse; font-size: 13px; }
+td, th { padding: 4px 8px; text-align: right; border-bottom: 1px solid var(--grid); }
+th:first-child, td:first-child { text-align: left; }
+.legend { color: var(--text-2); font-size: 12px; margin: 4px 0 12px; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px; }
+.scroll { overflow-x: auto; }
+</style>
+</head>
+<body>
+<main>
+<h1>行情报告</h1>
+<div class="meta" id="meta"></div>
+
+<h2>各策略平均排名百分位</h2>
+<div class="panel scroll"><table id="strategies"></table></div>
+
+<h2>个股（5 tick K 线）</h2>
+<div class="legend">灰色虚线：持有到底的参考价值（剩余局内股息 + 清算期股息）。绿/红竖线：新闻生效（股息上调/下调），浅色带：新闻从首次披露到公开。黄色底：动荡期。</div>
+<div class="grid2" id="charts"></div>
+
+<h2>收益相关矩阵（5 tick 收益，剔除前 200 tick）</h2>
+<div class="panel scroll"><table id="corr"></table></div>
+<div class="legend" id="combos"></div>
+</main>
+<script>
+const D = /*DATA*/null;
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+document.getElementById('meta').textContent =
+  `种子 ${D.seed} · ${D.ticks} tick · ${D.accounts} 个账户 · ${D.trades} 笔成交 · ${D.threads} 线程 · 墙钟 ${D.wall.toFixed(2)} 秒`;
+
+const st = Object.entries(D.by_strategy).sort((a, b) => b[1].mean_percentile - a[1].mean_percentile);
+document.getElementById('strategies').innerHTML = '<tr><th>策略</th><th>账户数</th><th>平均百分位</th><th>平均权益</th></tr>' +
+  st.map(([k, v]) => `<tr><td>${k}</td><td>${v.accounts}</td><td>${v.mean_percentile.toFixed(1)}</td><td>${(v.mean_equity / 100).toLocaleString(undefined, {maximumFractionDigits: 0})}</td></tr>`).join('');
+
+function seasonSpans() {
+  const out = []; let start = null;
+  for (const [t, s] of D.seasons) { if (s) start = t; else if (start !== null) { out.push([start, t]); start = null; } }
+  if (start !== null) out.push([start, D.ticks]);
+  return out;
+}
+const spans = seasonSpans();
+
+function draw(canvas, s) {
+  const dpr = window.devicePixelRatio || 1, w = canvas.clientWidth, h = 260;
+  canvas.width = w * dpr; canvas.height = h * dpr; canvas.style.height = h + 'px';
+  const g = canvas.getContext('2d'); g.scale(dpr, dpr);
+  const c = s.candles, n = c.length, padL = 44, padR = 6, priceH = 190, volTop = 205, volH = 50;
+  let lo = Infinity, hi = -Infinity, vmax = 1;
+  for (const k of c) {
+    if (k[1] !== null) { lo = Math.min(lo, k[2]); hi = Math.max(hi, k[1]); }
+    lo = Math.min(lo, k[3], k[5]); hi = Math.max(hi, k[3], k[5]); vmax = Math.max(vmax, k[4]);
+  }
+  const pad = (hi - lo) * 0.05 || 1; lo -= pad; hi += pad;
+  const x = i => padL + (i + 0.5) * (w - padL - padR) / n;
+  const xt = t => x(t / D.width - 0.5);
+  const y = p => 6 + (hi - p) / (hi - lo) * (priceH - 6);
+  g.fillStyle = css('--turb');
+  for (const [a, b] of spans) g.fillRect(xt(a), 0, xt(b) - xt(a), priceH);
+  for (const [r, p, e, d] of s.news) {
+    g.fillStyle = d > 0 ? 'rgba(27,175,122,0.10)' : 'rgba(227,73,72,0.10)';
+    g.fillRect(xt(r), 0, Math.max(1, xt(p) - xt(r)), priceH);
+    g.strokeStyle = d > 0 ? css('--up') : css('--down'); g.lineWidth = 1;
+    g.beginPath(); g.moveTo(xt(e), 0); g.lineTo(xt(e), priceH); g.stroke();
+  }
+  g.strokeStyle = css('--grid'); g.fillStyle = css('--text-2'); g.font = '11px system-ui';
+  for (let i = 0; i <= 4; i++) {
+    const p = lo + (hi - lo) * i / 4, yy = y(p);
+    g.beginPath(); g.moveTo(padL, yy); g.lineTo(w - padR, yy); g.stroke();
+    g.fillText((p / 100).toFixed(0), 2, yy + 4);
+  }
+  g.setLineDash([4, 3]); g.strokeStyle = css('--ref'); g.lineWidth = 1.5; g.beginPath();
+  c.forEach((k, i) => i ? g.lineTo(x(i), y(k[5])) : g.moveTo(x(i), y(k[5]))); g.stroke(); g.setLineDash([]);
+  const bw = Math.max(1, (w - padL - padR) / n * 0.7);
+  c.forEach((k, i) => {
+    if (k[0] === null) return;
+    const up = k[3] >= k[0]; g.strokeStyle = g.fillStyle = up ? css('--up') : css('--down');
+    g.beginPath(); g.moveTo(x(i), y(k[1])); g.lineTo(x(i), y(k[2])); g.stroke();
+    const top = y(Math.max(k[0], k[3])), bot = y(Math.min(k[0], k[3]));
+    g.fillRect(x(i) - bw / 2, top, bw, Math.max(1, bot - top));
+    g.fillStyle = css('--accent');
+    const vh = k[4] / vmax * volH; g.fillRect(x(i) - bw / 2, volTop + volH - vh, bw, vh);
+  });
+}
+
+const charts = document.getElementById('charts');
+const canvases = D.stocks.map(s => {
+  const div = document.createElement('div'); div.className = 'panel';
+  const last = s.candles[s.candles.length - 1];
+  div.innerHTML = `<div class="stock-title">${s.name}<span>${s.sector} · 收盘 ${(last[3] / 100).toFixed(2)} · 参考 ${(last[5] / 100).toFixed(2)}</span></div>`;
+  const cv = document.createElement('canvas'); div.appendChild(cv); charts.appendChild(div); return [cv, s];
+});
+const redraw = () => canvases.forEach(([cv, s]) => draw(cv, s));
+redraw(); window.addEventListener('resize', redraw);
+
+const names = D.stocks.map(s => s.name);
+document.getElementById('corr').innerHTML = '<tr><th></th>' + names.map(n => `<th>${n}</th>`).join('') + '</tr>' +
+  D.corr.map((row, i) => `<tr><td>${names[i]}</td>` + row.map(v => {
+    const a = Math.min(1, Math.abs(v)) * 0.55, col = v >= 0 ? `rgba(42,120,214,${a})` : `rgba(227,73,72,${a})`;
+    return `<td style="background:${col}">${v.toFixed(2)}</td>`;
+  }).join('') + '</tr>').join('');
+document.getElementById('combos').textContent = '组合股息规则：' + D.combos.map(([a, b, bonus]) => `${a}+${b} ${bonus > 0 ? '+' : ''}${bonus}`).join('，');
+</script>
+</body>
+</html>

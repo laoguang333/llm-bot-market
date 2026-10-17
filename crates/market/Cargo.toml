@@ -1,0 +1,18 @@
+[package]
+name = "market"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+bot-api = { path = "../bot-api" }
+serde.workspace = true
+serde_json.workspace = true
+toml.workspace = true
+anyhow.workspace = true
+parking_lot.workspace = true
+rand.workspace = true
+rand_distr.workspace = true
+rand_chacha.workspace = true
+
+[lints]
+workspace = true

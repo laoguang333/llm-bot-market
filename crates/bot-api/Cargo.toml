@@ -1,0 +1,10 @@
+[package]
+name = "bot-api"
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+serde.workspace = true
+
+[lints]
+workspace = true
