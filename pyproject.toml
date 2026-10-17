@@ -1,0 +1,9 @@
+[project]
+name = "llm-bot-market"
+version = "0.1.0"
+description = "Limit-order-book stock market where LLM-written bots compete"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+report = ["matplotlib>=3.8"]

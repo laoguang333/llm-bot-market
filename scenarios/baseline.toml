@@ -1,0 +1,95 @@
+# Baseline market: six reference strategies, two stocks, 2000 ticks.
+# Money is in integer cents. Initial price 100.00, dividend 1.00 per period
+# (every 50 ticks), i.e. a 1% yield per period at the initial price.
+seed = 7
+ticks = 2000
+
+[market]
+book_depth = 10      # price levels per side shown to bots
+tape_limit = 200     # max public trades per stock per observation
+
+[fees]
+trade_fee_bps = 5          # charged to both sides of every trade, paid to the treasury
+carry_period = 50          # ticks between cash carry charges
+carry_rate = 0.002         # charge per period on average cash held
+credit_ratio = 0.01        # each 1.00 of traded notional offsets 0.01 of carry fee
+credit_side = "both"       # which side of a trade earns credit: both | maker | taker
+
+[rules]
+stp_scope = "owner"        # self-trade prevention across all bots of one owner (or "account")
+max_actions_per_tick = 20
+max_open_orders = 40
+
+[world]
+dividend_period = 50
+
+[world.news]
+events_per_1000_ticks = 4  # per stock
+change_sd = 0.15           # relative dividend change per event
+lead_ticks = 120           # first reveal -> dividend changes
+# [offset from first reveal, cumulative fraction of accounts informed]
+stages = [[0, 0.05], [30, 0.25], [60, 1.0]]
+
+[sandbox]
+step_timeout_ms = 250      # per-tick answer budget; late bots skip the tick
+start_timeout_ms = 10000
+max_late_ticks = 100       # disable a bot that stays unresponsive this long
+memory_mb = 1024
+cpu_seconds = 600
+
+[scoring]
+final_mark = "vwap"        # vwap of the last vwap_ticks, or "fundamental"
+vwap_ticks = 200
+discount_rate = 0.01       # per dividend period, for the fundamental reference
+
+[[stocks]]
+name = "ALPHA"
+dividend = 100
+initial_price = 10000
+
+[[stocks]]
+name = "BETA"
+dividend = 100
+initial_price = 10000
+
+[[bots]]
+file = "../bots/maker.py"
+owner = "baseline-maker"
+count = 3
+cash = 2_000_000
+shares = { ALPHA = 200, BETA = 200 }
+
+[[bots]]
+file = "../bots/value.py"
+owner = "baseline-value"
+count = 4
+cash = 2_000_000
+shares = { ALPHA = 200, BETA = 200 }
+
+[[bots]]
+file = "../bots/momentum.py"
+owner = "baseline-momentum"
+count = 3
+cash = 2_000_000
+shares = { ALPHA = 200, BETA = 200 }
+
+[[bots]]
+file = "../bots/news.py"
+owner = "baseline-news"
+count = 3
+cash = 2_000_000
+shares = { ALPHA = 200, BETA = 200 }
+
+[[bots]]
+file = "../bots/noise.py"
+owner = "baseline-noise"
+count = 6
+cash = 2_000_000
+shares = { ALPHA = 200, BETA = 200 }
+
+[[bots]]
+file = "../bots/hold.py"
+owner = "baseline-hold"
+count = 1
+cash = 2_000_000
+shares = { ALPHA = 200, BETA = 200 }
