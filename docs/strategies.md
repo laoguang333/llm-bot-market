@@ -28,6 +28,23 @@
 ./target/release/llm-market challenge scenarios/baseline.toml --bot combo --out runs/ch --seeds 20
 ```
 
+## 基准市场 v4（2026-10-17）
+
+`scenarios/baseline.toml` 现在是 v4：v3 的人群再加 2–5 个 tracker，触发门槛、持有时间和仓位按账户随机放缩。v3 保留为 `scenarios/baseline-v3.toml`。
+
+市场验收：种子 1–20 上 80% 达标。基准 bot 自己的排名：tracker 84.8、value 80.0、hunter 78.6、shark 74.6、momentum 63.1、hold 48.2、news 44.2、noise 30.8、grid 13.6。
+
+现有 bot 以一个账户挑战 v4（留出种子 1001–1020），没有一个打穿：
+
+| 挑战者 | 平均百分位 | 进前 25% |
+|---|---|---|
+| tracker | 88.1 | 90% |
+| shark | 85.9 | 80% |
+| sniper | 74.6 | 45% |
+| value | 73.5 | 60% |
+| combo | 71.1 | 45% |
+| hunter | 64.3 | 45% |
+
 ## 基准市场 v3 和惯性 bot drift（2026-10-17）
 
 `scenarios/baseline.toml` 现在是 v3：v2 的人群再加 2–5 个 shark。shark 的窗口、分位和边际改成按账户随机放缩。v2 保留为 `scenarios/baseline-v2.toml`。

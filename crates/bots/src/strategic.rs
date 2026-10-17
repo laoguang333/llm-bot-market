@@ -930,7 +930,7 @@ impl Bot for Drift {
 /// before. When that excess is more than `trigger` times the usual volume while the price has
 /// moved less than `flat`, it buys `size` of equity and holds for `hold` ticks.
 /// With `core = 1` it runs Shark the rest of the time and keeps Shark from selling a stock it
-/// is holding on a signal.
+/// is holding on a signal. Trigger, hold and size are scaled a little per account (unless set).
 pub struct Tracker {
     rules: Rules,
     core: Option<Shark>,
@@ -955,10 +955,10 @@ impl Tracker {
             mids: vec![VecDeque::new(); n],
             until: vec![0; n],
             window: s.param("window_flow", 20.0).max(1.0) as usize,
-            trigger: s.param("trigger", 2.0),
+            trigger: jittered(s, "trigger", 2.0, 0.2),
             flat: s.param("flat", 0.01),
-            hold: s.param("hold", 100.0) as Tick,
-            size: s.param("size", 0.25),
+            hold: jittered(s, "hold", 100.0, 0.3) as Tick,
+            size: jittered(s, "size", 0.25, 0.3),
             leverage: s.param("leverage", 2.0),
         }
     }
