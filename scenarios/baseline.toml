@@ -1,5 +1,5 @@
-# Baseline market v4: 10 stocks in 3 sectors, built-in reference bots including hunter, shark
-# and tracker (older versions: baseline-v1/v2/v3.toml). Each world draws
+# Baseline market v5: 10 stocks in 3 sectors, built-in reference bots including hunter, shark,
+# tracker and coral (older versions: baseline-v1/v2/v3/v4.toml). Each world draws
 # how many accounts of each kind there are, and every account draws its own parameters.
 # Money in integer cents. Dividends are paid every 50 ticks; at 1% of price per period.
 ticks = 3000
@@ -32,9 +32,11 @@ max_actions_per_tick = 20
 max_open_orders = 40
 
 [schedule]
-threads = 0
+threads = 4
 max_tick_skew = 16
 skip_decision_lag = 2
+# Normal strategies keep every decision. Only sustained calls over 2 ms can be skipped.
+decision_budget_us = 2000
 check_interval = 500
 
 [world]
@@ -244,3 +246,12 @@ count = 2
 count_max = 5
 cash = 2_000_000
 shares_each = 20
+
+[[bots]]
+bot = "coral"
+count = 2
+count_max = 5
+cash = 2_000_000
+shares_each = 20
+# Diversify the crowd; the standalone challenger's default parameters stay fixed.
+params = { jitter = 1.0 }

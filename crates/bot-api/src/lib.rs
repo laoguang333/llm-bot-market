@@ -173,6 +173,9 @@ pub struct Rules {
     pub season_turbulent_size_mult: f64,
     pub max_tick_skew: Tick,
     pub skip_decision_lag: Tick,
+    /// A lagging bot is skipped only when six of its last eight calls exceed this
+    /// many microseconds. 0 selects the legacy lag-only policy. Not a hard timeout.
+    pub decision_budget_us: u64,
     /// Liquidation period length in ticks after trading ends.
     pub terminal_ticks: Tick,
     /// The number of dividend payments counted in the terminal value is drawn uniformly from

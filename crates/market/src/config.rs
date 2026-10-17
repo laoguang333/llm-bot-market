@@ -116,6 +116,9 @@ pub struct ScheduleCfg {
     pub threads: usize,
     pub max_tick_skew: Tick,
     pub skip_decision_lag: Tick,
+    /// Skip lagging bots only if at least six of their last eight decisions exceeded
+    /// this wall-time allowance. 0 restores the original lag-only policy.
+    pub decision_budget_us: u64,
     /// Pause and audit conservation every this many ticks of the slowest account (0 = only at the end).
     pub check_interval: Tick,
     pub mailbox_capacity: usize,
@@ -126,6 +129,7 @@ impl Default for ScheduleCfg {
             threads: 0,
             max_tick_skew: 16,
             skip_decision_lag: 2,
+            decision_budget_us: 2000,
             check_interval: 500,
             mailbox_capacity: 100_000,
         }
@@ -453,6 +457,7 @@ impl Config {
             season_turbulent_size_mult: self.world.seasons.turbulent_size_mult,
             max_tick_skew: self.schedule.max_tick_skew,
             skip_decision_lag: self.schedule.skip_decision_lag,
+            decision_budget_us: self.schedule.decision_budget_us,
             terminal_ticks,
             terminal_payments_min: self.terminal_payments_range().0,
             terminal_payments_max: self.terminal_payments_range().1,

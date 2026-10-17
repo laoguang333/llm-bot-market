@@ -1,0 +1,562 @@
+{
+  "date": "2026-10-18",
+  "scenario": "scenarios/baseline.toml",
+  "schedule": {
+    "threads": 4,
+    "decision_budget_us": 2000,
+    "skip_decision_lag": 2,
+    "max_tick_skew": 16,
+    "slow_calls_required": 6,
+    "decision_window": 8
+  },
+  "bot": "coral",
+  "parameters": {
+    "window": 600,
+    "quantile": 0.35,
+    "margin": 0.01,
+    "edge": 0.02,
+    "leverage": 2,
+    "order_frac": 0.04,
+    "combo": 0.5,
+    "cap": 0.35,
+    "tolerance": 0
+  },
+  "training_seeds": [
+    1,
+    20
+  ],
+  "frozen_before_holdouts": true,
+  "acceptance": {
+    "mean_percentile": 90,
+    "top25_share": 0.8
+  },
+  "manifest": {
+    "Cargo.toml": "926b56d255e5d00bccccfb964cb94b2aa2877bec98efab2ded635d4c1ab7f5ff",
+    "Cargo.lock": "af4b085c4c3f1623cbb066390627548fb92a64d9968c61d2e8b5e51ca28cf54d",
+    "scenarios\\baseline.toml": "5083cd48a541f6c79e2a9bcfa78776377976aa0c43540aa2c1c5c8e2ab4b6134",
+    "crates\\bot-api\\src\\lib.rs": "42596d2dade57bf52b34e7dacc45f41b77b3578a1e29935b2df0146c3777073c",
+    "crates\\bots\\src\\baseline.rs": "56fc23273b39f282219e2c9514b91df5901d5bcb739aed509799d6842ddaad43",
+    "crates\\bots\\src\\common.rs": "393445421b81f620ec11912590495ffa069397f3348276028bd3da1e6cd1e381",
+    "crates\\bots\\src\\coral.rs": "526a5e6f16bc3bc8cdb2968a0e64dee7b8d88dc6ebe4499af472822f0ca4d653",
+    "crates\\bots\\src\\lib.rs": "7925ebe7cb5b823e9010db7abef6add70f49ce30b369776ed41ece4e882961c7",
+    "crates\\bots\\src\\strategic.rs": "10eed5bc501a0679ed28f5018fdac3ed879a7fe37b36eb0fb9a236373e8bba3e",
+    "crates\\cli\\src\\main.rs": "204f7a4c457f714b574c71daa97320d35dec403abfd3f9944a0328dfd8e8cb35",
+    "crates\\cli\\tests\\coral.rs": "5cb51baf219c20838e02dd9a2d1ccbc6302e59e0f03424268b1bb4cb4e41a2e6",
+    "crates\\market\\src\\account.rs": "9514704a4c5f8810dd739d498bd68ad604aa377982c87a00a3aed615a5eb14b9",
+    "crates\\market\\src\\book.rs": "0715638e00cfc8d3018a164b564b2b877d66bc3b8e6bbaded73d1dc457769ff7",
+    "crates\\market\\src\\config.rs": "4df1b2cf5bd5c611eaf020e7c3ba3f631aaa354fac40563e76132fcbb87a7487",
+    "crates\\market\\src\\engine.rs": "f7b7372822c0653f869189d3a474caa6acc690d58cdf8185a0682eb1d8780855",
+    "crates\\market\\src\\lib.rs": "07e43130a0cee3ca4f85842b2ed7ea2a7d3080b0d885f33bda5fd808c72db5f8",
+    "crates\\market\\src\\pace.rs": "217daf1c524224a1180c262ade480019a96086c99463e699f50b31eaf66f7567",
+    "crates\\market\\src\\quality.rs": "64d8dbaff1d952b52ea6a63e89f73460f35be391fb139b4222deedda8c460230",
+    "crates\\market\\src\\report.rs": "b048510f81f21410159bca9217a1cdb04bb0f3992e38b1d13bcc709a0f870b44",
+    "crates\\market\\src\\world.rs": "7c053b3e8b45a7860098900128d9957d98863887bacf0ddc6984cdabf055cd17",
+    "crates\\market\\tests\\engine.rs": "877f5d60a4753445a7b0763dd283ad2e535dfd4cb6f60e747aaa904ba7b8aa41",
+    "crates\\bot-api\\Cargo.toml": "0379b14b07bcec3d49406d7ed8bc4476f1ab4c65ca228322dea686c59989ca1a",
+    "crates\\bots\\Cargo.toml": "e10e5cf4569960d45d5597705addbd1e39e21c16fc363d0034310feb0a7efe99",
+    "crates\\cli\\Cargo.toml": "61e88f854ceac38b67dd54b4d308c31468de4d32e5121a5a84ed6d4538f74e56",
+    "crates\\market\\Cargo.toml": "685d8e7f22b25ea326a51a2358067318ef921a0a109b07b8b190954c77c80896",
+    "binary_sha256": "d3f1289e838d4c20d4cd79bd6f53daba478ceeddc36dd600c85dfa686425a8f7"
+  },
+  "results": [
+    {
+      "run": "coral-final-train",
+      "challenge": {
+        "bot": "coral",
+        "mean": 91.45823729083119,
+        "pass": true,
+        "percentiles": [
+          100.0,
+          74.07407407407408,
+          96.07843137254902,
+          97.72727272727273,
+          95.74468085106383,
+          96.72131147540983,
+          81.25,
+          81.13207547169812,
+          100.0,
+          93.61702127659575,
+          98.03921568627452,
+          80.3921568627451,
+          89.23076923076923,
+          69.0909090909091,
+          100.0,
+          100.0,
+          87.5,
+          97.82608695652173,
+          100.0,
+          90.74074074074075
+        ],
+        "sd": 9.506215844398858,
+        "seeds": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "top25_share": 0.9
+      },
+      "diagnostics": {
+        "name": "coral-final-train",
+        "mean": 91.458,
+        "sd": 9.506,
+        "top25": 0.9,
+        "pass": true,
+        "percentiles": [
+          100.0,
+          74.1,
+          96.1,
+          97.7,
+          95.7,
+          96.7,
+          81.2,
+          81.1,
+          100.0,
+          93.6,
+          98.0,
+          80.4,
+          89.2,
+          69.1,
+          100.0,
+          100.0,
+          87.5,
+          97.8,
+          100.0,
+          90.7
+        ],
+        "diagnostics": {
+          "skipped": 0,
+          "decisions": 3000,
+          "rejects": 1.85,
+          "trade_fees": 204640.35,
+          "idle_fees": 64667.6,
+          "interest": 326650.55,
+          "dividends": 5293305.2,
+          "combo_dividends": 529814,
+          "liquidations": 0,
+          "bot_errors": 0,
+          "decision_us": 9.29
+        },
+        "all_accounts_skipped": 0,
+        "all_accounts_disabled": 0,
+        "wall_seconds": 23.53
+      },
+      "quality_pass_share": 0.85,
+      "quality_checks": [
+        {
+          "at_least": true,
+          "median": 0.9866666666666667,
+          "name": "trade_coverage",
+          "pass_share": 1.0,
+          "threshold": 0.9
+        },
+        {
+          "at_least": false,
+          "median": 35.5,
+          "name": "max_gap_ticks",
+          "pass_share": 1.0,
+          "threshold": 200.0
+        },
+        {
+          "at_least": true,
+          "median": 0.9966666666666667,
+          "name": "two_sided_share",
+          "pass_share": 1.0,
+          "threshold": 0.95
+        },
+        {
+          "at_least": false,
+          "median": 0.0025824331991494247,
+          "name": "median_spread",
+          "pass_share": 1.0,
+          "threshold": 0.02
+        },
+        {
+          "at_least": true,
+          "median": 11.81092513747211,
+          "name": "depth_2pct_in_trades",
+          "pass_share": 1.0,
+          "threshold": 3.0
+        },
+        {
+          "at_least": false,
+          "median": 0.14359687755835576,
+          "name": "median_abs_log_dev",
+          "pass_share": 1.0,
+          "threshold": 0.25
+        },
+        {
+          "at_least": false,
+          "median": 0.0,
+          "name": "share_beyond_2x",
+          "pass_share": 1.0,
+          "threshold": 0.05
+        },
+        {
+          "at_least": true,
+          "median": 4.0,
+          "name": "value_crossings",
+          "pass_share": 0.85,
+          "threshold": 2.0
+        },
+        {
+          "at_least": true,
+          "median": 0.3129473958832729,
+          "name": "abs_return_autocorr",
+          "pass_share": 1.0,
+          "threshold": 0.05
+        }
+      ],
+      "directory": "runs/research-v4/coral-final-train"
+    },
+    {
+      "run": "coral-final-holdout",
+      "challenge": {
+        "bot": "coral",
+        "mean": 94.3037125933349,
+        "pass": true,
+        "percentiles": [
+          75.55555555555556,
+          98.11320754716981,
+          100.0,
+          100.0,
+          100.0,
+          95.0,
+          100.0,
+          94.44444444444444,
+          91.83673469387755,
+          75.51020408163265,
+          95.74468085106383,
+          100.0,
+          100.0,
+          94.0,
+          100.0,
+          100.0,
+          94.23076923076923,
+          82.3529411764706,
+          89.28571428571429,
+          100.0
+        ],
+        "sd": 7.907347069588422,
+        "seeds": [
+          1001,
+          1002,
+          1003,
+          1004,
+          1005,
+          1006,
+          1007,
+          1008,
+          1009,
+          1010,
+          1011,
+          1012,
+          1013,
+          1014,
+          1015,
+          1016,
+          1017,
+          1018,
+          1019,
+          1020
+        ],
+        "top25_share": 1.0
+      },
+      "diagnostics": {
+        "name": "coral-final-holdout",
+        "mean": 94.304,
+        "sd": 7.907,
+        "top25": 1.0,
+        "pass": true,
+        "percentiles": [
+          75.6,
+          98.1,
+          100.0,
+          100.0,
+          100.0,
+          95.0,
+          100.0,
+          94.4,
+          91.8,
+          75.5,
+          95.7,
+          100.0,
+          100.0,
+          94.0,
+          100.0,
+          100.0,
+          94.2,
+          82.4,
+          89.3,
+          100.0
+        ],
+        "diagnostics": {
+          "skipped": 0,
+          "decisions": 3000,
+          "rejects": 1.35,
+          "trade_fees": 274031.85,
+          "idle_fees": 47175.35,
+          "interest": 376556.6,
+          "dividends": 5968895.7,
+          "combo_dividends": 571659.75,
+          "liquidations": 0,
+          "bot_errors": 0,
+          "decision_us": 9.46
+        },
+        "all_accounts_skipped": 0,
+        "all_accounts_disabled": 0,
+        "wall_seconds": 23.2
+      },
+      "quality_pass_share": 0.7,
+      "quality_checks": [
+        {
+          "at_least": true,
+          "median": 0.9933333333333333,
+          "name": "trade_coverage",
+          "pass_share": 1.0,
+          "threshold": 0.9
+        },
+        {
+          "at_least": false,
+          "median": 33.5,
+          "name": "max_gap_ticks",
+          "pass_share": 1.0,
+          "threshold": 200.0
+        },
+        {
+          "at_least": true,
+          "median": 0.9966666666666667,
+          "name": "two_sided_share",
+          "pass_share": 1.0,
+          "threshold": 0.95
+        },
+        {
+          "at_least": false,
+          "median": 0.002588380913430656,
+          "name": "median_spread",
+          "pass_share": 1.0,
+          "threshold": 0.02
+        },
+        {
+          "at_least": true,
+          "median": 14.183016063794774,
+          "name": "depth_2pct_in_trades",
+          "pass_share": 1.0,
+          "threshold": 3.0
+        },
+        {
+          "at_least": false,
+          "median": 0.11171727637238385,
+          "name": "median_abs_log_dev",
+          "pass_share": 1.0,
+          "threshold": 0.25
+        },
+        {
+          "at_least": false,
+          "median": 0.0,
+          "name": "share_beyond_2x",
+          "pass_share": 1.0,
+          "threshold": 0.05
+        },
+        {
+          "at_least": true,
+          "median": 3.0,
+          "name": "value_crossings",
+          "pass_share": 0.7,
+          "threshold": 2.0
+        },
+        {
+          "at_least": true,
+          "median": 0.31132775400872337,
+          "name": "abs_return_autocorr",
+          "pass_share": 1.0,
+          "threshold": 0.05
+        }
+      ],
+      "directory": "runs/research-v4/coral-final-holdout"
+    },
+    {
+      "run": "coral-final-holdout2",
+      "challenge": {
+        "bot": "coral",
+        "mean": 90.53601393464045,
+        "pass": true,
+        "percentiles": [
+          100.0,
+          77.58620689655173,
+          95.83333333333333,
+          100.0,
+          29.82456140350877,
+          92.98245614035088,
+          100.0,
+          93.22033898305085,
+          94.0,
+          96.42857142857143,
+          86.27450980392157,
+          96.22641509433963,
+          89.1304347826087,
+          94.91525423728814,
+          89.28571428571429,
+          100.0,
+          91.93548387096774,
+          98.4375,
+          86.36363636363636,
+          98.27586206896552
+        ],
+        "sd": 15.414933836614791,
+        "seeds": [
+          1021,
+          1022,
+          1023,
+          1024,
+          1025,
+          1026,
+          1027,
+          1028,
+          1029,
+          1030,
+          1031,
+          1032,
+          1033,
+          1034,
+          1035,
+          1036,
+          1037,
+          1038,
+          1039,
+          1040
+        ],
+        "top25_share": 0.95
+      },
+      "diagnostics": {
+        "name": "coral-final-holdout2",
+        "mean": 90.536,
+        "sd": 15.415,
+        "top25": 0.95,
+        "pass": true,
+        "percentiles": [
+          100.0,
+          77.6,
+          95.8,
+          100.0,
+          29.8,
+          93.0,
+          100.0,
+          93.2,
+          94.0,
+          96.4,
+          86.3,
+          96.2,
+          89.1,
+          94.9,
+          89.3,
+          100.0,
+          91.9,
+          98.4,
+          86.4,
+          98.3
+        ],
+        "diagnostics": {
+          "skipped": 0,
+          "decisions": 3000,
+          "rejects": 3.05,
+          "trade_fees": 234869.7,
+          "idle_fees": 46831.6,
+          "interest": 346230.2,
+          "dividends": 5828425.75,
+          "combo_dividends": 574892.5,
+          "liquidations": 0,
+          "bot_errors": 0,
+          "decision_us": 9.5
+        },
+        "all_accounts_skipped": 0,
+        "all_accounts_disabled": 0,
+        "wall_seconds": 25.95
+      },
+      "quality_pass_share": 0.65,
+      "quality_checks": [
+        {
+          "at_least": true,
+          "median": 0.9866666666666667,
+          "name": "trade_coverage",
+          "pass_share": 1.0,
+          "threshold": 0.9
+        },
+        {
+          "at_least": false,
+          "median": 38.0,
+          "name": "max_gap_ticks",
+          "pass_share": 1.0,
+          "threshold": 200.0
+        },
+        {
+          "at_least": true,
+          "median": 0.9966666666666667,
+          "name": "two_sided_share",
+          "pass_share": 1.0,
+          "threshold": 0.95
+        },
+        {
+          "at_least": false,
+          "median": 0.0026531721205597016,
+          "name": "median_spread",
+          "pass_share": 1.0,
+          "threshold": 0.02
+        },
+        {
+          "at_least": true,
+          "median": 12.890502701095741,
+          "name": "depth_2pct_in_trades",
+          "pass_share": 1.0,
+          "threshold": 3.0
+        },
+        {
+          "at_least": false,
+          "median": 0.1436747859771355,
+          "name": "median_abs_log_dev",
+          "pass_share": 1.0,
+          "threshold": 0.25
+        },
+        {
+          "at_least": false,
+          "median": 0.0,
+          "name": "share_beyond_2x",
+          "pass_share": 1.0,
+          "threshold": 0.05
+        },
+        {
+          "at_least": true,
+          "median": 2.0,
+          "name": "value_crossings",
+          "pass_share": 0.65,
+          "threshold": 2.0
+        },
+        {
+          "at_least": true,
+          "median": 0.35278477430289706,
+          "name": "abs_return_autocorr",
+          "pass_share": 1.0,
+          "threshold": 0.05
+        }
+      ],
+      "directory": "runs/research-v4/coral-final-holdout2"
+    }
+  ],
+  "replay_scenario": "scenarios/baseline-v4.toml"
+}

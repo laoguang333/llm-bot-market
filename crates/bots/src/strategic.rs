@@ -52,16 +52,21 @@ fn combo_adjust(
 
 /// Desired resting orders and one optional immediate order for a stock.
 #[derive(Clone, Copy, Default)]
-struct Want {
-    bid: Option<(Price, Qty)>,
-    ask: Option<(Price, Qty)>,
-    take: Option<(Side, Price, Qty)>,
+pub(crate) struct Want {
+    pub(crate) bid: Option<(Price, Qty)>,
+    pub(crate) ask: Option<(Price, Qty)>,
+    pub(crate) take: Option<(Side, Price, Qty)>,
 }
 
 /// Turns desired quotes into cancels and new orders. Keeps an existing order when its price is
 /// within `tol_frac` of it and enough of it is left, so time priority is not thrown away every tick.
 /// Respects the self-cross rule and the per-tick action limit.
-fn requote(obs: &Observation, rules: &Rules, want: &[Want], tol_frac: f64) -> Vec<Action> {
+pub(crate) fn requote(
+    obs: &Observation,
+    rules: &Rules,
+    want: &[Want],
+    tol_frac: f64,
+) -> Vec<Action> {
     let n = want.len();
     let mut groups: Vec<Vec<Action>> = Vec::with_capacity(n);
     for (s, w) in want.iter().enumerate() {
@@ -152,7 +157,7 @@ fn value(
 /// Just before an idle charge that trading has not yet covered, a round-trip leg that earns
 /// the missing credit: sells where it holds shares that trade at or above value, else buys.
 /// Uses the tightest spread and only when crossing it costs less than the credit.
-fn credit_topup(
+pub(crate) fn credit_topup(
     obs: &Observation,
     rules: &Rules,
     values: &[f64],

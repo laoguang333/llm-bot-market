@@ -33,7 +33,7 @@ impl Fenwick {
         let mut i = i + 1;
         while i < self.tree.len() {
             self.tree[i] += v;
-            i += i & i.wrapping_neg();
+            i += i.isolate_lowest_one();
         }
     }
     /// Smallest value with cumulative count >= k (k >= 1).
@@ -368,8 +368,10 @@ impl<'a> Shared<'a> {
         self.check_liquidation(a, tick);
 
         let lag = reference.saturating_sub(tick);
-        let skip =
-            self.cfg.schedule.skip_decision_lag > 0 && lag >= self.cfg.schedule.skip_decision_lag;
+        let budget_us = self.cfg.schedule.decision_budget_us;
+        let skip = self.cfg.schedule.skip_decision_lag > 0
+            && lag >= self.cfg.schedule.skip_decision_lag
+            && (budget_us == 0 || a.decision_pace.is_slow());
         if a.disabled.is_some() || a.bot.is_none() {
             // passive holder
         } else if skip {
@@ -384,6 +386,10 @@ impl<'a> Shared<'a> {
             a.stats.decisions += 1;
             a.stats.decision_nanos_total += ns;
             a.stats.decision_nanos_max = a.stats.decision_nanos_max.max(ns);
+            a.decision_pace.record(ns, budget_us);
+            if budget_us > 0 && ns > budget_us.saturating_mul(1000) {
+                a.stats.over_budget_decisions += 1;
+            }
             match res {
                 Ok(actions) => {
                     a.bot = Some(bot);
@@ -1098,5 +1104,102 @@ impl<'a> Shared<'a> {
             }
         }
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod scheduling_tests {
+    use super::*;
+
+    struct Idle;
+    impl Bot for Idle {
+        fn on_tick(&mut self, _: &Observation) -> Vec<Action> {
+            vec![]
+        }
+    }
+
+    fn config() -> Config {
+        let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../scenarios/baseline.toml");
+        let mut c = Config::load(std::path::Path::new(path)).unwrap();
+        c.ticks = 100;
+        c.bots.truncate(1);
+        c.bots[0].count = 1;
+        c.bots[0].count_max = None;
+        c.fees.idle_rate = 0.0;
+        c.world.news.market.events_per_1000_ticks = 0.0;
+        c.world.news.sector.events_per_1000_ticks = 0.0;
+        c.world.news.stock.events_per_1000_ticks = 0.0;
+        c
+    }
+
+    #[test]
+    fn ordinary_lagging_bot_keeps_every_decision() {
+        let cfg = config();
+        let factory = |_: &str, _: &Start| -> Option<Box<dyn Bot>> { Some(Box::new(Idle)) };
+        let shared = Shared::new(&cfg, 1, &factory).unwrap();
+        for tick in 0..100 {
+            shared.step(0, tick, (tick + 10).min(100));
+        }
+        let a = shared.accounts[0].lock();
+        assert_eq!(a.stats.decisions, 100);
+        assert_eq!(a.stats.skipped, 0);
+        drop(a);
+        shared.audit().unwrap();
+    }
+
+    #[test]
+    fn slow_lagging_bot_skips_decision_but_still_settles_and_recovers() {
+        let cfg = config();
+        let factory = |_: &str, _: &Start| -> Option<Box<dyn Bot>> { Some(Box::new(Idle)) };
+        let shared = Shared::new(&cfg, 1, &factory).unwrap();
+        for tick in 0..50 {
+            shared.step(0, tick, tick);
+        }
+        {
+            let mut a = shared.accounts[0].lock();
+            for _ in 0..8 {
+                a.decision_pace
+                    .record(10_000_000, cfg.schedule.decision_budget_us);
+            }
+        }
+        shared.step(0, 50, 60);
+        {
+            let a = shared.accounts[0].lock();
+            assert_eq!(a.stats.skipped, 1);
+            assert_eq!(a.stats.decisions, 50);
+            let expected: Money = cfg
+                .stocks
+                .iter()
+                .map(|s| s.dividend * cfg.bots[0].shares_each)
+                .sum();
+            assert_eq!(
+                a.stats.dividends, expected,
+                "a skipped decision must not skip the dividend"
+            );
+        }
+        // Once caught up, a slow bot can decide again and demonstrate recovery.
+        for tick in 51..54 {
+            shared.step(0, tick, tick);
+        }
+        shared.step(0, 54, 64);
+        let a = shared.accounts[0].lock();
+        assert_eq!(a.stats.skipped, 1);
+        assert_eq!(a.stats.decisions, 54);
+        drop(a);
+        shared.audit().unwrap();
+    }
+
+    #[test]
+    fn legacy_policy_and_explicit_skip_disable_remain_available() {
+        let mut cfg = config();
+        cfg.schedule.decision_budget_us = 0;
+        let factory = |_: &str, _: &Start| -> Option<Box<dyn Bot>> { Some(Box::new(Idle)) };
+        let shared = Shared::new(&cfg, 1, &factory).unwrap();
+        shared.step(0, 0, 10);
+        assert_eq!(shared.accounts[0].lock().stats.skipped, 1);
+        cfg.schedule.skip_decision_lag = 0;
+        let shared = Shared::new(&cfg, 1, &factory).unwrap();
+        shared.step(0, 0, 10);
+        assert_eq!(shared.accounts[0].lock().stats.decisions, 1);
     }
 }

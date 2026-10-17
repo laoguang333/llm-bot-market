@@ -2,6 +2,7 @@
 
 pub mod baseline;
 pub mod common;
+pub mod coral;
 pub mod strategic;
 
 use bot_api::{Bot, Start};
@@ -23,6 +24,7 @@ pub const NAMES: &[&str] = &[
     "shark",
     "drift",
     "tracker",
+    "coral",
 ];
 
 /// `start` with extra parameter defaults; parameters set in the scenario win.
@@ -63,6 +65,7 @@ pub fn factory(name: &str, start: &Start) -> Option<Box<dyn Bot>> {
         "shark" => Box::new(strategic::Shark::new(start)),
         "drift" => Box::new(strategic::Drift::new(start)),
         "tracker" => Box::new(strategic::Tracker::new(start)),
+        "coral" => Box::new(coral::Coral::new(start)),
         _ => return None,
     })
 }
