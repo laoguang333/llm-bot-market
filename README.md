@@ -65,7 +65,11 @@ Windows 上可用 `python tools/bench_bot.py coral-train --first-seed 1` 跑当�
 
 [Swift 策略特性与研究档案](docs/swift-research.md) 是后续研究的统一入口，集中记录信号、执行、容量、失败条件和冻结证据。[单一狩猎者实验](docs/swift-hunt-results.md) 使用一个十倍资金的 Falcon 与一个固定 Swift 对抗，分别比较目标受损和对手是否相对胜出。Falcon 的实验模式通过参数指定，relay 为 `mode=6`，定时买卖对照为 `mode=7`。
 
-[资金优势实验方案](docs/swift-capital-protocol.md) 将对手本金提高到 30、100、300 倍，分开测试增加备用现金和同时放大交易规模；固定 Swift、同资金对照和原有费用规则。
+[资金优势实验](docs/swift-capital-results.md) 已完成矩阵、独立确认与[现金/库存机制核验](docs/swift-capital-cash-results.md)，共 2,140 局。大本金、大初始库存的 relay 往往能百分比少亏；只多给现金的证据较弱，猎手本身仍亏损，且会恶化盘口流动性。
+
+[猎手研究的重要发现](docs/swift-hunter-findings.md) 已归档。多 Swift 实验按用户要求中止，500 局成组结果见[中止报告](docs/swift-crowding-hunt-results.md)；另有 8 个未完成配置的原始摘要，不纳入统计。实验不会自动续跑。
+
+[下一版 v6](docs/baseline-v6.md) 已准备 `scenarios/baseline-v6.toml`，加入五个不同参数的小资金 Swift。当前 `baseline.toml` 仍为 v5，同时保存在 `baseline-v5.toml`；v6 尚未正式验收，本次没有启动新一轮批量比赛。
 
 ## 开发
 

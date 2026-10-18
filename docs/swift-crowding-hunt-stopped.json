@@ -1,0 +1,191 @@
+{
+  "status": "stopped_by_user",
+  "stopped_local": "2026-10-18T11:41:13.743181+08:00",
+  "reason": "User requested stopping hunter experiments, documenting findings, and preparing varied Swift bots for the next benchmark.",
+  "planned_games": 720,
+  "verified_completed_job_games": 500,
+  "raw_summary_games": 508,
+  "jobs": [
+    {
+      "id": "n1-alone-alone",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n1-cash-10-predator_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n1-cash-10-target_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n1-relay-10-predator_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n1-relay-10-target_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n1-cash-100-predator_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n1-cash-100-target_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n1-relay-100-predator_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n1-relay-100-target_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n3-alone-alone",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n3-cash-10-predator_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n3-cash-10-target_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n3-relay-10-predator_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n3-relay-10-target_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n3-cash-100-predator_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n3-cash-100-target_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n3-relay-100-predator_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n3-relay-100-target_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n5-alone-alone",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n5-cash-10-predator_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n5-cash-10-target_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n5-relay-10-predator_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n5-relay-10-target_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n5-cash-100-predator_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n5-cash-100-target_first",
+      "committed_done": true,
+      "summaries": 20
+    },
+    {
+      "id": "n5-relay-100-predator_first",
+      "committed_done": false,
+      "summaries": 8
+    },
+    {
+      "id": "n5-relay-100-target_first",
+      "committed_done": false,
+      "summaries": 0
+    },
+    {
+      "id": "n10-alone-alone",
+      "committed_done": false,
+      "summaries": 0
+    },
+    {
+      "id": "n10-cash-10-predator_first",
+      "committed_done": false,
+      "summaries": 0
+    },
+    {
+      "id": "n10-cash-10-target_first",
+      "committed_done": false,
+      "summaries": 0
+    },
+    {
+      "id": "n10-relay-10-predator_first",
+      "committed_done": false,
+      "summaries": 0
+    },
+    {
+      "id": "n10-relay-10-target_first",
+      "committed_done": false,
+      "summaries": 0
+    },
+    {
+      "id": "n10-cash-100-predator_first",
+      "committed_done": false,
+      "summaries": 0
+    },
+    {
+      "id": "n10-cash-100-target_first",
+      "committed_done": false,
+      "summaries": 0
+    },
+    {
+      "id": "n10-relay-100-predator_first",
+      "committed_done": false,
+      "summaries": 0
+    },
+    {
+      "id": "n10-relay-100-target_first",
+      "committed_done": false,
+      "summaries": 0
+    }
+  ],
+  "sources_verified_before_baseline_v6": true
+}

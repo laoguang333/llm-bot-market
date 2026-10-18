@@ -119,6 +119,8 @@ def read_crowding_world(path, job, seed):
 
 def run(stage):
     out = BASE / stage
+    if (out / "STOPPED.json").exists():
+        raise SystemExit("Stopped by user; this stage cannot be resumed. Preserve it and use a newly authorized stage.")
     plan = json.loads((out / "plan.json").read_text(encoding="utf-8"))
     verify(plan)
     for i, job in enumerate(plan["jobs"]):

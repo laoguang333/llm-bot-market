@@ -135,7 +135,8 @@ def write_markdown(data, path):
     rows = data["combined"]
     by = {r["case"]: r for r in rows}
     independent = len({r["seed"] for r in data["worlds"]})
-    text = ["# Swift 狩猎者资金优势实验结果", "", f"完成 {total:,} 局、{independent} 个新种子；所有配置和两种注册顺序完整报告。", "",
+    text = ["# Swift 狩猎者资金优势实验结果", "", f"矩阵完成 {total:,} 局、{independent} 个新种子；所有配置和两种注册顺序完整报告。", "",
+            "以下首先是矩阵内筛选，不能替代独立确认；最终判断请同时阅读文末的追加确认，以及[新增现金机制核验](swift-capital-cash-results.md)。多目标问题另见[多 Swift 实验](swift-crowding-hunt-results.md)。", "",
             f"达到批次内相对胜出门槛：{'、'.join(data['stable_relative']) or '无'}。",
             f"达到使 Swift 平均收益稳定为负的门槛：{'、'.join(data['stable_target_loss']) or '无'}。", "",
             "这里的门槛和追加确认规则见[冻结方案](swift-capital-protocol.md)。两种注册顺序按种子聚类；不能把同一个种子的两局当作两个独立市场。", "",
@@ -206,6 +207,9 @@ def append_confirmation(matrix, confirmation, path):
     assert not old_seeds & new_seeds
     lines = ["", "## 独立新市场确认", "",
              f"依据矩阵选择规则冻结 {len(selected)} 个候选后，追加 {confirmation['runs']} 局，使用 {len(new_seeds)} 个未参与选择的新种子。对照与候选一同运行，参数和代码不改；这一批单独报告，不并回矩阵冒充未选择样本。", "",
+             "独立确认达到平均相对收益优势门槛：" + ("、".join(confirmation['stable_relative']) or "无") + "。",
+             "独立确认使 Swift 平均收益显著为负：" + ("、".join(confirmation['stable_target_loss']) or "无") + "。",
+             "胜局比例高与平均收益领先确定是两件事；少数 Swift 大幅盈利局可以使平均收益差区间跨零。不能把多数局少亏写成已经证明稳定的期望优势。", "",
              "| 候选 | Swift 平均收益 / 95%区间 | 对手平均收益 | 收益率差 / 95%区间 | 对手胜局 | Swift 亏损局 | 双亏时对手少亏 |",
              "|---|---:|---:|---:|---:|---:|---:|"]
     for case in selected:

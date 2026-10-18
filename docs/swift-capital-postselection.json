@@ -1,0 +1,249 @@
+{
+  "sources": {
+    "docs/swift-capital-confirmation.json": "ac4557f1baff7ab5854798c764e4c68312691708889a156aa1b1c5b73d199ad0",
+    "docs/swift-capital-cash-results.json": "447932982d58e691640d208c1523513bd7234fcec1b6892d8b1de13ea24e220b"
+  },
+  "note": "Post hoc descriptive pooling, not a new pre-registered test. Excludes all matrix/development seeds. Both batches were fixed without retuning the tested scaled treatments.",
+  "combined": [
+    {
+      "case": "relay-scaled-100",
+      "runs": 80,
+      "target": {
+        "mean_return_pct": -26.20239259011967,
+        "median_return_pct": -32.64751019595107,
+        "losses": 70,
+        "mean_drawdown_pct": 40.03754600988163,
+        "worst_drawdown_pct": 62.9369751302892,
+        "mean_pnl_yuan": -9710.86975,
+        "return_ci95": [
+          -33.13222137422074,
+          -17.352035734424785
+        ],
+        "independent_seeds": 40,
+        "mean_gross_leverage": 0.5203145633172132,
+        "turnover": 109.94034479065891,
+        "dividend_pct": 36.900981001413214,
+        "direct_counterparty_notional_share": 0.0,
+        "rejects": 0,
+        "liquidations": 0,
+        "trade_fees_pct": 5.556462903295798,
+        "idle_fees_pct": 3.0566168108293468,
+        "interest_pct": 1.5894729750111793,
+        "mean_initial_equity_yuan": 37109.205,
+        "mean_turnover_yuan": 4080445.652625
+      },
+      "predator": {
+        "mean_return_pct": -13.140848337418026,
+        "median_return_pct": -15.822206366617126,
+        "losses": 67,
+        "mean_drawdown_pct": 28.73116548444374,
+        "worst_drawdown_pct": 64.61148602315838,
+        "mean_pnl_yuan": -487546.07425,
+        "return_ci95": [
+          -17.507501881939437,
+          -8.31871513029686
+        ],
+        "independent_seeds": 40,
+        "mean_gross_leverage": 0.5596593915268021,
+        "turnover": 3.350076319480645,
+        "dividend_pct": 50.209130336126265,
+        "direct_counterparty_notional_share": 0.0,
+        "rejects": 0,
+        "liquidations": 0,
+        "trade_fees_pct": 0.1689747963227297,
+        "idle_fees_pct": 9.4046682337392,
+        "interest_pct": 0.0,
+        "mean_initial_equity_yuan": 3710920.5,
+        "mean_turnover_yuan": 12432837.087375
+      },
+      "mean_advantage_pp": 13.06154425270164,
+      "median_advantage_pp": 16.101125687722732,
+      "wins": 64,
+      "both_lose": 59,
+      "both_lose_predator_wins": 51,
+      "advantage_ci95": [
+        4.668815301100994,
+        20.347686848706527
+      ],
+      "independent_seeds": 40,
+      "market_quality_passes": 0,
+      "quality_checks": {
+        "abs_return_autocorr": {
+          "passes": 78,
+          "mean": 0.18368178181718472,
+          "threshold": 0.05
+        },
+        "depth_2pct_in_trades": {
+          "passes": 44,
+          "mean": 3.5081885347445545,
+          "threshold": 3.0
+        },
+        "max_gap_ticks": {
+          "passes": 65,
+          "mean": 156.29375,
+          "threshold": 200.0
+        },
+        "median_abs_log_dev": {
+          "passes": 14,
+          "mean": 0.3532713617587907,
+          "threshold": 0.25
+        },
+        "median_spread": {
+          "passes": 79,
+          "mean": 0.010897494354206913,
+          "threshold": 0.02
+        },
+        "share_beyond_2x": {
+          "passes": 48,
+          "mean": 0.091875,
+          "threshold": 0.05
+        },
+        "trade_coverage": {
+          "passes": 23,
+          "mean": 0.848,
+          "threshold": 0.9
+        },
+        "two_sided_share": {
+          "passes": 0,
+          "mean": 0.6098958333333333,
+          "threshold": 0.95
+        },
+        "value_crossings": {
+          "passes": 12,
+          "mean": 0.575,
+          "threshold": 2.0
+        }
+      },
+      "win_rate_ci95": [
+        0.6875,
+        0.9
+      ],
+      "target_loss_rate_ci95": [
+        0.7875,
+        0.95
+      ],
+      "mean_wealth_relative_to_background": 1.2983482466038427,
+      "mean_initial_stock_share": 0.5102445431816923
+    },
+    {
+      "case": "relay-scaled-300",
+      "runs": 80,
+      "target": {
+        "mean_return_pct": -23.418113725116196,
+        "median_return_pct": -31.76931460792865,
+        "losses": 68,
+        "mean_drawdown_pct": 37.921624112745405,
+        "worst_drawdown_pct": 77.7920923336207,
+        "mean_pnl_yuan": -8688.53025,
+        "return_ci95": [
+          -31.0751905575174,
+          -14.096162319089517
+        ],
+        "independent_seeds": 40,
+        "mean_gross_leverage": 0.513942724792033,
+        "turnover": 108.91105787730352,
+        "dividend_pct": 36.36339090956138,
+        "direct_counterparty_notional_share": 0.0,
+        "rejects": 0,
+        "liquidations": 0,
+        "trade_fees_pct": 5.504246145604009,
+        "idle_fees_pct": 3.348848825850253,
+        "interest_pct": 1.5759205295935563,
+        "mean_initial_equity_yuan": 37109.205,
+        "mean_turnover_yuan": 4041989.401625
+      },
+      "predator": {
+        "mean_return_pct": -10.331883136195733,
+        "median_return_pct": -12.387579847538372,
+        "losses": 68,
+        "mean_drawdown_pct": 22.534080044848807,
+        "worst_drawdown_pct": 34.446215738647595,
+        "mean_pnl_yuan": -1150327.15425,
+        "return_ci95": [
+          -13.648317290251924,
+          -6.571833803912383
+        ],
+        "independent_seeds": 40,
+        "mean_gross_leverage": 0.4311548833102593,
+        "turnover": 1.109885009509183,
+        "dividend_pct": 37.51627251417588,
+        "direct_counterparty_notional_share": 0.0,
+        "rejects": 0,
+        "liquidations": 0,
+        "trade_fees_pct": 0.055979158673611806,
+        "idle_fees_pct": 11.381556388056836,
+        "interest_pct": 0.0,
+        "mean_initial_equity_yuan": 11132761.5,
+        "mean_turnover_yuan": 12357016.0245
+      },
+      "mean_advantage_pp": 13.086230588920463,
+      "median_advantage_pp": 15.672684255845011,
+      "wins": 62,
+      "both_lose": 60,
+      "both_lose_predator_wins": 52,
+      "advantage_ci95": [
+        4.5319933950015425,
+        20.662707086937598
+      ],
+      "independent_seeds": 40,
+      "market_quality_passes": 0,
+      "quality_checks": {
+        "abs_return_autocorr": {
+          "passes": 79,
+          "mean": 0.19850135743177497,
+          "threshold": 0.05
+        },
+        "depth_2pct_in_trades": {
+          "passes": 39,
+          "mean": 3.316758464719019,
+          "threshold": 3.0
+        },
+        "max_gap_ticks": {
+          "passes": 60,
+          "mean": 184.30625,
+          "threshold": 200.0
+        },
+        "median_abs_log_dev": {
+          "passes": 13,
+          "mean": 0.35590443405201394,
+          "threshold": 0.25
+        },
+        "median_spread": {
+          "passes": 78,
+          "mean": 0.011371337693192062,
+          "threshold": 0.02
+        },
+        "share_beyond_2x": {
+          "passes": 48,
+          "mean": 0.08875,
+          "threshold": 0.05
+        },
+        "trade_coverage": {
+          "passes": 21,
+          "mean": 0.8360833333333333,
+          "threshold": 0.9
+        },
+        "two_sided_share": {
+          "passes": 0,
+          "mean": 0.5978958333333333,
+          "threshold": 0.95
+        },
+        "value_crossings": {
+          "passes": 15,
+          "mean": 0.61875,
+          "threshold": 2.0
+        }
+      },
+      "win_rate_ci95": [
+        0.6625,
+        0.8875
+      ],
+      "target_loss_rate_ci95": [
+        0.7496875000000001,
+        0.9375
+      ],
+      "mean_wealth_relative_to_background": 3.8950447398115284,
+      "mean_initial_stock_share": 0.7571046084384159
+    }
+  ]
+}

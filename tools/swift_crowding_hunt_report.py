@@ -63,15 +63,22 @@ def paired(rows, refs, values):
             **{k: estimate(pairs, lambda r: r[k]) for k in values}}, pairs
 
 
-def build(stage):
+def build(stage, stopped=False):
     plan = json.loads((BASE / stage / "plan.json").read_text(encoding="utf-8"))
-    rows = []
+    rows, unfinished = [], []
     for job in plan["jobs"]:
         path = BASE / stage / job["id"] / "done.json"
+        if not path.exists() and stopped:
+            unfinished.append(job["id"])
+            continue
         data = json.loads(path.read_text(encoding="utf-8"))
         assert data["job"] == job and len(data["worlds"]) == job["seeds"]
         rows += data["worlds"]
     groups = {key: [r for r in rows if r["case"] == key] for key in dict.fromkeys(r["case"] for r in rows)}
+    incomplete_cases = [key for key, group in groups.items() if group[0]["mode"]
+                        and {r["order"] for r in group} != {"predator_first", "target_first"}]
+    groups = {key: group for key, group in groups.items() if key not in incomplete_cases}
+    analyzed = [r for group in groups.values() for r in group]
     combined = [summarize(group) for group in groups.values()]
     by_order = [{"order": order, **summarize([r for r in group if r["order"] == order])}
                 for group in groups.values() for order in sorted({r["order"] for r in group})]
@@ -97,11 +104,15 @@ def build(stage):
     clear = [r["case"] for r in combined if r["mode"] == "relay"
              and r["advantage_pp"]["ci95"][0] > 0 and r["predator_beats_group"] > r["runs"] / 2
              and all(b["advantage_pp"]["mean"] > 0 for b in by_order if b["case"] == r["case"])]
-    return {"stage": stage, "plan": plan, "runs": len(rows), "combined": combined,
+    return {"stage": stage, "status": "stopped_by_user" if stopped else "complete", "plan": plan,
+            "runs": len(analyzed), "completed_job_games": len(rows),
+            "planned_games": sum(j["seeds"] for j in plan["jobs"]),
+            "unfinished_jobs": unfinished, "incomplete_cases_excluded": incomplete_cases,
+            "combined": combined,
             "by_order": by_order, "relay_minus_cash": controls, "count_minus_one": counts,
             "alone_count_minus_one": alone, "count_effect_minus_cash_count_effect": difference_in_differences,
-            "clear_relative_advantage": clear, "worlds": rows,
-            "audit_totals": {k: sum(r[k] for r in rows) for k in ["audits", "all_skipped", "all_errors", "all_disabled"]}}
+            "clear_relative_advantage": clear, "worlds": analyzed,
+            "audit_totals": {k: sum(r[k] for r in analyzed) for k in ["audits", "all_skipped", "all_errors", "all_disabled"]}}
 
 
 def fmt(x):
@@ -109,7 +120,9 @@ def fmt(x):
 
 
 def write_markdown(data, path):
-    lines = ["# 多 Swift 是否更容易狩猎", "", f"完成冻结的 {data['runs']} 局；全部数量、两种顺序和对照均保留。方案见[实验协议](swift-crowding-hunt-protocol.md)。",
+    status = (f"**按用户要求中止。** 原计划 {data['planned_games']} 局；本报告只统计成组完成的 {data['runs']} 局。未完成配置不纳入均值，也不续跑。中止记录见[状态文件](swift-crowding-hunt-stopped.json)。"
+              if data['status'] == 'stopped_by_user' else f"完成冻结的 {data['runs']} 局；全部数量、两种顺序和对照均保留。")
+    lines = ["# 多 Swift 是否更容易狩猎", "", status + " 方案见[实验协议](swift-crowding-hunt-protocol.md)。",
              "", "![数量与狩猎效果](swift-crowding-hunt-overview.png)", "",
              "## 直接结果", "", "所有收益含费用、分红与终值。猎手本金始终相对于单个 Swift；增加 Swift 数量不会增加猎手本金。两种顺序合并按世界种子聚类，40 局是 20 个独立种子。", "",
              "| Swift 数 | 猎手 | 本金倍数 | Swift 组收益% | 猎手收益% | 胜过组均值 | 胜过全部 | 平均胜过个体比例 | 双亏少亏 |", "|---:|---|---:|---:|---:|---:|---:|---:|---:|"]
@@ -146,17 +159,24 @@ def write_markdown(data, path):
     direct = sum(r.get("direct_predator_swift_notional_yuan", 0) for r in data["combined"])
     lines += ["", f"账务审计 {a['audits']} 次；所有账户跳过 {a['all_skipped']}、错误 {a['all_errors']}、停用 {a['all_disabled']}。所有 Swift 与猎手拒单 {rejects}、强平 {liquidations}；猎手与全部 Swift 的直接成交金额合计 {direct:,.2f} 元。",
               "", "市场质量门槛与账务正确性分开；所有失败世界保留。区间按种子聚类 bootstrap 3000 次，未作多重比较校正。回撤是观察到的标记权益回撤，不保证可按该价格退出。百分比少亏不等于金额少亏，也不等于猎手赚钱。",
-              "", "数据：[完整 JSON](swift-crowding-hunt-results.json)；[冻结计划](swift-crowding-hunt-plan.json)。原始撮合与权益曲线在 runs/swift-crowding-hunt-20261018，未提交大体积逐笔文件。", ""]
+              "", "数据：[完整 JSON](swift-crowding-hunt-results.json)；[冻结计划](swift-crowding-hunt-plan.json)。原始撮合与权益曲线在 runs/swift-crowding-hunt-20261018，未提交大体积逐笔文件。", "",
+              "## 复现", "", "先检出冻结实现 `645f0d5`，禁用失效的本机 RUSTC_WRAPPER 后构建 release 二进制；换一个新 stage 保存重跑，不覆盖原实验。多线程调度可能改变逐笔路径，冻结种子并不保证逐笔结果完全相同。", "",
+              "```sh", "cargo build --release --bins",
+              "python tools/swift_crowding_hunt.py prepare --stage rerun --first-seed 18001 --seeds 20",
+              "python tools/arena_gate.py --cwd . -- python tools/swift_crowding_hunt.py run --stage rerun",
+              "python tools/swift_crowding_hunt_report.py --stage rerun --output runs/swift-crowding-hunt-20261018/rerun/results.json --markdown runs/swift-crowding-hunt-20261018/rerun/results.md",
+              "```", ""]
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--stage", default="validation")
+    p.add_argument("--stopped", action="store_true", help="Report only completed balanced cases after an explicit stop")
     p.add_argument("--output", type=Path, default=ROOT / "docs/swift-crowding-hunt-results.json")
     p.add_argument("--markdown", type=Path, default=ROOT / "docs/swift-crowding-hunt-results.md")
     a = p.parse_args()
-    data = build(a.stage)
+    data = build(a.stage, a.stopped)
     a.output.write_text(json.dumps(data, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
     write_markdown(data, a.markdown)
     for r in data["combined"]:
