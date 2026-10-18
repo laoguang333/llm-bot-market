@@ -793,7 +793,7 @@ impl<'a> Shared<'a> {
                     placed_tick: o.placed_tick,
                 }),
         );
-        obs.open_orders.sort_unstable_by_key(|o| o.order_id);
+        // OrderStore already yields increasing IDs, including after removals.
         obs.tick = tick;
         obs.reference_tick = reference;
         obs.season = self.world.season(tick);
@@ -974,8 +974,9 @@ impl<'a> Shared<'a> {
             take
         };
         let idx = a.idx as u32;
-        let (fills, rested, new_mark) = {
+        let (fills, rested) = {
             let mut m = self.markets[stock].write();
+            let old_mark = m.mark;
             let fills = m.take(side, limit, qty, idx, tick, &mut cap);
             let filled: Qty = fills.iter().map(|f| f.qty).sum();
             let remaining = qty - filled;
@@ -990,9 +991,14 @@ impl<'a> Shared<'a> {
                     reserve_per_share: rps,
                 });
             }
-            (fills, rested, m.mark)
+            if m.mark != old_mark {
+                // Avoid invalidating readers' cache lines on unchanged prices.
+                // Publish under the book lock so an older writer cannot replace
+                // a newer mark after releasing the lock.
+                self.marks[stock].store(m.mark, Ordering::Relaxed);
+            }
+            (fills, rested)
         };
-        self.marks[stock].store(new_mark, Ordering::Relaxed);
 
         let credit_taker = self.rules.credit_side != "maker";
         let mut filled = 0;
@@ -1153,6 +1159,48 @@ impl<'a> Shared<'a> {
 #[cfg(test)]
 mod scheduling_tests {
     use super::*;
+
+    #[test]
+    fn published_marks_follow_books_after_concurrent_orders() {
+        struct Trader(usize);
+        impl Bot for Trader {
+            fn on_tick(&mut self, obs: &Observation) -> Vec<Action> {
+                let stock = self.0 % obs.books.len();
+                let side = if self.0 < obs.books.len() {
+                    Side::Sell
+                } else {
+                    Side::Buy
+                };
+                let price = if side == Side::Sell {
+                    100 + i64::from(obs.tick % 17)
+                } else {
+                    200
+                };
+                vec![
+                    Action::CancelAll { stock: Some(stock) },
+                    Action::limit(stock, side, price, 1),
+                ]
+            }
+        }
+        let mut cfg = config();
+        cfg.bots[0].count = cfg.stocks.len() * 2;
+        cfg.bots[0].cash = 1_000_000;
+        cfg.bots[0].shares_each = 1000;
+        cfg.schedule.threads = 4;
+        cfg.schedule.check_interval = 13;
+        let factory = |_: &str, start: &Start| -> Option<Box<dyn Bot>> {
+            Some(Box::new(Trader(start.account_index)))
+        };
+        let shared = Shared::new(&cfg, 7, &factory).unwrap();
+        shared.run().unwrap();
+        assert!(shared.markets.iter().any(|m| !m.read().tape.is_empty()));
+        for (stock, market) in shared.markets.iter().enumerate() {
+            assert_eq!(
+                shared.marks[stock].load(Ordering::Relaxed),
+                market.read().mark
+            );
+        }
+    }
 
     #[test]
     fn incremental_reference_matches_sorted_accounts_with_skew_and_early_finishes() {
