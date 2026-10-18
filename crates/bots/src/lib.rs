@@ -6,6 +6,7 @@ pub mod astra_c;
 pub mod baseline;
 pub mod common;
 pub mod coral;
+pub mod falcon;
 pub mod strategic;
 pub mod swift;
 
@@ -33,6 +34,7 @@ pub const NAMES: &[&str] = &[
     "astra_b",
     "astra_c",
     "swift",
+    "falcon",
 ];
 
 /// `start` with extra parameter defaults; parameters set in the scenario win.
@@ -78,6 +80,7 @@ pub fn factory(name: &str, start: &Start) -> Option<Box<dyn Bot>> {
         "astra_c" => Box::new(astra_c::AstraC::new(start)),
         "coral" => Box::new(coral::Coral::new(start)),
         "swift" => Box::new(swift::Swift::new(start)),
+        "falcon" => Box::new(falcon::Falcon::new(start)),
         _ => return None,
     })
 }
