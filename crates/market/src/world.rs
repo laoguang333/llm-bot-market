@@ -263,10 +263,13 @@ impl World {
                         let (lo, hi) = cfg.terminal_payments_range();
                         let payments = ((ticks.saturating_sub(1)) / cfg.world.dividend_period)
                             as f64
-                            + (lo + hi) as f64 / 2.0;
+                            + (lo + hi) as f64 / 2.0
+                                * (cfg.terminal_payment_ticks() / cfg.world.dividend_period) as f64;
                         let u = unit(seed ^ 0x09e7, i as u64, 1) * 2.0 - 1.0;
                         let t = cfg.market.tick_size.max(1);
-                        let p = st.dividend as f64 * payments * (1.0 + spread * u);
+                        let p = st.dividend as f64 / cfg.world.dividend_scale as f64
+                            * payments
+                            * (1.0 + spread * u);
                         ((p / t as f64).round() as Money * t).max(t)
                     }
                 })

@@ -46,7 +46,7 @@ def prepare(stage, first, seeds, candidates):
     frozen_swift = json.loads((ROOT / "docs/swift-stress-plan.json").read_text(encoding="utf-8"))["sources"]["crates/bots/src/swift.rs"]
     assert sha(ROOT / "crates/bots/src/swift.rs") == frozen_swift
     out.mkdir(parents=True)
-    base = tomllib.loads((ROOT / "scenarios/baseline.toml").read_text(encoding="utf-8"))
+    base = tomllib.loads((ROOT / "scenarios/baseline-v5.toml").read_text(encoding="utf-8"))
     jobs = []
     for key, bot, params in [("alone", None, {})] + candidates:
         for order in (["alone"] if bot is None else ["predator_first", "target_first"]):

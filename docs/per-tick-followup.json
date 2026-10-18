@@ -1,0 +1,1565 @@
+{
+  "plan": {
+    "reason": "Post hoc: v6 background seed 23014 two-sided share 0.9483; v6 Swift seed 23004 three tracker liquidations.",
+    "seeds": {
+      "background": 23014,
+      "swift": 23004
+    },
+    "repeats": 5,
+    "threads": 4,
+    "conditions": [
+      "periodic",
+      "per-tick"
+    ],
+    "parameters": "unchanged",
+    "selection": "all runs retained"
+  },
+  "runs": [
+    {
+      "bot": "background",
+      "seed": 23014,
+      "repeat": 0,
+      "regime": "periodic",
+      "quality": {
+        "pass": false,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.98,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 41.0,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.9416666666666667,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": false
+          },
+          {
+            "name": "median_spread",
+            "value": 0.0052121873797207775,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 9.107571784012915,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.20656864775765477,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.0,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 5.5,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.1985487150609449,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {},
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "background",
+      "seed": 23014,
+      "repeat": 0,
+      "regime": "per-tick",
+      "quality": {
+        "pass": true,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.9933333333333333,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 36.0,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.955,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.0050157763420616355,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 8.353310516700997,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.2103504355374599,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.0,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 4.5,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.30117506832002483,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {},
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "background",
+      "seed": 23014,
+      "repeat": 1,
+      "regime": "per-tick",
+      "quality": {
+        "pass": true,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.9866666666666667,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 44.5,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.9666666666666667,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.005690749183895361,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 7.089894944463309,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.20850161640990436,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.0,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 5.5,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.2771321185874676,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {},
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "background",
+      "seed": 23014,
+      "repeat": 1,
+      "regime": "periodic",
+      "quality": {
+        "pass": true,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.9833333333333334,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 39.5,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.9566666666666667,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.004035169918820176,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 9.553031241020891,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.20228707558513637,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.0,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 5.0,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.21572469659280996,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {},
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "background",
+      "seed": 23014,
+      "repeat": 2,
+      "regime": "periodic",
+      "quality": {
+        "pass": true,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.9866666666666667,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 38.5,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.965,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.005076305597783346,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 7.562697558989962,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.21381093513011676,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.0,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 4.0,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.13485971170076877,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {},
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "background",
+      "seed": 23014,
+      "repeat": 2,
+      "regime": "per-tick",
+      "quality": {
+        "pass": true,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.99,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 41.0,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.9683333333333333,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.005641195360372931,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 8.957815945683702,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.20404090811513853,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.0,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 4.5,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.2217177484779517,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {},
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "background",
+      "seed": 23014,
+      "repeat": 3,
+      "regime": "per-tick",
+      "quality": {
+        "pass": false,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.9866666666666667,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 35.5,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.9433333333333334,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": false
+          },
+          {
+            "name": "median_spread",
+            "value": 0.0051030715435273905,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 9.096476564762309,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.20943334024481453,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.0,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 5.0,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.24664934674762898,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {},
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "background",
+      "seed": 23014,
+      "repeat": 3,
+      "regime": "periodic",
+      "quality": {
+        "pass": true,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.9766666666666667,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 37.0,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.9583333333333333,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.004293968511600977,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 9.165330007024572,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.20358069731392264,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.0,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 4.5,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.24805776131501672,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {},
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "background",
+      "seed": 23014,
+      "repeat": 4,
+      "regime": "periodic",
+      "quality": {
+        "pass": true,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.9766666666666667,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 40.0,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.97,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.004551617679140549,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 8.366700996611755,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.21310119583377066,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.0,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 4.5,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.17127563586105926,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {},
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "background",
+      "seed": 23014,
+      "repeat": 4,
+      "regime": "per-tick",
+      "quality": {
+        "pass": true,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.9866666666666667,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 37.5,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.96,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.00510239576774181,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 8.760890151451889,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.20396945120838073,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.0,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 4.5,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.2196207488851492,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {},
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "swift",
+      "seed": 23004,
+      "repeat": 0,
+      "regime": "periodic",
+      "quality": {
+        "pass": true,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.9933333333333333,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 27.5,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.99,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.006824184746778745,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 3.4373796546513615,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.21758882434332577,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.023333333333333334,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 4.0,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.15345051990793782,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {
+        "tracker#1": 2
+      },
+      "bad_debt": 161262,
+      "skipped": 0
+    },
+    {
+      "bot": "swift",
+      "seed": 23004,
+      "repeat": 0,
+      "regime": "per-tick",
+      "quality": {
+        "pass": true,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.9966666666666666,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 31.5,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.995,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.006826495350852129,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 3.129180535553437,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.21273425323917933,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.013333333333333334,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 4.0,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.29637708742400304,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {
+        "tracker#0": 1
+      },
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "swift",
+      "seed": 23004,
+      "repeat": 1,
+      "regime": "per-tick",
+      "quality": {
+        "pass": true,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.9966666666666666,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 33.0,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.9883333333333333,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.006755773341925913,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 3.752639362113078,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.2182672126026563,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.023333333333333334,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 4.0,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.2309377622621202,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {},
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "swift",
+      "seed": 23004,
+      "repeat": 1,
+      "regime": "periodic",
+      "quality": {
+        "pass": true,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.9866666666666667,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 35.0,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.9966666666666667,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.006103178776580961,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 3.980789674370363,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.19472078887105715,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.016666666666666666,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 4.5,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.11115617077305145,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {},
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "swift",
+      "seed": 23004,
+      "repeat": 2,
+      "regime": "periodic",
+      "quality": {
+        "pass": false,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.9966666666666666,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 28.0,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.99,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.007278820127868754,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 2.6016849219546625,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": false
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.21099592328606973,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.016666666666666666,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 4.5,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.28596993421167594,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {},
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "swift",
+      "seed": 23004,
+      "repeat": 2,
+      "regime": "per-tick",
+      "quality": {
+        "pass": true,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 1.0,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 25.0,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.9933333333333333,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.006866981984875538,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 3.87173406420261,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.21398658614708344,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.016666666666666666,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 4.0,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.2372579177043176,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {},
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "swift",
+      "seed": 23004,
+      "repeat": 3,
+      "regime": "per-tick",
+      "quality": {
+        "pass": true,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.9933333333333333,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 25.0,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.9933333333333334,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.007302862513588827,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 3.1352688054847846,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.2222110126037433,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.023333333333333334,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 4.0,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.26928610483446447,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {},
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "swift",
+      "seed": 23004,
+      "repeat": 3,
+      "regime": "periodic",
+      "quality": {
+        "pass": true,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.9933333333333333,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 30.5,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.9866666666666667,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.005798391793217757,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 3.891144736002043,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.19483338318632112,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.016666666666666666,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 4.0,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.21482974195460808,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {},
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "swift",
+      "seed": 23004,
+      "repeat": 4,
+      "regime": "periodic",
+      "quality": {
+        "pass": true,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 0.9933333333333333,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 35.0,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.9883333333333333,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.00650501897319408,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 3.3902326061990524,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.20945307622859372,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.016666666666666666,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 4.0,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.23311757092424545,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {},
+      "bad_debt": 0,
+      "skipped": 0
+    },
+    {
+      "bot": "swift",
+      "seed": 23004,
+      "repeat": 4,
+      "regime": "per-tick",
+      "quality": {
+        "pass": false,
+        "checks": [
+          {
+            "name": "trade_coverage",
+            "value": 1.0,
+            "threshold": 0.9,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "max_gap_ticks",
+            "value": 25.0,
+            "threshold": 200.0,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "two_sided_share",
+            "value": 0.9933333333333334,
+            "threshold": 0.95,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "median_spread",
+            "value": 0.007024066013446869,
+            "threshold": 0.02,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "depth_2pct_in_trades",
+            "value": 2.9846948188708256,
+            "threshold": 3.0,
+            "at_least": true,
+            "pass": false
+          },
+          {
+            "name": "median_abs_log_dev",
+            "value": 0.22374764328911942,
+            "threshold": 0.25,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "share_beyond_2x",
+            "value": 0.013333333333333334,
+            "threshold": 0.05,
+            "at_least": false,
+            "pass": true
+          },
+          {
+            "name": "value_crossings",
+            "value": 4.0,
+            "threshold": 2.0,
+            "at_least": true,
+            "pass": true
+          },
+          {
+            "name": "abs_return_autocorr",
+            "value": 0.26688012859378346,
+            "threshold": 0.05,
+            "at_least": true,
+            "pass": true
+          }
+        ]
+      },
+      "liquidations": {
+        "tracker#0": 1
+      },
+      "bad_debt": 0,
+      "skipped": 0
+    }
+  ]
+}

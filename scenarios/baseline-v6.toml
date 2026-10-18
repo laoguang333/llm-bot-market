@@ -1,7 +1,8 @@
-# Baseline v6 candidate: v5 plus five small Swift accounts with distinct parameters.
-# Not yet benchmark-qualified. Fixed coverage profiles, not fitted to hunter results.
-# baseline.toml and baseline-v5.toml retain v5 for historical experiments.
-# Money in integer cents. Dividends are paid every 50 ticks; at 1% of price per period.
+# Per-tick ordinary dividends; v6 crowd. Legacy scenario is preserved separately.
+# Current v6: v5 plus two small Swift accounts (standard and early).
+# Per-tick validation is recorded in docs/per-tick-dividends.md.
+# baseline.toml matches this file; baseline-v6-five-swift.toml retains the old periodic five-Swift rules.
+# Money/prices: integer cents. Ordinary rates/news use 1/50 cent per tick; pay the rounded account/stock total at ticks 1..ticks-1.
 ticks = 3000
 seed = 7
 
@@ -40,7 +41,11 @@ decision_budget_us = 2000
 check_interval = 500
 
 [world]
-dividend_period = 50
+dividend_period = 1
+# Rate/news units: 50 units = 1 cent per share per tick (100 = 2 cents/tick).
+dividend_scale = 50
+# Combination rewards retain their original 50-tick frequency.
+combo_period = 50
 min_dividend = 0
 sectors = ["tech", "consumer", "energy"]
 
@@ -70,8 +75,10 @@ stages = [[0, 0.05], [30, 0.25], [60, 1.0]]
 range_widths = [3.0, 1.5]
 
 [scoring]
+# Hidden terminal units remain 50 ticks long, preserving the terminal scale.
+terminal_payment_ticks = 50
 terminal_ratio = 0.5
-# The number of terminal payments is drawn from this range and not announced. Each account
+# Terminal units (each 50 ticks) are drawn from this range and not announced. Each account
 # privately gets its own range of the given width containing the truth at these ticks.
 terminal_payments = [10, 50]
 terminal_hints = [[0, 30], [1000, 16], [2000, 6]]
@@ -273,27 +280,3 @@ count = 1
 cash = 2_000_000
 shares_each = 20
 params = { entry = 0.05, exit = -0.1, depth = 0.2, momentum = 3.0, cap = 0.25, leverage = 1.0, spread = 0.01 }
-
-[[bots]]
-bot = "swift"
-owner = "swift-selective"
-count = 1
-cash = 2_000_000
-shares_each = 20
-params = { entry = 0.3, exit = -0.15, depth = 0.25, momentum = 4.0, cap = 0.25, leverage = 1.0, spread = 0.008 }
-
-[[bots]]
-bot = "swift"
-owner = "swift-flow"
-count = 1
-cash = 2_000_000
-shares_each = 20
-params = { entry = 0.18, exit = -0.25, depth = 0.0, momentum = 0.0, cap = 0.3, leverage = 1.2, spread = 0.012 }
-
-[[bots]]
-bot = "swift"
-owner = "swift-depth"
-count = 1
-cash = 2_000_000
-shares_each = 20
-params = { entry = 0.2, exit = -0.35, depth = 0.6, momentum = 2.0, cap = 0.3, leverage = 1.2, spread = 0.01 }

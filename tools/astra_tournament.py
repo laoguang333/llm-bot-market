@@ -109,7 +109,7 @@ def main():
         parser.error("three distinct bots and at least one seed are required")
     root = Path(__file__).resolve().parents[1]
     out = (root / args.out).resolve()
-    scenario = root / "scenarios/baseline.toml"
+    scenario = root / "scenarios/baseline-v5.toml"
     binary = root / "target/release/llm-market.exe"
     if not binary.exists():
         binary = binary.with_suffix("")

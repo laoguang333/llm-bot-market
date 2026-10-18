@@ -1,6 +1,7 @@
 //! Types shared by the market engine and bots.
 //!
-//! Money and prices are integer cents, quantities integer shares. Stocks are
+//! Money and prices are integer cents, quantities integer shares. Dividend
+//! rates and news changes use `Rules::dividend_scale` units per cent. Stocks are
 //! referred to by index into `Rules::stocks`.
 
 use serde::{Deserialize, Serialize};
@@ -99,6 +100,7 @@ pub struct StockInfo {
     pub name: String,
     pub sector: usize,
     pub shares_outstanding: Qty,
+    /// Rate units per ordinary payment (one tick in per-tick scenarios).
     pub initial_dividend: Money,
     pub initial_price: Price,
     pub market_loading: f64,
@@ -111,7 +113,7 @@ pub struct ComboRule {
     pub a_units: Qty,
     pub b: usize,
     pub b_units: Qty,
-    /// Paid per complete set per dividend period; negative values are charged.
+    /// Cents paid per complete set per combo period; negative values are charged.
     pub bonus: Money,
     pub start_tick: Tick,
     pub end_tick: Tick,
@@ -142,6 +144,11 @@ pub struct Rules {
     pub ticks_total: Tick,
     pub tick_size: Price,
     pub dividend_period: Tick,
+    /// Ordinary dividend/news rate units per cent. No per-account remainder is kept.
+    pub dividend_scale: i64,
+    pub combo_period: Tick,
+    /// Duration of one terminal-payment unit used by the hidden range and hints.
+    pub terminal_payment_ticks: Tick,
     pub min_dividend: Money,
     pub trade_fee_bps: i64,
     pub idle_period: Tick,
@@ -178,7 +185,7 @@ pub struct Rules {
     pub decision_budget_us: u64,
     /// Liquidation period length in ticks after trading ends.
     pub terminal_ticks: Tick,
-    /// The number of dividend payments counted in the terminal value is drawn uniformly from
+    /// The number of terminal-payment units (each `terminal_payment_ticks` long) is drawn uniformly from
     /// `terminal_payments_min..=terminal_payments_max` at the start and not announced.
     pub terminal_payments_min: i64,
     pub terminal_payments_max: i64,
@@ -191,20 +198,55 @@ pub struct Rules {
 }
 
 impl Rules {
+    /// Cents per share per ordinary payment, before rounding an account's total.
+    pub fn dividend_cents(&self, rate: Money) -> f64 {
+        rate as f64 / self.dividend_scale as f64
+    }
+
+    /// Round the account's whole position once, half up. Ordinary rates are nonnegative.
+    pub fn dividend_payment(&self, shares: Qty, rate: Money) -> Money {
+        ((shares as i128 * rate as i128 + (self.dividend_scale / 2) as i128)
+            / self.dividend_scale as i128) as Money
+    }
+
+    pub fn terminal_dividend_payments(&self, units: f64) -> f64 {
+        units * (self.terminal_payment_ticks / self.dividend_period) as f64
+    }
+
+    pub fn terminal_combo_payments(&self, units: f64) -> f64 {
+        units * (self.terminal_payment_ticks / self.combo_period) as f64
+    }
+
+    /// The final executed tick. Trading and world settlement use 0..ticks_total.
+    pub fn last_tick(&self) -> Tick {
+        self.ticks_total.saturating_sub(1)
+    }
+
     pub fn trade_fee(&self, notional: Money) -> Money {
-        (notional * self.trade_fee_bps + 9_999) / 10_000
+        ((notional as i128 * self.trade_fee_bps as i128 + 9_999) / 10_000) as Money
     }
     /// Cash reserved per share by a buy order at `price` (price plus worst-case fee).
     pub fn buy_reserve_per_share(&self, price: Price) -> Money {
         price + (price * self.trade_fee_bps + 9_999) / 10_000
     }
     /// Value at the end of the game of holding these shares with the given dividends and
-    /// `n` terminal payments.
+    /// `n` terminal-payment units. Ordinary and combo cash flows use their own periods.
     pub fn terminal_value(&self, shares: &[Qty], dividends: &[Money], n: i64) -> Money {
-        let mut v: Money = shares.iter().zip(dividends).map(|(s, d)| s * d * n).sum();
+        let payments = n as i128 * (self.terminal_payment_ticks / self.dividend_period) as i128;
+        let mut v: Money = shares
+            .iter()
+            .zip(dividends)
+            .map(|(s, d)| {
+                ((i128::from(*s) * i128::from(*d) * payments + (self.dividend_scale / 2) as i128)
+                    / self.dividend_scale as i128) as Money
+            })
+            .sum();
         for c in &self.combos {
-            if c.active(self.ticks_total) {
-                v += c.sets(shares) * c.bonus * n;
+            if c.active(self.last_tick()) {
+                v += c.sets(shares)
+                    * c.bonus
+                    * n
+                    * (self.terminal_payment_ticks / self.combo_period) as i64;
             }
         }
         v
@@ -217,6 +259,8 @@ pub struct Start {
     pub owner: String,
     pub account_index: usize,
     pub n_accounts: usize,
+    /// Deterministic bot RNG seed, not a security boundary. Reviewed bots must
+    /// not use its relation to the world seed to reconstruct hidden information.
     pub seed: u64,
     pub params: BTreeMap<String, f64>,
     pub cash: Money,
@@ -248,7 +292,7 @@ pub struct BookView {
     pub last: Price,
     /// Mark price used for equity, leverage and the idle fee.
     pub mark: Price,
-    /// Current dividend per share per period.
+    /// Current dividend rate per share per ordinary payment, in dividend_scale units/cent.
     pub dividend: Money,
 }
 
@@ -331,7 +375,8 @@ pub enum NewsLayer {
 }
 
 /// What one account knows about a news item's effect on one stock: the change in dividend
-/// per share is somewhere in `low..=high`. Exact (`low == high`) once the news is public.
+/// rate per share is somewhere in `low..=high`, in dividend_scale units/cent.
+/// Exact (`low == high`) once public; the rate changes only at effective_tick.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Change {
     pub stock: usize,

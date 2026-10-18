@@ -161,6 +161,9 @@ pub struct Account {
     pub samples: i64,
     pub loan_samples: i64,
     pub credit_notional: Money,
+    /// Idle cash charge blocked by an already executed, unsettled buy. It is
+    /// reapportioned over available assets at the next idle settlement.
+    pub idle_fee_carry: Money,
     /// Fractional shares owed to the idle fee, in millionths of a share.
     pub share_frac: Vec<i64>,
     pub inbox: Inbox,
@@ -205,6 +208,7 @@ impl Account {
             samples: 0,
             loan_samples: 0,
             credit_notional: 0,
+            idle_fee_carry: 0,
             share_frac: vec![0; n],
             inbox: Inbox::default(),
             tape_seen: vec![0; n],

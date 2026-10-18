@@ -187,7 +187,7 @@ pub fn measure(shared: &Shared) -> Quality {
 /// starts at the middle of its public range and moves toward the truth as the private hints narrow.
 fn public_value(shared: &Shared, stock: usize, tick: Tick) -> f64 {
     let r = &shared.rules;
-    let d = shared.world.dividend(stock, tick) as f64;
+    let d = r.dividend_cents(shared.world.dividend(stock, tick));
     let remaining = (r.ticks_total.saturating_sub(1) / r.dividend_period)
         .saturating_sub(tick / r.dividend_period) as f64;
     let span = (r.terminal_payments_max - r.terminal_payments_min).max(1) as f64;
@@ -199,5 +199,5 @@ fn public_value(shared: &Shared, stock: usize, tick: Tick) -> f64 {
         .fold(span, f64::min);
     let mid = (r.terminal_payments_min + r.terminal_payments_max) as f64 / 2.0;
     let known = mid + (1.0 - width / span) * (shared.world.terminal_payments as f64 - mid);
-    d * (remaining + known)
+    d * (remaining + r.terminal_dividend_payments(known))
 }

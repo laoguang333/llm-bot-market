@@ -16,6 +16,7 @@ pub struct AccountResult {
     pub owner: String,
     pub strategy: String,
     pub cash: Money,
+    pub deferred_idle_fee: Money,
     pub shares: Vec<Qty>,
     pub terminal_value: Money,
     pub equity: Money,
@@ -44,6 +45,10 @@ pub struct GroupResult {
 pub struct MatchResult {
     pub seed: u64,
     pub ticks: Tick,
+    pub dividend_period: Tick,
+    pub dividend_scale: i64,
+    pub combo_period: Tick,
+    pub terminal_payment_ticks: Tick,
     pub terminal_payments: i64,
     pub threads: usize,
     pub decision_budget_us: u64,
@@ -139,7 +144,7 @@ pub fn run_match(
     let shared = Shared::new(cfg, seed, factory)?;
     let run = shared.run()?;
     let rules = &shared.rules;
-    let final_div = shared.world.dividends(cfg.ticks);
+    let final_div = shared.world.dividends(rules.last_tick());
     let mut accounts: Vec<AccountResult> = Vec::new();
     let owners: Vec<String> = shared
         .accounts
@@ -169,6 +174,7 @@ pub fn run_match(
             owner: a.owner.clone(),
             strategy: a.strategy.clone(),
             cash: a.cash,
+            deferred_idle_fee: a.idle_fee_carry,
             shares: a.shares.clone(),
             terminal_value: tv,
             equity: a.cash + tv,
@@ -212,6 +218,10 @@ pub fn run_match(
         seed,
         ticks: cfg.ticks,
         terminal_payments: shared.world.terminal_payments,
+        dividend_period: rules.dividend_period,
+        dividend_scale: rules.dividend_scale,
+        combo_period: rules.combo_period,
+        terminal_payment_ticks: rules.terminal_payment_ticks,
         threads: run.threads,
         decision_budget_us: cfg.schedule.decision_budget_us,
         skip_decision_lag: cfg.schedule.skip_decision_lag,
@@ -286,20 +296,23 @@ fn write_outputs(cfg: &Config, shared: &Shared, result: &MatchResult, dir: &Path
     )?;
     let names: Vec<&str> = cfg.stocks.iter().map(|s| s.name.as_str()).collect();
 
-    let mut csv = String::from("tick,stock,open,high,low,close,volume,notional,dividend\n");
+    let mut csv = String::from(
+        "tick,stock,open,high,low,close,volume,notional,dividend,dividend_cents_per_payment\n",
+    );
     let per_stock: Vec<Vec<Option<Bar>>> = (0..names.len())
         .map(|s| bars(shared, s, cfg.ticks, 1))
         .collect();
     for t in 0..cfg.ticks as usize {
         for (s, b) in per_stock.iter().enumerate() {
             let d = shared.world.dividend(s, t as Tick);
+            let cents = shared.rules.dividend_cents(d);
             match &b[t] {
                 Some(b) => writeln!(
                     csv,
-                    "{t},{},{},{},{},{},{},{},{d}",
+                    "{t},{},{},{},{},{},{},{},{d},{cents}",
                     names[s], b.open, b.high, b.low, b.close, b.volume, b.notional
                 )?,
-                None => writeln!(csv, "{t},{},,,,,0,0,{d}", names[s])?,
+                None => writeln!(csv, "{t},{},,,,,0,0,{d},{cents}", names[s])?,
             }
         }
     }
@@ -419,7 +432,9 @@ pub fn reference_value(shared: &Shared, stock: usize, tick: Tick) -> Money {
     let d = shared.world.dividend(stock, tick);
     let remaining = (r.ticks_total.saturating_sub(1) / r.dividend_period)
         .saturating_sub(tick / r.dividend_period) as i64;
-    d * (remaining + shared.world.terminal_payments)
+    (r.dividend_cents(d)
+        * (remaining as f64 + r.terminal_dividend_payments(shared.world.terminal_payments as f64)))
+    .round() as Money
 }
 
 fn correlation(a: &[f64], b: &[f64]) -> f64 {

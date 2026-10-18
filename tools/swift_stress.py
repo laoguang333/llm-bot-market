@@ -52,7 +52,7 @@ def toml_text(data):
 
 
 def make_cases():
-    base = tomllib.loads((ROOT / "scenarios/baseline.toml").read_text(encoding="utf-8"))
+    base = tomllib.loads((ROOT / "scenarios/baseline-v5.toml").read_text(encoding="utf-8"))
     cases = []
 
     def add(key, label, group="market", changes=None, **kwargs):

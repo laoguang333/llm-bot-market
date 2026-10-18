@@ -7,6 +7,10 @@ pub mod baseline;
 pub mod common;
 pub mod coral;
 pub mod falcon;
+pub mod news;
+#[cfg(test)]
+mod news_test_support;
+pub mod news_v2;
 pub mod strategic;
 pub mod swift;
 
@@ -18,6 +22,8 @@ pub const NAMES: &[&str] = &[
     "value",
     "momentum",
     "news",
+    "news_fixed",
+    "news_v2",
     "hold",
     "fund",
     "combo",
@@ -53,6 +59,8 @@ pub fn factory(name: &str, start: &Start) -> Option<Box<dyn Bot>> {
         "value" => Box::new(baseline::Value::new(start)),
         "momentum" => Box::new(baseline::Momentum::new(start)),
         "news" => Box::new(baseline::News::new(start)),
+        "news_fixed" => Box::new(news::NewsFixed::new(start)),
+        "news_v2" => Box::new(news_v2::NewsV2::new(start)),
         "hold" => Box::new(baseline::Hold::new(start)),
         "fund" => Box::new(strategic::Fund::new(start)),
         "combo" => Box::new(strategic::Fund::new(&with_defaults(

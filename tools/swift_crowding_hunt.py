@@ -46,7 +46,7 @@ def prepare(stage, first, seeds, counts):
     assert seeds > 0 and counts and set(counts) <= {1, 3, 5, 10} and len(set(counts)) == len(counts)
     swift = json.loads((ROOT / "docs/swift-stress-plan.json").read_text(encoding="utf-8"))["sources"]["crates/bots/src/swift.rs"]
     assert sha(ROOT / "crates/bots/src/swift.rs") == swift
-    base = tomllib.loads((ROOT / "scenarios/baseline.toml").read_text(encoding="utf-8"))
+    base = tomllib.loads((ROOT / "scenarios/baseline-v5.toml").read_text(encoding="utf-8"))
     out.mkdir(parents=True)
     binary = out / "hunt-eval-frozen.exe"
     shutil.copy2(ROOT / "target/release/hunt-eval.exe", binary)

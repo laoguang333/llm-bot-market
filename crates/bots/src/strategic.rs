@@ -14,7 +14,8 @@ use std::collections::VecDeque;
 
 /// Dividend payments still to come, in-game and terminal.
 fn payments_left(rules: &Rules, tick: Tick, terminal: f64) -> f64 {
-    payments_after(rules, tick, rules.ticks_total) as f64 + terminal
+    combo_payments_after(rules, tick, rules.ticks_total) as f64
+        + rules.terminal_combo_payments(terminal)
 }
 
 /// Marginal combo value of buying (`buy`) or giving up (`!buy`) one share of `stock`.
@@ -893,7 +894,8 @@ impl Bot for Drift {
                 continue;
             }
             // a holder gets the dividend while the price slides by about as much each period
-            let slide = b.dividend as f64 / now / r.dividend_period as f64 * self.lookback as f64;
+            let slide = r.dividend_cents(b.dividend) / now / r.dividend_period as f64
+                * self.lookback as f64;
             let moved = (now / m[0]).ln() + slide;
             let v = value(r, obs, s, &pending, t_mid);
             if moved > self.trigger && now < v * self.cap {

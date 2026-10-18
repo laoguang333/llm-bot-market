@@ -2,7 +2,10 @@ use bot_api::*;
 use market::config::Config;
 
 fn fixture(params: &[(&str, f64)], shares: Vec<Qty>) -> (Box<dyn Bot>, Observation) {
-    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../scenarios/baseline.toml");
+    let path = concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../scenarios/baseline-v6-five-swift.toml"
+    );
     let mut cfg = Config::load(std::path::Path::new(path)).unwrap();
     cfg.stocks.truncate(2);
     cfg.combos.truncate(1);

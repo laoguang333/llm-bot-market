@@ -21,7 +21,7 @@ OUT = ROOT / "runs/swift-crowding-20261018"
 def prepare():
     if (OUT / "plan.json").exists():
         raise SystemExit("Already prepared")
-    base = tomllib.loads((ROOT / "scenarios/baseline.toml").read_text(encoding="utf-8"))
+    base = tomllib.loads((ROOT / "scenarios/baseline-v5.toml").read_text(encoding="utf-8"))
     binary = ROOT / "target/release/llm-market.exe"
     frozen = json.loads((ROOT / "docs/swift-v5-results.json").read_text())["batches"][-1]
     assert sha(binary) == frozen["binary_sha256"]

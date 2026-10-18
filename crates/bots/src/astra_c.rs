@@ -109,9 +109,9 @@ impl AstraC {
                 continue;
             }
             let from = obs.tick.max(c.start_tick.saturating_sub(1));
-            let periods = payments_after(&self.rules, from, c.end_tick) as f64
-                + if c.active(self.rules.ticks_total) {
-                    terminal
+            let periods = combo_payments_after(&self.rules, from, c.end_tick) as f64
+                + if c.active(self.rules.last_tick()) {
+                    self.rules.terminal_combo_payments(terminal)
                 } else {
                     0.0
                 };
@@ -149,7 +149,11 @@ impl Bot for AstraC {
                 let cashflows = hold_value(r, obs.tick, s, b.dividend, &pending, 0.0);
                 // Use the observed dividend scale: projecting noisy private changes
                 // into both numerator and denominator amplifies estimation errors.
-                Some((b.mid().unwrap_or(b.mark) as f64 - cashflows) / b.dividend as f64)
+                Some(
+                    (b.mid().unwrap_or(b.mark) as f64 - cashflows)
+                        / r.dividend_cents(b.dividend)
+                        / r.terminal_dividend_payments(1.0),
+                )
             })
             .collect();
         implied.sort_unstable_by(f64::total_cmp);

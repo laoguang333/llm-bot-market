@@ -56,7 +56,7 @@ def main():
     p = [p for b in fresh for p in b["percentiles"]]
     report = {
         "strategy": "swift", "frozen_commit": "5289b76",
-        "scenario": "scenarios/baseline.toml", "cash_cents": 2_000_000, "shares_each": 20,
+        "scenario": "scenarios/baseline-v5.toml", "cash_cents": 2_000_000, "shares_each": 20,
         "threads": 4, "ticks": 3000,
         "gate": {"mean_percentile_min": 90, "top_quartile_share_min": 0.8},
         "development_trials": "One parameter set; 20 initial and 40 additional development worlds. No parameter sweep.",

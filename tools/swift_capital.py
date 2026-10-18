@@ -39,7 +39,7 @@ def prepare(stage, first, seeds, selected=None):
     out.mkdir(parents=True)
     binary = out / "hunt-eval-frozen.exe"
     shutil.copy2(ROOT / "target/release/hunt-eval.exe", binary)
-    config = tomllib.loads((ROOT / "scenarios/baseline.toml").read_text(encoding="utf-8"))
+    config = tomllib.loads((ROOT / "scenarios/baseline-v5.toml").read_text(encoding="utf-8"))
     jobs = []
     treatments = [("alone", None, None, None)] + [c for c in (available_cases() if selected else cases()) if selected is None or c[0] in selected]
     if selected:

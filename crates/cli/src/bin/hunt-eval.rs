@@ -268,7 +268,7 @@ mod tests {
     #[test]
     fn reserve_and_scaled_have_equal_wealth_but_different_allocations() {
         let mut cfg = Config::load(
-            &PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../scenarios/baseline.toml"),
+            &PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../scenarios/baseline-v5.toml"),
         )
         .unwrap();
         for (name, owner, cash, shares) in [
@@ -325,7 +325,7 @@ mod tests {
     #[test]
     fn additional_swifts_require_explicit_count_and_frozen_parameters() {
         let mut cfg = Config::load(
-            &PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../scenarios/baseline.toml"),
+            &PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../scenarios/baseline-v5.toml"),
         )
         .unwrap();
         for i in 0..3 {

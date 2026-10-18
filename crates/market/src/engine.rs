@@ -11,7 +11,7 @@ use parking_lot::{Condvar, Mutex, RwLock};
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 use std::panic::{catch_unwind, AssertUnwindSafe};
-use std::sync::atomic::{AtomicI64, AtomicU64, Ordering};
+use std::sync::atomic::{AtomicI64, AtomicU32, AtomicU64, Ordering};
 use std::time::Instant;
 
 pub type BotFactory<'f> = dyn Fn(&str, &Start) -> Option<Box<dyn Bot>> + Sync + 'f;
@@ -78,6 +78,7 @@ pub struct Shared<'a> {
     pub world: World,
     pub markets: Vec<RwLock<StockMarket>>,
     marks: Vec<AtomicI64>,
+    mark_ticks: Vec<AtomicU32>,
     pub accounts: Vec<Mutex<Account>>,
     pub mailboxes: Vec<Mutex<Vec<Mail>>>,
     pub treasury: AtomicI64,
@@ -110,6 +111,7 @@ pub struct RunOutput {
 
 impl<'a> Shared<'a> {
     pub fn new(cfg: &'a Config, seed: u64, factory: &BotFactory<'_>) -> Result<Shared<'a>> {
+        cfg.validate()?;
         let n_stocks = cfg.stocks.len();
         // with count_max, each world draws its own number of accounts per group
         let counts: Vec<usize> = cfg
@@ -127,10 +129,14 @@ impl<'a> Shared<'a> {
             })
             .collect();
         let mut accounts = Vec::new();
-        for (g, &count) in cfg.bots.iter().zip(&counts) {
+        let owner_offsets = cfg.auto_owner_offsets()?;
+        for ((g, &count), base) in cfg.bots.iter().zip(&counts).zip(owner_offsets) {
             for i in 0..count {
                 // one account per owner: without an explicit owner each account is its own
-                let owner = g.owner.clone().unwrap_or_else(|| format!("{}#{i}", g.bot));
+                let owner = g
+                    .owner
+                    .clone()
+                    .unwrap_or_else(|| format!("{}#{}", g.bot, base + i));
                 let mut shares = vec![g.shares_each; n_stocks];
                 for (name, q) in &g.shares {
                     shares[cfg.stock_index(name)?] = *q;
@@ -147,6 +153,9 @@ impl<'a> Shared<'a> {
             }
         }
         let n = accounts.len();
+        if n == 0 {
+            bail!("world {seed} has no accounts; give at least one group a positive minimum count");
+        }
         let initial_shares: Vec<Qty> = (0..n_stocks)
             .map(|s| accounts.iter().map(|a| a.shares[s]).sum())
             .collect();
@@ -167,6 +176,9 @@ impl<'a> Shared<'a> {
                     owner: a.owner.clone(),
                     account_index: idx,
                     n_accounts: n,
+                    // Intentionally reversible: every bot is reviewed before it runs.
+                    // Review forbids reconstructing hidden world information. Seed
+                    // derivability itself is accepted, not an information-isolation bug.
                     seed: seed.wrapping_mul(0x9e3779b97f4a7c15)
                         ^ (idx as u64).wrapping_mul(0xd1b54a32d192ed03),
                     params: g.params.clone(),
@@ -202,6 +214,7 @@ impl<'a> Shared<'a> {
                 .iter()
                 .map(|&p| AtomicI64::new(p))
                 .collect(),
+            mark_ticks: (0..n_stocks).map(|_| AtomicU32::new(0)).collect(),
             accounts: accounts.into_iter().map(Mutex::new).collect(),
             mailboxes: (0..n).map(|_| Mutex::new(Vec::new())).collect(),
             treasury: AtomicI64::new(0),
@@ -244,6 +257,24 @@ impl<'a> Shared<'a> {
             .zip(&self.marks)
             .map(|(shares, mark)| shares * mark.load(Ordering::Relaxed))
             .sum()
+    }
+
+    /// The mark clock is the highest personal tick reached for each book, as
+    /// it already was for trades. Refresh before settlement/risk checks; other
+    /// accounts at the same or an older tick only read the published counters.
+    fn advance_marks(&self, tick: Tick) {
+        for (s, market) in self.markets.iter().enumerate() {
+            if self.mark_ticks[s].load(Ordering::Acquire) >= tick {
+                continue;
+            }
+            let mut m = market.write();
+            let old_mark = m.mark;
+            m.advance_to(tick);
+            if m.mark != old_mark {
+                self.marks[s].store(m.mark, Ordering::Relaxed);
+            }
+            self.mark_ticks[s].store(m.mark_tick(), Ordering::Release);
+        }
     }
 
     // ---- scheduler -----------------------------------------------------
@@ -378,6 +409,7 @@ impl<'a> Shared<'a> {
         reference: Tick,
         obs: &mut Observation,
     ) {
+        self.advance_marks(tick);
         if idx == 0 && tick.is_multiple_of(10) {
             self.sample_books(tick);
         }
@@ -511,10 +543,12 @@ impl<'a> Shared<'a> {
             a.season_cursor += 1;
         }
         let period = self.rules.dividend_period;
+        let mut total = 0;
         if tick > 0 && tick.is_multiple_of(period) {
-            let mut total = 0;
             for s in 0..a.shares.len() {
-                let amt = a.shares[s] * w.dividend(s, tick);
+                let amt = self
+                    .rules
+                    .dividend_payment(a.shares[s], w.dividend(s, tick));
                 if amt != 0 {
                     total += amt;
                     a.stats.dividends += amt;
@@ -524,6 +558,8 @@ impl<'a> Shared<'a> {
                     });
                 }
             }
+        }
+        if tick > 0 && tick.is_multiple_of(self.rules.combo_period) {
             for (r, c) in self.rules.combos.iter().enumerate() {
                 if c.active(tick) {
                     let amt = c.sets(&a.shares) * c.bonus;
@@ -537,6 +573,8 @@ impl<'a> Shared<'a> {
                     }
                 }
             }
+        }
+        if total != 0 {
             a.cash += total;
             self.treasury.fetch_sub(total, Ordering::Relaxed);
         }
@@ -560,14 +598,17 @@ impl<'a> Shared<'a> {
         }
         if tick.is_multiple_of(self.rules.idle_period) && a.samples > 0 {
             let (gross_fee, credit, due) = self.idle_estimate(a);
-            if due > 0 {
-                self.charge_idle(a, due, &self.marks());
-            }
+            let credit_applied = credit.min(gross_fee - a.idle_fee_carry);
+            let paid = if due > 0 {
+                self.charge_idle(a, due, &self.marks())
+            } else {
+                0
+            };
             if gross_fee > 0 {
                 a.inbox.income.push(Income::IdleFee {
-                    paid: due,
+                    paid,
                     gross: gross_fee,
-                    credit: credit.min(gross_fee),
+                    credit: credit_applied,
                 });
             }
             a.equity_sum = 0;
@@ -584,21 +625,24 @@ impl<'a> Shared<'a> {
         };
         let fee = (avg as f64 * self.rules.idle_rate) as Money;
         let credit = (a.credit_notional as f64 * self.rules.credit_ratio) as Money;
-        (fee, credit, (fee - credit).max(0))
+        (
+            fee + a.idle_fee_carry,
+            credit,
+            (fee - credit).max(0) + a.idle_fee_carry,
+        )
     }
 
     /// Takes `due` from positive cash and every stock in the same proportion. Cash goes to
     /// the treasury, shares are burned.
-    fn charge_idle(&self, a: &mut Account, due: Money, marks: &[Price]) {
+    fn charge_idle(&self, a: &mut Account, due: Money, marks: &[Price]) -> Money {
         let pos_cash = a.cash.max(0);
         let base = pos_cash + a.gross(marks);
         if base <= 0 {
-            return;
+            a.idle_fee_carry = due;
+            return 0;
         }
         let cash_part = ((pos_cash as i128 * due as i128) / base as i128) as Money;
-        a.cash -= cash_part;
-        self.treasury.fetch_add(cash_part, Ordering::Relaxed);
-        let mut paid = cash_part;
+        let mut paid = 0;
         for s in 0..a.shares.len() {
             if a.shares[s] <= 0 {
                 continue;
@@ -622,7 +666,40 @@ impl<'a> Shared<'a> {
             self.burned[s].fetch_add(whole, Ordering::Relaxed);
             paid += whole * marks[s];
         }
+        // Stock burns also reduce equity and therefore the capacity backing
+        // resting buys. Cancel newest buys against the post-fee balance sheet.
+        let gross = a.gross(marks);
+        let capacity = ((self.rules.max_leverage * (a.cash - cash_part + gross) as f64) as Money
+            - gross)
+            .max(0);
+        if a.reserved_buy > capacity {
+            let mut buys: Vec<_> = a
+                .orders
+                .iter()
+                .filter(|(_, o)| o.live && o.side == Side::Buy)
+                .map(|(id, o)| (*id, o.placed_tick))
+                .collect();
+            buys.sort_by_key(|(id, t)| Reverse((*t, *id)));
+            for (id, _) in buys {
+                if a.reserved_buy <= capacity {
+                    break;
+                }
+                self.cancel_order(a, id, AckStatus::Cancelled);
+            }
+        }
+        // Cancellation cannot release buys already matched by another worker.
+        // Keep their reservation intact, just as idle burns preserve pending
+        // sells. Carry the uncollectible fee into the next period, without
+        // advancing mailbox delivery or discarding the amount owed.
+        let headroom = self.buying_power(a, a.cash + gross, gross);
+        let affordable = (headroom as f64 / self.rules.max_leverage).floor() as Money;
+        let cash_paid = cash_part.min(pos_cash).min(affordable);
+        a.idle_fee_carry = cash_part - cash_paid;
+        a.cash -= cash_paid;
+        self.treasury.fetch_add(cash_paid, Ordering::Relaxed);
+        paid += cash_paid;
         a.stats.idle_fees += paid;
+        paid
     }
 
     /// Cancels this account's sell orders on `stock`, newest first, until `need` shares are free.
@@ -656,27 +733,34 @@ impl<'a> Shared<'a> {
         a.stats.liquidations += 1;
         a.inbox.income.push(Income::Liquidation);
         self.cancel_all(a, None, AckStatus::CancelledByLiquidation);
-        let frac = if equity <= 0 {
-            1.0
-        } else {
-            let target = self.rules.max_leverage * 0.9 * equity as f64;
-            ((gross as f64 - target) / gross as f64).clamp(0.0, 1.0)
-        };
-        for s in 0..a.shares.len() {
-            let q = ((a.shares[s] as f64) * frac).ceil() as Qty;
-            let q = q.min(a.sellable(s));
-            if q > 0 {
-                self.place(
-                    a,
-                    tick,
-                    Action::Market {
-                        stock: s,
-                        side: Side::Sell,
-                        qty: q,
-                        cid: 0,
-                    },
-                    true,
-                );
+        loop {
+            let gross = self.gross_at_marks(a);
+            let equity = a.cash + gross;
+            if gross == 0 || (equity > 0 && gross as f64 <= self.rules.max_leverage * equity as f64)
+            {
+                break;
+            }
+            let frac = if equity <= 0 {
+                1.0
+            } else {
+                let target = self.rules.max_leverage * 0.9 * equity as f64;
+                ((gross as f64 - target) / gross as f64).clamp(0.0, 1.0)
+            };
+            let mut sold = false;
+            for s in 0..a.shares.len() {
+                let q = ((a.shares[s] as f64) * frac).ceil() as Qty;
+                let q = q.min(a.sellable(s)).min(crate::config::MAX_SHARES);
+                if q > 0 {
+                    let before = a.shares[s];
+                    self.place(a, tick, Action::market(s, Side::Sell, q), true);
+                    sold |= a.shares[s] < before;
+                }
+            }
+            // Reassess actual prices/fees before the next proportional pass.
+            // Every successful pass reduces inventory; an empty book or only
+            // pending sells stops immediately rather than spinning forever.
+            if !sold {
+                break;
             }
         }
         if a.shares.iter().all(|&s| s == 0) && a.cash < 0 && a.orders.is_empty() {
@@ -996,6 +1080,9 @@ impl<'a> Shared<'a> {
                 // Publish under the book lock so an older writer cannot replace
                 // a newer mark after releasing the lock.
                 self.marks[stock].store(m.mark, Ordering::Relaxed);
+            }
+            if m.mark_tick() > self.mark_ticks[stock].load(Ordering::Relaxed) {
+                self.mark_ticks[stock].store(m.mark_tick(), Ordering::Release);
             }
             (fills, rested)
         };
@@ -1498,5 +1585,96 @@ mod scheduling_tests {
             }
             shared.audit().unwrap();
         }
+    }
+
+    #[test]
+    fn idle_fee_preserves_pending_buy_reservations_and_collects_carry_once() {
+        for (bought, due, cash_paid, carry) in
+            [(10, 300, 0, 100), (7, 300, 100, 0), (9, 600, 100, 100)]
+        {
+            let mut cfg = config();
+            cfg.stocks.truncate(1);
+            cfg.combos.clear();
+            cfg.stocks[0].initial_price = 100;
+            cfg.market.opening_spread = None;
+            cfg.bots[0].count = 2;
+            cfg.bots[0].cash = 1000;
+            cfg.bots[0].shares_each = 20;
+            cfg.fees.trade_fee_bps = 0;
+            cfg.fees.credit_ratio = 0.0;
+            cfg.margin.max_leverage = 1.0;
+            let shared = Shared::new(&cfg, 1, &|_, _| Some(Box::new(Idle))).unwrap();
+            {
+                let mut buyer = shared.accounts[0].lock();
+                shared.place(&mut buyer, 0, Action::limit(0, Side::Buy, 100, 10), false);
+            }
+            {
+                let mut seller = shared.accounts[1].lock();
+                shared.place(&mut seller, 1, Action::market(0, Side::Sell, bought), false);
+            }
+            {
+                let mut buyer = shared.accounts[0].lock();
+                let paid = shared.charge_idle(&mut buyer, due, &[100]);
+                assert_eq!(buyer.cash, 1000 - cash_paid);
+                assert_eq!(buyer.idle_fee_carry, carry);
+                assert_eq!(buyer.reserved_buy, bought * 100);
+                assert_eq!(paid, due - carry);
+                assert!(
+                    buyer.inbox.fills.is_empty(),
+                    "fee collection must not consume maker mail early"
+                );
+            }
+            shared.audit().unwrap();
+            {
+                let mut buyer = shared.accounts[0].lock();
+                shared.drain_mailbox(&mut buyer);
+                assert_eq!(buyer.cash, 1000 - cash_paid - bought * 100);
+                assert!(buyer.cash >= 0);
+                assert_eq!(buyer.reserved_buy, 0);
+                assert_eq!(buyer.inbox.fills.len(), 1);
+                let (_, _, owed) = shared.idle_estimate(&buyer);
+                assert_eq!(owed, carry);
+                if owed > 0 {
+                    shared.charge_idle(&mut buyer, owed, &[100]);
+                }
+                assert_eq!(buyer.idle_fee_carry, 0);
+                assert_eq!(buyer.stats.idle_fees, due);
+                shared.drain_mailbox(&mut buyer);
+                assert_eq!(
+                    buyer.inbox.fills.len(),
+                    1,
+                    "maker fill must not be replayed"
+                );
+            }
+            shared.audit().unwrap();
+        }
+    }
+
+    #[test]
+    fn stock_idle_burn_trims_buys_backed_by_margin_equity() {
+        let mut cfg = config();
+        cfg.stocks.truncate(1);
+        cfg.combos.clear();
+        cfg.stocks[0].initial_price = 100;
+        cfg.market.opening_spread = None;
+        cfg.bots[0].cash = 1000;
+        cfg.bots[0].shares_each = 20;
+        cfg.fees.trade_fee_bps = 0;
+        let shared = Shared::new(&cfg, 1, &|_, _| Some(Box::new(Idle))).unwrap();
+        {
+            let mut a = shared.accounts[0].lock();
+            // G=2000, E=3000, L=4: original buying power=10000.
+            shared.place(&mut a, 0, Action::limit(0, Side::Buy, 100, 50), false);
+            shared.place(&mut a, 1, Action::limit(0, Side::Buy, 100, 50), false);
+            assert_eq!(a.reserved_buy, 10000);
+            shared.charge_idle(&mut a, 300, &[100]);
+            assert_eq!(a.cash, 900);
+            assert_eq!(a.shares, [18]);
+            assert_eq!(a.reserved_buy, 5000);
+            assert_eq!(a.live_orders(), 1);
+            assert_eq!(a.orders.values().next().unwrap().placed_tick, 0);
+            assert_eq!(a.idle_fee_carry, 0);
+        }
+        shared.audit().unwrap();
     }
 }

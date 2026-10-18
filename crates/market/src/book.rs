@@ -273,6 +273,43 @@ impl StockMarket {
         fills
     }
 
+    pub fn mark_tick(&self) -> Tick {
+        self.latest_tick
+    }
+
+    /// Advance the shared mark clock even without a trade. Slower accounts and
+    /// late fills cannot rewind it. An empty window uses the latest execution.
+    pub fn advance_to(&mut self, tick: Tick) {
+        if tick <= self.latest_tick {
+            return;
+        }
+        let w = self.buckets.len() as Tick;
+        let old_lo = self.latest_tick.saturating_sub(w - 1);
+        self.latest_tick = tick;
+        let lo = tick.saturating_sub(w - 1);
+        if lo - old_lo >= w {
+            self.mark_notional = 0;
+            self.mark_qty = 0;
+        } else {
+            for expired in old_lo..lo {
+                let b = &self.buckets[expired as usize % w as usize];
+                if b.tick == expired {
+                    self.mark_notional -= b.notional;
+                    self.mark_qty -= b.qty;
+                }
+            }
+        }
+        self.update_mark();
+    }
+
+    fn update_mark(&mut self) {
+        self.mark = if self.mark_qty > 0 {
+            self.mark_notional / self.mark_qty
+        } else {
+            self.last
+        };
+    }
+
     fn record(
         &mut self,
         tick: Tick,
@@ -290,48 +327,27 @@ impl StockMarket {
             taker,
             maker,
         });
+        self.advance_to(tick);
         self.last = price;
         let w = self.buckets.len();
-        let old_lo = self.latest_tick.saturating_sub(w as Tick - 1);
-        self.latest_tick = self.latest_tick.max(tick);
         let lo = self.latest_tick.saturating_sub(w as Tick - 1);
-        if lo - old_lo >= w as Tick {
-            // All previously counted buckets expired. Their contents can stay:
-            // membership is determined by the tick, not the ring slot alone.
-            self.mark_notional = 0;
-            self.mark_qty = 0;
-        } else {
-            for expired in old_lo..lo {
-                let b = &self.buckets[expired as usize % w];
-                if b.tick == expired {
-                    self.mark_notional -= b.notional;
-                    self.mark_qty -= b.qty;
-                }
+        // Expired late trades still belong on the tape and update `last`, but
+        // must not evict a newer valid bucket with the same ring index.
+        if tick >= lo {
+            let b = &mut self.buckets[tick as usize % w];
+            if b.tick != tick {
+                *b = MarkBucket {
+                    tick,
+                    notional: 0,
+                    qty: 0,
+                };
             }
-        }
-        let b = &mut self.buckets[tick as usize % w];
-        if b.tick != tick {
-            // A late trade can replace a newer, still-counted bucket in the
-            // same ring slot. Preserve that behavior of the original scan.
-            if b.tick != Tick::MAX && b.tick >= lo && b.tick <= self.latest_tick {
-                self.mark_notional -= b.notional;
-                self.mark_qty -= b.qty;
-            }
-            *b = MarkBucket {
-                tick,
-                notional: 0,
-                qty: 0,
-            };
-        }
-        b.notional += price * qty;
-        b.qty += qty;
-        if tick != Tick::MAX && tick >= lo {
+            b.notional += price * qty;
+            b.qty += qty;
             self.mark_notional += price * qty;
             self.mark_qty += qty;
         }
-        if self.mark_qty > 0 {
-            self.mark = self.mark_notional / self.mark_qty;
-        }
+        self.update_mark();
     }
 
     pub fn resting_orders(&self) -> impl Iterator<Item = &Resting> {
@@ -347,43 +363,56 @@ mod tests {
     use super::*;
 
     #[test]
-    fn incremental_mark_matches_original_scan_with_late_trades_and_ring_collisions() {
+    fn rolling_mark_matches_timestamp_map_with_silence_and_late_trades() {
         use rand::{Rng, SeedableRng};
         let mut rng = rand_chacha::ChaCha8Rng::seed_from_u64(81);
-        for window in [0, 1, 2, 20, 127] {
+        for window in [1, 2, 20, 127] {
             let mut market = StockMarket::new(100, window);
-            let w = window.max(1);
-            let mut buckets = vec![(Tick::MAX, 0i64, 0i64); w as usize];
-            let mut latest = 0;
-            let mut mark = 100;
-            let mut ticks = vec![0, 0, w, 0, w - 1, w * 3, w * 3 - 1, w * 2, 1];
-            for t in 0..10_000u32 {
-                ticks.push(t.saturating_sub(rng.gen_range(0..w * 3 + 1)));
-            }
-            ticks.extend([Tick::MAX - 1, Tick::MAX, Tick::MAX - w, 0]);
-            for tick in ticks {
+            let mut by_tick = BTreeMap::<Tick, (i64, i64)>::new();
+            let mut now = 0;
+            for step in 0..10_000u32 {
+                // Clock movement is independent of executions. The map oracle
+                // has no ring slots, so old ticks cannot collide with new ones.
+                now = now.max(step);
+                market.advance_to(now);
+                let lo = now.saturating_sub(window - 1);
+                by_tick.retain(|t, _| *t >= lo);
+                let expected = |map: &BTreeMap<Tick, (i64, i64)>, last| {
+                    let (n, q): (i64, i64) =
+                        map.values().fold((0, 0), |(n, q), b| (n + b.0, q + b.1));
+                    if q == 0 {
+                        last
+                    } else {
+                        n / q
+                    }
+                };
+                assert_eq!(market.mark, expected(&by_tick, market.last));
+                if rng.gen_bool(0.4) {
+                    continue;
+                }
+                let tick = now.saturating_sub(rng.gen_range(0..window * 3 + 1));
                 let price = rng.gen_range(1..100_000);
                 let qty = rng.gen_range(1..10_000);
-                // Original implementation, retained as an independent oracle.
-                let b = &mut buckets[(tick % w) as usize];
-                if b.0 != tick {
-                    *b = (tick, 0, 0);
-                }
-                b.1 += price * qty;
-                b.2 += qty;
-                latest = latest.max(tick);
-                let lo = latest.saturating_sub(w - 1);
-                let (notional, volume) = buckets
-                    .iter()
-                    .filter(|b| b.0 != Tick::MAX && b.0 >= lo && b.0 <= latest)
-                    .fold((0, 0), |(n, v), b| (n + b.1, v + b.2));
-                if volume > 0 {
-                    mark = notional / volume;
+                if tick >= lo {
+                    let b = by_tick.entry(tick).or_default();
+                    b.0 += price * qty;
+                    b.1 += qty;
                 }
                 market.record(tick, price, qty, Side::Buy, 1, 2);
-                assert_eq!(market.mark, mark, "window={window}, tick={tick}");
-                assert_eq!((market.mark_notional, market.mark_qty), (notional, volume));
+                assert_eq!(
+                    market.mark,
+                    expected(&by_tick, price),
+                    "window={window} now={now} trade={tick}"
+                );
             }
+            market.advance_to(Tick::MAX);
+            assert_eq!(market.mark, market.last);
+            market.record(Tick::MAX, 777, 1, Side::Buy, 1, 2);
+            market.record(0, 999, 1, Side::Buy, 1, 2);
+            assert_eq!(
+                market.mark, 777,
+                "expired trade must not evict a live ring bucket"
+            );
         }
     }
 

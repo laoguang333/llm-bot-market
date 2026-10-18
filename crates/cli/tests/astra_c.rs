@@ -6,7 +6,10 @@ fn fixture(
     history_price: Price,
     params: &[(&str, f64)],
 ) -> (Box<dyn Bot>, Observation) {
-    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../scenarios/baseline.toml");
+    let path = concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../scenarios/baseline-v6-five-swift.toml"
+    );
     let mut cfg = Config::load(std::path::Path::new(path)).unwrap();
     cfg.stocks.truncate(1);
     cfg.combos.clear();

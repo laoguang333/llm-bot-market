@@ -90,7 +90,14 @@ impl Knowledge {
 
 /// Number of in-game dividend payments strictly after `tick`.
 pub fn payments_after(rules: &Rules, tick: Tick, until: Tick) -> i64 {
-    let p = rules.dividend_period;
+    payments_in_period(rules, tick, until, rules.dividend_period)
+}
+
+pub fn combo_payments_after(rules: &Rules, tick: Tick, until: Tick) -> i64 {
+    payments_in_period(rules, tick, until, rules.combo_period)
+}
+
+fn payments_in_period(rules: &Rules, tick: Tick, until: Tick, p: Tick) -> i64 {
     let last = (rules.ticks_total.saturating_sub(1) / p) as i64; // payments at p, 2p, ..., < ticks_total
     let end = (until / p) as i64;
     (last.min(end) - (tick / p) as i64).max(0)
@@ -109,11 +116,14 @@ pub fn hold_value(
     let total = rules.ticks_total;
     // Each dividend change contributes independently to every remaining payment
     // at/after its effective tick. No timeline allocation or sorting is needed.
-    let mut v = dividend as f64 * (payments_after(rules, tick, total) as f64 + terminal);
+    let terminal = rules.terminal_dividend_payments(terminal);
+    let mut v =
+        rules.dividend_cents(dividend) * (payments_after(rules, tick, total) as f64 + terminal);
     for &(s, delta, eff) in pending {
         if s == stock && eff < total {
             let from = tick.max(eff.saturating_sub(1));
-            v += delta as f64 * (payments_after(rules, from, total) as f64 + terminal);
+            v += rules.dividend_cents(delta)
+                * (payments_after(rules, from, total) as f64 + terminal);
         }
     }
     v
