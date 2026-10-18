@@ -727,6 +727,7 @@ pub struct Shark {
     rules: Rules,
     know: Knowledge,
     history: Vec<VecDeque<f64>>,
+    quantile_scratch: Vec<f64>,
     window: usize,
     quantile: f64,
     margin: f64,
@@ -741,6 +742,7 @@ impl Shark {
             rules: s.rules.clone(),
             know: Knowledge::default(),
             history: vec![VecDeque::new(); s.rules.stocks.len()],
+            quantile_scratch: Vec::new(),
             window: jittered(s, "window", 600.0, 0.3).max(2.0) as usize,
             quantile: jittered(s, "quantile", 0.35, 0.15),
             margin: jittered(s, "margin", 0.01, 0.3),
@@ -781,11 +783,10 @@ impl Bot for Shark {
                 h.pop_front();
             }
             let (lo, hi) = if h.len() * 2 >= self.window {
-                let mut xs: Vec<f64> = h.iter().copied().collect();
-                xs.sort_by(f64::total_cmp);
-                let at = |q: f64| xs[((xs.len() - 1) as f64 * q) as usize];
-                let lo = at(self.quantile);
-                (lo, at(1.0 - self.quantile).max(lo + 2.0 * self.margin))
+                self.quantile_scratch.clear();
+                self.quantile_scratch.extend(h.iter().copied());
+                let (lo, hi) = quantile_pair(&mut self.quantile_scratch, self.quantile);
+                (lo, hi.max(lo + 2.0 * self.margin))
             } else {
                 (1.0 - self.margin, 1.0 + self.margin)
             };

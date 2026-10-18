@@ -149,7 +149,7 @@ pub fn run_match(
     let mut by_cp: Vec<BTreeMap<String, Money>> = vec![BTreeMap::new(); owners.len()];
     let mut n_trades = 0;
     for m in &shared.markets {
-        let m = m.lock();
+        let m = m.read();
         n_trades += m.tape.len();
         for e in &m.tape {
             let v = e.price * e.qty;
@@ -250,7 +250,7 @@ struct Bar {
 }
 
 fn bars(shared: &Shared, stock: usize, ticks: Tick, width: Tick) -> Vec<Option<Bar>> {
-    let m = shared.markets[stock].lock();
+    let m = shared.markets[stock].read();
     let n = ticks.div_ceil(width) as usize;
     let mut out: Vec<Option<Bar>> = (0..n).map(|_| None).collect();
     for e in &m.tape {
@@ -312,7 +312,7 @@ fn write_outputs(cfg: &Config, shared: &Shared, result: &MatchResult, dir: &Path
         .collect();
     let mut csv = String::from("tick,stock,price,qty,aggressor,taker,maker\n");
     for (s, m) in shared.markets.iter().enumerate() {
-        for e in &m.lock().tape {
+        for e in &m.read().tape {
             writeln!(
                 csv,
                 "{},{},{},{},{},{},{}",

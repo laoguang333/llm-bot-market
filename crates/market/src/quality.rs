@@ -62,14 +62,14 @@ pub fn measure(shared: &Shared) -> Quality {
     let (mut dev, mut extreme, mut crossings, mut clustering) = (vec![], vec![], vec![], vec![]);
     for s in 0..n_stocks {
         let tape: Vec<(Tick, i64)> = shared.markets[s]
-            .lock()
+            .read()
             .tape
             .iter()
             .map(|e| (e.tick, e.price))
             .collect();
         let trade_size = median(
             shared.markets[s]
-                .lock()
+                .read()
                 .tape
                 .iter()
                 .map(|e| (e.price * e.qty) as f64)

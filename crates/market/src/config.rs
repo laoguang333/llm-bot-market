@@ -112,7 +112,8 @@ impl Default for RulesCfg {
 #[derive(Debug, Clone, Deserialize)]
 #[serde(deny_unknown_fields, default)]
 pub struct ScheduleCfg {
-    /// 0 = number of CPUs.
+    /// 0 = available logical CPUs (half on Windows). Explicit values are also
+    /// capped to half the available CPUs on Windows; Linux has no such cap.
     pub threads: usize,
     pub max_tick_skew: Tick,
     pub skip_decision_lag: Tick,
@@ -133,6 +134,47 @@ impl Default for ScheduleCfg {
             check_interval: 500,
             mailbox_capacity: 100_000,
         }
+    }
+}
+
+impl ScheduleCfg {
+    pub fn worker_threads(&self, accounts: usize) -> usize {
+        let cpus = std::thread::available_parallelism()
+            .map(|n| n.get())
+            .unwrap_or(1);
+        worker_threads(self.threads, accounts, cpus, cfg!(windows))
+    }
+}
+
+fn worker_threads(requested: usize, accounts: usize, cpus: usize, windows: bool) -> usize {
+    let budget = if windows {
+        (cpus / 2).max(1)
+    } else {
+        cpus.max(1)
+    };
+    let requested = if requested == 0 { budget } else { requested };
+    let requested = if windows {
+        requested.min(budget)
+    } else {
+        requested
+    };
+    requested.min(accounts.max(1))
+}
+
+#[cfg(test)]
+mod thread_tests {
+    use super::worker_threads;
+
+    #[test]
+    fn platform_cpu_budgets_apply_to_auto_and_explicit_threads() {
+        assert_eq!(worker_threads(0, 100, 20, true), 10);
+        assert_eq!(worker_threads(40, 100, 20, true), 10);
+        assert_eq!(worker_threads(4, 100, 20, true), 4);
+        assert_eq!(worker_threads(0, 100, 7, true), 3);
+        assert_eq!(worker_threads(0, 100, 1, true), 1);
+        assert_eq!(worker_threads(0, 100, 20, false), 20);
+        assert_eq!(worker_threads(40, 100, 20, false), 40);
+        assert_eq!(worker_threads(0, 2, 20, false), 2);
     }
 }
 

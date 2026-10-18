@@ -257,3 +257,49 @@ fn empty_books_and_wide_spreads_do_not_trigger_unpriced_buys() {
     o.books[1].asks.clear();
     assert!(bot.on_tick(&o).is_empty());
 }
+
+#[test]
+fn independent_changes_match_the_sorted_payment_timeline() {
+    use crate::common::{hold_value, payments_after};
+    // Include coincident changes, exact payment boundaries, old changes,
+    // another stock, and changes too late to affect terminal settlement.
+    let rules = start().rules;
+    let pending = [
+        (0, 20, 50),
+        (0, -7, 50),
+        (1, 100, 60),
+        (0, 3, 0),
+        (0, 11, 49),
+        (0, -2, 51),
+        (0, 30, rules.ticks_total - 1),
+        (0, 999, rules.ticks_total),
+        (0, 999, Tick::MAX),
+    ];
+    for tick in [0, 1, 49, 50, 51, rules.ticks_total - 1] {
+        for terminal in [0.0, 10.0, 17.5, 13.37] {
+            let mut changes: Vec<_> = pending
+                .iter()
+                .filter(|p| p.0 == 0)
+                .map(|p| (p.2, p.1))
+                .collect();
+            changes.sort_unstable();
+            let (mut d, mut from, mut expected) = (100.0, tick, 0.0);
+            for (eff, delta) in changes {
+                if eff >= rules.ticks_total {
+                    break;
+                }
+                expected += d * payments_after(&rules, from, eff.saturating_sub(1)) as f64;
+                from = from.max(eff.saturating_sub(1));
+                d += delta as f64;
+            }
+            expected += d * payments_after(&rules, from, rules.ticks_total) as f64 + d * terminal;
+            for entries in [pending.to_vec(), pending.iter().rev().copied().collect()] {
+                let actual = hold_value(&rules, tick, 0, 100, &entries, terminal);
+                assert!(
+                    (actual - expected).abs() < 1e-8,
+                    "tick={tick}, {actual} != {expected}"
+                );
+            }
+        }
+    }
+}

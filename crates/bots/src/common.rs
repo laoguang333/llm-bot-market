@@ -107,30 +107,39 @@ pub fn hold_value(
     terminal: f64,
 ) -> f64 {
     let total = rules.ticks_total;
-    let mut d = dividend as f64;
-    let mut changes: Vec<(Tick, Money)> = pending
-        .iter()
-        .filter(|p| p.0 == stock)
-        .map(|p| (p.2, p.1))
-        .collect();
-    changes.sort();
-    let mut v = 0.0;
-    let mut from = tick;
-    for (eff, delta) in changes {
-        if eff >= total {
-            break;
+    // Each dividend change contributes independently to every remaining payment
+    // at/after its effective tick. No timeline allocation or sorting is needed.
+    let mut v = dividend as f64 * (payments_after(rules, tick, total) as f64 + terminal);
+    for &(s, delta, eff) in pending {
+        if s == stock && eff < total {
+            let from = tick.max(eff.saturating_sub(1));
+            v += delta as f64 * (payments_after(rules, from, total) as f64 + terminal);
         }
-        // payments in (from, eff) use the old dividend; a payment exactly at eff already uses the new one
-        v += d * payments_after(rules, from, eff.saturating_sub(1)) as f64;
-        from = eff.saturating_sub(1).max(from);
-        d += delta as f64;
     }
-    v += d * payments_after(rules, from, total) as f64;
-    v + d * terminal
+    v
 }
 
 pub fn mid_or_last(b: &BookView) -> Price {
     b.mid().unwrap_or(b.last)
+}
+
+/// The same two order statistics as a full total-order sort, in linear time.
+pub(crate) fn quantile_pair(xs: &mut [f64], quantile: f64) -> (f64, f64) {
+    let first = ((xs.len() - 1) as f64 * quantile) as usize;
+    let second = ((xs.len() - 1) as f64 * (1.0 - quantile)) as usize;
+    let (low, high) = (first.min(second), first.max(second));
+    let (left, value, _) = xs.select_nth_unstable_by(high, f64::total_cmp);
+    let high_value = *value;
+    let low_value = if low == high {
+        high_value
+    } else {
+        *left.select_nth_unstable_by(low, f64::total_cmp).1
+    };
+    if first <= second {
+        (low_value, high_value)
+    } else {
+        (high_value, low_value)
+    }
 }
 
 pub fn round_tick(rules: &Rules, p: f64) -> Price {
@@ -165,4 +174,31 @@ pub fn jittered(start: &Start, key: &str, default: f64, spread: f64) -> f64 {
     h ^= h >> 29;
     let u = (h % 1_000_000) as f64 / 1_000_000.0;
     default * (1.0 + spread * (2.0 * u - 1.0))
+}
+
+#[cfg(test)]
+mod quantile_tests {
+    use super::*;
+
+    #[test]
+    fn selection_matches_sorted_quantiles_including_ties_and_total_order() {
+        use rand::{Rng, SeedableRng};
+        let mut rng = rand_chacha::ChaCha8Rng::seed_from_u64(11);
+        for n in [1, 2, 3, 20, 600, 1000] {
+            let samples: Vec<f64> = (0..n).map(|_| rng.gen_range(-10..=10) as f64).collect();
+            for samples in [
+                samples,
+                vec![-0.0, 0.0, f64::NAN, f64::INFINITY, f64::NEG_INFINITY],
+            ] {
+                let mut sorted = samples.clone();
+                sorted.sort_by(f64::total_cmp);
+                for quantile in [0.0, 0.1, 0.35, 0.5, 0.8, 1.0] {
+                    let (a, b) = quantile_pair(&mut samples.clone(), quantile);
+                    let at = |q: f64| sorted[((sorted.len() - 1) as f64 * q) as usize].to_bits();
+                    assert_eq!(a.to_bits(), at(quantile));
+                    assert_eq!(b.to_bits(), at(1.0 - quantile));
+                }
+            }
+        }
+    }
 }

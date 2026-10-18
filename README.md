@@ -51,9 +51,13 @@ WASM 沙箱（让外部 LLM 提交编译好的 bot）还没做，见 PRD 第 7 �
 
 ## 调度容忍度
 
-当前基准固定使用 4 个工作线程。正常策略即使暂时落后也保留决策机会：只有最近 8 次实际决策中至少 6 次超过 `schedule.decision_budget_us = 2000` 微秒，并且落后达到 `skip_decision_lag`，才跳过决策。计时只包括 bot 的 `on_tick`。快账户仍受 `max_tick_skew` 约束，等待较慢的账户。
+Windows 环境只使用可用逻辑核心的一半（向下取整，至少 1 个）。引擎会将自动及显式指定的工作线程数限制在此上限内；Linux 没有半核限制。`--threads 0` / `schedule.threads = 0` 自动选择平台允许的线程数，且不会超过账户数。构建、测试和并发实验也应共享相同的 Windows CPU 预算；引擎的线程限制不会为多个独立进程分配总预算。
+
+当前基准场景配置为 4 个工作线程，可用 `--threads 0` 启用自动线程数。正常策略即使暂时落后也保留决策机会：只有最近 8 次实际决策中至少 6 次超过 `schedule.decision_budget_us = 2000` 微秒，并且落后达到 `skip_decision_lag`，才跳过决策。计时只包括 bot 的 `on_tick`。快账户仍受 `max_tick_skew` 约束，等待较慢的账户。
 
 `skip_decision_lag = 0` 禁用跳过；`decision_budget_us = 0` 可复现旧的仅按落后量跳过规则。新规则不是原生代码的硬超时。每局 `summary.json` 记录线程数、调度门槛和各账户的超时/跳过次数；旧调度下的历史分数应单独比较。
+
+多线程执行顺序不确定，同一个 seed 不保证逐笔复现；本项目优先考虑性能。性能优化及实测见 [性能记录](docs/performance.md)。
 
 Windows 上可用 `python tools/bench_bot.py coral-train --first-seed 1` 跑当前基准开发集；追加 `--scenario scenarios/baseline-v4.toml` 可选择旧版。脚本保存完整报告、命令、源码及二进制哈希和汇总诊断到 `runs/bench/`。
 
@@ -78,3 +82,13 @@ cargo fmt && cargo clippy --all-targets -- -D warnings && cargo test
 ```
 
 release 构建关闭整数溢出检查；`cargo build --profile release-checked` 打开。
+
+release 已启用 ThinLTO 和单个 codegen unit，以增加跨模块优化机会；首次 release 构建会更慢。用 `python tools/build_release.py` 构建时，Windows 的 Cargo、LLVM 和链接器子进程会共享半核 CPU 预算。追加 `--native` 可为本机 CPU 指令集优化，产物单独保存在 `target/native/release/`，仅适合本机或指令集兼容的 CPU；普通 `target/release/` 构建不启用此本机指令集限定。
+
+Windows 下用 `cargo build --release -j N` 限制构建并发，`N` 不超过逻辑核心数的一半；测试建议 `cargo test -j N -- --test-threads=1`，避免多个内含工作线程的测试同时运行。例如 20 个逻辑核心的机器取 `N=10`。Linux 无半核限制。
+
+比较两个 release 可执行文件的性能（交替顺序、预热、保留完整报告和哈希）：
+
+```sh
+python tools/perf_engine.py --binary before=runs/llm-market-before.exe --binary after=target/release/llm-market.exe --threads 1 4 10 --repeats 3 --out runs/perf-comparison
+```
