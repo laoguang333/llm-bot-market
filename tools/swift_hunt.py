@@ -87,7 +87,7 @@ def read_world(path, job, seed):
                 "stats": a["stats"], "counterparty_notional": a["notional_by_counterparty"]}
     target, predator = read_account("target"), read_account("predator")
     if predator:
-        assert predator["initial_equity"] == target["initial_equity"]*10
+        assert predator["initial_equity"] == target["initial_equity"]*job.get("multiple", 10)
     return {"seed": seed, "case": job["case"], "order": job["order"], "target": target, "predator": predator,
             "audits": data["audits"], "quality_pass": data["quality"]["pass"],
             "all_skipped": sum(a["stats"]["skipped"] for a in data["accounts"]),

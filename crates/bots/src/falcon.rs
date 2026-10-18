@@ -66,6 +66,7 @@ pub struct Falcon {
     cap: f64,
     entry: f64,
     exit: f64,
+    capital_limit: f64,
     actions: usize,
     tick_size: Price,
     fee: i64,
@@ -82,6 +83,9 @@ impl Falcon {
             cap: s.param("cap", 0.25).clamp(0.0, 1.0),
             entry: s.param("entry", 0.0),
             exit: s.param("exit", -0.05),
+            // An optional absolute allocation keeps extra reserve cash from
+            // automatically increasing desired positions. Default is unchanged.
+            capital_limit: s.param("capital_limit", f64::MAX).max(0.0),
             actions: s.rules.max_actions_per_tick,
             tick_size: s.rules.tick_size.max(1),
             fee: s.rules.trade_fee_bps,
@@ -105,7 +109,7 @@ impl Bot for Falcon {
                 obs.trades.get(s).map_or(&[], Vec::as_slice),
             );
         }
-        let eq = obs.account.equity.max(0) as f64;
+        let eq = (obs.account.equity.max(0) as f64).min(self.capital_limit);
         let mut budget =
             (eq * self.leverage - obs.account.gross as f64 - obs.account.reserved_buy as f64)
                 .max(0.0)

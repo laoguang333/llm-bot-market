@@ -344,3 +344,49 @@ fn all_modes_ignore_identity_and_private_information() {
         }
     }
 }
+
+#[test]
+fn extra_cash_does_not_expand_a_fixed_trading_allocation() {
+    for mode in [0, 4, 5, 6, 7] {
+        let mut s = start();
+        s.params.insert("mode".into(), mode as f64);
+        s.params.insert("capital_limit".into(), 2_000_000.0);
+        let (mut small, mut large) = (Falcon::new(&s), Falcon::new(&s));
+        for tick in 0..180 {
+            let o = observation(tick, tick % 90 < 45);
+            let mut rich = o.clone();
+            rich.account.cash += 100_000_000;
+            rich.account.equity += 100_000_000;
+            rich.account.buying_power += 100_000_000;
+            assert_eq!(small.on_tick(&o), large.on_tick(&rich), "mode {mode}");
+        }
+    }
+}
+
+#[test]
+fn allocation_cap_and_actual_equity_both_constrain_spending() {
+    for equity in [2_400_000, 500_000] {
+        let mut s = start();
+        s.params.insert("mode".into(), 5.0);
+        s.params.insert("capital_limit".into(), 1_000_000.0);
+        s.params.insert("cap".into(), 1.0);
+        let mut bot = Falcon::new(&s);
+        let mut o = observation(100, true);
+        o.account.equity = equity;
+        let orders = bot.on_tick(&o);
+        let spend: i64 = orders
+            .iter()
+            .map(|a| match a {
+                Action::Limit {
+                    side: Side::Buy,
+                    price,
+                    qty,
+                    ..
+                } => (price + (price * 5 + 9999) / 10000) * qty,
+                _ => 0,
+            })
+            .sum();
+        assert!(spend > 0);
+        assert!(spend <= equity.min(1_000_000) - o.account.gross);
+    }
+}
