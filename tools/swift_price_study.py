@@ -55,7 +55,8 @@ def main():
         q = np.quantile(x[:, j], [.1, .3, .5, .7, .9])
         bins = np.searchsorted(q, x[:, j])
         print(name, "cuts", np.round(q, 4).tolist())
-        print([(int(np.sum(bins == k)), np.round(y[bins == k].mean(axis=0)*100, 2).tolist()) for k in range(6)])
+        print([(int(np.sum(bins == k)), np.round(y[bins == k].mean(axis=0)*100, 2).tolist())
+               for k in range(6) if np.any(bins == k)])
 
 
 if __name__ == "__main__":

@@ -1,5 +1,36 @@
 # Swift: price-only v5 challenger
 
+## 验收结果（2026-10-18）
+
+**Swift 已按现有门槛通过 v5。** 使用盘口、主动成交方向和短期价格动量；
+不读取估值，也没有改基准、对手、初始资金或调度规则。
+
+| 数据集 | 局数 | 平均排名百分位 | 进入前 25% | 第一名次数 |
+| --- | ---: | ---: | ---: | ---: |
+| 初始开发 1–20 | 20 | 95.84 | 100% | 5 |
+| 扩展开发 21–60 | 40 | 95.32 | 100% | 7 |
+| 官方旧留出 1001–1020 | 20 | 97.05 | 100% | 6 |
+| 新留出 A：5001–5040 | 40 | 95.89 | 100% | 10 |
+| 新留出 B：6001–6040 | 40 | 96.76 | 100% | 12 |
+
+两批新世界合计平均 **96.32**，最差排名百分位 **79.66**。游戏账户的平均
+收益率为 **118.54%**，最差一局 **+6.10%**；正常到账的分红仍计入收益，
+但不进入交易信号。新世界中，扣掉分红后的净损益平均仍为 **+19,259.69 元**
+（已含交易费、闲置费与利息，包含期初持股到期末资产的价值变化）。
+
+整个开发只实现并检验了一组参数，没有网格搜索。冻结提交为 `5289b76`，
+其后 100 局验收源码与二进制哈希完全一致。100 局共完成 **600 次账务审计**，
+所有账户零跳过、零停用、零 bot 错误；Swift 零拒单、零强平，每局完整决策
+3,000 次，平均每次约 **1.5–1.8 微秒**。
+
+格式检查、Clippy 严格检查、release 构建及全部 **34 项测试**通过。逐局分数、
+收益、诊断和哈希在 [swift-v5-results.json](swift-v5-results.json)，汇总脚本为
+`python tools/swift_report.py`。原始运行记录保存在本机 `runs/bench/swift-*`。
+
+小资金利用的是最优一档的成交机会：只在当前最优价成交，未成交部分等待下一次
+观察，不为迅速扩大仓位扫到更差价格。本轮保持标准挑战账户（现金 20,000 元、
+每只股票 20 股），尚未做放大本金的容量对照实验。
+
 ## Scope and frozen evaluation protocol
 
 Swift uses the public order book, executed trades, recent prices, trading clock,
@@ -32,8 +63,8 @@ Before opening validation results, the following evaluation was fixed:
 | Fresh B | 6001–6040 | Independent second batch, same frozen executable |
 
 Raw challenge reports, commands, source hashes and executable hashes are kept
-under `runs/bench/swift-*`. The concise permanent result artifact will accompany
-this document. Validation worlds must not be used to revise this candidate and
+under `runs/bench/swift-*`; the permanent summary is `swift-v5-results.json`.
+Validation worlds must not be used to revise this candidate and
 then relabeled as untouched holdout data.
 
 ## Mechanism

@@ -14,6 +14,8 @@ cargo build --release
 ./target/release/llm-market series scenarios/baseline.toml --out runs/base --seeds 20
 # 打穿测试：一个挑战者账户加入基准市场，在留出种子 1001–1020 上跑
 ./target/release/llm-market challenge scenarios/baseline.toml --bot shark --out runs/ch-shark --seeds 20
+# Swift：只读盘口、成交与价格走势的挑战者
+./target/release/llm-market challenge scenarios/baseline.toml --bot swift --out runs/ch-swift --seeds 20
 # 复现 Coral 打穿 v4 的挑战（v5 已将 Coral 纳入对手阵容）
 ./target/release/llm-market challenge scenarios/baseline-v4.toml --bot coral --out runs/ch-coral-v4 --seeds 20
 # 三名 Astra 独立策略的统一留出验收和六种出场顺序对抗
@@ -28,7 +30,7 @@ python tools/arena_gate.py --cwd . -- python tools/astra_tournament.py --out run
 |---|---|
 | `crates/bot-api` | bot 与引擎之间的全部类型：`Rules`、`Observation`、`Action`、`Bot` trait |
 | `crates/market` | 撮合、调度、结算、世界生成、计分与报告 |
-| `crates/bots` | 内置 bot：`baseline.rs` 是基础对照策略，`strategic.rs`、`coral.rs` 和 `astra_*.rs` 是博弈型策略 |
+| `crates/bots` | 内置 bot：基础对照、估值策略，以及 `swift.rs` 中只读价格和成交的策略 |
 | `crates/cli` | 命令行 `llm-market` |
 | `scenarios/` | `baseline.toml`（只有对照组）、`tournament.toml`（对照组 + 博弈型）、`arena.toml`（只有博弈型和两个对照） |
 
@@ -56,6 +58,8 @@ WASM 沙箱（让外部 LLM 提交编译好的 bot）还没做，见 PRD 第 7 �
 Windows 上可用 `python tools/bench_bot.py coral-train --first-seed 1` 跑当前基准开发集；追加 `--scenario scenarios/baseline-v4.toml` 可选择旧版。脚本保存完整报告、命令、源码及二进制哈希和汇总诊断到 `runs/bench/`。
 
 三名 Astra medium 独立开发的 `astra_a`、`astra_b`、`astra_c` 已注册。统一赛制、冻结记录、账务修复和比赛结果见 [三方 v5 比赛](docs/astra-v5-tournament.md)。
+
+`swift` 使用主动成交方向、盘口深度和短期价格动量，完全不读取分红、新闻或清算估值。开发过程、冻结验收和复现命令见 [Swift v5 报告](docs/swift-v5.md)。
 
 ## 开发
 
