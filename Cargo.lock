@@ -50,6 +50,7 @@ dependencies = [
  "bot-api",
  "bots",
  "market",
+ "serde",
  "serde_json",
 ]
 

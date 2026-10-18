@@ -126,6 +126,9 @@ pub struct Inbox {
 pub struct Stats {
     pub trade_fees: Money,
     pub idle_fees: Money,
+    /// Idle fee split: cash sent to treasury vs shares destroyed at mark value.
+    pub idle_cash_fees: Money,
+    pub idle_stock_fees: Money,
     pub interest: Money,
     pub dividends: Money,
     pub combo_dividends: Money,

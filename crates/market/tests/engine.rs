@@ -73,6 +73,79 @@ fn idle() -> Script {
 }
 
 #[test]
+fn observer_preserves_execution_and_sees_final_maker_delivery() {
+    use market::account::Account;
+    use market::engine::MatchObserver;
+    #[derive(Default)]
+    struct Observer {
+        actions: Mutex<usize>,
+        final_fills: Mutex<Vec<(usize, Fill)>>,
+    }
+    impl MatchObserver for Observer {
+        fn step(
+            &self,
+            _: &Account,
+            _: Tick,
+            o: Option<&Observation>,
+            actions: &[Action],
+            _: Money,
+        ) {
+            assert!(o.is_some());
+            *self.actions.lock() += actions.len();
+        }
+        fn finish(&self, a: &Account) {
+            self.final_fills
+                .lock()
+                .extend(a.inbox.fills.iter().cloned().map(|f| (a.idx, f)));
+        }
+    }
+    let cfg = config(
+        3,
+        "[fees]\nidle_rate=0\ntrade_fee_bps=0",
+        &(group("seller", 0, 10) + &group("buyer", 100000, 0)),
+    );
+    let execute = |observer: Option<&dyn MatchObserver>| {
+        let h = Harness::new(vec![
+            ("seller", at(0, vec![Action::limit(0, Side::Sell, 1000, 3)])),
+            ("buyer", at(2, vec![Action::limit(0, Side::Buy, 1000, 3)])),
+        ]);
+        market::report::run_match_observed(&cfg, 1, &|n, s| h.factory(n, s), None, observer)
+            .unwrap()
+    };
+    let observer = Observer::default();
+    let plain = execute(None);
+    let traced = execute(Some(&observer));
+    assert_eq!(*observer.actions.lock(), 2);
+    assert!(observer
+        .final_fills
+        .lock()
+        .iter()
+        .any(|(idx, f)| *idx == 0 && f.maker && f.qty == 3));
+    for (a, b) in plain.accounts.iter().zip(&traced.accounts) {
+        assert_eq!(
+            (a.cash, &a.shares, a.terminal_value),
+            (b.cash, &b.shares, b.terminal_value)
+        );
+        assert_eq!(a.stats.trades, b.stats.trades);
+    }
+}
+
+#[test]
+fn idle_fee_reports_cash_and_destroyed_stock_components() {
+    let cfg = config(
+        11,
+        "[fees]\nidle_period=10\nidle_rate=0.01\ntrade_fee_bps=0",
+        &group("lazy", 100000, 100),
+    );
+    let h = Harness::new(vec![("lazy", idle())]);
+    let r = market::report::run_match(&cfg, 1, &|n, s| h.factory(n, s), None).unwrap();
+    let st = &r.accounts[0].stats;
+    assert_eq!(st.idle_cash_fees, 1000);
+    assert_eq!(st.idle_stock_fees, 2000);
+    assert_eq!(st.idle_fees, st.idle_cash_fees + st.idle_stock_fees);
+}
+
+#[test]
 fn per_tick_rounds_each_whole_position_without_carry_and_keeps_tick_zero_unpaid() {
     let mut cfg = config(6, "[fees]\nidle_rate=0", &group("passive", 100000, 10));
     cfg.world.dividend_period = 1;

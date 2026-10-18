@@ -12,7 +12,7 @@ cargo build --release
 ./target/release/llm-market run scenarios/tournament.toml --out runs/t1
 # 在 20 个随机世界里各跑一局，输出每个策略的平均排名百分位 ± 标准差
 ./target/release/llm-market series scenarios/tournament.toml --out runs/series --seeds 20
-# 当前默认：v6 阵容、逐 tick 普通股息；原周期派息 v6 保存在 baseline-v6.toml
+# 当前默认：两个 Swift 的 v6、逐 tick 普通股息
 ./target/release/llm-market series scenarios/baseline.toml --out runs/base --seeds 20
 # 打穿测试：一个挑战者账户加入基准市场，在留出种子 1001–1020 上跑
 ./target/release/llm-market challenge scenarios/baseline.toml --bot shark --out runs/ch-shark --seeds 20
@@ -24,6 +24,9 @@ cargo build --release
 python tools/arena_gate.py --cwd . -- python tools/astra_tournament.py --out runs/astra-v5-tournament
 # 列出内置 bot
 ./target/release/llm-market bots
+# 录制完整决策输入和成交，再打开交互调查台（自动构建 release）
+python tools/swift_debugger.py run --out runs/swift-debug --seed 7 --threads 4
+python tools/swift_debugger.py serve --run runs/swift-debug --open
 ```
 
 ## 目录
@@ -34,7 +37,8 @@ python tools/arena_gate.py --cwd . -- python tools/astra_tournament.py --out run
 | `crates/market` | 撮合、调度、结算、世界生成、计分与报告 |
 | `crates/bots` | 内置 bot：基础对照、估值策略，以及 `swift.rs` 中只读价格和成交的策略 |
 | `crates/cli` | 命令行 `llm-market` |
-| `scenarios/` | `baseline.toml` / `baseline-per-tick.toml`（当前逐 tick 派息）、`baseline-v1` 至 `baseline-v6.toml`（周期派息归档）、`tournament.toml` / `arena.toml`（其他阵容） |
+| `scenarios/` | `baseline.toml` / `baseline-v6.toml` / `baseline-per-tick.toml`（当前两个 Swift、逐 tick 派息）；`baseline-v1` 至 `baseline-v5` 及 `baseline-v6-five-swift`（周期派息归档） |
+| `tools/debugger/` | 离线交互交易调查台；[使用方法、数据口径与验证](docs/swift-debugger.md) |
 
 ## 写一个 bot
 
@@ -85,7 +89,7 @@ Windows 上可用 `python tools/bench_bot.py coral-train --first-seed 1` 跑当�
 
 [猎手研究的重要发现](docs/swift-hunter-findings.md) 已归档。多 Swift 实验按用户要求中止，500 局成组结果见[中止报告](docs/swift-crowding-hunt-results.md)；另有 8 个未完成配置的原始摘要，不纳入统计。实验不会自动续跑。
 
-[周期派息 v6](docs/baseline-v6.md) 加入五个不同参数的小资金 Swift，现保存在 `baseline-v6.toml`；当前默认沿用其阵容，改为逐 tick 普通股息。旧研究脚本已绑定归档。在当时引擎的 80 局固定验收中，默认 Swift 挑战 v5/v6 的平均百分位分别为 **96.51 / 60.21**，v6 未打穿。该历史结果不能当作逐 tick 规则下的成绩；新结果见[改造报告](docs/per-tick-dividends.md)。
+[周期派息 v6](docs/baseline-v6.md) 加入五个不同参数的小资金 Swift，现保存在 `baseline-v6-five-swift.toml`；当前默认已改为两个 Swift、逐 tick 普通股息。旧研究脚本已绑定归档。在当时引擎的 80 局固定验收中，默认 Swift 挑战 v5/v6 的平均百分位分别为 **96.51 / 60.21**，v6 未打穿。该历史结果不能当作当前基准的成绩；派息改造见[改造报告](docs/per-tick-dividends.md)，当前配置见[两个 Swift 的 v6](docs/baseline-v6-current.md)。
 
 ## 开发
 

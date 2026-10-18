@@ -16,6 +16,21 @@ use std::time::Instant;
 
 pub type BotFactory<'f> = dyn Fn(&str, &Start) -> Option<Box<dyn Bot>> + Sync + 'f;
 
+/// Optional read-only diagnostic hook. Called outside the bot decision timer.
+/// Observers must not trade or modify simulation state. I/O can change concurrent
+/// scheduling, so a traced match is a separate run, not a replay of another match.
+pub trait MatchObserver: Sync {
+    fn step(
+        &self,
+        account: &Account,
+        tick: Tick,
+        observation: Option<&Observation>,
+        actions: &[Action],
+        gross: Money,
+    );
+    fn finish(&self, account: &Account);
+}
+
 const MAX_CONSECUTIVE_BOT_ERRORS: u32 = 20;
 
 /// Completed ticks only advance by one. The lower median therefore moves only
@@ -90,6 +105,7 @@ pub struct Shared<'a> {
     pub initial_shares: Vec<Qty>,
     pub audits: AtomicU64,
     pub book_samples: Mutex<Vec<BookSample>>,
+    pub observer: Option<&'a dyn MatchObserver>,
 }
 
 /// Order book snapshot for market-quality statistics.
@@ -237,6 +253,7 @@ impl<'a> Shared<'a> {
             initial_shares,
             audits: AtomicU64::new(0),
             book_samples: Mutex::new(Vec::new()),
+            observer: None,
         })
     }
 
@@ -294,6 +311,9 @@ impl<'a> Shared<'a> {
         for i in 0..self.n_accounts() {
             let mut a = self.accounts[i].lock();
             self.drain_mailbox(&mut a);
+            if let Some(observer) = self.observer {
+                observer.finish(&a);
+            }
         }
         self.audit()?;
         Ok(RunOutput {
@@ -415,6 +435,8 @@ impl<'a> Shared<'a> {
         }
         let mut guard = self.accounts[idx].lock();
         let a = &mut *guard;
+        let mut observed = false;
+        let mut traced_actions = Vec::new();
         self.drain_mailbox(a);
         self.settle_world(a, tick);
         self.periodic_charges(a, tick);
@@ -432,6 +454,7 @@ impl<'a> Shared<'a> {
             a.skipped_since += 1;
         } else {
             self.observation(a, tick, reference, obs);
+            observed = true;
             let mut bot = a.bot.take().unwrap();
             let t0 = Instant::now();
             let res = catch_unwind(AssertUnwindSafe(|| bot.on_tick(obs)));
@@ -445,6 +468,9 @@ impl<'a> Shared<'a> {
             }
             match res {
                 Ok(actions) => {
+                    if self.observer.is_some() {
+                        traced_actions.clone_from(&actions);
+                    }
                     a.bot = Some(bot);
                     a.consecutive_errors = 0;
                     self.apply_actions(a, tick, actions);
@@ -465,6 +491,9 @@ impl<'a> Shared<'a> {
         // end-of-tick samples for the idle fee and interest
         let gross = self.gross_at_marks(a);
         let equity = a.cash + gross;
+        if let Some(observer) = self.observer {
+            observer.step(a, tick, observed.then_some(obs), &traced_actions, gross);
+        }
         a.equity_sum += equity.max(0) as i128;
         a.loan_sum += (-a.cash).max(0) as i128;
         a.samples += 1;
@@ -699,6 +728,8 @@ impl<'a> Shared<'a> {
         self.treasury.fetch_add(cash_paid, Ordering::Relaxed);
         paid += cash_paid;
         a.stats.idle_fees += paid;
+        a.stats.idle_cash_fees += cash_paid;
+        a.stats.idle_stock_fees += paid - cash_paid;
         paid
     }
 

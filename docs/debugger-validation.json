@@ -1,0 +1,1268 @@
+{
+  "date": "2026-10-19",
+  "scenario": "scenarios/baseline.toml",
+  "scenario_sha256": "0a4355ec5d5370d059e658c6d322f0e80bd095a69819901240fe871b1a19fba3",
+  "swift_sha256": "bfdbf02ec196234a3346b1f046e5f3b6080c9c9ed511bc1382f66e5d62ccf9fb",
+  "recorded_run": {
+    "path": "runs/swift-debug-seed7-final",
+    "seed": 7,
+    "threads": 4,
+    "ticks": 3000,
+    "trace_sha256": "2d80939adfd5d1fbc37d1482d8f2a0b25384f5ee1b67c606004a3fe99d319290",
+    "accounts": [
+      {
+        "name": "grid#0",
+        "strategy": "grid",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "grid#1",
+        "strategy": "grid",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "grid#2",
+        "strategy": "grid",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "grid#3",
+        "strategy": "grid",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "grid#4",
+        "strategy": "grid",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "grid#5",
+        "strategy": "grid",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "grid#6",
+        "strategy": "grid",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "grid#7",
+        "strategy": "grid",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "value#0",
+        "strategy": "value",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "value#1",
+        "strategy": "value",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "value#2",
+        "strategy": "value",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "value#3",
+        "strategy": "value",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "value#4",
+        "strategy": "value",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "value#5",
+        "strategy": "value",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "value#6",
+        "strategy": "value",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "value#7",
+        "strategy": "value",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "value#8",
+        "strategy": "value",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "momentum#0",
+        "strategy": "momentum",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "momentum#1",
+        "strategy": "momentum",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "momentum#2",
+        "strategy": "momentum",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "momentum#3",
+        "strategy": "momentum",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "momentum#4",
+        "strategy": "momentum",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "news#0",
+        "strategy": "news",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "news#1",
+        "strategy": "news",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "news#2",
+        "strategy": "news",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "news#3",
+        "strategy": "news",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "news#4",
+        "strategy": "news",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "noise#0",
+        "strategy": "noise",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "noise#1",
+        "strategy": "noise",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "noise#2",
+        "strategy": "noise",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "noise#3",
+        "strategy": "noise",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "noise#4",
+        "strategy": "noise",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "noise#5",
+        "strategy": "noise",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "noise#6",
+        "strategy": "noise",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "noise#7",
+        "strategy": "noise",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "hold#0",
+        "strategy": "hold",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "hold#1",
+        "strategy": "hold",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "hold#2",
+        "strategy": "hold",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "hold#3",
+        "strategy": "hold",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "hold#4",
+        "strategy": "hold",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "hunter#0",
+        "strategy": "hunter",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "hunter#1",
+        "strategy": "hunter",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "shark#0",
+        "strategy": "shark",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "shark#1",
+        "strategy": "shark",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "tracker#0",
+        "strategy": "tracker",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "tracker#1",
+        "strategy": "tracker",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "tracker#2",
+        "strategy": "tracker",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "tracker#3",
+        "strategy": "tracker",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "coral#0",
+        "strategy": "coral",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "coral#1",
+        "strategy": "coral",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "coral#2",
+        "strategy": "coral",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "coral#3",
+        "strategy": "coral",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "swift-standard",
+        "strategy": "swift",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "swift-early",
+        "strategy": "swift",
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      }
+    ],
+    "swift_decisions": 6000,
+    "total_skipped": 0,
+    "total_bot_errors": 0,
+    "trace_bytes": 729208002,
+    "packed_bytes": 72727442
+  },
+  "single_thread_equivalence": {
+    "cpu_budget": 10,
+    "seed": 7,
+    "threads": 1,
+    "ticks": 3000,
+    "normal_seconds": 1.165924500033725,
+    "trace_seconds": 6.75974910001969,
+    "normal_engine_seconds": 1.117181,
+    "trace_engine_seconds": 6.6889883,
+    "identical_financial_outcomes": true,
+    "identical_trade_tape": true,
+    "identical_news": true,
+    "trace_bytes": 731353575
+  },
+  "normal_mode_performance": {
+    "platform": "Windows-10-10.0.19045-SP0",
+    "logical_cpus": 20,
+    "scenario": "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\scenarios\\baseline.toml",
+    "scenario_sha256": "0a4355ec5d5370d059e658c6d322f0e80bd095a69819901240fe871b1a19fba3",
+    "binaries": {
+      "before": {
+        "path": "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\per-tick-20261019\\after.exe",
+        "sha256": "40bfdb6a6e26e319269aeb7357f8435671d34588e9c2d87f11c1724a5767510d"
+      },
+      "after": {
+        "path": "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\target\\release\\llm-market.exe",
+        "sha256": "1eac6f0fb9404f2bbe8a8876780664780c081c5a5021ed318b183913d66a9be9"
+      }
+    },
+    "runs": [
+      {
+        "label": "before",
+        "warmup": true,
+        "repeat": 0,
+        "seed": 7,
+        "threads": 4,
+        "engine_seconds": 0.4046972,
+        "total_seconds": 0.45545240002684295,
+        "accounts": 54,
+        "decisions": 162000,
+        "trades": 64868,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\per-tick-20261019\\after.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\before-warmup-t4-s7",
+          "--threads",
+          "4",
+          "--seed",
+          "7"
+        ]
+      },
+      {
+        "label": "after",
+        "warmup": true,
+        "repeat": 0,
+        "seed": 7,
+        "threads": 4,
+        "engine_seconds": 0.4247385,
+        "total_seconds": 0.489966600027401,
+        "accounts": 54,
+        "decisions": 162000,
+        "trades": 66345,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\target\\release\\llm-market.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\after-warmup-t4-s7",
+          "--threads",
+          "4",
+          "--seed",
+          "7"
+        ]
+      },
+      {
+        "label": "after",
+        "warmup": false,
+        "repeat": 0,
+        "seed": 7,
+        "threads": 4,
+        "engine_seconds": 0.4169984,
+        "total_seconds": 0.47404360002838075,
+        "accounts": 54,
+        "decisions": 162000,
+        "trades": 63798,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\target\\release\\llm-market.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\after-0-t4-s7",
+          "--threads",
+          "4",
+          "--seed",
+          "7"
+        ]
+      },
+      {
+        "label": "before",
+        "warmup": false,
+        "repeat": 0,
+        "seed": 7,
+        "threads": 4,
+        "engine_seconds": 0.4382629,
+        "total_seconds": 0.4921326999901794,
+        "accounts": 54,
+        "decisions": 162000,
+        "trades": 67657,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\per-tick-20261019\\after.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\before-0-t4-s7",
+          "--threads",
+          "4",
+          "--seed",
+          "7"
+        ]
+      },
+      {
+        "label": "before",
+        "warmup": false,
+        "repeat": 0,
+        "seed": 11,
+        "threads": 4,
+        "engine_seconds": 0.3935675,
+        "total_seconds": 0.44083360000513494,
+        "accounts": 55,
+        "decisions": 165000,
+        "trades": 50169,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\per-tick-20261019\\after.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\before-0-t4-s11",
+          "--threads",
+          "4",
+          "--seed",
+          "11"
+        ]
+      },
+      {
+        "label": "after",
+        "warmup": false,
+        "repeat": 0,
+        "seed": 11,
+        "threads": 4,
+        "engine_seconds": 0.3712482,
+        "total_seconds": 0.42386109998915344,
+        "accounts": 55,
+        "decisions": 165000,
+        "trades": 51164,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\target\\release\\llm-market.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\after-0-t4-s11",
+          "--threads",
+          "4",
+          "--seed",
+          "11"
+        ]
+      },
+      {
+        "label": "after",
+        "warmup": false,
+        "repeat": 0,
+        "seed": 19,
+        "threads": 4,
+        "engine_seconds": 0.3765511,
+        "total_seconds": 0.4212227999814786,
+        "accounts": 51,
+        "decisions": 153000,
+        "trades": 47332,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\target\\release\\llm-market.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\after-0-t4-s19",
+          "--threads",
+          "4",
+          "--seed",
+          "19"
+        ]
+      },
+      {
+        "label": "before",
+        "warmup": false,
+        "repeat": 0,
+        "seed": 19,
+        "threads": 4,
+        "engine_seconds": 0.4023269,
+        "total_seconds": 0.4437277000397444,
+        "accounts": 51,
+        "decisions": 153000,
+        "trades": 46032,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\per-tick-20261019\\after.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\before-0-t4-s19",
+          "--threads",
+          "4",
+          "--seed",
+          "19"
+        ]
+      },
+      {
+        "label": "before",
+        "warmup": false,
+        "repeat": 1,
+        "seed": 7,
+        "threads": 4,
+        "engine_seconds": 0.3917864,
+        "total_seconds": 0.4459620999987237,
+        "accounts": 54,
+        "decisions": 162000,
+        "trades": 66855,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\per-tick-20261019\\after.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\before-1-t4-s7",
+          "--threads",
+          "4",
+          "--seed",
+          "7"
+        ]
+      },
+      {
+        "label": "after",
+        "warmup": false,
+        "repeat": 1,
+        "seed": 7,
+        "threads": 4,
+        "engine_seconds": 0.3959094,
+        "total_seconds": 0.4464799999841489,
+        "accounts": 54,
+        "decisions": 162000,
+        "trades": 67268,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\target\\release\\llm-market.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\after-1-t4-s7",
+          "--threads",
+          "4",
+          "--seed",
+          "7"
+        ]
+      },
+      {
+        "label": "after",
+        "warmup": false,
+        "repeat": 1,
+        "seed": 11,
+        "threads": 4,
+        "engine_seconds": 0.3595765,
+        "total_seconds": 0.40274710004450753,
+        "accounts": 55,
+        "decisions": 165000,
+        "trades": 48392,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\target\\release\\llm-market.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\after-1-t4-s11",
+          "--threads",
+          "4",
+          "--seed",
+          "11"
+        ]
+      },
+      {
+        "label": "before",
+        "warmup": false,
+        "repeat": 1,
+        "seed": 11,
+        "threads": 4,
+        "engine_seconds": 0.358044,
+        "total_seconds": 0.41260329994838685,
+        "accounts": 55,
+        "decisions": 165000,
+        "trades": 49213,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\per-tick-20261019\\after.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\before-1-t4-s11",
+          "--threads",
+          "4",
+          "--seed",
+          "11"
+        ]
+      },
+      {
+        "label": "before",
+        "warmup": false,
+        "repeat": 1,
+        "seed": 19,
+        "threads": 4,
+        "engine_seconds": 0.3635557,
+        "total_seconds": 0.412539699987974,
+        "accounts": 51,
+        "decisions": 153000,
+        "trades": 47463,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\per-tick-20261019\\after.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\before-1-t4-s19",
+          "--threads",
+          "4",
+          "--seed",
+          "19"
+        ]
+      },
+      {
+        "label": "after",
+        "warmup": false,
+        "repeat": 1,
+        "seed": 19,
+        "threads": 4,
+        "engine_seconds": 0.3574689,
+        "total_seconds": 0.401219499995932,
+        "accounts": 51,
+        "decisions": 153000,
+        "trades": 46698,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\target\\release\\llm-market.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\after-1-t4-s19",
+          "--threads",
+          "4",
+          "--seed",
+          "19"
+        ]
+      },
+      {
+        "label": "after",
+        "warmup": false,
+        "repeat": 2,
+        "seed": 7,
+        "threads": 4,
+        "engine_seconds": 0.3917083,
+        "total_seconds": 0.43873679998796433,
+        "accounts": 54,
+        "decisions": 162000,
+        "trades": 68359,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\target\\release\\llm-market.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\after-2-t4-s7",
+          "--threads",
+          "4",
+          "--seed",
+          "7"
+        ]
+      },
+      {
+        "label": "before",
+        "warmup": false,
+        "repeat": 2,
+        "seed": 7,
+        "threads": 4,
+        "engine_seconds": 0.39185,
+        "total_seconds": 0.44300199998542666,
+        "accounts": 54,
+        "decisions": 162000,
+        "trades": 68375,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\per-tick-20261019\\after.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\before-2-t4-s7",
+          "--threads",
+          "4",
+          "--seed",
+          "7"
+        ]
+      },
+      {
+        "label": "before",
+        "warmup": false,
+        "repeat": 2,
+        "seed": 11,
+        "threads": 4,
+        "engine_seconds": 0.3433406,
+        "total_seconds": 0.3940281000104733,
+        "accounts": 55,
+        "decisions": 165000,
+        "trades": 47849,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\per-tick-20261019\\after.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\before-2-t4-s11",
+          "--threads",
+          "4",
+          "--seed",
+          "11"
+        ]
+      },
+      {
+        "label": "after",
+        "warmup": false,
+        "repeat": 2,
+        "seed": 11,
+        "threads": 4,
+        "engine_seconds": 0.3456328,
+        "total_seconds": 0.3961762000108138,
+        "accounts": 55,
+        "decisions": 165000,
+        "trades": 48800,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\target\\release\\llm-market.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\after-2-t4-s11",
+          "--threads",
+          "4",
+          "--seed",
+          "11"
+        ]
+      },
+      {
+        "label": "after",
+        "warmup": false,
+        "repeat": 2,
+        "seed": 19,
+        "threads": 4,
+        "engine_seconds": 0.3533975,
+        "total_seconds": 0.3921182000194676,
+        "accounts": 51,
+        "decisions": 153000,
+        "trades": 45950,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\target\\release\\llm-market.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\after-2-t4-s19",
+          "--threads",
+          "4",
+          "--seed",
+          "19"
+        ]
+      },
+      {
+        "label": "before",
+        "warmup": false,
+        "repeat": 2,
+        "seed": 19,
+        "threads": 4,
+        "engine_seconds": 0.3756911,
+        "total_seconds": 0.41275730001507327,
+        "accounts": 51,
+        "decisions": 153000,
+        "trades": 49030,
+        "command": [
+          "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\per-tick-20261019\\after.exe",
+          "run",
+          "scenarios/baseline.toml",
+          "--out",
+          "runs\\debugger-validation\\perf\\before-2-t4-s19",
+          "--threads",
+          "4",
+          "--seed",
+          "19"
+        ]
+      }
+    ]
+  }
+}

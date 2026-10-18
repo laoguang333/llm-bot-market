@@ -136,12 +136,23 @@ pub fn run_match(
     factory: &BotFactory<'_>,
     out: Option<&Path>,
 ) -> Result<MatchResult> {
+    run_match_observed(cfg, seed, factory, out, None)
+}
+
+pub fn run_match_observed(
+    cfg: &Config,
+    seed: u64,
+    factory: &BotFactory<'_>,
+    out: Option<&Path>,
+    observer: Option<&dyn crate::engine::MatchObserver>,
+) -> Result<MatchResult> {
     if let Some(dir) = out {
         if dir.exists() {
             bail!("output directory {} already exists", dir.display());
         }
     }
-    let shared = Shared::new(cfg, seed, factory)?;
+    let mut shared = Shared::new(cfg, seed, factory)?;
+    shared.observer = observer;
     let run = shared.run()?;
     let rules = &shared.rules;
     let final_div = shared.world.dividends(rules.last_tick());
