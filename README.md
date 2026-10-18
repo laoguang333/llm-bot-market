@@ -16,6 +16,8 @@ cargo build --release
 ./target/release/llm-market challenge scenarios/baseline.toml --bot shark --out runs/ch-shark --seeds 20
 # 复现 Coral 打穿 v4 的挑战（v5 已将 Coral 纳入对手阵容）
 ./target/release/llm-market challenge scenarios/baseline-v4.toml --bot coral --out runs/ch-coral-v4 --seeds 20
+# 三名 Astra 独立策略的统一留出验收和六种出场顺序对抗
+python tools/arena_gate.py --cwd . -- python tools/astra_tournament.py --out runs/astra-v5-tournament
 # 列出内置 bot
 ./target/release/llm-market bots
 ```
@@ -26,7 +28,7 @@ cargo build --release
 |---|---|
 | `crates/bot-api` | bot 与引擎之间的全部类型：`Rules`、`Observation`、`Action`、`Bot` trait |
 | `crates/market` | 撮合、调度、结算、世界生成、计分与报告 |
-| `crates/bots` | 内置 bot：`baseline.rs` 是基础对照策略，`strategic.rs` 和 `coral.rs` 是博弈型策略 |
+| `crates/bots` | 内置 bot：`baseline.rs` 是基础对照策略，`strategic.rs`、`coral.rs` 和 `astra_*.rs` 是博弈型策略 |
 | `crates/cli` | 命令行 `llm-market` |
 | `scenarios/` | `baseline.toml`（只有对照组）、`tournament.toml`（对照组 + 博弈型）、`arena.toml`（只有博弈型和两个对照） |
 
@@ -52,6 +54,8 @@ WASM 沙箱（让外部 LLM 提交编译好的 bot）还没做，见 PRD 第 7 �
 `skip_decision_lag = 0` 禁用跳过；`decision_budget_us = 0` 可复现旧的仅按落后量跳过规则。新规则不是原生代码的硬超时。每局 `summary.json` 记录线程数、调度门槛和各账户的超时/跳过次数；旧调度下的历史分数应单独比较。
 
 Windows 上可用 `python tools/bench_bot.py coral-train --first-seed 1` 跑当前基准开发集；追加 `--scenario scenarios/baseline-v4.toml` 可选择旧版。脚本保存完整报告、命令、源码及二进制哈希和汇总诊断到 `runs/bench/`。
+
+三名 Astra medium 独立开发的 `astra_a`、`astra_b`、`astra_c` 已注册。统一赛制、冻结记录、账务修复和比赛结果见 [三方 v5 比赛](docs/astra-v5-tournament.md)。
 
 ## 开发
 
