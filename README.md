@@ -65,6 +65,8 @@ Windows 上可用 `python tools/bench_bot.py coral-train --first-seed 1` 跑当�
 
 [Swift 策略特性与研究档案](docs/swift-research.md) 是后续研究的统一入口，集中记录信号、执行、容量、失败条件和冻结证据。[单一狩猎者实验](docs/swift-hunt-results.md) 使用一个十倍资金的 Falcon 与一个固定 Swift 对抗，分别比较目标受损和对手是否相对胜出。Falcon 的实验模式通过参数指定，relay 为 `mode=6`，定时买卖对照为 `mode=7`。
 
+[资金优势实验方案](docs/swift-capital-protocol.md) 将对手本金提高到 30、100、300 倍，分开测试增加备用现金和同时放大交易规模；固定 Swift、同资金对照和原有费用规则。
+
 ## 开发
 
 ```sh

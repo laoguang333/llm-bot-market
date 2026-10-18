@@ -1,0 +1,22 @@
+{
+  "matrix_sha256": "c762dbe4a1fbb8c22319067178a61147a05e9ea06ad092080531bbe882c57164",
+  "selection_script_sha256": "7b4aedba91f0f252caec66cb54621de1c3802c51c981cbd8373908ecd2a7d61c",
+  "protocol_sha256": "9b1bfa21f2d1ffd4c6cc7d04a85a4f1016f0d969529e868ba1aaa397d567675c",
+  "selected": [
+    "relay-scaled-300",
+    "relay-scaled-100",
+    "relay-scaled-30"
+  ],
+  "cases_with_controls": [
+    "blind-scaled-100",
+    "blind-scaled-30",
+    "blind-scaled-300",
+    "cash-scaled-100",
+    "cash-scaled-30",
+    "cash-scaled-300",
+    "relay-scaled-100",
+    "relay-scaled-30",
+    "relay-scaled-300"
+  ],
+  "rule": "Mean predator-minus-Swift > 0 OR mean Swift < 0; top three by mean advantage; no retuning."
+}
