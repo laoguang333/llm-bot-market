@@ -61,6 +61,8 @@ Windows 上可用 `python tools/bench_bot.py coral-train --first-seed 1` 跑当�
 
 `swift` 使用主动成交方向、盘口深度和短期价格动量，完全不读取分红、新闻或清算估值。开发过程、冻结验收和复现命令见 [Swift v5 报告](docs/swift-v5.md)。
 
+固定 Swift 的后续 [跨市场压力测试](docs/swift-stress.md) 共 780 局，覆盖消息传播、波动、对手、手续费、资金容量和决策频率，并单独检验拥挤效应。原版 v5 通过复核，但小资金优势不能外推到大资金或大量同策略竞争者。
+
 ## 开发
 
 ```sh

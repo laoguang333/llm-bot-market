@@ -1,0 +1,3047 @@
+{
+  "plan": {
+    "created_utc": "2026-10-18T01:41:53.682460+00:00",
+    "binary": "target\\release\\llm-market.exe",
+    "binary_sha256": "cd4455ac189547d741ddaf9d0f8deb28484411bfa444391480ce163f337760d1",
+    "script_sha256": "3453d409afc76f24b66bd77c144bfb5675347fc19ba25ea15a21d31b887ca156",
+    "jobs": [
+      {
+        "key": "v5",
+        "scenario": "runs\\swift-crowding-20261018\\v5.toml",
+        "config": {
+          "ticks": 3000,
+          "seed": 7,
+          "market": {
+            "tick_size": 1,
+            "opening_spread": 0.15,
+            "book_depth": 10,
+            "trade_tape_limit": 200
+          },
+          "fees": {
+            "trade_fee_bps": 5,
+            "idle_period": 50,
+            "idle_rate": 0.002,
+            "credit_ratio": 0.01,
+            "credit_side": "both"
+          },
+          "margin": {
+            "max_leverage": 4.0,
+            "maintenance_leverage": 5.0,
+            "loan_rate": 0.003,
+            "interest_period": 50,
+            "mark_window": 20
+          },
+          "rules": {
+            "max_actions_per_tick": 20,
+            "max_open_orders": 40
+          },
+          "schedule": {
+            "threads": 4,
+            "max_tick_skew": 16,
+            "skip_decision_lag": 2,
+            "decision_budget_us": 2000,
+            "check_interval": 500
+          },
+          "world": {
+            "dividend_period": 50,
+            "min_dividend": 0,
+            "sectors": [
+              "tech",
+              "consumer",
+              "energy"
+            ],
+            "seasons": {
+              "calm_to_turbulent": 0.002,
+              "turbulent_to_calm": 0.01,
+              "turbulent_rate_mult": 3.0,
+              "turbulent_size_mult": 2.0
+            },
+            "news": {
+              "market": {
+                "events_per_1000_ticks": 1.5,
+                "change_sd": 0.08
+              },
+              "sector": {
+                "events_per_1000_ticks": 2.0,
+                "change_sd": 0.1
+              },
+              "stock": {
+                "events_per_1000_ticks": 2.0,
+                "change_sd": 0.12
+              },
+              "disclosure": {
+                "lead_ticks": 120,
+                "stages": [
+                  [
+                    0,
+                    0.05
+                  ],
+                  [
+                    30,
+                    0.25
+                  ],
+                  [
+                    60,
+                    1.0
+                  ]
+                ],
+                "range_widths": [
+                  3.0,
+                  1.5
+                ]
+              }
+            }
+          },
+          "scoring": {
+            "terminal_ratio": 0.5,
+            "terminal_payments": [
+              10,
+              50
+            ],
+            "terminal_hints": [
+              [
+                0,
+                30
+              ],
+              [
+                1000,
+                16
+              ],
+              [
+                2000,
+                6
+              ]
+            ],
+            "objective": "rank_percentile",
+            "series_seeds": 20
+          },
+          "stocks": [
+            {
+              "name": "T1",
+              "sector": "tech",
+              "dividend": 100,
+              "initial_price": 10000,
+              "market_loading": 1.4,
+              "sector_loading": 1.2
+            },
+            {
+              "name": "T2",
+              "sector": "tech",
+              "dividend": 80,
+              "initial_price": 8000,
+              "market_loading": 1.3,
+              "sector_loading": 1.0
+            },
+            {
+              "name": "T3",
+              "sector": "tech",
+              "dividend": 120,
+              "initial_price": 12000,
+              "market_loading": 1.2,
+              "sector_loading": 0.9
+            },
+            {
+              "name": "T4",
+              "sector": "tech",
+              "dividend": 60,
+              "initial_price": 6000,
+              "market_loading": 1.5,
+              "sector_loading": 1.1
+            },
+            {
+              "name": "C1",
+              "sector": "consumer",
+              "dividend": 100,
+              "initial_price": 10000,
+              "market_loading": 0.8,
+              "sector_loading": 1.0
+            },
+            {
+              "name": "C2",
+              "sector": "consumer",
+              "dividend": 90,
+              "initial_price": 9000,
+              "market_loading": 0.7,
+              "sector_loading": 1.1
+            },
+            {
+              "name": "C3",
+              "sector": "consumer",
+              "dividend": 110,
+              "initial_price": 11000,
+              "market_loading": 0.9,
+              "sector_loading": 0.9
+            },
+            {
+              "name": "E1",
+              "sector": "energy",
+              "dividend": 100,
+              "initial_price": 10000,
+              "market_loading": 0.6,
+              "sector_loading": 1.2
+            },
+            {
+              "name": "E2",
+              "sector": "energy",
+              "dividend": 130,
+              "initial_price": 13000,
+              "market_loading": 0.5,
+              "sector_loading": 1.0
+            },
+            {
+              "name": "E3",
+              "sector": "energy",
+              "dividend": 70,
+              "initial_price": 7000,
+              "market_loading": 0.7,
+              "sector_loading": 0.8
+            }
+          ],
+          "combos": [
+            {
+              "a": "T1",
+              "b": "T2",
+              "bonus": 20
+            },
+            {
+              "a": "C1",
+              "b": "C3",
+              "bonus": 20
+            },
+            {
+              "a": "T3",
+              "b": "E2",
+              "bonus": 25
+            },
+            {
+              "a": "E1",
+              "b": "C2",
+              "bonus": 15
+            },
+            {
+              "a": "T4",
+              "b": "E3",
+              "bonus": -20
+            }
+          ],
+          "bots": [
+            {
+              "bot": "grid",
+              "count": 6,
+              "count_max": 10,
+              "cash": 4000000,
+              "shares_each": 120
+            },
+            {
+              "bot": "value",
+              "count": 4,
+              "count_max": 10,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "momentum",
+              "count": 3,
+              "count_max": 8,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "news",
+              "count": 3,
+              "count_max": 8,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "noise",
+              "count": 6,
+              "count_max": 14,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "hold",
+              "count": 3,
+              "count_max": 8,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "hunter",
+              "count": 2,
+              "count_max": 5,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "shark",
+              "count": 2,
+              "count_max": 5,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "tracker",
+              "count": 2,
+              "count_max": 5,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "coral",
+              "count": 2,
+              "count_max": 5,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {
+                "jitter": 1.0
+              }
+            },
+            {
+              "bot": "swift",
+              "owner": "challenger",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20
+            }
+          ]
+        },
+        "scenario_sha256": "7e3c0789a8028c1e8ef42217272e2f10491fafa875bc03969247d8d4e43a69b6",
+        "first_seed": 9001,
+        "seeds": 20
+      },
+      {
+        "key": "swift10",
+        "scenario": "runs\\swift-crowding-20261018\\swift10.toml",
+        "config": {
+          "ticks": 3000,
+          "seed": 7,
+          "market": {
+            "tick_size": 1,
+            "opening_spread": 0.15,
+            "book_depth": 10,
+            "trade_tape_limit": 200
+          },
+          "fees": {
+            "trade_fee_bps": 5,
+            "idle_period": 50,
+            "idle_rate": 0.002,
+            "credit_ratio": 0.01,
+            "credit_side": "both"
+          },
+          "margin": {
+            "max_leverage": 4.0,
+            "maintenance_leverage": 5.0,
+            "loan_rate": 0.003,
+            "interest_period": 50,
+            "mark_window": 20
+          },
+          "rules": {
+            "max_actions_per_tick": 20,
+            "max_open_orders": 40
+          },
+          "schedule": {
+            "threads": 4,
+            "max_tick_skew": 16,
+            "skip_decision_lag": 2,
+            "decision_budget_us": 2000,
+            "check_interval": 500
+          },
+          "world": {
+            "dividend_period": 50,
+            "min_dividend": 0,
+            "sectors": [
+              "tech",
+              "consumer",
+              "energy"
+            ],
+            "seasons": {
+              "calm_to_turbulent": 0.002,
+              "turbulent_to_calm": 0.01,
+              "turbulent_rate_mult": 3.0,
+              "turbulent_size_mult": 2.0
+            },
+            "news": {
+              "market": {
+                "events_per_1000_ticks": 1.5,
+                "change_sd": 0.08
+              },
+              "sector": {
+                "events_per_1000_ticks": 2.0,
+                "change_sd": 0.1
+              },
+              "stock": {
+                "events_per_1000_ticks": 2.0,
+                "change_sd": 0.12
+              },
+              "disclosure": {
+                "lead_ticks": 120,
+                "stages": [
+                  [
+                    0,
+                    0.05
+                  ],
+                  [
+                    30,
+                    0.25
+                  ],
+                  [
+                    60,
+                    1.0
+                  ]
+                ],
+                "range_widths": [
+                  3.0,
+                  1.5
+                ]
+              }
+            }
+          },
+          "scoring": {
+            "terminal_ratio": 0.5,
+            "terminal_payments": [
+              10,
+              50
+            ],
+            "terminal_hints": [
+              [
+                0,
+                30
+              ],
+              [
+                1000,
+                16
+              ],
+              [
+                2000,
+                6
+              ]
+            ],
+            "objective": "rank_percentile",
+            "series_seeds": 20
+          },
+          "stocks": [
+            {
+              "name": "T1",
+              "sector": "tech",
+              "dividend": 100,
+              "initial_price": 10000,
+              "market_loading": 1.4,
+              "sector_loading": 1.2
+            },
+            {
+              "name": "T2",
+              "sector": "tech",
+              "dividend": 80,
+              "initial_price": 8000,
+              "market_loading": 1.3,
+              "sector_loading": 1.0
+            },
+            {
+              "name": "T3",
+              "sector": "tech",
+              "dividend": 120,
+              "initial_price": 12000,
+              "market_loading": 1.2,
+              "sector_loading": 0.9
+            },
+            {
+              "name": "T4",
+              "sector": "tech",
+              "dividend": 60,
+              "initial_price": 6000,
+              "market_loading": 1.5,
+              "sector_loading": 1.1
+            },
+            {
+              "name": "C1",
+              "sector": "consumer",
+              "dividend": 100,
+              "initial_price": 10000,
+              "market_loading": 0.8,
+              "sector_loading": 1.0
+            },
+            {
+              "name": "C2",
+              "sector": "consumer",
+              "dividend": 90,
+              "initial_price": 9000,
+              "market_loading": 0.7,
+              "sector_loading": 1.1
+            },
+            {
+              "name": "C3",
+              "sector": "consumer",
+              "dividend": 110,
+              "initial_price": 11000,
+              "market_loading": 0.9,
+              "sector_loading": 0.9
+            },
+            {
+              "name": "E1",
+              "sector": "energy",
+              "dividend": 100,
+              "initial_price": 10000,
+              "market_loading": 0.6,
+              "sector_loading": 1.2
+            },
+            {
+              "name": "E2",
+              "sector": "energy",
+              "dividend": 130,
+              "initial_price": 13000,
+              "market_loading": 0.5,
+              "sector_loading": 1.0
+            },
+            {
+              "name": "E3",
+              "sector": "energy",
+              "dividend": 70,
+              "initial_price": 7000,
+              "market_loading": 0.7,
+              "sector_loading": 0.8
+            }
+          ],
+          "combos": [
+            {
+              "a": "T1",
+              "b": "T2",
+              "bonus": 20
+            },
+            {
+              "a": "C1",
+              "b": "C3",
+              "bonus": 20
+            },
+            {
+              "a": "T3",
+              "b": "E2",
+              "bonus": 25
+            },
+            {
+              "a": "E1",
+              "b": "C2",
+              "bonus": 15
+            },
+            {
+              "a": "T4",
+              "b": "E3",
+              "bonus": -20
+            }
+          ],
+          "bots": [
+            {
+              "bot": "grid",
+              "count": 6,
+              "count_max": 10,
+              "cash": 4000000,
+              "shares_each": 120
+            },
+            {
+              "bot": "value",
+              "count": 4,
+              "count_max": 10,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "momentum",
+              "count": 3,
+              "count_max": 8,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "news",
+              "count": 3,
+              "count_max": 8,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "noise",
+              "count": 6,
+              "count_max": 14,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "hold",
+              "count": 3,
+              "count_max": 8,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "hunter",
+              "count": 2,
+              "count_max": 5,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "shark",
+              "count": 2,
+              "count_max": 5,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "tracker",
+              "count": 2,
+              "count_max": 5,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "coral",
+              "count": 2,
+              "count_max": 5,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {
+                "jitter": 1.0
+              }
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_0",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_1",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_2",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_3",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_4",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_5",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_6",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_7",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_8",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_9",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "swift",
+              "owner": "challenger",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20
+            }
+          ]
+        },
+        "scenario_sha256": "ceb1ce98076cb55808d375bc6e9f2372aebfc7432b46cd760cdc65352201989d",
+        "first_seed": 9001,
+        "seeds": 20
+      },
+      {
+        "key": "coral10",
+        "scenario": "runs\\swift-crowding-20261018\\coral10.toml",
+        "config": {
+          "ticks": 3000,
+          "seed": 7,
+          "market": {
+            "tick_size": 1,
+            "opening_spread": 0.15,
+            "book_depth": 10,
+            "trade_tape_limit": 200
+          },
+          "fees": {
+            "trade_fee_bps": 5,
+            "idle_period": 50,
+            "idle_rate": 0.002,
+            "credit_ratio": 0.01,
+            "credit_side": "both"
+          },
+          "margin": {
+            "max_leverage": 4.0,
+            "maintenance_leverage": 5.0,
+            "loan_rate": 0.003,
+            "interest_period": 50,
+            "mark_window": 20
+          },
+          "rules": {
+            "max_actions_per_tick": 20,
+            "max_open_orders": 40
+          },
+          "schedule": {
+            "threads": 4,
+            "max_tick_skew": 16,
+            "skip_decision_lag": 2,
+            "decision_budget_us": 2000,
+            "check_interval": 500
+          },
+          "world": {
+            "dividend_period": 50,
+            "min_dividend": 0,
+            "sectors": [
+              "tech",
+              "consumer",
+              "energy"
+            ],
+            "seasons": {
+              "calm_to_turbulent": 0.002,
+              "turbulent_to_calm": 0.01,
+              "turbulent_rate_mult": 3.0,
+              "turbulent_size_mult": 2.0
+            },
+            "news": {
+              "market": {
+                "events_per_1000_ticks": 1.5,
+                "change_sd": 0.08
+              },
+              "sector": {
+                "events_per_1000_ticks": 2.0,
+                "change_sd": 0.1
+              },
+              "stock": {
+                "events_per_1000_ticks": 2.0,
+                "change_sd": 0.12
+              },
+              "disclosure": {
+                "lead_ticks": 120,
+                "stages": [
+                  [
+                    0,
+                    0.05
+                  ],
+                  [
+                    30,
+                    0.25
+                  ],
+                  [
+                    60,
+                    1.0
+                  ]
+                ],
+                "range_widths": [
+                  3.0,
+                  1.5
+                ]
+              }
+            }
+          },
+          "scoring": {
+            "terminal_ratio": 0.5,
+            "terminal_payments": [
+              10,
+              50
+            ],
+            "terminal_hints": [
+              [
+                0,
+                30
+              ],
+              [
+                1000,
+                16
+              ],
+              [
+                2000,
+                6
+              ]
+            ],
+            "objective": "rank_percentile",
+            "series_seeds": 20
+          },
+          "stocks": [
+            {
+              "name": "T1",
+              "sector": "tech",
+              "dividend": 100,
+              "initial_price": 10000,
+              "market_loading": 1.4,
+              "sector_loading": 1.2
+            },
+            {
+              "name": "T2",
+              "sector": "tech",
+              "dividend": 80,
+              "initial_price": 8000,
+              "market_loading": 1.3,
+              "sector_loading": 1.0
+            },
+            {
+              "name": "T3",
+              "sector": "tech",
+              "dividend": 120,
+              "initial_price": 12000,
+              "market_loading": 1.2,
+              "sector_loading": 0.9
+            },
+            {
+              "name": "T4",
+              "sector": "tech",
+              "dividend": 60,
+              "initial_price": 6000,
+              "market_loading": 1.5,
+              "sector_loading": 1.1
+            },
+            {
+              "name": "C1",
+              "sector": "consumer",
+              "dividend": 100,
+              "initial_price": 10000,
+              "market_loading": 0.8,
+              "sector_loading": 1.0
+            },
+            {
+              "name": "C2",
+              "sector": "consumer",
+              "dividend": 90,
+              "initial_price": 9000,
+              "market_loading": 0.7,
+              "sector_loading": 1.1
+            },
+            {
+              "name": "C3",
+              "sector": "consumer",
+              "dividend": 110,
+              "initial_price": 11000,
+              "market_loading": 0.9,
+              "sector_loading": 0.9
+            },
+            {
+              "name": "E1",
+              "sector": "energy",
+              "dividend": 100,
+              "initial_price": 10000,
+              "market_loading": 0.6,
+              "sector_loading": 1.2
+            },
+            {
+              "name": "E2",
+              "sector": "energy",
+              "dividend": 130,
+              "initial_price": 13000,
+              "market_loading": 0.5,
+              "sector_loading": 1.0
+            },
+            {
+              "name": "E3",
+              "sector": "energy",
+              "dividend": 70,
+              "initial_price": 7000,
+              "market_loading": 0.7,
+              "sector_loading": 0.8
+            }
+          ],
+          "combos": [
+            {
+              "a": "T1",
+              "b": "T2",
+              "bonus": 20
+            },
+            {
+              "a": "C1",
+              "b": "C3",
+              "bonus": 20
+            },
+            {
+              "a": "T3",
+              "b": "E2",
+              "bonus": 25
+            },
+            {
+              "a": "E1",
+              "b": "C2",
+              "bonus": 15
+            },
+            {
+              "a": "T4",
+              "b": "E3",
+              "bonus": -20
+            }
+          ],
+          "bots": [
+            {
+              "bot": "grid",
+              "count": 6,
+              "count_max": 10,
+              "cash": 4000000,
+              "shares_each": 120
+            },
+            {
+              "bot": "value",
+              "count": 4,
+              "count_max": 10,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "momentum",
+              "count": 3,
+              "count_max": 8,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "news",
+              "count": 3,
+              "count_max": 8,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "noise",
+              "count": 6,
+              "count_max": 14,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "hold",
+              "count": 3,
+              "count_max": 8,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "hunter",
+              "count": 2,
+              "count_max": 5,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "shark",
+              "count": 2,
+              "count_max": 5,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "tracker",
+              "count": 2,
+              "count_max": 5,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "coral",
+              "count": 2,
+              "count_max": 5,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {
+                "jitter": 1.0
+              }
+            },
+            {
+              "bot": "coral",
+              "owner": "peer_0",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "coral",
+              "owner": "peer_1",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "coral",
+              "owner": "peer_2",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "coral",
+              "owner": "peer_3",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "coral",
+              "owner": "peer_4",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "coral",
+              "owner": "peer_5",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "coral",
+              "owner": "peer_6",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "coral",
+              "owner": "peer_7",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "coral",
+              "owner": "peer_8",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "coral",
+              "owner": "peer_9",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {}
+            },
+            {
+              "bot": "swift",
+              "owner": "challenger",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20
+            }
+          ]
+        },
+        "scenario_sha256": "6abdf8b4f2bf30b57e0886701a79ef7c11c1da1f1d2e099361e95ef186aeb7fc",
+        "first_seed": 9001,
+        "seeds": 20
+      },
+      {
+        "key": "cash10",
+        "scenario": "runs\\swift-crowding-20261018\\cash10.toml",
+        "config": {
+          "ticks": 3000,
+          "seed": 7,
+          "market": {
+            "tick_size": 1,
+            "opening_spread": 0.15,
+            "book_depth": 10,
+            "trade_tape_limit": 200
+          },
+          "fees": {
+            "trade_fee_bps": 5,
+            "idle_period": 50,
+            "idle_rate": 0.002,
+            "credit_ratio": 0.01,
+            "credit_side": "both"
+          },
+          "margin": {
+            "max_leverage": 4.0,
+            "maintenance_leverage": 5.0,
+            "loan_rate": 0.003,
+            "interest_period": 50,
+            "mark_window": 20
+          },
+          "rules": {
+            "max_actions_per_tick": 20,
+            "max_open_orders": 40
+          },
+          "schedule": {
+            "threads": 4,
+            "max_tick_skew": 16,
+            "skip_decision_lag": 2,
+            "decision_budget_us": 2000,
+            "check_interval": 500
+          },
+          "world": {
+            "dividend_period": 50,
+            "min_dividend": 0,
+            "sectors": [
+              "tech",
+              "consumer",
+              "energy"
+            ],
+            "seasons": {
+              "calm_to_turbulent": 0.002,
+              "turbulent_to_calm": 0.01,
+              "turbulent_rate_mult": 3.0,
+              "turbulent_size_mult": 2.0
+            },
+            "news": {
+              "market": {
+                "events_per_1000_ticks": 1.5,
+                "change_sd": 0.08
+              },
+              "sector": {
+                "events_per_1000_ticks": 2.0,
+                "change_sd": 0.1
+              },
+              "stock": {
+                "events_per_1000_ticks": 2.0,
+                "change_sd": 0.12
+              },
+              "disclosure": {
+                "lead_ticks": 120,
+                "stages": [
+                  [
+                    0,
+                    0.05
+                  ],
+                  [
+                    30,
+                    0.25
+                  ],
+                  [
+                    60,
+                    1.0
+                  ]
+                ],
+                "range_widths": [
+                  3.0,
+                  1.5
+                ]
+              }
+            }
+          },
+          "scoring": {
+            "terminal_ratio": 0.5,
+            "terminal_payments": [
+              10,
+              50
+            ],
+            "terminal_hints": [
+              [
+                0,
+                30
+              ],
+              [
+                1000,
+                16
+              ],
+              [
+                2000,
+                6
+              ]
+            ],
+            "objective": "rank_percentile",
+            "series_seeds": 20
+          },
+          "stocks": [
+            {
+              "name": "T1",
+              "sector": "tech",
+              "dividend": 100,
+              "initial_price": 10000,
+              "market_loading": 1.4,
+              "sector_loading": 1.2
+            },
+            {
+              "name": "T2",
+              "sector": "tech",
+              "dividend": 80,
+              "initial_price": 8000,
+              "market_loading": 1.3,
+              "sector_loading": 1.0
+            },
+            {
+              "name": "T3",
+              "sector": "tech",
+              "dividend": 120,
+              "initial_price": 12000,
+              "market_loading": 1.2,
+              "sector_loading": 0.9
+            },
+            {
+              "name": "T4",
+              "sector": "tech",
+              "dividend": 60,
+              "initial_price": 6000,
+              "market_loading": 1.5,
+              "sector_loading": 1.1
+            },
+            {
+              "name": "C1",
+              "sector": "consumer",
+              "dividend": 100,
+              "initial_price": 10000,
+              "market_loading": 0.8,
+              "sector_loading": 1.0
+            },
+            {
+              "name": "C2",
+              "sector": "consumer",
+              "dividend": 90,
+              "initial_price": 9000,
+              "market_loading": 0.7,
+              "sector_loading": 1.1
+            },
+            {
+              "name": "C3",
+              "sector": "consumer",
+              "dividend": 110,
+              "initial_price": 11000,
+              "market_loading": 0.9,
+              "sector_loading": 0.9
+            },
+            {
+              "name": "E1",
+              "sector": "energy",
+              "dividend": 100,
+              "initial_price": 10000,
+              "market_loading": 0.6,
+              "sector_loading": 1.2
+            },
+            {
+              "name": "E2",
+              "sector": "energy",
+              "dividend": 130,
+              "initial_price": 13000,
+              "market_loading": 0.5,
+              "sector_loading": 1.0
+            },
+            {
+              "name": "E3",
+              "sector": "energy",
+              "dividend": 70,
+              "initial_price": 7000,
+              "market_loading": 0.7,
+              "sector_loading": 0.8
+            }
+          ],
+          "combos": [
+            {
+              "a": "T1",
+              "b": "T2",
+              "bonus": 20
+            },
+            {
+              "a": "C1",
+              "b": "C3",
+              "bonus": 20
+            },
+            {
+              "a": "T3",
+              "b": "E2",
+              "bonus": 25
+            },
+            {
+              "a": "E1",
+              "b": "C2",
+              "bonus": 15
+            },
+            {
+              "a": "T4",
+              "b": "E3",
+              "bonus": -20
+            }
+          ],
+          "bots": [
+            {
+              "bot": "grid",
+              "count": 6,
+              "count_max": 10,
+              "cash": 4000000,
+              "shares_each": 120
+            },
+            {
+              "bot": "value",
+              "count": 4,
+              "count_max": 10,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "momentum",
+              "count": 3,
+              "count_max": 8,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "news",
+              "count": 3,
+              "count_max": 8,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "noise",
+              "count": 6,
+              "count_max": 14,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "hold",
+              "count": 3,
+              "count_max": 8,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "hunter",
+              "count": 2,
+              "count_max": 5,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "shark",
+              "count": 2,
+              "count_max": 5,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "tracker",
+              "count": 2,
+              "count_max": 5,
+              "cash": 2000000,
+              "shares_each": 20
+            },
+            {
+              "bot": "coral",
+              "count": 2,
+              "count_max": 5,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {
+                "jitter": 1.0
+              }
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_0",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {
+                "entry": 100.0,
+                "exit": 100.0
+              }
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_1",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {
+                "entry": 100.0,
+                "exit": 100.0
+              }
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_2",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {
+                "entry": 100.0,
+                "exit": 100.0
+              }
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_3",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {
+                "entry": 100.0,
+                "exit": 100.0
+              }
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_4",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {
+                "entry": 100.0,
+                "exit": 100.0
+              }
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_5",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {
+                "entry": 100.0,
+                "exit": 100.0
+              }
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_6",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {
+                "entry": 100.0,
+                "exit": 100.0
+              }
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_7",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {
+                "entry": 100.0,
+                "exit": 100.0
+              }
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_8",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {
+                "entry": 100.0,
+                "exit": 100.0
+              }
+            },
+            {
+              "bot": "swift",
+              "owner": "peer_9",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20,
+              "params": {
+                "entry": 100.0,
+                "exit": 100.0
+              }
+            },
+            {
+              "bot": "swift",
+              "owner": "challenger",
+              "count": 1,
+              "cash": 2000000,
+              "shares_each": 20
+            }
+          ]
+        },
+        "scenario_sha256": "0257d3a7998f438bf4bc7209d0ddf88e99b62a0ae8ce046b4cbf1f60b29313b3",
+        "first_seed": 9001,
+        "seeds": 20
+      }
+    ],
+    "note": "Post-discovery diagnostic, frozen strategy, 80 additional runs; all 3 added-peer treatments use the same count and initial wealth."
+  },
+  "results": [
+    {
+      "key": "v5",
+      "command": [
+        "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\target\\release\\llm-market.exe",
+        "series",
+        "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\swift-crowding-20261018\\v5.toml",
+        "--out",
+        "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\swift-crowding-20261018\\v5",
+        "--first-seed",
+        "9001",
+        "--seeds",
+        "20"
+      ],
+      "worlds": [
+        {
+          "seed": 9001,
+          "percentile": 88.23529411764706,
+          "return_pct": 82.13288696293768,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9002,
+          "percentile": 95.58823529411765,
+          "return_pct": 174.45707963158296,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9003,
+          "percentile": 96.0,
+          "return_pct": 136.45493485729102,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9004,
+          "percentile": 93.44262295081967,
+          "return_pct": 54.45097800593,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9005,
+          "percentile": 98.33333333333333,
+          "return_pct": 100.28849415527424,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9006,
+          "percentile": 98.21428571428571,
+          "return_pct": 93.14941931753079,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9007,
+          "percentile": 86.88524590163935,
+          "return_pct": 14.7080354467229,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9008,
+          "percentile": 96.36363636363636,
+          "return_pct": 48.78469450620096,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9009,
+          "percentile": 100.0,
+          "return_pct": 75.97533771557895,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9010,
+          "percentile": 100.0,
+          "return_pct": 373.7197014925373,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9011,
+          "percentile": 98.0,
+          "return_pct": 74.6335282651072,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9012,
+          "percentile": 95.74468085106383,
+          "return_pct": 63.01163314155212,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9013,
+          "percentile": 92.72727272727273,
+          "return_pct": 58.46001426434076,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9014,
+          "percentile": 98.21428571428571,
+          "return_pct": 164.83905748841465,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9015,
+          "percentile": 96.15384615384616,
+          "return_pct": 132.43828471568756,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9016,
+          "percentile": 85.96491228070175,
+          "return_pct": 52.22868888998959,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9017,
+          "percentile": 92.98245614035088,
+          "return_pct": 63.40065359824998,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9018,
+          "percentile": 100.0,
+          "return_pct": 52.06645881631893,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9019,
+          "percentile": 100.0,
+          "return_pct": 132.62258347028805,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9020,
+          "percentile": 100.0,
+          "return_pct": 172.64594712693903,
+          "peer_returns_pct": {},
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        }
+      ],
+      "mean_percentile": 95.64250537715002,
+      "mean_return_pct": 106.02342059342374,
+      "median_return_pct": 79.05411233925831,
+      "loss_worlds": 0
+    },
+    {
+      "key": "swift10",
+      "command": [
+        "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\target\\release\\llm-market.exe",
+        "series",
+        "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\swift-crowding-20261018\\swift10.toml",
+        "--out",
+        "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\swift-crowding-20261018\\swift10",
+        "--first-seed",
+        "9001",
+        "--seeds",
+        "20"
+      ],
+      "worlds": [
+        {
+          "seed": 9001,
+          "percentile": 81.9672131147541,
+          "return_pct": 38.06806230831494,
+          "peer_returns_pct": {
+            "peer_0": 65.6087119314146,
+            "peer_1": 40.62539575911417,
+            "peer_2": 21.553302902325267,
+            "peer_3": 27.409601735558574,
+            "peer_4": 25.358619702334085,
+            "peer_5": 30.461365651137307,
+            "peer_6": 27.588333434280578,
+            "peer_7": 20.90153237929002,
+            "peer_8": 26.604951187414994,
+            "peer_9": 28.611608199853535
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9002,
+          "percentile": 35.8974358974359,
+          "return_pct": 8.931775426539513,
+          "peer_returns_pct": {
+            "peer_0": 100.8016169898109,
+            "peer_1": 45.93844129576667,
+            "peer_2": 35.91185393808245,
+            "peer_3": 30.54278444123053,
+            "peer_4": 25.03370994225813,
+            "peer_5": 20.98734789747827,
+            "peer_6": 28.41427344200258,
+            "peer_7": 10.723486042996488,
+            "peer_8": 11.364817694457429,
+            "peer_9": 12.268461630473793
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9003,
+          "percentile": 6.666666666666667,
+          "return_pct": -37.48047339195817,
+          "peer_returns_pct": {
+            "peer_0": -7.415708791564935,
+            "peer_1": -26.79085733422639,
+            "peer_2": -25.172228464014868,
+            "peer_3": -38.54341766955469,
+            "peer_4": -30.862114599312918,
+            "peer_5": -34.143476006309015,
+            "peer_6": -30.85139251993172,
+            "peer_7": -32.51747401853813,
+            "peer_8": -43.28041613551412,
+            "peer_9": -43.726935375839936
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9004,
+          "percentile": 39.436619718309856,
+          "return_pct": -9.380033854051417,
+          "peer_returns_pct": {
+            "peer_0": -3.967147187679776,
+            "peer_1": -18.59643979289286,
+            "peer_2": -20.81664601495774,
+            "peer_3": -32.30365203345576,
+            "peer_4": -31.608482320662034,
+            "peer_5": -33.65313979731823,
+            "peer_6": -26.88293800061955,
+            "peer_7": -30.434985838828165,
+            "peer_8": -27.21921051467009,
+            "peer_9": -10.670442979156524
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9005,
+          "percentile": 35.714285714285715,
+          "return_pct": -19.52030712405033,
+          "peer_returns_pct": {
+            "peer_0": 34.225620951632266,
+            "peer_1": -10.05570123248063,
+            "peer_2": -17.723302983475385,
+            "peer_3": -23.523742347474464,
+            "peer_4": -30.251449739666057,
+            "peer_5": -28.363019119872067,
+            "peer_6": -22.561206743375884,
+            "peer_7": -28.405367132772994,
+            "peer_8": -26.15085369071144,
+            "peer_9": -20.370201859758886
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9006,
+          "percentile": 59.09090909090909,
+          "return_pct": -2.499103141414516,
+          "peer_returns_pct": {
+            "peer_0": 31.299374073023035,
+            "peer_1": 21.006998174156543,
+            "peer_2": 17.155459057736277,
+            "peer_3": 15.601992900092633,
+            "peer_4": 10.753066720924377,
+            "peer_5": 2.973688578572853,
+            "peer_6": -1.6580639634188765,
+            "peer_7": -8.33192334670143,
+            "peer_8": -13.582160277999389,
+            "peer_9": -13.653775105347421
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9007,
+          "percentile": 26.760563380281692,
+          "return_pct": -29.6636467742626,
+          "peer_returns_pct": {
+            "peer_0": -9.446733593047652,
+            "peer_1": -35.306038357806415,
+            "peer_2": -37.24878526478017,
+            "peer_3": -43.37843550665696,
+            "peer_4": -38.95982276638554,
+            "peer_5": -44.53636713900424,
+            "peer_6": -41.5913031379768,
+            "peer_7": -40.98968812877264,
+            "peer_8": -36.16700201207244,
+            "peer_9": -40.23117427972088
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9008,
+          "percentile": 32.30769230769231,
+          "return_pct": -15.789569549728121,
+          "peer_returns_pct": {
+            "peer_0": 21.5734069054188,
+            "peer_1": 3.610425093081182,
+            "peer_2": 5.181715908177753,
+            "peer_3": -7.72857793373155,
+            "peer_4": -16.890632952079933,
+            "peer_5": -9.634211019741246,
+            "peer_6": -18.296172287252567,
+            "peer_7": -21.53555835319958,
+            "peer_8": -20.985642728952936,
+            "peer_9": -15.404735756569254
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9009,
+          "percentile": 51.470588235294116,
+          "return_pct": -14.212411081283992,
+          "peer_returns_pct": {
+            "peer_0": -8.458904294564684,
+            "peer_1": -28.575464105735627,
+            "peer_2": -31.41732517378647,
+            "peer_3": -39.75064950497189,
+            "peer_4": -37.73183681626436,
+            "peer_5": -42.459908934271716,
+            "peer_6": -28.009625096548042,
+            "peer_7": -37.01368146439741,
+            "peer_8": -27.00757800811273,
+            "peer_9": -16.653442511383222
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9010,
+          "percentile": 75.3623188405797,
+          "return_pct": 81.89047489823609,
+          "peer_returns_pct": {
+            "peer_0": 237.4228222523745,
+            "peer_1": 179.57109905020351,
+            "peer_2": 168.95169606512889,
+            "peer_3": 122.44081411126189,
+            "peer_4": 85.53774762550881,
+            "peer_5": 61.5216553595658,
+            "peer_6": 86.22263229308005,
+            "peer_7": 67.36238805970149,
+            "peer_8": 62.528710990502034,
+            "peer_9": 61.25351424694707
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9011,
+          "percentile": 40.0,
+          "return_pct": -13.91620641108945,
+          "peer_returns_pct": {
+            "peer_0": 59.781297379250596,
+            "peer_1": 14.672135585878276,
+            "peer_2": -3.0224171539961042,
+            "peer_3": -15.84232185401776,
+            "peer_4": -21.865415854450944,
+            "peer_5": -18.39165042235218,
+            "peer_6": -18.48860190599957,
+            "peer_7": -19.176223738358246,
+            "peer_8": -23.660196014728175,
+            "peer_9": -21.07962421485813
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9012,
+          "percentile": 61.40350877192982,
+          "return_pct": -2.121744477139975,
+          "peer_returns_pct": {
+            "peer_0": -2.5916816724493863,
+            "peer_1": -10.10200272300057,
+            "peer_2": -17.14288067108788,
+            "peer_3": -21.129907988932317,
+            "peer_4": -19.779689490096185,
+            "peer_5": -26.796658834380082,
+            "peer_6": -21.012313891694845,
+            "peer_7": -10.688820325881675,
+            "peer_8": -6.728309324080984,
+            "peer_9": -3.9690752777899796
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9013,
+          "percentile": 23.076923076923077,
+          "return_pct": -29.99345770837467,
+          "peer_returns_pct": {
+            "peer_0": 1.771325457558226,
+            "peer_1": -18.855098965567162,
+            "peer_2": -27.49888727417028,
+            "peer_3": -28.27361257836003,
+            "peer_4": -28.355632537712015,
+            "peer_5": -24.10158784635267,
+            "peer_6": -30.48831235688737,
+            "peer_7": -31.217322057711595,
+            "peer_8": -27.805409724419373,
+            "peer_9": -24.968629175403123
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9014,
+          "percentile": 75.75757575757575,
+          "return_pct": 26.690182261744646,
+          "peer_returns_pct": {
+            "peer_0": 78.78589282116349,
+            "peer_1": 11.29826777827998,
+            "peer_2": 11.324215708163376,
+            "peer_3": 5.652864074233399,
+            "peer_4": 1.041674608058285,
+            "peer_5": 20.228548712950012,
+            "peer_6": -3.066103236275919,
+            "peer_7": 14.832713450992996,
+            "peer_8": 10.010591547455029,
+            "peer_9": 18.72833361468549
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9015,
+          "percentile": 53.225806451612904,
+          "return_pct": -2.8911412824304317,
+          "peer_returns_pct": {
+            "peer_0": 39.57088318322355,
+            "peer_1": 14.295281623874168,
+            "peer_2": 16.71490791773087,
+            "peer_3": 0.24446834251916627,
+            "peer_4": 2.7261728726979406,
+            "peer_5": -4.70410001344267,
+            "peer_6": -7.905067885468475,
+            "peer_7": -7.408361338889636,
+            "peer_8": -6.257991665546447,
+            "peer_9": -11.95913429224358
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9016,
+          "percentile": 23.880597014925375,
+          "return_pct": -21.10918486964849,
+          "peer_returns_pct": {
+            "peer_0": 20.671267631988812,
+            "peer_1": -2.4122597013775393,
+            "peer_2": -8.740045459298518,
+            "peer_3": -17.978079372155353,
+            "peer_4": -25.692043522049957,
+            "peer_5": -22.17513937732869,
+            "peer_6": -28.576287417240408,
+            "peer_7": -26.556733314621273,
+            "peer_8": -17.733556777342997,
+            "peer_9": -12.666000737475303
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9017,
+          "percentile": 50.74626865671642,
+          "return_pct": -6.117743489299188,
+          "peer_returns_pct": {
+            "peer_0": 18.386921648046915,
+            "peer_1": -17.3808966218338,
+            "peer_2": -13.832810845047183,
+            "peer_3": -24.26810834402261,
+            "peer_4": -16.72487665195893,
+            "peer_5": -21.801706381098874,
+            "peer_6": -18.127983904876977,
+            "peer_7": -14.747954844238166,
+            "peer_8": -0.5975527322855223,
+            "peer_9": -8.791535157518238
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9018,
+          "percentile": 44.285714285714285,
+          "return_pct": -17.301276414315026,
+          "peer_returns_pct": {
+            "peer_0": 19.618754496762335,
+            "peer_1": -11.63887334452528,
+            "peer_2": -18.655981026993896,
+            "peer_3": -17.724038692141654,
+            "peer_4": -22.103125749460382,
+            "peer_5": -23.93921709702348,
+            "peer_6": -26.519545926932608,
+            "peer_7": -26.110000799424416,
+            "peer_8": -17.259120100194526,
+            "peer_9": -17.93122285287926
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9019,
+          "percentile": 21.53846153846154,
+          "return_pct": -22.896348715509042,
+          "peer_returns_pct": {
+            "peer_0": 34.287123734971026,
+            "peer_1": -9.696420076117985,
+            "peer_2": -15.326826182856157,
+            "peer_3": -17.699431277571144,
+            "peer_4": -26.574582648559808,
+            "peer_5": -29.58427039183462,
+            "peer_6": -10.989614868955977,
+            "peer_7": -21.046595233976294,
+            "peer_8": -18.748972839719748,
+            "peer_9": -22.726975391402128
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9020,
+          "percentile": 38.46153846153846,
+          "return_pct": 3.458078435656553,
+          "peer_returns_pct": {
+            "peer_0": 79.24852523487,
+            "peer_1": 27.611262835918726,
+            "peer_2": 22.22438278348262,
+            "peer_3": 17.83113939261525,
+            "peer_4": 16.400726458378845,
+            "peer_5": 7.697837011142661,
+            "peer_6": 4.536104435219568,
+            "peer_7": 10.317702643653037,
+            "peer_8": 5.097471050906699,
+            "peer_9": 9.60926917194669
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        }
+      ],
+      "mean_percentile": 43.85253434908034,
+      "mean_return_pct": -4.292703747703183,
+      "median_return_pct": -11.648120132570433,
+      "loss_worlds": 15
+    },
+    {
+      "key": "coral10",
+      "command": [
+        "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\target\\release\\llm-market.exe",
+        "series",
+        "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\swift-crowding-20261018\\coral10.toml",
+        "--out",
+        "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\swift-crowding-20261018\\coral10",
+        "--first-seed",
+        "9001",
+        "--seeds",
+        "20"
+      ],
+      "worlds": [
+        {
+          "seed": 9001,
+          "percentile": 95.08196721311475,
+          "return_pct": 113.4957299312274,
+          "peer_returns_pct": {
+            "peer_0": 42.29438421258389,
+            "peer_1": 13.01666180284451,
+            "peer_2": 51.61150358179205,
+            "peer_3": 19.785037414722506,
+            "peer_4": 83.26746983971411,
+            "peer_5": 45.60097570107866,
+            "peer_6": -1.1048217913915859,
+            "peer_7": 43.71072004757368,
+            "peer_8": 14.153970255433258,
+            "peer_9": 116.0203840033478
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9002,
+          "percentile": 94.87179487179488,
+          "return_pct": 127.66993616859321,
+          "peer_returns_pct": {
+            "peer_0": 47.34642946466436,
+            "peer_1": 86.792961146573,
+            "peer_2": 126.5559856895858,
+            "peer_3": 144.2396776894553,
+            "peer_4": 120.81298050260436,
+            "peer_5": 53.37115733843694,
+            "peer_6": 35.75102489098641,
+            "peer_7": 169.64262024118918,
+            "peer_8": 45.62678744250279,
+            "peer_9": 157.7518730766303
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9003,
+          "percentile": 88.33333333333333,
+          "return_pct": 70.05533889333016,
+          "peer_returns_pct": {
+            "peer_0": 4.878708164984991,
+            "peer_1": 100.19613032863037,
+            "peer_2": 41.01406023810039,
+            "peer_3": 32.253230127692675,
+            "peer_4": 67.67447010781495,
+            "peer_5": 70.82257524360998,
+            "peer_6": 24.100236587948064,
+            "peer_7": 49.171348011148794,
+            "peer_8": 57.390564570144555,
+            "peer_9": 31.4871010954346
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9004,
+          "percentile": 98.59154929577464,
+          "return_pct": 65.95806412355623,
+          "peer_returns_pct": {
+            "peer_0": -18.90043479222906,
+            "peer_1": 13.899826304376695,
+            "peer_2": 37.47394565650308,
+            "peer_3": 28.989080408903845,
+            "peer_4": 77.10155109085277,
+            "peer_5": -3.607586184006728,
+            "peer_6": 56.13972540602734,
+            "peer_7": 15.380360224808598,
+            "peer_8": 20.132069522502995,
+            "peer_9": 8.305333672611415
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9005,
+          "percentile": 100.0,
+          "return_pct": 143.6109690237612,
+          "peer_returns_pct": {
+            "peer_0": 64.1424863910232,
+            "peer_1": 40.09099573020036,
+            "peer_2": 3.2133069140601878,
+            "peer_3": -9.787021532066575,
+            "peer_4": 35.58751473969299,
+            "peer_5": 27.252871211427767,
+            "peer_6": 41.87017763012659,
+            "peer_7": 55.903065317704325,
+            "peer_8": -2.5904169112064723,
+            "peer_9": 57.17889006746606
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9006,
+          "percentile": 100.0,
+          "return_pct": 75.97307817929675,
+          "peer_returns_pct": {
+            "peer_0": -18.818208103318113,
+            "peer_1": -12.749232985120173,
+            "peer_2": -7.157627581480275,
+            "peer_3": 35.195408084042334,
+            "peer_4": -0.10162612508901603,
+            "peer_5": 32.41014012411452,
+            "peer_6": 14.212906196623521,
+            "peer_7": 24.981018724265503,
+            "peer_8": 36.87138244727275,
+            "peer_9": 12.838062142929818
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9007,
+          "percentile": 97.1830985915493,
+          "return_pct": 19.82196369707607,
+          "peer_returns_pct": {
+            "peer_0": -28.731966265679176,
+            "peer_1": -13.585234813134129,
+            "peer_2": -7.266257117171115,
+            "peer_3": -13.3823686801661,
+            "peer_4": -31.03415707008006,
+            "peer_5": 12.785195213836209,
+            "peer_6": -2.7752686330750453,
+            "peer_7": -0.27454621345092134,
+            "peer_8": -2.5892589580033376,
+            "peer_9": -15.169554561411013
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9008,
+          "percentile": 86.15384615384616,
+          "return_pct": 20.33102081268583,
+          "peer_returns_pct": {
+            "peer_0": -7.7809444727185095,
+            "peer_1": 2.0799560710363485,
+            "peer_2": 18.1196260680899,
+            "peer_3": -10.587603460745187,
+            "peer_4": 11.66458629094902,
+            "peer_5": 35.64626469879195,
+            "peer_6": 21.439423566281835,
+            "peer_7": 42.73377440870008,
+            "peer_8": 30.225082366806856,
+            "peer_9": 74.76814078697132
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9009,
+          "percentile": 97.05882352941177,
+          "return_pct": 50.628899055314605,
+          "peer_returns_pct": {
+            "peer_0": 18.29186944004839,
+            "peer_1": 34.30774382767727,
+            "peer_2": 5.475772519323119,
+            "peer_3": 24.096742482756394,
+            "peer_4": -24.3458769262346,
+            "peer_5": 2.473007059484389,
+            "peer_6": 2.409757968251225,
+            "peer_7": 12.926985378711354,
+            "peer_8": 10.082369653399304,
+            "peer_9": 19.8904618642008
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9010,
+          "percentile": 100.0,
+          "return_pct": 325.69069199457255,
+          "peer_returns_pct": {
+            "peer_0": 89.93213025780189,
+            "peer_1": 130.6319674355495,
+            "peer_2": 36.66092265943013,
+            "peer_3": 191.07099050203527,
+            "peer_4": 163.67793758480326,
+            "peer_5": 117.00765264586161,
+            "peer_6": 169.3166078697422,
+            "peer_7": 187.71880597014925,
+            "peer_8": 105.87316146540027,
+            "peer_9": 58.522143826322925
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9011,
+          "percentile": 100.0,
+          "return_pct": 54.94996751137102,
+          "peer_returns_pct": {
+            "peer_0": -1.2890405024907903,
+            "peer_1": 11.122427983539085,
+            "peer_2": 50.87862789690276,
+            "peer_3": -1.2682477799436875,
+            "peer_4": -27.944579813731863,
+            "peer_5": -6.17470760233918,
+            "peer_6": -15.755441845354124,
+            "peer_7": 40.66894087069526,
+            "peer_8": 20.77385206844271,
+            "peer_9": 32.33319796404592
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9012,
+          "percentile": 100.0,
+          "return_pct": 61.5441773903114,
+          "peer_returns_pct": {
+            "peer_0": -7.5108700426017805,
+            "peer_1": 28.87695441170013,
+            "peer_2": 59.04554987043789,
+            "peer_3": 29.436102815231237,
+            "peer_4": 41.825920110676805,
+            "peer_5": 32.88369054416091,
+            "peer_6": 22.682951600860825,
+            "peer_7": 20.53631033422636,
+            "peer_8": 31.108003206113576,
+            "peer_9": 13.585851376872071
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9013,
+          "percentile": 96.92307692307692,
+          "return_pct": 45.51895923937816,
+          "peer_returns_pct": {
+            "peer_0": 17.770124249915533,
+            "peer_1": 33.3379629877895,
+            "peer_2": 32.07425500994749,
+            "peer_3": -3.579384273832442,
+            "peer_4": -18.36686704669158,
+            "peer_5": 15.604867035966507,
+            "peer_6": -47.599676102939206,
+            "peer_7": 9.704363494012735,
+            "peer_8": -3.9486215606046815,
+            "peer_9": -3.6197909684200336
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9014,
+          "percentile": 95.45454545454545,
+          "return_pct": 126.8202214150743,
+          "peer_returns_pct": {
+            "peer_0": -1.4081040313226656,
+            "peer_1": 31.332874094000672,
+            "peer_2": -0.04242064507696819,
+            "peer_3": 35.84841290153944,
+            "peer_4": 84.90271568365853,
+            "peer_5": 11.795934370524463,
+            "peer_6": 129.10304023698927,
+            "peer_7": -12.295643034900372,
+            "peer_8": 150.28259555536195,
+            "peer_9": 125.84065302743998
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9015,
+          "percentile": 96.7741935483871,
+          "return_pct": 84.8099475735986,
+          "peer_returns_pct": {
+            "peer_0": 23.376448447371967,
+            "peer_1": 45.290764887753724,
+            "peer_2": 25.27119236456512,
+            "peer_3": -0.8824304341981448,
+            "peer_4": -0.6110498722946667,
+            "peer_5": 51.51810727248287,
+            "peer_6": 149.51918268584484,
+            "peer_7": 5.03419814491195,
+            "peer_8": 20.767388089797013,
+            "peer_9": 15.603468208092487
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9016,
+          "percentile": 86.56716417910448,
+          "return_pct": 50.64066791046831,
+          "peer_returns_pct": {
+            "peer_0": 22.87830006439151,
+            "peer_1": 19.99606496386921,
+            "peer_2": 39.600607591592784,
+            "peer_3": 21.577564240152782,
+            "peer_4": 22.760964441582598,
+            "peer_5": 68.00397356096003,
+            "peer_6": 37.242915559077815,
+            "peer_7": 64.20836979433244,
+            "peer_8": 60.48117511736315,
+            "peer_9": 64.6460393723755
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9017,
+          "percentile": 98.50746268656717,
+          "return_pct": 82.2262791205165,
+          "peer_returns_pct": {
+            "peer_0": 30.36512084648424,
+            "peer_1": 3.03598516097785,
+            "peer_2": 17.731167801238,
+            "peer_3": 60.50033797629375,
+            "peer_4": 61.50947664237849,
+            "peer_5": 29.062102478670226,
+            "peer_6": 6.4933761968884784,
+            "peer_7": 43.40783892103064,
+            "peer_8": 93.74586843940111,
+            "peer_9": -8.713454649968334
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9018,
+          "percentile": 97.14285714285714,
+          "return_pct": 23.025794761105335,
+          "peer_returns_pct": {
+            "peer_0": -3.1337969994936987,
+            "peer_1": -39.097716310922806,
+            "peer_2": 0.525488315079814,
+            "peer_3": 6.175447011485069,
+            "peer_4": 15.1749940043169,
+            "peer_5": -33.329282916300265,
+            "peer_6": 12.499480374130624,
+            "peer_7": -13.903509473179309,
+            "peer_8": 3.272843552642102,
+            "peer_9": 14.871239374317158
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9019,
+          "percentile": 98.46153846153847,
+          "return_pct": 91.29116750281116,
+          "peer_returns_pct": {
+            "peer_0": 20.561667459562315,
+            "peer_1": 66.56725737392959,
+            "peer_2": -5.910036977770094,
+            "peer_3": 22.188581221347636,
+            "peer_4": 10.044816624859433,
+            "peer_5": 33.75275711443646,
+            "peer_6": 57.39868955972667,
+            "peer_7": 21.00210297552114,
+            "peer_8": 25.545611322549956,
+            "peer_9": -6.819614436467436
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9020,
+          "percentile": 100.0,
+          "return_pct": 142.9460345204282,
+          "peer_returns_pct": {
+            "peer_0": 14.212366178719682,
+            "peer_1": 53.19379506226787,
+            "peer_2": 17.285012016604774,
+            "peer_3": 56.20138737164082,
+            "peer_4": 7.331221324011361,
+            "peer_5": 73.07562267861046,
+            "peer_6": 2.2574557570461007,
+            "peer_7": 75.79787524579417,
+            "peer_8": 125.2111645182434,
+            "peer_9": 112.65332095258901
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        }
+      ],
+      "mean_percentile": 96.35526256924507,
+      "mean_return_pct": 88.85044544122385,
+      "median_return_pct": 73.01420853631345,
+      "loss_worlds": 0
+    },
+    {
+      "key": "cash10",
+      "command": [
+        "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\target\\release\\llm-market.exe",
+        "series",
+        "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\swift-crowding-20261018\\cash10.toml",
+        "--out",
+        "C:\\Users\\nillouise\\Music\\rust\\llm-bot-market\\runs\\swift-crowding-20261018\\cash10",
+        "--first-seed",
+        "9001",
+        "--seeds",
+        "20"
+      ],
+      "worlds": [
+        {
+          "seed": 9001,
+          "percentile": 95.08196721311475,
+          "return_pct": 133.3891571638594,
+          "peer_returns_pct": {
+            "peer_0": -10.118521251232016,
+            "peer_1": -10.012664291653127,
+            "peer_2": -10.041516851767218,
+            "peer_3": -9.925583521003457,
+            "peer_4": -9.762627124710232,
+            "peer_5": -9.8323908530777,
+            "peer_6": -10.098313446724628,
+            "peer_7": -9.939789552510003,
+            "peer_8": -9.76818840061009,
+            "peer_9": -9.73793175598663
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9002,
+          "percentile": 93.58974358974359,
+          "return_pct": 136.80307412925043,
+          "peer_returns_pct": {
+            "peer_0": -11.104924913822167,
+            "peer_1": -10.478572438316247,
+            "peer_2": -10.12100238144431,
+            "peer_3": -9.774442426680874,
+            "peer_4": -9.725590195843893,
+            "peer_5": -11.204124574547903,
+            "peer_6": -9.841862311197136,
+            "peer_7": -11.101880144844012,
+            "peer_8": -10.360179858853213,
+            "peer_9": -10.348897902371657
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9003,
+          "percentile": 93.33333333333333,
+          "return_pct": 111.21183803988504,
+          "peer_returns_pct": {
+            "peer_0": -8.9674934641229,
+            "peer_1": -9.06358706220427,
+            "peer_2": -8.915773610180844,
+            "peer_3": -9.008869347276537,
+            "peer_4": -9.27767754899207,
+            "peer_5": -9.401048981267424,
+            "peer_6": -9.324914115333927,
+            "peer_7": -9.073741978696281,
+            "peer_8": -9.073606939913148,
+            "peer_9": -9.184824881706021
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9004,
+          "percentile": 91.54929577464789,
+          "return_pct": 42.165469973890346,
+          "peer_returns_pct": {
+            "peer_0": -8.036409700402714,
+            "peer_1": -8.095709607470013,
+            "peer_2": -8.325469088817094,
+            "peer_3": -7.907327300084077,
+            "peer_4": -7.546853564632472,
+            "peer_5": -8.099360534584232,
+            "peer_6": -8.035469310085407,
+            "peer_7": -8.115125901668364,
+            "peer_8": -7.732884896225167,
+            "peer_9": -8.204407664734259
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9005,
+          "percentile": 98.57142857142857,
+          "return_pct": 110.98536530208966,
+          "peer_returns_pct": {
+            "peer_0": -12.429962901740765,
+            "peer_1": -12.413594439030174,
+            "peer_2": -12.347043715641037,
+            "peer_3": -12.236018156071138,
+            "peer_4": -12.48854476828395,
+            "peer_5": -12.46321134162166,
+            "peer_6": -12.53490413142152,
+            "peer_7": -12.371569487893264,
+            "peer_8": -12.080948509339173,
+            "peer_9": -12.319637309326259
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9006,
+          "percentile": 96.96969696969697,
+          "return_pct": 118.58395399517035,
+          "peer_returns_pct": {
+            "peer_0": -12.364922388267486,
+            "peer_1": -12.158805544995532,
+            "peer_2": -12.300589517195593,
+            "peer_3": -12.433083640763964,
+            "peer_4": -12.272023901950602,
+            "peer_5": -12.41487875007362,
+            "peer_6": -12.331992953636428,
+            "peer_7": -12.299170606597665,
+            "peer_8": -12.549942975857098,
+            "peer_9": -12.272639655606298
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9007,
+          "percentile": 83.09859154929578,
+          "return_pct": 9.841147951539032,
+          "peer_returns_pct": {
+            "peer_0": -16.546807440387003,
+            "peer_1": -15.460475619675496,
+            "peer_2": -15.740319577036688,
+            "peer_3": -16.529950982490693,
+            "peer_4": -16.36553362729569,
+            "peer_5": -16.718636285799903,
+            "peer_6": -16.69535832013357,
+            "peer_7": -16.369359775675328,
+            "peer_8": -16.72053598184854,
+            "peer_9": -16.786249411361787
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9008,
+          "percentile": 96.92307692307692,
+          "return_pct": 86.91484745399511,
+          "peer_returns_pct": {
+            "peer_0": -17.424102000910725,
+            "peer_1": -17.622719845712908,
+            "peer_2": -17.417405512549223,
+            "peer_3": -17.66988990973134,
+            "peer_4": -17.486486486486484,
+            "peer_5": -17.71797069616693,
+            "peer_6": -17.80004285752551,
+            "peer_7": -17.861596978544448,
+            "peer_8": -17.739667318458196,
+            "peer_9": -17.62898775881927
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9009,
+          "percentile": 98.52941176470588,
+          "return_pct": 66.70010964616158,
+          "peer_returns_pct": {
+            "peer_0": -13.921065566244106,
+            "peer_1": -13.407808103013375,
+            "peer_2": -14.020017176098222,
+            "peer_3": -13.427495800498,
+            "peer_4": -13.635094333507979,
+            "peer_5": -13.944453146520763,
+            "peer_6": -13.995117234972266,
+            "peer_7": -13.775230770061741,
+            "peer_8": -13.958307452158081,
+            "peer_9": -14.116997315559487
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9010,
+          "percentile": 100.0,
+          "return_pct": 438.6412754409769,
+          "peer_returns_pct": {
+            "peer_0": -8.978860244233378,
+            "peer_1": -8.85470827679783,
+            "peer_2": -9.032184531886022,
+            "peer_3": -9.127815468113976,
+            "peer_4": -9.146648575305294,
+            "peer_5": -9.02993215739485,
+            "peer_6": -9.097584803256442,
+            "peer_7": -9.413867028493893,
+            "peer_8": -9.245617367706915,
+            "peer_9": -9.057096336499326
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9011,
+          "percentile": 100.0,
+          "return_pct": 79.62478340914015,
+          "peer_returns_pct": {
+            "peer_0": -14.233295429932857,
+            "peer_1": -14.681069958847736,
+            "peer_2": -14.13369070825211,
+            "peer_3": -14.283815247996534,
+            "peer_4": -14.353692874160707,
+            "peer_5": -15.36636343946286,
+            "peer_6": -14.77079272254711,
+            "peer_7": -14.882905566385096,
+            "peer_8": -14.908977691141434,
+            "peer_9": -14.879358891054794
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9012,
+          "percentile": 87.71929824561404,
+          "return_pct": 53.95224867143924,
+          "peer_returns_pct": {
+            "peer_0": -8.784504150379902,
+            "peer_1": -8.803609073740615,
+            "peer_2": -8.523870174359871,
+            "peer_3": -8.40729171241601,
+            "peer_4": -8.734134129737804,
+            "peer_5": -8.654173437568623,
+            "peer_6": -8.639927093855682,
+            "peer_7": -8.705229698273964,
+            "peer_8": -8.956475910228823,
+            "peer_9": -8.853073257499233
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9013,
+          "percentile": 100.0,
+          "return_pct": 86.75470160178892,
+          "peer_returns_pct": {
+            "peer_0": -12.92158902611018,
+            "peer_1": -12.83350940320358,
+            "peer_2": -13.015835563253775,
+            "peer_3": -13.36643804396206,
+            "peer_4": -13.431834147544762,
+            "peer_5": -13.273693016371812,
+            "peer_6": -13.071659543433844,
+            "peer_7": -13.332761329693966,
+            "peer_8": -13.293266265906611,
+            "peer_9": -13.383517715131465
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9014,
+          "percentile": 98.48484848484848,
+          "return_pct": 179.15213165102895,
+          "peer_returns_pct": {
+            "peer_0": -10.497666592244482,
+            "peer_1": -10.646601719697014,
+            "peer_2": -10.647173499893814,
+            "peer_3": -10.694821849627257,
+            "peer_4": -10.475176571170298,
+            "peer_5": -10.595304867755406,
+            "peer_6": -10.676769931985387,
+            "peer_7": -10.37503335384481,
+            "peer_8": -10.973796130409452,
+            "peer_9": -10.506107157054412
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9015,
+          "percentile": 96.7741935483871,
+          "return_pct": 125.98316978088451,
+          "peer_returns_pct": {
+            "peer_0": -8.647775238607336,
+            "peer_1": -9.14544965721199,
+            "peer_2": -8.374351391316036,
+            "peer_3": -8.670305148541468,
+            "peer_4": -9.105471165479228,
+            "peer_5": -8.92716763005781,
+            "peer_6": -9.21769054980508,
+            "peer_7": -8.55453690012098,
+            "peer_8": -8.751687054711654,
+            "peer_9": -8.854846081462565
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9016,
+          "percentile": 94.02985074626865,
+          "return_pct": 93.22617927254116,
+          "peer_returns_pct": {
+            "peer_0": -9.78767315534862,
+            "peer_1": -9.824271743138457,
+            "peer_2": -9.72385952746545,
+            "peer_3": -9.569127302546487,
+            "peer_4": -9.61188986301671,
+            "peer_5": -9.426640469782777,
+            "peer_6": -9.629115965239599,
+            "peer_7": -9.720887612065976,
+            "peer_8": -9.778647338209478,
+            "peer_9": -9.747827474807513
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9017,
+          "percentile": 98.50746268656717,
+          "return_pct": 110.27557043479189,
+          "peer_returns_pct": {
+            "peer_0": -14.74968464416685,
+            "peer_1": -14.739146170755202,
+            "peer_2": -14.747422598106263,
+            "peer_3": -14.585992346300625,
+            "peer_4": -14.391296711251156,
+            "peer_5": -13.94391722508157,
+            "peer_6": -14.73898649691563,
+            "peer_7": -14.821990281185627,
+            "peer_8": -14.855628236721785,
+            "peer_9": -14.33578343969385
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9018,
+          "percentile": 100.0,
+          "return_pct": 57.78951155168279,
+          "peer_returns_pct": {
+            "peer_0": -16.637087963333062,
+            "peer_1": -16.7883923575026,
+            "peer_2": -16.931142910437813,
+            "peer_3": -16.80949716204333,
+            "peer_4": -16.976177152450234,
+            "peer_5": -16.997814906600585,
+            "peer_6": -16.822048125349752,
+            "peer_7": -16.84397900178538,
+            "peer_8": -16.96868921043515,
+            "peer_9": -16.96362618914382
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9019,
+          "percentile": 95.38461538461539,
+          "return_pct": 103.85179698987979,
+          "peer_returns_pct": {
+            "peer_0": -14.42168173168411,
+            "peer_1": -13.810575426001215,
+            "peer_2": -13.966622696998531,
+            "peer_3": -14.4604435169968,
+            "peer_4": -14.500178401522357,
+            "peer_5": -14.182029019980968,
+            "peer_6": -14.367269267364414,
+            "peer_7": -14.500908225932008,
+            "peer_8": -14.68358057261483,
+            "peer_9": -14.52293811089006
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        },
+        {
+          "seed": 9020,
+          "percentile": 98.46153846153847,
+          "return_pct": 143.45425497050468,
+          "peer_returns_pct": {
+            "peer_0": -11.723399606729302,
+            "peer_1": -11.71793751365523,
+            "peer_2": -11.551807952807513,
+            "peer_3": -11.890129997815158,
+            "peer_4": -12.064425387808608,
+            "peer_5": -11.697809700677297,
+            "peer_6": -11.358996067292981,
+            "peer_7": -11.717527856674682,
+            "peer_8": -11.314698492462316,
+            "peer_9": -11.637480882674245
+          },
+          "all_skipped": 0,
+          "all_errors": 0,
+          "all_disabled": 0,
+          "audits": 6
+        }
+      ],
+      "mean_percentile": 95.85041766234414,
+      "mean_return_pct": 114.46502937152499,
+      "median_return_pct": 107.06368371233583,
+      "loss_worlds": 0
+    }
+  ]
+}

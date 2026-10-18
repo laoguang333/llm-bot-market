@@ -1,0 +1,648 @@
+{
+  "created_utc": "2026-10-18T01:34:12.676067+00:00",
+  "strategy_frozen_commit": "5289b76",
+  "binary": "target/release/swift-eval.exe",
+  "binary_sha256": "f03a95291e24249baf05cc0e00ade916e541c4f5e9926d0f2060407448ddd88b",
+  "sources": {
+    "crates/bot-api/src/lib.rs": "42596d2dade57bf52b34e7dacc45f41b77b3578a1e29935b2df0146c3777073c",
+    "crates/bots/src/astra_a.rs": "7f6e2e2b679cc90a4dcab180f2ba75b64fd64fdbe28f245963d3391563b6d9ca",
+    "crates/bots/src/astra_b.rs": "c0ec4e810c5b7e5c1027fd9c59edd743435a18ef60a7f22b5e9dec97d5f1f1a8",
+    "crates/bots/src/astra_c.rs": "edd6939eb267ff2236e431387c142ed88030e7282491e27f75ec953d6e068b5f",
+    "crates/bots/src/baseline.rs": "56fc23273b39f282219e2c9514b91df5901d5bcb739aed509799d6842ddaad43",
+    "crates/bots/src/common.rs": "393445421b81f620ec11912590495ffa069397f3348276028bd3da1e6cd1e381",
+    "crates/bots/src/coral.rs": "cf16eac59c3eebb936794ab65b8d88c745fe40a131d644f12988b9d422904a11",
+    "crates/bots/src/lib.rs": "e1ac19b2a841e3be6ccf21988804d8ab476a8afdeb4ae10e3b52b133f8898609",
+    "crates/bots/src/strategic.rs": "10eed5bc501a0679ed28f5018fdac3ed879a7fe37b36eb0fb9a236373e8bba3e",
+    "crates/bots/src/swift.rs": "bfdbf02ec196234a3346b1f046e5f3b6080c9c9ed511bc1382f66e5d62ccf9fb",
+    "crates/bots/src/swift_tests.rs": "4cbe7f5c553a5c9f35a5e729516b1c100084934b96a205ffc498861452edb04d",
+    "crates/cli/src/bin/swift-eval.rs": "69b6d82dcdc7b4ef6708d739a97acca37482a5f18191b248bfc60454275bc720",
+    "crates/cli/src/main.rs": "204f7a4c457f714b574c71daa97320d35dec403abfd3f9944a0328dfd8e8cb35",
+    "crates/cli/tests/astra_a.rs": "739bd629488d8c9a99a1f2936f7d633c6d0ae597c8de7007eb45a8aafb692709",
+    "crates/cli/tests/astra_b.rs": "0258edf1c1f080a22b1fd0bf79ab198bb63f76ce04c5a188d21ef88e691fe7a9",
+    "crates/cli/tests/astra_c.rs": "c02ebdde6790f7782360054ec578db02fff0512b8b5e7f6989efe71610f02a5d",
+    "crates/cli/tests/coral.rs": "5cb51baf219c20838e02dd9a2d1ccbc6302e59e0f03424268b1bb4cb4e41a2e6",
+    "crates/market/src/account.rs": "9514704a4c5f8810dd739d498bd68ad604aa377982c87a00a3aed615a5eb14b9",
+    "crates/market/src/book.rs": "0715638e00cfc8d3018a164b564b2b877d66bc3b8e6bbaded73d1dc457769ff7",
+    "crates/market/src/config.rs": "4df1b2cf5bd5c611eaf020e7c3ba3f631aaa354fac40563e76132fcbb87a7487",
+    "crates/market/src/engine.rs": "658ee32314bd67487f989c1d27e4e065c545f381d97d556a2b6f2180d5a8059a",
+    "crates/market/src/lib.rs": "07e43130a0cee3ca4f85842b2ed7ea2a7d3080b0d885f33bda5fd808c72db5f8",
+    "crates/market/src/pace.rs": "217daf1c524224a1180c262ade480019a96086c99463e699f50b31eaf66f7567",
+    "crates/market/src/quality.rs": "64d8dbaff1d952b52ea6a63e89f73460f35be391fb139b4222deedda8c460230",
+    "crates/market/src/report.rs": "b048510f81f21410159bca9217a1cdb04bb0f3992e38b1d13bcc709a0f870b44",
+    "crates/market/src/world.rs": "7c053b3e8b45a7860098900128d9957d98863887bacf0ddc6984cdabf055cd17",
+    "crates/market/tests/engine.rs": "877f5d60a4753445a7b0763dd283ad2e535dfd4cb6f60e747aaa904ba7b8aa41",
+    "crates/bot-api/Cargo.toml": "0379b14b07bcec3d49406d7ed8bc4476f1ab4c65ca228322dea686c59989ca1a",
+    "crates/bots/Cargo.toml": "e10e5cf4569960d45d5597705addbd1e39e21c16fc363d0034310feb0a7efe99",
+    "crates/cli/Cargo.toml": "61e88f854ceac38b67dd54b4d308c31468de4d32e5121a5a84ed6d4538f74e56",
+    "crates/market/Cargo.toml": "685d8e7f22b25ea326a51a2358067318ef921a0a109b07b8b190954c77c80896",
+    "Cargo.toml": "926b56d255e5d00bccccfb964cb94b2aa2877bec98efab2ded635d4c1ab7f5ff",
+    "Cargo.lock": "af4b085c4c3f1623cbb066390627548fb92a64d9968c61d2e8b5e51ca28cf54d",
+    "tools/swift_stress.py": "57d94e208b7777684024416f4989e012db6b0a45bab669dad64ee8c5a0b43d5f"
+  },
+  "cases": [
+    {
+      "key": "v5",
+      "label": "原版 v5",
+      "group": "market",
+      "changes": {},
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/v5.toml",
+      "scenario_sha256": "b826c2b4220fdfd1d04fb742c1a0b91bfccfe9b71f85d415afdfb5f85502b572"
+    },
+    {
+      "key": "calm",
+      "label": "低消息频率、低波动",
+      "group": "market",
+      "changes": {
+        "world.seasons.calm_to_turbulent": 0.0,
+        "world.news.market.change_sd": 0.027999999999999997,
+        "world.news.market.events_per_1000_ticks": 0.75,
+        "world.news.sector.change_sd": 0.034999999999999996,
+        "world.news.sector.events_per_1000_ticks": 1.0,
+        "world.news.stock.change_sd": 0.041999999999999996,
+        "world.news.stock.events_per_1000_ticks": 1.0
+      },
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/calm.toml",
+      "scenario_sha256": "bacdc8437fc715ffd0c2be31d2db516c99c186b3b7b5edc8f885c39878a936a2"
+    },
+    {
+      "key": "turbulent",
+      "label": "持续高波动",
+      "group": "market",
+      "changes": {
+        "world.seasons.calm_to_turbulent": 1.0,
+        "world.seasons.turbulent_to_calm": 0.0
+      },
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/turbulent.toml",
+      "scenario_sha256": "77e6b0ff3b29d5e4d507f94dea90793bacacc62bc4a735626839d00b04cdf554"
+    },
+    {
+      "key": "no_news",
+      "label": "关闭新消息冲击",
+      "group": "market",
+      "changes": {
+        "world.news.market.events_per_1000_ticks": 0.0,
+        "world.news.sector.events_per_1000_ticks": 0.0,
+        "world.news.stock.events_per_1000_ticks": 0.0
+      },
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/no_news.toml",
+      "scenario_sha256": "7d42c746c3e9c5ae8527b3398506526ab4d05ab971e9491c5d5109581b6a5198"
+    },
+    {
+      "key": "public_news",
+      "label": "消息立即同时公开",
+      "group": "market",
+      "changes": {
+        "world.news.disclosure.stages": [
+          [
+            0,
+            1.0
+          ]
+        ],
+        "world.news.disclosure.range_widths": []
+      },
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/public_news.toml",
+      "scenario_sha256": "9f89588302c7393ad1d54584e8c410d51dccffebe8011b9eb1437912f42061e0"
+    },
+    {
+      "key": "slow_news",
+      "label": "消息传播慢四倍",
+      "group": "market",
+      "changes": {
+        "world.news.disclosure.lead_ticks": 480,
+        "world.news.disclosure.stages": [
+          [
+            0,
+            0.05
+          ],
+          [
+            120,
+            0.25
+          ],
+          [
+            240,
+            1.0
+          ]
+        ]
+      },
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/slow_news.toml",
+      "scenario_sha256": "10e08fc991c0658856740dc87d123e83ef5f391703d5791a19cafd4a5962e285"
+    },
+    {
+      "key": "no_grid",
+      "label": "移除大资金网格对手",
+      "group": "market",
+      "changes": {},
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 1,
+      "note": "Only grid counts become zero; remaining group indices and count draws are preserved.",
+      "scenario": "scenarios/swift-stress/no_grid.toml",
+      "scenario_sha256": "80b4cffdf7667096df67d6866f9338b96d2634928359be45116dd6b2929d1c32"
+    },
+    {
+      "key": "strong_crowd",
+      "label": "弱策略换成估值强手",
+      "group": "market",
+      "changes": {},
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 1,
+      "note": "Replace momentum/news/noise/hold by astra_a/astra_b/astra_c/fund, preserving counts and endowments.",
+      "scenario": "scenarios/swift-stress/strong_crowd.toml",
+      "scenario_sha256": "55ce5b349ac4974976077ce0a4e9bef3530cdf58cf5c671ff9c0603a324c1253"
+    },
+    {
+      "key": "crowded",
+      "label": "增加十个 Swift 对手",
+      "group": "market",
+      "changes": {},
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 1,
+      "note": "Adds ten exact default Swift copies; crowd size and wealth both increase.",
+      "scenario": "scenarios/swift-stress/crowded.toml",
+      "scenario_sha256": "4b041a539a716e7867749e608a5bc81d3cc63a9ede80f1121405dbb1c89376d9"
+    },
+    {
+      "key": "fee20",
+      "label": "手续费每边 20 bp",
+      "group": "market",
+      "changes": {
+        "fees.trade_fee_bps": 20
+      },
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/fee20.toml",
+      "scenario_sha256": "6f389b37ca96cbb7e45430c34af05b935f6fc5cf082f89e80facc9260049a093"
+    },
+    {
+      "key": "fee50",
+      "label": "手续费每边 50 bp",
+      "group": "market",
+      "changes": {
+        "fees.trade_fee_bps": 50
+      },
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/fee50.toml",
+      "scenario_sha256": "202de48c3f0a4f0d2107171535f5b871e9822c9127a2c14e5818962bc9cb786b"
+    },
+    {
+      "key": "no_idle",
+      "label": "取消闲置费及交易抵扣",
+      "group": "market",
+      "changes": {
+        "fees.idle_rate": 0.0,
+        "fees.credit_ratio": 0.0
+      },
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/no_idle.toml",
+      "scenario_sha256": "4ddb23ded5952e206bbe43da5de9dac2724acd444f5b4ee059e47b1803c844a0"
+    },
+    {
+      "key": "tick10",
+      "label": "最小报价单位十倍",
+      "group": "market",
+      "changes": {
+        "market.tick_size": 10
+      },
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/tick10.toml",
+      "scenario_sha256": "4c0fb71240ca27dea35737ad864ed5c12cd4769e8a6a9e04c2427bdd50a3cb7c"
+    },
+    {
+      "key": "depth1",
+      "label": "所有人只看一档盘口",
+      "group": "market",
+      "changes": {
+        "market.book_depth": 1
+      },
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/depth1.toml",
+      "scenario_sha256": "aa1ecb68f2800375ff9abaa6e7bc50df8fb4524d050947e21d3c52f1e52a1173"
+    },
+    {
+      "key": "capital01",
+      "label": "本金 0.1 倍",
+      "group": "capacity",
+      "changes": {},
+      "cash": 200000,
+      "shares": 2,
+      "params": "",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/capital01.toml",
+      "scenario_sha256": "b826c2b4220fdfd1d04fb742c1a0b91bfccfe9b71f85d415afdfb5f85502b572"
+    },
+    {
+      "key": "capital10",
+      "label": "本金 10 倍",
+      "group": "capacity",
+      "changes": {},
+      "cash": 20000000,
+      "shares": 200,
+      "params": "",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/capital10.toml",
+      "scenario_sha256": "b826c2b4220fdfd1d04fb742c1a0b91bfccfe9b71f85d415afdfb5f85502b572"
+    },
+    {
+      "key": "capital100",
+      "label": "本金 100 倍",
+      "group": "capacity",
+      "changes": {},
+      "cash": 200000000,
+      "shares": 2000,
+      "params": "",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/capital100.toml",
+      "scenario_sha256": "b826c2b4220fdfd1d04fb742c1a0b91bfccfe9b71f85d415afdfb5f85502b572"
+    },
+    {
+      "key": "cash_start",
+      "label": "等初始权益、纯现金开局",
+      "group": "capacity",
+      "changes": {},
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 1,
+      "cash_reference": true,
+      "note": "Cash equals the matched v5 world's initial challenger equity; no initial shares.",
+      "scenario": "scenarios/swift-stress/cash_start.toml",
+      "scenario_sha256": "b826c2b4220fdfd1d04fb742c1a0b91bfccfe9b71f85d415afdfb5f85502b572"
+    },
+    {
+      "key": "cadence5",
+      "label": "每五 tick 决策一次",
+      "group": "cadence",
+      "changes": {},
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 5,
+      "scenario": "scenarios/swift-stress/cadence5.toml",
+      "scenario_sha256": "b826c2b4220fdfd1d04fb742c1a0b91bfccfe9b71f85d415afdfb5f85502b572"
+    },
+    {
+      "key": "cadence20",
+      "label": "每二十 tick 决策一次",
+      "group": "cadence",
+      "changes": {},
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 20,
+      "scenario": "scenarios/swift-stress/cadence20.toml",
+      "scenario_sha256": "b826c2b4220fdfd1d04fb742c1a0b91bfccfe9b71f85d415afdfb5f85502b572"
+    },
+    {
+      "key": "flow_only",
+      "label": "只保留主动成交信号",
+      "group": "ablation",
+      "changes": {},
+      "cash": 2000000,
+      "shares": 20,
+      "params": "depth=0,momentum=0",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/flow_only.toml",
+      "scenario_sha256": "b826c2b4220fdfd1d04fb742c1a0b91bfccfe9b71f85d415afdfb5f85502b572"
+    },
+    {
+      "key": "no_depth",
+      "label": "去掉盘口信号",
+      "group": "ablation",
+      "changes": {},
+      "cash": 2000000,
+      "shares": 20,
+      "params": "depth=0",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/no_depth.toml",
+      "scenario_sha256": "b826c2b4220fdfd1d04fb742c1a0b91bfccfe9b71f85d415afdfb5f85502b572"
+    },
+    {
+      "key": "no_momentum",
+      "label": "去掉动量信号",
+      "group": "ablation",
+      "changes": {},
+      "cash": 2000000,
+      "shares": 20,
+      "params": "momentum=0",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/no_momentum.toml",
+      "scenario_sha256": "b826c2b4220fdfd1d04fb742c1a0b91bfccfe9b71f85d415afdfb5f85502b572"
+    },
+    {
+      "key": "no_signal_exit",
+      "label": "关闭信号清仓",
+      "group": "ablation",
+      "changes": {},
+      "cash": 2000000,
+      "shares": 20,
+      "params": "exit=-2",
+      "every": 1,
+      "note": "Position sizing and final-20-tick exit remain active; only the negative-signal exit is disabled.",
+      "scenario": "scenarios/swift-stress/no_signal_exit.toml",
+      "scenario_sha256": "b826c2b4220fdfd1d04fb742c1a0b91bfccfe9b71f85d415afdfb5f85502b572"
+    },
+    {
+      "key": "unlevered",
+      "label": "不使用杠杆",
+      "group": "ablation",
+      "changes": {},
+      "cash": 2000000,
+      "shares": 20,
+      "params": "leverage=1",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/unlevered.toml",
+      "scenario_sha256": "b826c2b4220fdfd1d04fb742c1a0b91bfccfe9b71f85d415afdfb5f85502b572"
+    },
+    {
+      "key": "cash_control",
+      "label": "卖出初始股票后不再买入",
+      "group": "control",
+      "changes": {},
+      "cash": 2000000,
+      "shares": 20,
+      "params": "entry=100,exit=100",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/cash_control.toml",
+      "scenario_sha256": "b826c2b4220fdfd1d04fb742c1a0b91bfccfe9b71f85d415afdfb5f85502b572"
+    },
+    {
+      "key": "v5_repeat",
+      "label": "原版 v5 同种子重复",
+      "group": "repeat",
+      "changes": {},
+      "cash": 2000000,
+      "shares": 20,
+      "params": "",
+      "every": 1,
+      "scenario": "scenarios/swift-stress/v5_repeat.toml",
+      "scenario_sha256": "b826c2b4220fdfd1d04fb742c1a0b91bfccfe9b71f85d415afdfb5f85502b572"
+    }
+  ],
+  "jobs": [
+    {
+      "id": "a-v5",
+      "case": "v5",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-calm",
+      "case": "calm",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-turbulent",
+      "case": "turbulent",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-no_news",
+      "case": "no_news",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-public_news",
+      "case": "public_news",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-slow_news",
+      "case": "slow_news",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-no_grid",
+      "case": "no_grid",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-strong_crowd",
+      "case": "strong_crowd",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-crowded",
+      "case": "crowded",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-fee20",
+      "case": "fee20",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-fee50",
+      "case": "fee50",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-no_idle",
+      "case": "no_idle",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-tick10",
+      "case": "tick10",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-depth1",
+      "case": "depth1",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-capital01",
+      "case": "capital01",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-capital10",
+      "case": "capital10",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-capital100",
+      "case": "capital100",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-cash_start",
+      "case": "cash_start",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-cadence5",
+      "case": "cadence5",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-cadence20",
+      "case": "cadence20",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-flow_only",
+      "case": "flow_only",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-no_depth",
+      "case": "no_depth",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-no_momentum",
+      "case": "no_momentum",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-no_signal_exit",
+      "case": "no_signal_exit",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-unlevered",
+      "case": "unlevered",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-cash_control",
+      "case": "cash_control",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "a-v5_repeat",
+      "case": "v5_repeat",
+      "first_seed": 7001,
+      "seeds": 20
+    },
+    {
+      "id": "b-v5",
+      "case": "v5",
+      "first_seed": 8001,
+      "seeds": 20
+    },
+    {
+      "id": "b-turbulent",
+      "case": "turbulent",
+      "first_seed": 8001,
+      "seeds": 20
+    },
+    {
+      "id": "b-public_news",
+      "case": "public_news",
+      "first_seed": 8001,
+      "seeds": 20
+    },
+    {
+      "id": "b-no_grid",
+      "case": "no_grid",
+      "first_seed": 8001,
+      "seeds": 20
+    },
+    {
+      "id": "b-strong_crowd",
+      "case": "strong_crowd",
+      "first_seed": 8001,
+      "seeds": 20
+    },
+    {
+      "id": "b-crowded",
+      "case": "crowded",
+      "first_seed": 8001,
+      "seeds": 20
+    },
+    {
+      "id": "b-fee50",
+      "case": "fee50",
+      "first_seed": 8001,
+      "seeds": 20
+    },
+    {
+      "id": "b-capital100",
+      "case": "capital100",
+      "first_seed": 8001,
+      "seeds": 20
+    }
+  ],
+  "world_runs": 700,
+  "gate": {
+    "mean_percentile": 90,
+    "top_quartile_share": 0.8
+  },
+  "notes": [
+    "No Swift tuning; ablations are labeled controls, not replacement candidates.",
+    "Common seed IDs do not imply identical price paths after changing agents or market rules.",
+    "Equity is observed before decisions; mark-based drawdown differs from executable liquidation value.",
+    "Cadence is decision frequency, not network or exchange latency.",
+    "All scenarios share this dividend-driven simulator; this is not real-market validation."
+  ]
+}
