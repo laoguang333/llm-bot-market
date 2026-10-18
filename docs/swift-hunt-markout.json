@@ -1,0 +1,2031 @@
+{
+  "notes": "Post-game execution diagnostics. Identities and future quotes are never bot inputs.\n\nFor each target fill, compare its price with the first available two-sided mid\nat or after tick+20, allowing at most 10 more ticks. This is a descriptive markout,\nnot a realized-trade P&L, and can include dividend-related price changes.\nClock-phase bins use trade timestamps, not the opponent's private local clock;\nthe simulator permits tick skew, so phase alignment is approximate.\n",
+  "combined": [
+    {
+      "case": "alone",
+      "runs": 40,
+      "coverage": 0.9827315392844219,
+      "signed_mid_markout20_bps": 188.63376537058534,
+      "buy_notional_during_clock_sell_phase_share": 0.5201657486706158,
+      "sell_notional_during_clock_buy_phase_share": 0.5126581672120224
+    },
+    {
+      "case": "relay",
+      "runs": 80,
+      "coverage": 0.9941772069635918,
+      "signed_mid_markout20_bps": 25.6290052249149,
+      "buy_notional_during_clock_sell_phase_share": 0.5122246174398313,
+      "sell_notional_during_clock_buy_phase_share": 0.5092121156133913
+    },
+    {
+      "case": "clock",
+      "runs": 80,
+      "coverage": 0.9938784216235905,
+      "signed_mid_markout20_bps": 18.278678977184605,
+      "buy_notional_during_clock_sell_phase_share": 0.48281721420624735,
+      "sell_notional_during_clock_buy_phase_share": 0.48944826168751787
+    }
+  ],
+  "worlds": [
+    {
+      "case": "alone",
+      "seed": 11001,
+      "order": "alone",
+      "target_trade_notional": 331661522,
+      "coverage": 0.9833071531282426,
+      "signed_mid_markout20_bps": 176.75809587293188,
+      "buy_notional_during_clock_sell_phase_share": 0.5130454534069327,
+      "sell_notional_during_clock_buy_phase_share": 0.5207459426497894
+    },
+    {
+      "case": "alone",
+      "seed": 11002,
+      "order": "alone",
+      "target_trade_notional": 213947105,
+      "coverage": 0.9808014789449944,
+      "signed_mid_markout20_bps": 265.66742011662933,
+      "buy_notional_during_clock_sell_phase_share": 0.5835517830106376,
+      "sell_notional_during_clock_buy_phase_share": 0.5743166139597632
+    },
+    {
+      "case": "alone",
+      "seed": 11003,
+      "order": "alone",
+      "target_trade_notional": 320355414,
+      "coverage": 0.9815304510508445,
+      "signed_mid_markout20_bps": 117.61747986953536,
+      "buy_notional_during_clock_sell_phase_share": 0.5727574060729806,
+      "sell_notional_during_clock_buy_phase_share": 0.5265693827872437
+    },
+    {
+      "case": "alone",
+      "seed": 11004,
+      "order": "alone",
+      "target_trade_notional": 176074821,
+      "coverage": 0.9987835966620122,
+      "signed_mid_markout20_bps": 290.52117135725473,
+      "buy_notional_during_clock_sell_phase_share": 0.5336265312520017,
+      "sell_notional_during_clock_buy_phase_share": 0.5414181066964338
+    },
+    {
+      "case": "alone",
+      "seed": 11005,
+      "order": "alone",
+      "target_trade_notional": 188509428,
+      "coverage": 0.9922892822103306,
+      "signed_mid_markout20_bps": 182.97309918904716,
+      "buy_notional_during_clock_sell_phase_share": 0.574405408561051,
+      "sell_notional_during_clock_buy_phase_share": 0.5254691746928267
+    },
+    {
+      "case": "alone",
+      "seed": 11006,
+      "order": "alone",
+      "target_trade_notional": 193647710,
+      "coverage": 0.9652117548924282,
+      "signed_mid_markout20_bps": 133.13755678195713,
+      "buy_notional_during_clock_sell_phase_share": 0.5837446700322949,
+      "sell_notional_during_clock_buy_phase_share": 0.46517954891099667
+    },
+    {
+      "case": "alone",
+      "seed": 11007,
+      "order": "alone",
+      "target_trade_notional": 114910210,
+      "coverage": 0.9791935633917995,
+      "signed_mid_markout20_bps": 182.1282489237539,
+      "buy_notional_during_clock_sell_phase_share": 0.5443933295401063,
+      "sell_notional_during_clock_buy_phase_share": 0.4736316303471947
+    },
+    {
+      "case": "alone",
+      "seed": 11008,
+      "order": "alone",
+      "target_trade_notional": 218872909,
+      "coverage": 0.9946577445087094,
+      "signed_mid_markout20_bps": 119.00805018257068,
+      "buy_notional_during_clock_sell_phase_share": 0.5466550202383106,
+      "sell_notional_during_clock_buy_phase_share": 0.5286276232255004
+    },
+    {
+      "case": "alone",
+      "seed": 11009,
+      "order": "alone",
+      "target_trade_notional": 299585604,
+      "coverage": 0.9757145173103845,
+      "signed_mid_markout20_bps": 194.59276290365176,
+      "buy_notional_during_clock_sell_phase_share": 0.5422010950684966,
+      "sell_notional_during_clock_buy_phase_share": 0.49469536968537403
+    },
+    {
+      "case": "alone",
+      "seed": 11010,
+      "order": "alone",
+      "target_trade_notional": 157695864,
+      "coverage": 0.9960455335721424,
+      "signed_mid_markout20_bps": 192.03651751087992,
+      "buy_notional_during_clock_sell_phase_share": 0.5812314095061363,
+      "sell_notional_during_clock_buy_phase_share": 0.5040071176997363
+    },
+    {
+      "case": "alone",
+      "seed": 11011,
+      "order": "alone",
+      "target_trade_notional": 89097447,
+      "coverage": 0.9377030859256832,
+      "signed_mid_markout20_bps": 315.4684244551306,
+      "buy_notional_during_clock_sell_phase_share": 0.5662988658685721,
+      "sell_notional_during_clock_buy_phase_share": 0.5267570315125089
+    },
+    {
+      "case": "alone",
+      "seed": 11012,
+      "order": "alone",
+      "target_trade_notional": 175025286,
+      "coverage": 0.998726641132299,
+      "signed_mid_markout20_bps": 161.30566524892882,
+      "buy_notional_during_clock_sell_phase_share": 0.41682741511489596,
+      "sell_notional_during_clock_buy_phase_share": 0.5639646990697849
+    },
+    {
+      "case": "alone",
+      "seed": 11013,
+      "order": "alone",
+      "target_trade_notional": 184734997,
+      "coverage": 0.993558367286519,
+      "signed_mid_markout20_bps": 131.21719326358993,
+      "buy_notional_during_clock_sell_phase_share": 0.5719217210424293,
+      "sell_notional_during_clock_buy_phase_share": 0.4894880896939276
+    },
+    {
+      "case": "alone",
+      "seed": 11014,
+      "order": "alone",
+      "target_trade_notional": 192448187,
+      "coverage": 0.9845765499469216,
+      "signed_mid_markout20_bps": 132.59499003936943,
+      "buy_notional_during_clock_sell_phase_share": 0.4581654461723224,
+      "sell_notional_during_clock_buy_phase_share": 0.5579034353791362
+    },
+    {
+      "case": "alone",
+      "seed": 11015,
+      "order": "alone",
+      "target_trade_notional": 173782810,
+      "coverage": 0.9848495947326436,
+      "signed_mid_markout20_bps": 187.07544899375654,
+      "buy_notional_during_clock_sell_phase_share": 0.460053199767417,
+      "sell_notional_during_clock_buy_phase_share": 0.44528386073988097
+    },
+    {
+      "case": "alone",
+      "seed": 11016,
+      "order": "alone",
+      "target_trade_notional": 241859140,
+      "coverage": 0.9768653812297522,
+      "signed_mid_markout20_bps": 175.3319438611805,
+      "buy_notional_during_clock_sell_phase_share": 0.47021740310200805,
+      "sell_notional_during_clock_buy_phase_share": 0.5088184054300119
+    },
+    {
+      "case": "alone",
+      "seed": 11017,
+      "order": "alone",
+      "target_trade_notional": 177137558,
+      "coverage": 0.9753266723932144,
+      "signed_mid_markout20_bps": 373.1900513283831,
+      "buy_notional_during_clock_sell_phase_share": 0.556599931467333,
+      "sell_notional_during_clock_buy_phase_share": 0.5002619181187111
+    },
+    {
+      "case": "alone",
+      "seed": 11018,
+      "order": "alone",
+      "target_trade_notional": 238964259,
+      "coverage": 0.9809680199916424,
+      "signed_mid_markout20_bps": 93.61588922981701,
+      "buy_notional_during_clock_sell_phase_share": 0.48171831516038016,
+      "sell_notional_during_clock_buy_phase_share": 0.49126120061662465
+    },
+    {
+      "case": "alone",
+      "seed": 11019,
+      "order": "alone",
+      "target_trade_notional": 359305729,
+      "coverage": 0.9858429003785798,
+      "signed_mid_markout20_bps": 232.15671529671351,
+      "buy_notional_during_clock_sell_phase_share": 0.49247755420672934,
+      "sell_notional_during_clock_buy_phase_share": 0.5170499549416329
+    },
+    {
+      "case": "alone",
+      "seed": 11020,
+      "order": "alone",
+      "target_trade_notional": 242066473,
+      "coverage": 0.9681388962939944,
+      "signed_mid_markout20_bps": 191.77424382248992,
+      "buy_notional_during_clock_sell_phase_share": 0.48651554040344563,
+      "sell_notional_during_clock_buy_phase_share": 0.48660369005169773
+    },
+    {
+      "case": "relay",
+      "seed": 11001,
+      "order": "predator_first",
+      "target_trade_notional": 390816302,
+      "coverage": 1.0,
+      "signed_mid_markout20_bps": 41.026192914542236,
+      "buy_notional_during_clock_sell_phase_share": 0.5280536859107616,
+      "sell_notional_during_clock_buy_phase_share": 0.5296955454763258
+    },
+    {
+      "case": "relay",
+      "seed": 11002,
+      "order": "predator_first",
+      "target_trade_notional": 207602855,
+      "coverage": 0.9972315361462635,
+      "signed_mid_markout20_bps": 55.24136204998709,
+      "buy_notional_during_clock_sell_phase_share": 0.5600368403150712,
+      "sell_notional_during_clock_buy_phase_share": 0.5623098526264676
+    },
+    {
+      "case": "relay",
+      "seed": 11003,
+      "order": "predator_first",
+      "target_trade_notional": 331004390,
+      "coverage": 0.9972383961433261,
+      "signed_mid_markout20_bps": -42.94181185646338,
+      "buy_notional_during_clock_sell_phase_share": 0.5221132037410402,
+      "sell_notional_during_clock_buy_phase_share": 0.5329028505354716
+    },
+    {
+      "case": "relay",
+      "seed": 11004,
+      "order": "predator_first",
+      "target_trade_notional": 253498277,
+      "coverage": 0.9941708558437263,
+      "signed_mid_markout20_bps": 70.03953276057406,
+      "buy_notional_during_clock_sell_phase_share": 0.5751342974251673,
+      "sell_notional_during_clock_buy_phase_share": 0.5437371907826809
+    },
+    {
+      "case": "relay",
+      "seed": 11005,
+      "order": "predator_first",
+      "target_trade_notional": 295673301,
+      "coverage": 0.9985638304217397,
+      "signed_mid_markout20_bps": -3.2449935150256937,
+      "buy_notional_during_clock_sell_phase_share": 0.4586305909105629,
+      "sell_notional_during_clock_buy_phase_share": 0.5502819963687559
+    },
+    {
+      "case": "relay",
+      "seed": 11006,
+      "order": "predator_first",
+      "target_trade_notional": 291135312,
+      "coverage": 0.9852871918195893,
+      "signed_mid_markout20_bps": 24.81867872903081,
+      "buy_notional_during_clock_sell_phase_share": 0.505821967148881,
+      "sell_notional_during_clock_buy_phase_share": 0.5009045573235947
+    },
+    {
+      "case": "relay",
+      "seed": 11007,
+      "order": "predator_first",
+      "target_trade_notional": 162093855,
+      "coverage": 0.9928663489433328,
+      "signed_mid_markout20_bps": -14.588113422938369,
+      "buy_notional_during_clock_sell_phase_share": 0.5335232319732159,
+      "sell_notional_during_clock_buy_phase_share": 0.5229222197622613
+    },
+    {
+      "case": "relay",
+      "seed": 11008,
+      "order": "predator_first",
+      "target_trade_notional": 332593513,
+      "coverage": 0.9999254946382553,
+      "signed_mid_markout20_bps": -3.9810116485003415,
+      "buy_notional_during_clock_sell_phase_share": 0.48384555618960584,
+      "sell_notional_during_clock_buy_phase_share": 0.5611608236020973
+    },
+    {
+      "case": "relay",
+      "seed": 11009,
+      "order": "predator_first",
+      "target_trade_notional": 417942763,
+      "coverage": 0.9970470860862831,
+      "signed_mid_markout20_bps": 39.126752968922304,
+      "buy_notional_during_clock_sell_phase_share": 0.46513880949295805,
+      "sell_notional_during_clock_buy_phase_share": 0.4799601712654235
+    },
+    {
+      "case": "relay",
+      "seed": 11010,
+      "order": "predator_first",
+      "target_trade_notional": 208898462,
+      "coverage": 0.9995203459181045,
+      "signed_mid_markout20_bps": 27.86627587989082,
+      "buy_notional_during_clock_sell_phase_share": 0.5393232960677062,
+      "sell_notional_during_clock_buy_phase_share": 0.4928837143264965
+    },
+    {
+      "case": "relay",
+      "seed": 11011,
+      "order": "predator_first",
+      "target_trade_notional": 148095170,
+      "coverage": 0.9887992971006414,
+      "signed_mid_markout20_bps": 0.35868814038039726,
+      "buy_notional_during_clock_sell_phase_share": 0.5559229559534027,
+      "sell_notional_during_clock_buy_phase_share": 0.5175448436408138
+    },
+    {
+      "case": "relay",
+      "seed": 11012,
+      "order": "predator_first",
+      "target_trade_notional": 181703716,
+      "coverage": 0.9999023905487987,
+      "signed_mid_markout20_bps": 67.98807480907443,
+      "buy_notional_during_clock_sell_phase_share": 0.45114984675287834,
+      "sell_notional_during_clock_buy_phase_share": 0.48514081968549605
+    },
+    {
+      "case": "relay",
+      "seed": 11013,
+      "order": "predator_first",
+      "target_trade_notional": 294338762,
+      "coverage": 0.9998782423362914,
+      "signed_mid_markout20_bps": -58.568769095885706,
+      "buy_notional_during_clock_sell_phase_share": 0.5742017948863359,
+      "sell_notional_during_clock_buy_phase_share": 0.5176746014226425
+    },
+    {
+      "case": "relay",
+      "seed": 11014,
+      "order": "predator_first",
+      "target_trade_notional": 341226256,
+      "coverage": 0.9998424095477577,
+      "signed_mid_markout20_bps": 14.580762700550979,
+      "buy_notional_during_clock_sell_phase_share": 0.5198827673770743,
+      "sell_notional_during_clock_buy_phase_share": 0.5058235285710244
+    },
+    {
+      "case": "relay",
+      "seed": 11015,
+      "order": "predator_first",
+      "target_trade_notional": 202759289,
+      "coverage": 0.996525194956666,
+      "signed_mid_markout20_bps": 41.7685326263566,
+      "buy_notional_during_clock_sell_phase_share": 0.49597297979767474,
+      "sell_notional_during_clock_buy_phase_share": 0.46269367455177823
+    },
+    {
+      "case": "relay",
+      "seed": 11016,
+      "order": "predator_first",
+      "target_trade_notional": 291409751,
+      "coverage": 0.9898020742620929,
+      "signed_mid_markout20_bps": 81.03288035830622,
+      "buy_notional_during_clock_sell_phase_share": 0.5166143937938928,
+      "sell_notional_during_clock_buy_phase_share": 0.49613870776568963
+    },
+    {
+      "case": "relay",
+      "seed": 11017,
+      "order": "predator_first",
+      "target_trade_notional": 142094741,
+      "coverage": 0.9984914501515577,
+      "signed_mid_markout20_bps": 95.51355598248169,
+      "buy_notional_during_clock_sell_phase_share": 0.4970345806444939,
+      "sell_notional_during_clock_buy_phase_share": 0.5314113231323212
+    },
+    {
+      "case": "relay",
+      "seed": 11018,
+      "order": "predator_first",
+      "target_trade_notional": 268400739,
+      "coverage": 0.987009782413453,
+      "signed_mid_markout20_bps": 50.246144831332245,
+      "buy_notional_during_clock_sell_phase_share": 0.5048635267577427,
+      "sell_notional_during_clock_buy_phase_share": 0.4288571645430911
+    },
+    {
+      "case": "relay",
+      "seed": 11019,
+      "order": "predator_first",
+      "target_trade_notional": 326235879,
+      "coverage": 0.998192369270334,
+      "signed_mid_markout20_bps": 97.62172387321067,
+      "buy_notional_during_clock_sell_phase_share": 0.49025931299413866,
+      "sell_notional_during_clock_buy_phase_share": 0.572988168894885
+    },
+    {
+      "case": "relay",
+      "seed": 11020,
+      "order": "predator_first",
+      "target_trade_notional": 282705970,
+      "coverage": 0.9774944582882349,
+      "signed_mid_markout20_bps": 47.70287375547244,
+      "buy_notional_during_clock_sell_phase_share": 0.5034288626059319,
+      "sell_notional_during_clock_buy_phase_share": 0.5494003227478795
+    },
+    {
+      "case": "relay",
+      "seed": 11001,
+      "order": "target_first",
+      "target_trade_notional": 453388002,
+      "coverage": 1.0,
+      "signed_mid_markout20_bps": 40.78589402107734,
+      "buy_notional_during_clock_sell_phase_share": 0.5414836608840541,
+      "sell_notional_during_clock_buy_phase_share": 0.5298265761397449
+    },
+    {
+      "case": "relay",
+      "seed": 11002,
+      "order": "target_first",
+      "target_trade_notional": 288030022,
+      "coverage": 0.9987839600970485,
+      "signed_mid_markout20_bps": 26.174120984233557,
+      "buy_notional_during_clock_sell_phase_share": 0.5656101528951458,
+      "sell_notional_during_clock_buy_phase_share": 0.5624320781039962
+    },
+    {
+      "case": "relay",
+      "seed": 11003,
+      "order": "target_first",
+      "target_trade_notional": 404990280,
+      "coverage": 1.0,
+      "signed_mid_markout20_bps": 2.1743361346845163,
+      "buy_notional_during_clock_sell_phase_share": 0.5073293304503037,
+      "sell_notional_during_clock_buy_phase_share": 0.47514997669729137
+    },
+    {
+      "case": "relay",
+      "seed": 11004,
+      "order": "target_first",
+      "target_trade_notional": 239407534,
+      "coverage": 1.0,
+      "signed_mid_markout20_bps": 54.959548599669375,
+      "buy_notional_during_clock_sell_phase_share": 0.5066939757371368,
+      "sell_notional_during_clock_buy_phase_share": 0.4828750833206522
+    },
+    {
+      "case": "relay",
+      "seed": 11005,
+      "order": "target_first",
+      "target_trade_notional": 318527484,
+      "coverage": 0.9864320593446813,
+      "signed_mid_markout20_bps": -7.973629455417747,
+      "buy_notional_during_clock_sell_phase_share": 0.510843651166788,
+      "sell_notional_during_clock_buy_phase_share": 0.5086142053481981
+    },
+    {
+      "case": "relay",
+      "seed": 11006,
+      "order": "target_first",
+      "target_trade_notional": 332575399,
+      "coverage": 0.9715877571569869,
+      "signed_mid_markout20_bps": -3.1780308885272457,
+      "buy_notional_during_clock_sell_phase_share": 0.4928482942086257,
+      "sell_notional_during_clock_buy_phase_share": 0.5249084996339842
+    },
+    {
+      "case": "relay",
+      "seed": 11007,
+      "order": "target_first",
+      "target_trade_notional": 206242869,
+      "coverage": 1.0,
+      "signed_mid_markout20_bps": 1.4296251862167415,
+      "buy_notional_during_clock_sell_phase_share": 0.5386451572396072,
+      "sell_notional_during_clock_buy_phase_share": 0.4331793233783797
+    },
+    {
+      "case": "relay",
+      "seed": 11008,
+      "order": "target_first",
+      "target_trade_notional": 315793144,
+      "coverage": 1.0,
+      "signed_mid_markout20_bps": 12.619384162437676,
+      "buy_notional_during_clock_sell_phase_share": 0.48534230410705487,
+      "sell_notional_during_clock_buy_phase_share": 0.47056667632638705
+    },
+    {
+      "case": "relay",
+      "seed": 11009,
+      "order": "target_first",
+      "target_trade_notional": 466610220,
+      "coverage": 0.9999206768338679,
+      "signed_mid_markout20_bps": -14.479228336829895,
+      "buy_notional_during_clock_sell_phase_share": 0.44386945858151755,
+      "sell_notional_during_clock_buy_phase_share": 0.5060837098652039
+    },
+    {
+      "case": "relay",
+      "seed": 11010,
+      "order": "target_first",
+      "target_trade_notional": 214879953,
+      "coverage": 0.990552613346858,
+      "signed_mid_markout20_bps": 71.97910392243126,
+      "buy_notional_during_clock_sell_phase_share": 0.5027131017213254,
+      "sell_notional_during_clock_buy_phase_share": 0.5645277209609831
+    },
+    {
+      "case": "relay",
+      "seed": 11011,
+      "order": "target_first",
+      "target_trade_notional": 171895601,
+      "coverage": 0.9844107645314321,
+      "signed_mid_markout20_bps": 1.208692706618315,
+      "buy_notional_during_clock_sell_phase_share": 0.5016732517471534,
+      "sell_notional_during_clock_buy_phase_share": 0.46093770053878014
+    },
+    {
+      "case": "relay",
+      "seed": 11012,
+      "order": "target_first",
+      "target_trade_notional": 200007209,
+      "coverage": 0.9973447657079201,
+      "signed_mid_markout20_bps": 54.18154189997548,
+      "buy_notional_during_clock_sell_phase_share": 0.4687136359954722,
+      "sell_notional_during_clock_buy_phase_share": 0.5262620370618646
+    },
+    {
+      "case": "relay",
+      "seed": 11013,
+      "order": "target_first",
+      "target_trade_notional": 290642585,
+      "coverage": 0.9991606116495282,
+      "signed_mid_markout20_bps": -55.050243816066576,
+      "buy_notional_during_clock_sell_phase_share": 0.5354917466753596,
+      "sell_notional_during_clock_buy_phase_share": 0.5036600898793171
+    },
+    {
+      "case": "relay",
+      "seed": 11014,
+      "order": "target_first",
+      "target_trade_notional": 368936801,
+      "coverage": 0.9949714314349465,
+      "signed_mid_markout20_bps": -16.603625411579834,
+      "buy_notional_during_clock_sell_phase_share": 0.5610169462513908,
+      "sell_notional_during_clock_buy_phase_share": 0.4906749509169517
+    },
+    {
+      "case": "relay",
+      "seed": 11015,
+      "order": "target_first",
+      "target_trade_notional": 222348414,
+      "coverage": 0.9882160436727918,
+      "signed_mid_markout20_bps": 69.85086625403277,
+      "buy_notional_during_clock_sell_phase_share": 0.5680837838992644,
+      "sell_notional_during_clock_buy_phase_share": 0.47620127015512764
+    },
+    {
+      "case": "relay",
+      "seed": 11016,
+      "order": "target_first",
+      "target_trade_notional": 335872214,
+      "coverage": 0.9905097329664787,
+      "signed_mid_markout20_bps": 106.25206184340965,
+      "buy_notional_during_clock_sell_phase_share": 0.4972763886726225,
+      "sell_notional_during_clock_buy_phase_share": 0.5062986698576566
+    },
+    {
+      "case": "relay",
+      "seed": 11017,
+      "order": "target_first",
+      "target_trade_notional": 166095463,
+      "coverage": 0.9941705933292109,
+      "signed_mid_markout20_bps": 49.42800922137461,
+      "buy_notional_during_clock_sell_phase_share": 0.5150268247615643,
+      "sell_notional_during_clock_buy_phase_share": 0.4822516034868076
+    },
+    {
+      "case": "relay",
+      "seed": 11018,
+      "order": "target_first",
+      "target_trade_notional": 279564629,
+      "coverage": 0.9930686760806211,
+      "signed_mid_markout20_bps": 50.80167382642018,
+      "buy_notional_during_clock_sell_phase_share": 0.5427680702546654,
+      "sell_notional_during_clock_buy_phase_share": 0.46863089956349024
+    },
+    {
+      "case": "relay",
+      "seed": 11019,
+      "order": "target_first",
+      "target_trade_notional": 269418609,
+      "coverage": 0.997585096284125,
+      "signed_mid_markout20_bps": 99.50976713971693,
+      "buy_notional_during_clock_sell_phase_share": 0.5426356858752465,
+      "sell_notional_during_clock_buy_phase_share": 0.47393427237017116
+    },
+    {
+      "case": "relay",
+      "seed": 11020,
+      "order": "target_first",
+      "target_trade_notional": 329331617,
+      "coverage": 0.9785702567391215,
+      "signed_mid_markout20_bps": 76.2624520352045,
+      "buy_notional_during_clock_sell_phase_share": 0.514121506194408,
+      "sell_notional_during_clock_buy_phase_share": 0.48503529874649826
+    },
+    {
+      "case": "clock",
+      "seed": 11001,
+      "order": "predator_first",
+      "target_trade_notional": 620979800,
+      "coverage": 0.9949292569581168,
+      "signed_mid_markout20_bps": 12.475742333739369,
+      "buy_notional_during_clock_sell_phase_share": 0.43674809009290555,
+      "sell_notional_during_clock_buy_phase_share": 0.4574725723998341
+    },
+    {
+      "case": "clock",
+      "seed": 11002,
+      "order": "predator_first",
+      "target_trade_notional": 256972028,
+      "coverage": 0.9977256123767682,
+      "signed_mid_markout20_bps": 64.39508647950309,
+      "buy_notional_during_clock_sell_phase_share": 0.4919521782185938,
+      "sell_notional_during_clock_buy_phase_share": 0.5363662845736573
+    },
+    {
+      "case": "clock",
+      "seed": 11003,
+      "order": "predator_first",
+      "target_trade_notional": 461181322,
+      "coverage": 1.0,
+      "signed_mid_markout20_bps": 38.4381893939755,
+      "buy_notional_during_clock_sell_phase_share": 0.43196346319027124,
+      "sell_notional_during_clock_buy_phase_share": 0.455762636626375
+    },
+    {
+      "case": "clock",
+      "seed": 11004,
+      "order": "predator_first",
+      "target_trade_notional": 262281811,
+      "coverage": 0.9961878218082,
+      "signed_mid_markout20_bps": 9.22287221482957,
+      "buy_notional_during_clock_sell_phase_share": 0.49978432807614553,
+      "sell_notional_during_clock_buy_phase_share": 0.48801726952836494
+    },
+    {
+      "case": "clock",
+      "seed": 11005,
+      "order": "predator_first",
+      "target_trade_notional": 341940128,
+      "coverage": 0.9954303140460894,
+      "signed_mid_markout20_bps": -30.00658953528163,
+      "buy_notional_during_clock_sell_phase_share": 0.41834685301720204,
+      "sell_notional_during_clock_buy_phase_share": 0.5344632494256393
+    },
+    {
+      "case": "clock",
+      "seed": 11006,
+      "order": "predator_first",
+      "target_trade_notional": 362615497,
+      "coverage": 0.9832914366591453,
+      "signed_mid_markout20_bps": -11.000662326612822,
+      "buy_notional_during_clock_sell_phase_share": 0.400041139840116,
+      "sell_notional_during_clock_buy_phase_share": 0.4633693628244342
+    },
+    {
+      "case": "clock",
+      "seed": 11007,
+      "order": "predator_first",
+      "target_trade_notional": 189304622,
+      "coverage": 0.9977076470959066,
+      "signed_mid_markout20_bps": -23.257369835440144,
+      "buy_notional_during_clock_sell_phase_share": 0.5032100088134129,
+      "sell_notional_during_clock_buy_phase_share": 0.5126874884430184
+    },
+    {
+      "case": "clock",
+      "seed": 11008,
+      "order": "predator_first",
+      "target_trade_notional": 417134423,
+      "coverage": 0.9997204138676419,
+      "signed_mid_markout20_bps": -9.83738588538612,
+      "buy_notional_during_clock_sell_phase_share": 0.5009087252827914,
+      "sell_notional_during_clock_buy_phase_share": 0.563563393224503
+    },
+    {
+      "case": "clock",
+      "seed": 11009,
+      "order": "predator_first",
+      "target_trade_notional": 513463477,
+      "coverage": 0.993464728943126,
+      "signed_mid_markout20_bps": 34.83651518135614,
+      "buy_notional_during_clock_sell_phase_share": 0.5636423993122173,
+      "sell_notional_during_clock_buy_phase_share": 0.5589469008722076
+    },
+    {
+      "case": "clock",
+      "seed": 11010,
+      "order": "predator_first",
+      "target_trade_notional": 323752541,
+      "coverage": 0.9983133877550014,
+      "signed_mid_markout20_bps": 7.990325169702035,
+      "buy_notional_during_clock_sell_phase_share": 0.5651302593816209,
+      "sell_notional_during_clock_buy_phase_share": 0.5609364771505269
+    },
+    {
+      "case": "clock",
+      "seed": 11011,
+      "order": "predator_first",
+      "target_trade_notional": 151686841,
+      "coverage": 0.9970428417056955,
+      "signed_mid_markout20_bps": 32.74944698359071,
+      "buy_notional_during_clock_sell_phase_share": 0.580391924042931,
+      "sell_notional_during_clock_buy_phase_share": 0.5633689303723332
+    },
+    {
+      "case": "clock",
+      "seed": 11012,
+      "order": "predator_first",
+      "target_trade_notional": 281681985,
+      "coverage": 0.9987236670460129,
+      "signed_mid_markout20_bps": 35.479569681717386,
+      "buy_notional_during_clock_sell_phase_share": 0.4786653219891706,
+      "sell_notional_during_clock_buy_phase_share": 0.5550659403461121
+    },
+    {
+      "case": "clock",
+      "seed": 11013,
+      "order": "predator_first",
+      "target_trade_notional": 265809510,
+      "coverage": 0.9974294185335957,
+      "signed_mid_markout20_bps": -51.414095304981615,
+      "buy_notional_during_clock_sell_phase_share": 0.514497267867221,
+      "sell_notional_during_clock_buy_phase_share": 0.5222986608421631
+    },
+    {
+      "case": "clock",
+      "seed": 11014,
+      "order": "predator_first",
+      "target_trade_notional": 430868494,
+      "coverage": 0.9999739131541142,
+      "signed_mid_markout20_bps": -30.53061049309849,
+      "buy_notional_during_clock_sell_phase_share": 0.33185113779892345,
+      "sell_notional_during_clock_buy_phase_share": 0.4177179293859828
+    },
+    {
+      "case": "clock",
+      "seed": 11015,
+      "order": "predator_first",
+      "target_trade_notional": 344956347,
+      "coverage": 0.997322324960729,
+      "signed_mid_markout20_bps": 38.918804297496564,
+      "buy_notional_during_clock_sell_phase_share": 0.5200246716312282,
+      "sell_notional_during_clock_buy_phase_share": 0.5441504409531855
+    },
+    {
+      "case": "clock",
+      "seed": 11016,
+      "order": "predator_first",
+      "target_trade_notional": 319328712,
+      "coverage": 0.9934511025115712,
+      "signed_mid_markout20_bps": 74.52302425280097,
+      "buy_notional_during_clock_sell_phase_share": 0.6203307588363841,
+      "sell_notional_during_clock_buy_phase_share": 0.5552000458212516
+    },
+    {
+      "case": "clock",
+      "seed": 11017,
+      "order": "predator_first",
+      "target_trade_notional": 261727083,
+      "coverage": 0.9979598786878314,
+      "signed_mid_markout20_bps": 65.34015703506563,
+      "buy_notional_during_clock_sell_phase_share": 0.5350860285672859,
+      "sell_notional_during_clock_buy_phase_share": 0.533275850778798
+    },
+    {
+      "case": "clock",
+      "seed": 11018,
+      "order": "predator_first",
+      "target_trade_notional": 426093396,
+      "coverage": 0.9916194781859515,
+      "signed_mid_markout20_bps": -5.2908305280804315,
+      "buy_notional_during_clock_sell_phase_share": 0.5059218961799903,
+      "sell_notional_during_clock_buy_phase_share": 0.5090737019205567
+    },
+    {
+      "case": "clock",
+      "seed": 11019,
+      "order": "predator_first",
+      "target_trade_notional": 291632794,
+      "coverage": 0.9890200619893248,
+      "signed_mid_markout20_bps": 143.78211924220935,
+      "buy_notional_during_clock_sell_phase_share": 0.5864324530765871,
+      "sell_notional_during_clock_buy_phase_share": 0.5337515456616588
+    },
+    {
+      "case": "clock",
+      "seed": 11020,
+      "order": "predator_first",
+      "target_trade_notional": 330602856,
+      "coverage": 0.9843738101282464,
+      "signed_mid_markout20_bps": 57.456687142317065,
+      "buy_notional_during_clock_sell_phase_share": 0.5184897238600578,
+      "sell_notional_during_clock_buy_phase_share": 0.49373333644304157
+    },
+    {
+      "case": "clock",
+      "seed": 11001,
+      "order": "target_first",
+      "target_trade_notional": 611860410,
+      "coverage": 0.9936807710765271,
+      "signed_mid_markout20_bps": 6.50639725800944,
+      "buy_notional_during_clock_sell_phase_share": 0.4567230156822287,
+      "sell_notional_during_clock_buy_phase_share": 0.45208540439933564
+    },
+    {
+      "case": "clock",
+      "seed": 11002,
+      "order": "target_first",
+      "target_trade_notional": 317934716,
+      "coverage": 0.9960331636133752,
+      "signed_mid_markout20_bps": 12.704330274585857,
+      "buy_notional_during_clock_sell_phase_share": 0.44351749878783187,
+      "sell_notional_during_clock_buy_phase_share": 0.48020070808062726
+    },
+    {
+      "case": "clock",
+      "seed": 11003,
+      "order": "target_first",
+      "target_trade_notional": 505610549,
+      "coverage": 0.9968805120796639,
+      "signed_mid_markout20_bps": 18.807150129919094,
+      "buy_notional_during_clock_sell_phase_share": 0.42739772634592654,
+      "sell_notional_during_clock_buy_phase_share": 0.48653579001824593
+    },
+    {
+      "case": "clock",
+      "seed": 11004,
+      "order": "target_first",
+      "target_trade_notional": 300884852,
+      "coverage": 0.9902174370679186,
+      "signed_mid_markout20_bps": 4.930549654647388,
+      "buy_notional_during_clock_sell_phase_share": 0.4809849083181976,
+      "sell_notional_during_clock_buy_phase_share": 0.440099969089786
+    },
+    {
+      "case": "clock",
+      "seed": 11005,
+      "order": "target_first",
+      "target_trade_notional": 387579425,
+      "coverage": 0.9949679243164159,
+      "signed_mid_markout20_bps": -12.006264693263706,
+      "buy_notional_during_clock_sell_phase_share": 0.3870275865131746,
+      "sell_notional_during_clock_buy_phase_share": 0.47632094667219665
+    },
+    {
+      "case": "clock",
+      "seed": 11006,
+      "order": "target_first",
+      "target_trade_notional": 368334969,
+      "coverage": 0.9649852143145279,
+      "signed_mid_markout20_bps": -6.331332813593075,
+      "buy_notional_during_clock_sell_phase_share": 0.3582889257809744,
+      "sell_notional_during_clock_buy_phase_share": 0.38838092546283454
+    },
+    {
+      "case": "clock",
+      "seed": 11007,
+      "order": "target_first",
+      "target_trade_notional": 214039014,
+      "coverage": 0.9970864984455591,
+      "signed_mid_markout20_bps": -11.39289795712082,
+      "buy_notional_during_clock_sell_phase_share": 0.4286828727074034,
+      "sell_notional_during_clock_buy_phase_share": 0.4816255767248947
+    },
+    {
+      "case": "clock",
+      "seed": 11008,
+      "order": "target_first",
+      "target_trade_notional": 418619388,
+      "coverage": 0.9980689308159802,
+      "signed_mid_markout20_bps": -2.8227475721947535,
+      "buy_notional_during_clock_sell_phase_share": 0.451302972236351,
+      "sell_notional_during_clock_buy_phase_share": 0.4111844073166225
+    },
+    {
+      "case": "clock",
+      "seed": 11009,
+      "order": "target_first",
+      "target_trade_notional": 609541106,
+      "coverage": 0.9920695373086126,
+      "signed_mid_markout20_bps": 46.912285376715474,
+      "buy_notional_during_clock_sell_phase_share": 0.5256647502952558,
+      "sell_notional_during_clock_buy_phase_share": 0.5532870258117287
+    },
+    {
+      "case": "clock",
+      "seed": 11010,
+      "order": "target_first",
+      "target_trade_notional": 323262108,
+      "coverage": 0.9979303605852871,
+      "signed_mid_markout20_bps": 17.971015198987285,
+      "buy_notional_during_clock_sell_phase_share": 0.5120215304305763,
+      "sell_notional_during_clock_buy_phase_share": 0.4974288656667416
+    },
+    {
+      "case": "clock",
+      "seed": 11011,
+      "order": "target_first",
+      "target_trade_notional": 179249754,
+      "coverage": 0.9644859261564175,
+      "signed_mid_markout20_bps": 46.33917109615753,
+      "buy_notional_during_clock_sell_phase_share": 0.48697402465726936,
+      "sell_notional_during_clock_buy_phase_share": 0.5244767246552131
+    },
+    {
+      "case": "clock",
+      "seed": 11012,
+      "order": "target_first",
+      "target_trade_notional": 312303772,
+      "coverage": 0.9981782160479317,
+      "signed_mid_markout20_bps": 57.31693650829936,
+      "buy_notional_during_clock_sell_phase_share": 0.4601253550905439,
+      "sell_notional_during_clock_buy_phase_share": 0.4465877955642423
+    },
+    {
+      "case": "clock",
+      "seed": 11013,
+      "order": "target_first",
+      "target_trade_notional": 293701872,
+      "coverage": 0.9990555831390819,
+      "signed_mid_markout20_bps": -26.72084346605078,
+      "buy_notional_during_clock_sell_phase_share": 0.4451403470544729,
+      "sell_notional_during_clock_buy_phase_share": 0.5309334408683315
+    },
+    {
+      "case": "clock",
+      "seed": 11014,
+      "order": "target_first",
+      "target_trade_notional": 430935476,
+      "coverage": 0.9983102574734414,
+      "signed_mid_markout20_bps": 2.9991354912043264,
+      "buy_notional_during_clock_sell_phase_share": 0.35469669634807993,
+      "sell_notional_during_clock_buy_phase_share": 0.3701066182320281
+    },
+    {
+      "case": "clock",
+      "seed": 11015,
+      "order": "target_first",
+      "target_trade_notional": 372994554,
+      "coverage": 0.9951937126674509,
+      "signed_mid_markout20_bps": 25.719107773268416,
+      "buy_notional_during_clock_sell_phase_share": 0.5182087800233242,
+      "sell_notional_during_clock_buy_phase_share": 0.4984584875378063
+    },
+    {
+      "case": "clock",
+      "seed": 11016,
+      "order": "target_first",
+      "target_trade_notional": 375878263,
+      "coverage": 0.9819958383706802,
+      "signed_mid_markout20_bps": 28.368263531861658,
+      "buy_notional_during_clock_sell_phase_share": 0.5141807222955455,
+      "sell_notional_during_clock_buy_phase_share": 0.49874191462674045
+    },
+    {
+      "case": "clock",
+      "seed": 11017,
+      "order": "target_first",
+      "target_trade_notional": 281203629,
+      "coverage": 1.0,
+      "signed_mid_markout20_bps": 66.89431806728213,
+      "buy_notional_during_clock_sell_phase_share": 0.4597697023611909,
+      "sell_notional_during_clock_buy_phase_share": 0.4759835585190055
+    },
+    {
+      "case": "clock",
+      "seed": 11018,
+      "order": "target_first",
+      "target_trade_notional": 457339166,
+      "coverage": 0.9953396862581413,
+      "signed_mid_markout20_bps": -2.0622009434626984,
+      "buy_notional_during_clock_sell_phase_share": 0.44466475963727786,
+      "sell_notional_during_clock_buy_phase_share": 0.35911066236427247
+    },
+    {
+      "case": "clock",
+      "seed": 11019,
+      "order": "target_first",
+      "target_trade_notional": 362226138,
+      "coverage": 0.9981538935768351,
+      "signed_mid_markout20_bps": 106.68645365689207,
+      "buy_notional_during_clock_sell_phase_share": 0.5100411273693921,
+      "sell_notional_during_clock_buy_phase_share": 0.5155504422972175
+    },
+    {
+      "case": "clock",
+      "seed": 11020,
+      "order": "target_first",
+      "target_trade_notional": 373297663,
+      "coverage": 0.9693713860726741,
+      "signed_mid_markout20_bps": 63.43475827731591,
+      "buy_notional_during_clock_sell_phase_share": 0.466630436419709,
+      "sell_notional_during_clock_buy_phase_share": 0.3900574718731306
+    },
+    {
+      "case": "alone",
+      "seed": 12001,
+      "order": "alone",
+      "target_trade_notional": 197766095,
+      "coverage": 0.9789387913029278,
+      "signed_mid_markout20_bps": 242.55424181856344,
+      "buy_notional_during_clock_sell_phase_share": 0.4637836362334834,
+      "sell_notional_during_clock_buy_phase_share": 0.4957503987832691
+    },
+    {
+      "case": "alone",
+      "seed": 12002,
+      "order": "alone",
+      "target_trade_notional": 61621163,
+      "coverage": 0.9967406652159422,
+      "signed_mid_markout20_bps": 141.57546137134196,
+      "buy_notional_during_clock_sell_phase_share": 0.6615096847043254,
+      "sell_notional_during_clock_buy_phase_share": 0.46475338399840077
+    },
+    {
+      "case": "alone",
+      "seed": 12003,
+      "order": "alone",
+      "target_trade_notional": 345441687,
+      "coverage": 0.9811442965770371,
+      "signed_mid_markout20_bps": 185.0515711529542,
+      "buy_notional_during_clock_sell_phase_share": 0.5294572897993338,
+      "sell_notional_during_clock_buy_phase_share": 0.5630473312209684
+    },
+    {
+      "case": "alone",
+      "seed": 12004,
+      "order": "alone",
+      "target_trade_notional": 205270687,
+      "coverage": 0.9769418027036662,
+      "signed_mid_markout20_bps": 226.61742367755977,
+      "buy_notional_during_clock_sell_phase_share": 0.5026356767457751,
+      "sell_notional_during_clock_buy_phase_share": 0.4940210523202903
+    },
+    {
+      "case": "alone",
+      "seed": 12005,
+      "order": "alone",
+      "target_trade_notional": 178372956,
+      "coverage": 0.9897196859819938,
+      "signed_mid_markout20_bps": 119.36522821279391,
+      "buy_notional_during_clock_sell_phase_share": 0.5261747280556751,
+      "sell_notional_during_clock_buy_phase_share": 0.5292473683070764
+    },
+    {
+      "case": "alone",
+      "seed": 12006,
+      "order": "alone",
+      "target_trade_notional": 156813508,
+      "coverage": 0.9938760058859215,
+      "signed_mid_markout20_bps": 309.5424429028184,
+      "buy_notional_during_clock_sell_phase_share": 0.5269406110132745,
+      "sell_notional_during_clock_buy_phase_share": 0.5385490261254159
+    },
+    {
+      "case": "alone",
+      "seed": 12007,
+      "order": "alone",
+      "target_trade_notional": 184508907,
+      "coverage": 0.9943519257853498,
+      "signed_mid_markout20_bps": 248.22882519875384,
+      "buy_notional_during_clock_sell_phase_share": 0.5168045734498884,
+      "sell_notional_during_clock_buy_phase_share": 0.4466276358675601
+    },
+    {
+      "case": "alone",
+      "seed": 12008,
+      "order": "alone",
+      "target_trade_notional": 262443514,
+      "coverage": 1.0,
+      "signed_mid_markout20_bps": 152.58656763756028,
+      "buy_notional_during_clock_sell_phase_share": 0.47314965380067125,
+      "sell_notional_during_clock_buy_phase_share": 0.5379076075389863
+    },
+    {
+      "case": "alone",
+      "seed": 12009,
+      "order": "alone",
+      "target_trade_notional": 267662160,
+      "coverage": 0.9596010284008767,
+      "signed_mid_markout20_bps": 197.17311678099406,
+      "buy_notional_during_clock_sell_phase_share": 0.5803386019053156,
+      "sell_notional_during_clock_buy_phase_share": 0.49976809906452246
+    },
+    {
+      "case": "alone",
+      "seed": 12010,
+      "order": "alone",
+      "target_trade_notional": 154428317,
+      "coverage": 0.9919481088432764,
+      "signed_mid_markout20_bps": 210.73398779436957,
+      "buy_notional_during_clock_sell_phase_share": 0.500411099810588,
+      "sell_notional_during_clock_buy_phase_share": 0.5029369237781636
+    },
+    {
+      "case": "alone",
+      "seed": 12011,
+      "order": "alone",
+      "target_trade_notional": 235764222,
+      "coverage": 0.9674467146249188,
+      "signed_mid_markout20_bps": 208.30188183908058,
+      "buy_notional_during_clock_sell_phase_share": 0.4762761013810496,
+      "sell_notional_during_clock_buy_phase_share": 0.5599495044425342
+    },
+    {
+      "case": "alone",
+      "seed": 12012,
+      "order": "alone",
+      "target_trade_notional": 396759076,
+      "coverage": 0.9869494176360064,
+      "signed_mid_markout20_bps": 165.6708879433542,
+      "buy_notional_during_clock_sell_phase_share": 0.5219419987937933,
+      "sell_notional_during_clock_buy_phase_share": 0.4535827026128872
+    },
+    {
+      "case": "alone",
+      "seed": 12013,
+      "order": "alone",
+      "target_trade_notional": 307820583,
+      "coverage": 0.9766853310130986,
+      "signed_mid_markout20_bps": 195.00690065675317,
+      "buy_notional_during_clock_sell_phase_share": 0.47094628644026393,
+      "sell_notional_during_clock_buy_phase_share": 0.4988891690910244
+    },
+    {
+      "case": "alone",
+      "seed": 12014,
+      "order": "alone",
+      "target_trade_notional": 178066863,
+      "coverage": 0.9915030793797945,
+      "signed_mid_markout20_bps": 122.98415390482323,
+      "buy_notional_during_clock_sell_phase_share": 0.48949948751951033,
+      "sell_notional_during_clock_buy_phase_share": 0.6240516461525449
+    },
+    {
+      "case": "alone",
+      "seed": 12015,
+      "order": "alone",
+      "target_trade_notional": 273837220,
+      "coverage": 0.9823486960611125,
+      "signed_mid_markout20_bps": 137.23946467400165,
+      "buy_notional_during_clock_sell_phase_share": 0.4753975431148304,
+      "sell_notional_during_clock_buy_phase_share": 0.5059507113509688
+    },
+    {
+      "case": "alone",
+      "seed": 12016,
+      "order": "alone",
+      "target_trade_notional": 213855673,
+      "coverage": 0.9829674286919665,
+      "signed_mid_markout20_bps": 158.0390820534781,
+      "buy_notional_during_clock_sell_phase_share": 0.5371072623428178,
+      "sell_notional_during_clock_buy_phase_share": 0.5098288857989507
+    },
+    {
+      "case": "alone",
+      "seed": 12017,
+      "order": "alone",
+      "target_trade_notional": 227627492,
+      "coverage": 0.9887867806407146,
+      "signed_mid_markout20_bps": 227.03606581369044,
+      "buy_notional_during_clock_sell_phase_share": 0.4842523334567998,
+      "sell_notional_during_clock_buy_phase_share": 0.527790146219139
+    },
+    {
+      "case": "alone",
+      "seed": 12018,
+      "order": "alone",
+      "target_trade_notional": 221295249,
+      "coverage": 0.979154396577217,
+      "signed_mid_markout20_bps": 154.18974208755554,
+      "buy_notional_during_clock_sell_phase_share": 0.5478465366238201,
+      "sell_notional_during_clock_buy_phase_share": 0.520822367634533
+    },
+    {
+      "case": "alone",
+      "seed": 12019,
+      "order": "alone",
+      "target_trade_notional": 274013791,
+      "coverage": 0.9730621770055362,
+      "signed_mid_markout20_bps": 120.32713676837602,
+      "buy_notional_during_clock_sell_phase_share": 0.4900520148947837,
+      "sell_notional_during_clock_buy_phase_share": 0.5299763260581807
+    },
+    {
+      "case": "alone",
+      "seed": 12020,
+      "order": "alone",
+      "target_trade_notional": 233348177,
+      "coverage": 0.9830040540663834,
+      "signed_mid_markout20_bps": 174.9554642870203,
+      "buy_notional_during_clock_sell_phase_share": 0.4956973277441529,
+      "sell_notional_during_clock_buy_phase_share": 0.4608236059067056
+    },
+    {
+      "case": "relay",
+      "seed": 12001,
+      "order": "predator_first",
+      "target_trade_notional": 209055047,
+      "coverage": 0.9997252206974941,
+      "signed_mid_markout20_bps": 15.428239145881497,
+      "buy_notional_during_clock_sell_phase_share": 0.5002744564849685,
+      "sell_notional_during_clock_buy_phase_share": 0.5043934560038107
+    },
+    {
+      "case": "relay",
+      "seed": 12002,
+      "order": "predator_first",
+      "target_trade_notional": 108468655,
+      "coverage": 0.9989326132973623,
+      "signed_mid_markout20_bps": -3.3048038032252713,
+      "buy_notional_during_clock_sell_phase_share": 0.5631565293822881,
+      "sell_notional_during_clock_buy_phase_share": 0.5830978908685284
+    },
+    {
+      "case": "relay",
+      "seed": 12003,
+      "order": "predator_first",
+      "target_trade_notional": 538468993,
+      "coverage": 0.9881964865523836,
+      "signed_mid_markout20_bps": 36.21513466514163,
+      "buy_notional_during_clock_sell_phase_share": 0.524115692397208,
+      "sell_notional_during_clock_buy_phase_share": 0.5343457544372788
+    },
+    {
+      "case": "relay",
+      "seed": 12004,
+      "order": "predator_first",
+      "target_trade_notional": 236626955,
+      "coverage": 1.0,
+      "signed_mid_markout20_bps": 13.68447225296036,
+      "buy_notional_during_clock_sell_phase_share": 0.4813365148341344,
+      "sell_notional_during_clock_buy_phase_share": 0.5099364463301824
+    },
+    {
+      "case": "relay",
+      "seed": 12005,
+      "order": "predator_first",
+      "target_trade_notional": 161284452,
+      "coverage": 0.9997025503735475,
+      "signed_mid_markout20_bps": 49.755180090202664,
+      "buy_notional_during_clock_sell_phase_share": 0.43477300352985904,
+      "sell_notional_during_clock_buy_phase_share": 0.5209261333093086
+    },
+    {
+      "case": "relay",
+      "seed": 12006,
+      "order": "predator_first",
+      "target_trade_notional": 207495395,
+      "coverage": 0.9870459390195141,
+      "signed_mid_markout20_bps": 37.05719019930165,
+      "buy_notional_during_clock_sell_phase_share": 0.5013972587878379,
+      "sell_notional_during_clock_buy_phase_share": 0.5133100874094503
+    },
+    {
+      "case": "relay",
+      "seed": 12007,
+      "order": "predator_first",
+      "target_trade_notional": 209391767,
+      "coverage": 0.9989251392104638,
+      "signed_mid_markout20_bps": 34.21263996611315,
+      "buy_notional_during_clock_sell_phase_share": 0.5695259257478829,
+      "sell_notional_during_clock_buy_phase_share": 0.5687666423693429
+    },
+    {
+      "case": "relay",
+      "seed": 12008,
+      "order": "predator_first",
+      "target_trade_notional": 370740553,
+      "coverage": 0.9992715336970434,
+      "signed_mid_markout20_bps": 13.247357756420005,
+      "buy_notional_during_clock_sell_phase_share": 0.49275199022521543,
+      "sell_notional_during_clock_buy_phase_share": 0.5538773275250046
+    },
+    {
+      "case": "relay",
+      "seed": 12009,
+      "order": "predator_first",
+      "target_trade_notional": 347060856,
+      "coverage": 0.9941826628814631,
+      "signed_mid_markout20_bps": 5.016477912481617,
+      "buy_notional_during_clock_sell_phase_share": 0.5770843196636899,
+      "sell_notional_during_clock_buy_phase_share": 0.5726919454545756
+    },
+    {
+      "case": "relay",
+      "seed": 12010,
+      "order": "predator_first",
+      "target_trade_notional": 179998146,
+      "coverage": 0.998239337420731,
+      "signed_mid_markout20_bps": 58.09897338748182,
+      "buy_notional_during_clock_sell_phase_share": 0.4736251240999363,
+      "sell_notional_during_clock_buy_phase_share": 0.45529105654549845
+    },
+    {
+      "case": "relay",
+      "seed": 12011,
+      "order": "predator_first",
+      "target_trade_notional": 297768605,
+      "coverage": 0.9927694526425981,
+      "signed_mid_markout20_bps": 2.8056539307849393,
+      "buy_notional_during_clock_sell_phase_share": 0.47276436280153206,
+      "sell_notional_during_clock_buy_phase_share": 0.5206960895435943
+    },
+    {
+      "case": "relay",
+      "seed": 12012,
+      "order": "predator_first",
+      "target_trade_notional": 458067719,
+      "coverage": 0.9983523440559233,
+      "signed_mid_markout20_bps": 52.23036736846969,
+      "buy_notional_during_clock_sell_phase_share": 0.5096119858247755,
+      "sell_notional_during_clock_buy_phase_share": 0.5192411596728812
+    },
+    {
+      "case": "relay",
+      "seed": 12013,
+      "order": "predator_first",
+      "target_trade_notional": 370849776,
+      "coverage": 0.9895797564132814,
+      "signed_mid_markout20_bps": -15.019138457297505,
+      "buy_notional_during_clock_sell_phase_share": 0.4698913476187259,
+      "sell_notional_during_clock_buy_phase_share": 0.505574103122528
+    },
+    {
+      "case": "relay",
+      "seed": 12014,
+      "order": "predator_first",
+      "target_trade_notional": 283222596,
+      "coverage": 0.9949714428858635,
+      "signed_mid_markout20_bps": 13.368298282891214,
+      "buy_notional_during_clock_sell_phase_share": 0.5310273451807965,
+      "sell_notional_during_clock_buy_phase_share": 0.48275094721214495
+    },
+    {
+      "case": "relay",
+      "seed": 12015,
+      "order": "predator_first",
+      "target_trade_notional": 306171752,
+      "coverage": 0.9999684621460441,
+      "signed_mid_markout20_bps": 4.693183835532665,
+      "buy_notional_during_clock_sell_phase_share": 0.5418433837261227,
+      "sell_notional_during_clock_buy_phase_share": 0.441581546561215
+    },
+    {
+      "case": "relay",
+      "seed": 12016,
+      "order": "predator_first",
+      "target_trade_notional": 269392897,
+      "coverage": 0.9934062886594964,
+      "signed_mid_markout20_bps": 46.77798422652394,
+      "buy_notional_during_clock_sell_phase_share": 0.5127931023054294,
+      "sell_notional_during_clock_buy_phase_share": 0.46381242090281066
+    },
+    {
+      "case": "relay",
+      "seed": 12017,
+      "order": "predator_first",
+      "target_trade_notional": 261980368,
+      "coverage": 0.9999833308120248,
+      "signed_mid_markout20_bps": 78.90449858420428,
+      "buy_notional_during_clock_sell_phase_share": 0.5309759618993816,
+      "sell_notional_during_clock_buy_phase_share": 0.46946649046225575
+    },
+    {
+      "case": "relay",
+      "seed": 12018,
+      "order": "predator_first",
+      "target_trade_notional": 285277379,
+      "coverage": 0.9988941780063115,
+      "signed_mid_markout20_bps": 6.262117562356482,
+      "buy_notional_during_clock_sell_phase_share": 0.5160688938554757,
+      "sell_notional_during_clock_buy_phase_share": 0.5046652036126813
+    },
+    {
+      "case": "relay",
+      "seed": 12019,
+      "order": "predator_first",
+      "target_trade_notional": 411929699,
+      "coverage": 0.9926513917123514,
+      "signed_mid_markout20_bps": -32.79477890515386,
+      "buy_notional_during_clock_sell_phase_share": 0.4775480599498378,
+      "sell_notional_during_clock_buy_phase_share": 0.48714088458598787
+    },
+    {
+      "case": "relay",
+      "seed": 12020,
+      "order": "predator_first",
+      "target_trade_notional": 300987435,
+      "coverage": 0.9982528041411429,
+      "signed_mid_markout20_bps": -4.488011845482353,
+      "buy_notional_during_clock_sell_phase_share": 0.48826431864613606,
+      "sell_notional_during_clock_buy_phase_share": 0.4806301640439085
+    },
+    {
+      "case": "relay",
+      "seed": 12001,
+      "order": "target_first",
+      "target_trade_notional": 248645255,
+      "coverage": 0.9915814842314203,
+      "signed_mid_markout20_bps": -13.652250141066574,
+      "buy_notional_during_clock_sell_phase_share": 0.5288286873470245,
+      "sell_notional_during_clock_buy_phase_share": 0.5392525082987699
+    },
+    {
+      "case": "relay",
+      "seed": 12002,
+      "order": "target_first",
+      "target_trade_notional": 144529661,
+      "coverage": 0.9900550586637022,
+      "signed_mid_markout20_bps": 5.440019346390927,
+      "buy_notional_during_clock_sell_phase_share": 0.52766737027172,
+      "sell_notional_during_clock_buy_phase_share": 0.5737151634113925
+    },
+    {
+      "case": "relay",
+      "seed": 12003,
+      "order": "target_first",
+      "target_trade_notional": 494692693,
+      "coverage": 0.991838702982419,
+      "signed_mid_markout20_bps": 54.08115801299135,
+      "buy_notional_during_clock_sell_phase_share": 0.46057667939750413,
+      "sell_notional_during_clock_buy_phase_share": 0.5703454784793591
+    },
+    {
+      "case": "relay",
+      "seed": 12004,
+      "order": "target_first",
+      "target_trade_notional": 292787815,
+      "coverage": 0.9806994871012648,
+      "signed_mid_markout20_bps": -6.970473940545286,
+      "buy_notional_during_clock_sell_phase_share": 0.5194356234270745,
+      "sell_notional_during_clock_buy_phase_share": 0.4871868031654313
+    },
+    {
+      "case": "relay",
+      "seed": 12005,
+      "order": "target_first",
+      "target_trade_notional": 202449002,
+      "coverage": 0.9927397073560283,
+      "signed_mid_markout20_bps": 37.90193911793732,
+      "buy_notional_during_clock_sell_phase_share": 0.5468846862475332,
+      "sell_notional_during_clock_buy_phase_share": 0.45941254331030984
+    },
+    {
+      "case": "relay",
+      "seed": 12006,
+      "order": "target_first",
+      "target_trade_notional": 217321982,
+      "coverage": 0.9919333700904679,
+      "signed_mid_markout20_bps": 39.83064794784013,
+      "buy_notional_during_clock_sell_phase_share": 0.5255712938777256,
+      "sell_notional_during_clock_buy_phase_share": 0.5377738769501896
+    },
+    {
+      "case": "relay",
+      "seed": 12007,
+      "order": "target_first",
+      "target_trade_notional": 206697028,
+      "coverage": 0.991693088107682,
+      "signed_mid_markout20_bps": 68.10400549587239,
+      "buy_notional_during_clock_sell_phase_share": 0.49809082587228765,
+      "sell_notional_during_clock_buy_phase_share": 0.4857347455353209
+    },
+    {
+      "case": "relay",
+      "seed": 12008,
+      "order": "target_first",
+      "target_trade_notional": 384737134,
+      "coverage": 0.9979366535490177,
+      "signed_mid_markout20_bps": -1.1457291057006314,
+      "buy_notional_during_clock_sell_phase_share": 0.5155299788700218,
+      "sell_notional_during_clock_buy_phase_share": 0.529789875827341
+    },
+    {
+      "case": "relay",
+      "seed": 12009,
+      "order": "target_first",
+      "target_trade_notional": 377058360,
+      "coverage": 0.9908546120022376,
+      "signed_mid_markout20_bps": 21.11622998114759,
+      "buy_notional_during_clock_sell_phase_share": 0.5114926484273218,
+      "sell_notional_during_clock_buy_phase_share": 0.5060142424578887
+    },
+    {
+      "case": "relay",
+      "seed": 12010,
+      "order": "target_first",
+      "target_trade_notional": 209813379,
+      "coverage": 0.9997959043403043,
+      "signed_mid_markout20_bps": 61.94861274072891,
+      "buy_notional_during_clock_sell_phase_share": 0.47169787917191985,
+      "sell_notional_during_clock_buy_phase_share": 0.4986187168024544
+    },
+    {
+      "case": "relay",
+      "seed": 12011,
+      "order": "target_first",
+      "target_trade_notional": 257949772,
+      "coverage": 0.9969418077252652,
+      "signed_mid_markout20_bps": 24.696093782712982,
+      "buy_notional_during_clock_sell_phase_share": 0.5242890401767564,
+      "sell_notional_during_clock_buy_phase_share": 0.5221035711828838
+    },
+    {
+      "case": "relay",
+      "seed": 12012,
+      "order": "target_first",
+      "target_trade_notional": 538835082,
+      "coverage": 0.9959340917598235,
+      "signed_mid_markout20_bps": 34.87367239511239,
+      "buy_notional_during_clock_sell_phase_share": 0.48659945929600834,
+      "sell_notional_during_clock_buy_phase_share": 0.5068394372292518
+    },
+    {
+      "case": "relay",
+      "seed": 12013,
+      "order": "target_first",
+      "target_trade_notional": 496725309,
+      "coverage": 0.9966014133578203,
+      "signed_mid_markout20_bps": 31.569620901882022,
+      "buy_notional_during_clock_sell_phase_share": 0.5562610584278933,
+      "sell_notional_during_clock_buy_phase_share": 0.5775628410779486
+    },
+    {
+      "case": "relay",
+      "seed": 12014,
+      "order": "target_first",
+      "target_trade_notional": 335891778,
+      "coverage": 0.9925915215465619,
+      "signed_mid_markout20_bps": 0.6444896616824743,
+      "buy_notional_during_clock_sell_phase_share": 0.5007097533333034,
+      "sell_notional_during_clock_buy_phase_share": 0.45793433219109503
+    },
+    {
+      "case": "relay",
+      "seed": 12015,
+      "order": "target_first",
+      "target_trade_notional": 342679210,
+      "coverage": 0.9849976308746597,
+      "signed_mid_markout20_bps": -28.311105874502324,
+      "buy_notional_during_clock_sell_phase_share": 0.45734146738611736,
+      "sell_notional_during_clock_buy_phase_share": 0.5162825516986492
+    },
+    {
+      "case": "relay",
+      "seed": 12016,
+      "order": "target_first",
+      "target_trade_notional": 309762930,
+      "coverage": 0.9927112162840144,
+      "signed_mid_markout20_bps": -30.799258035154438,
+      "buy_notional_during_clock_sell_phase_share": 0.5093983273948702,
+      "sell_notional_during_clock_buy_phase_share": 0.5076805889800807
+    },
+    {
+      "case": "relay",
+      "seed": 12017,
+      "order": "target_first",
+      "target_trade_notional": 288187356,
+      "coverage": 0.9970971280225077,
+      "signed_mid_markout20_bps": 47.8349832940251,
+      "buy_notional_during_clock_sell_phase_share": 0.4830062775347267,
+      "sell_notional_during_clock_buy_phase_share": 0.5104858795085249
+    },
+    {
+      "case": "relay",
+      "seed": 12018,
+      "order": "target_first",
+      "target_trade_notional": 323515144,
+      "coverage": 0.9840190170510225,
+      "signed_mid_markout20_bps": 58.41438328110479,
+      "buy_notional_during_clock_sell_phase_share": 0.5175147513783098,
+      "sell_notional_during_clock_buy_phase_share": 0.4625701741175437
+    },
+    {
+      "case": "relay",
+      "seed": 12019,
+      "order": "target_first",
+      "target_trade_notional": 488192947,
+      "coverage": 0.990669480114386,
+      "signed_mid_markout20_bps": -39.53017713855413,
+      "buy_notional_during_clock_sell_phase_share": 0.5196826966772277,
+      "sell_notional_during_clock_buy_phase_share": 0.5305593333569671
+    },
+    {
+      "case": "relay",
+      "seed": 12020,
+      "order": "target_first",
+      "target_trade_notional": 390210560,
+      "coverage": 0.9973604532896291,
+      "signed_mid_markout20_bps": 20.182867243317055,
+      "buy_notional_during_clock_sell_phase_share": 0.5254218856526819,
+      "sell_notional_during_clock_buy_phase_share": 0.4884281161402313
+    },
+    {
+      "case": "clock",
+      "seed": 12001,
+      "order": "predator_first",
+      "target_trade_notional": 277661400,
+      "coverage": 0.9938929285813585,
+      "signed_mid_markout20_bps": -3.0730449249812937,
+      "buy_notional_during_clock_sell_phase_share": 0.5274179216176612,
+      "sell_notional_during_clock_buy_phase_share": 0.5449602402216616
+    },
+    {
+      "case": "clock",
+      "seed": 12002,
+      "order": "predator_first",
+      "target_trade_notional": 194790048,
+      "coverage": 0.9993368398369099,
+      "signed_mid_markout20_bps": -12.927559540201585,
+      "buy_notional_during_clock_sell_phase_share": 0.5209480978701019,
+      "sell_notional_during_clock_buy_phase_share": 0.5408482079071911
+    },
+    {
+      "case": "clock",
+      "seed": 12003,
+      "order": "predator_first",
+      "target_trade_notional": 582532118,
+      "coverage": 0.9836562951538408,
+      "signed_mid_markout20_bps": 118.75455144752489,
+      "buy_notional_during_clock_sell_phase_share": 0.5707302692322247,
+      "sell_notional_during_clock_buy_phase_share": 0.5478691398105124
+    },
+    {
+      "case": "clock",
+      "seed": 12004,
+      "order": "predator_first",
+      "target_trade_notional": 344823357,
+      "coverage": 0.9976615592197253,
+      "signed_mid_markout20_bps": -41.53355696878801,
+      "buy_notional_during_clock_sell_phase_share": 0.3770522937549555,
+      "sell_notional_during_clock_buy_phase_share": 0.503599391909999
+    },
+    {
+      "case": "clock",
+      "seed": 12005,
+      "order": "predator_first",
+      "target_trade_notional": 230458789,
+      "coverage": 0.9994130447331301,
+      "signed_mid_markout20_bps": 8.486193680957983,
+      "buy_notional_during_clock_sell_phase_share": 0.4872664049236824,
+      "sell_notional_during_clock_buy_phase_share": 0.4789964009220659
+    },
+    {
+      "case": "clock",
+      "seed": 12006,
+      "order": "predator_first",
+      "target_trade_notional": 226651360,
+      "coverage": 0.9946140759976027,
+      "signed_mid_markout20_bps": 71.08330747578569,
+      "buy_notional_during_clock_sell_phase_share": 0.5496167856719062,
+      "sell_notional_during_clock_buy_phase_share": 0.5417014324508833
+    },
+    {
+      "case": "clock",
+      "seed": 12007,
+      "order": "predator_first",
+      "target_trade_notional": 274845319,
+      "coverage": 0.9999138533627345,
+      "signed_mid_markout20_bps": -34.55502969449546,
+      "buy_notional_during_clock_sell_phase_share": 0.5237409059439158,
+      "sell_notional_during_clock_buy_phase_share": 0.42307830103104893
+    },
+    {
+      "case": "clock",
+      "seed": 12008,
+      "order": "predator_first",
+      "target_trade_notional": 362696408,
+      "coverage": 0.9993813944802012,
+      "signed_mid_markout20_bps": 2.389411870833337,
+      "buy_notional_during_clock_sell_phase_share": 0.5121235565346922,
+      "sell_notional_during_clock_buy_phase_share": 0.5019597146632179
+    },
+    {
+      "case": "clock",
+      "seed": 12009,
+      "order": "predator_first",
+      "target_trade_notional": 420331595,
+      "coverage": 0.9892730975885836,
+      "signed_mid_markout20_bps": 9.694419332849424,
+      "buy_notional_during_clock_sell_phase_share": 0.5179068599718463,
+      "sell_notional_during_clock_buy_phase_share": 0.46098186083079484
+    },
+    {
+      "case": "clock",
+      "seed": 12010,
+      "order": "predator_first",
+      "target_trade_notional": 245339298,
+      "coverage": 0.9961386577375794,
+      "signed_mid_markout20_bps": -3.923083246777362,
+      "buy_notional_during_clock_sell_phase_share": 0.43003411146744513,
+      "sell_notional_during_clock_buy_phase_share": 0.44583322523739727
+    },
+    {
+      "case": "clock",
+      "seed": 12011,
+      "order": "predator_first",
+      "target_trade_notional": 310785781,
+      "coverage": 0.9889081476349781,
+      "signed_mid_markout20_bps": -48.58987916685022,
+      "buy_notional_during_clock_sell_phase_share": 0.49937166093319096,
+      "sell_notional_during_clock_buy_phase_share": 0.5301692888965372
+    },
+    {
+      "case": "clock",
+      "seed": 12012,
+      "order": "predator_first",
+      "target_trade_notional": 593239193,
+      "coverage": 0.9932718251809772,
+      "signed_mid_markout20_bps": 15.875045067628731,
+      "buy_notional_during_clock_sell_phase_share": 0.5384250023742031,
+      "sell_notional_during_clock_buy_phase_share": 0.5010366414048439
+    },
+    {
+      "case": "clock",
+      "seed": 12013,
+      "order": "predator_first",
+      "target_trade_notional": 414315279,
+      "coverage": 0.9995726056725994,
+      "signed_mid_markout20_bps": 14.048595270502007,
+      "buy_notional_during_clock_sell_phase_share": 0.5541331002778158,
+      "sell_notional_during_clock_buy_phase_share": 0.5029125156212367
+    },
+    {
+      "case": "clock",
+      "seed": 12014,
+      "order": "predator_first",
+      "target_trade_notional": 385894558,
+      "coverage": 0.9957916613066101,
+      "signed_mid_markout20_bps": -15.257061714765712,
+      "buy_notional_during_clock_sell_phase_share": 0.5298034996769876,
+      "sell_notional_during_clock_buy_phase_share": 0.39392052991601695
+    },
+    {
+      "case": "clock",
+      "seed": 12015,
+      "order": "predator_first",
+      "target_trade_notional": 385698916,
+      "coverage": 0.9920358785763349,
+      "signed_mid_markout20_bps": 17.821813659371593,
+      "buy_notional_during_clock_sell_phase_share": 0.5058391015182125,
+      "sell_notional_during_clock_buy_phase_share": 0.5004584829075513
+    },
+    {
+      "case": "clock",
+      "seed": 12016,
+      "order": "predator_first",
+      "target_trade_notional": 254352970,
+      "coverage": 0.9931709505888608,
+      "signed_mid_markout20_bps": 74.95303711604849,
+      "buy_notional_during_clock_sell_phase_share": 0.5560403570419361,
+      "sell_notional_during_clock_buy_phase_share": 0.5699546109122566
+    },
+    {
+      "case": "clock",
+      "seed": 12017,
+      "order": "predator_first",
+      "target_trade_notional": 377259367,
+      "coverage": 0.9958260519479692,
+      "signed_mid_markout20_bps": -22.856520009627435,
+      "buy_notional_during_clock_sell_phase_share": 0.5808309288296838,
+      "sell_notional_during_clock_buy_phase_share": 0.45891661230904285
+    },
+    {
+      "case": "clock",
+      "seed": 12018,
+      "order": "predator_first",
+      "target_trade_notional": 466175703,
+      "coverage": 0.9963155951952305,
+      "signed_mid_markout20_bps": 23.336614138622785,
+      "buy_notional_during_clock_sell_phase_share": 0.5662406781479323,
+      "sell_notional_during_clock_buy_phase_share": 0.5951100207172659
+    },
+    {
+      "case": "clock",
+      "seed": 12019,
+      "order": "predator_first",
+      "target_trade_notional": 412468825,
+      "coverage": 0.9917435869244179,
+      "signed_mid_markout20_bps": -30.241406738524624,
+      "buy_notional_during_clock_sell_phase_share": 0.41471247132196826,
+      "sell_notional_during_clock_buy_phase_share": 0.4054610155524078
+    },
+    {
+      "case": "clock",
+      "seed": 12020,
+      "order": "predator_first",
+      "target_trade_notional": 370599882,
+      "coverage": 0.9959649717319662,
+      "signed_mid_markout20_bps": -20.06319343149923,
+      "buy_notional_during_clock_sell_phase_share": 0.5015219247625172,
+      "sell_notional_during_clock_buy_phase_share": 0.5545640494074988
+    },
+    {
+      "case": "clock",
+      "seed": 12001,
+      "order": "target_first",
+      "target_trade_notional": 313269617,
+      "coverage": 0.9959221069306571,
+      "signed_mid_markout20_bps": 3.3473760269798083,
+      "buy_notional_during_clock_sell_phase_share": 0.4327265971496285,
+      "sell_notional_during_clock_buy_phase_share": 0.5225121328995292
+    },
+    {
+      "case": "clock",
+      "seed": 12002,
+      "order": "target_first",
+      "target_trade_notional": 222731531,
+      "coverage": 0.9970506376126872,
+      "signed_mid_markout20_bps": -17.361709711846174,
+      "buy_notional_during_clock_sell_phase_share": 0.42764550761378517,
+      "sell_notional_during_clock_buy_phase_share": 0.4420705862421811
+    },
+    {
+      "case": "clock",
+      "seed": 12003,
+      "order": "target_first",
+      "target_trade_notional": 571120115,
+      "coverage": 0.9946239067415792,
+      "signed_mid_markout20_bps": 90.5570906715701,
+      "buy_notional_during_clock_sell_phase_share": 0.545311244763041,
+      "sell_notional_during_clock_buy_phase_share": 0.5374280692234041
+    },
+    {
+      "case": "clock",
+      "seed": 12004,
+      "order": "target_first",
+      "target_trade_notional": 361703366,
+      "coverage": 0.9989765232099057,
+      "signed_mid_markout20_bps": 0.31138851627878916,
+      "buy_notional_during_clock_sell_phase_share": 0.399517520954564,
+      "sell_notional_during_clock_buy_phase_share": 0.5020492106619568
+    },
+    {
+      "case": "clock",
+      "seed": 12005,
+      "order": "target_first",
+      "target_trade_notional": 255144680,
+      "coverage": 1.0,
+      "signed_mid_markout20_bps": -28.68413717268179,
+      "buy_notional_during_clock_sell_phase_share": 0.4969046419177329,
+      "sell_notional_during_clock_buy_phase_share": 0.3723552417481088
+    },
+    {
+      "case": "clock",
+      "seed": 12006,
+      "order": "target_first",
+      "target_trade_notional": 273841441,
+      "coverage": 0.9865465322321321,
+      "signed_mid_markout20_bps": 85.94432923832188,
+      "buy_notional_during_clock_sell_phase_share": 0.4800021260064321,
+      "sell_notional_during_clock_buy_phase_share": 0.42234392688882233
+    },
+    {
+      "case": "clock",
+      "seed": 12007,
+      "order": "target_first",
+      "target_trade_notional": 325726156,
+      "coverage": 0.9949565947660648,
+      "signed_mid_markout20_bps": 31.842267804983166,
+      "buy_notional_during_clock_sell_phase_share": 0.47907384764146127,
+      "sell_notional_during_clock_buy_phase_share": 0.4432652805429209
+    },
+    {
+      "case": "clock",
+      "seed": 12008,
+      "order": "target_first",
+      "target_trade_notional": 388423891,
+      "coverage": 0.999197778490922,
+      "signed_mid_markout20_bps": 39.942100364670495,
+      "buy_notional_during_clock_sell_phase_share": 0.3996062433634487,
+      "sell_notional_during_clock_buy_phase_share": 0.5082731090824317
+    },
+    {
+      "case": "clock",
+      "seed": 12009,
+      "order": "target_first",
+      "target_trade_notional": 472842007,
+      "coverage": 0.9908475200258593,
+      "signed_mid_markout20_bps": 10.422221237075075,
+      "buy_notional_during_clock_sell_phase_share": 0.46577955674076804,
+      "sell_notional_during_clock_buy_phase_share": 0.5235788139626345
+    },
+    {
+      "case": "clock",
+      "seed": 12010,
+      "order": "target_first",
+      "target_trade_notional": 255072594,
+      "coverage": 0.9984111503566706,
+      "signed_mid_markout20_bps": 10.649992227899583,
+      "buy_notional_during_clock_sell_phase_share": 0.41189948782631536,
+      "sell_notional_during_clock_buy_phase_share": 0.41453763319674714
+    },
+    {
+      "case": "clock",
+      "seed": 12011,
+      "order": "target_first",
+      "target_trade_notional": 340324182,
+      "coverage": 0.9945887594905025,
+      "signed_mid_markout20_bps": 27.672352534416493,
+      "buy_notional_during_clock_sell_phase_share": 0.4927176454864041,
+      "sell_notional_during_clock_buy_phase_share": 0.5016957241934992
+    },
+    {
+      "case": "clock",
+      "seed": 12012,
+      "order": "target_first",
+      "target_trade_notional": 626093216,
+      "coverage": 0.9936691360029047,
+      "signed_mid_markout20_bps": 26.5851319814835,
+      "buy_notional_during_clock_sell_phase_share": 0.47570368917827627,
+      "sell_notional_during_clock_buy_phase_share": 0.4800478209590544
+    },
+    {
+      "case": "clock",
+      "seed": 12013,
+      "order": "target_first",
+      "target_trade_notional": 557384867,
+      "coverage": 0.9887475506219655,
+      "signed_mid_markout20_bps": 2.889743528822574,
+      "buy_notional_during_clock_sell_phase_share": 0.5281333548422635,
+      "sell_notional_during_clock_buy_phase_share": 0.4396450103798037
+    },
+    {
+      "case": "clock",
+      "seed": 12014,
+      "order": "target_first",
+      "target_trade_notional": 428290474,
+      "coverage": 0.998577257639403,
+      "signed_mid_markout20_bps": 6.249469128433156,
+      "buy_notional_during_clock_sell_phase_share": 0.4324237585515269,
+      "sell_notional_during_clock_buy_phase_share": 0.38943454043603265
+    },
+    {
+      "case": "clock",
+      "seed": 12015,
+      "order": "target_first",
+      "target_trade_notional": 382382782,
+      "coverage": 0.9832107843182123,
+      "signed_mid_markout20_bps": 34.333190477916204,
+      "buy_notional_during_clock_sell_phase_share": 0.47396403498276296,
+      "sell_notional_during_clock_buy_phase_share": 0.5514113731778912
+    },
+    {
+      "case": "clock",
+      "seed": 12016,
+      "order": "target_first",
+      "target_trade_notional": 307497317,
+      "coverage": 0.9994772604796418,
+      "signed_mid_markout20_bps": 55.17032896208227,
+      "buy_notional_during_clock_sell_phase_share": 0.45033913323021835,
+      "sell_notional_during_clock_buy_phase_share": 0.5110811608866231
+    },
+    {
+      "case": "clock",
+      "seed": 12017,
+      "order": "target_first",
+      "target_trade_notional": 383580494,
+      "coverage": 0.993770900665246,
+      "signed_mid_markout20_bps": 23.198965648553006,
+      "buy_notional_during_clock_sell_phase_share": 0.4886259751995624,
+      "sell_notional_during_clock_buy_phase_share": 0.4741029478409518
+    },
+    {
+      "case": "clock",
+      "seed": 12018,
+      "order": "target_first",
+      "target_trade_notional": 481890952,
+      "coverage": 0.9937521466474847,
+      "signed_mid_markout20_bps": 55.91433262277005,
+      "buy_notional_during_clock_sell_phase_share": 0.522687394377823,
+      "sell_notional_during_clock_buy_phase_share": 0.511300224662412
+    },
+    {
+      "case": "clock",
+      "seed": 12019,
+      "order": "target_first",
+      "target_trade_notional": 465089213,
+      "coverage": 0.9905657949542682,
+      "signed_mid_markout20_bps": -29.022188959129558,
+      "buy_notional_during_clock_sell_phase_share": 0.41187532513466774,
+      "sell_notional_during_clock_buy_phase_share": 0.48396010268938267
+    },
+    {
+      "case": "clock",
+      "seed": 12020,
+      "order": "target_first",
+      "target_trade_notional": 427799175,
+      "coverage": 0.9958064014499327,
+      "signed_mid_markout20_bps": 10.384839073673469,
+      "buy_notional_during_clock_sell_phase_share": 0.41122175223644303,
+      "sell_notional_during_clock_buy_phase_share": 0.4860575893229677
+    }
+  ]
+}

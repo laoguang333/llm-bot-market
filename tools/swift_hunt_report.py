@@ -33,6 +33,8 @@ def aggregate(rows):
         result[owner]["direct_counterparty_notional_share"] = direct/total if total else 0
         result[owner]["rejects"] = sum(r[owner]["stats"]["rejects"] for r in these)
         result[owner]["liquidations"] = sum(r[owner]["stats"]["liquidations"] for r in these)
+        for fee in ["trade_fees","idle_fees","interest"]:
+            result[owner][fee+"_pct"] = stats.mean(r[owner]["stats"][fee]/r[owner]["initial_equity"]*100 for r in these)
     paired = [r for r in rows if r["predator"]]
     if paired:
         ci,n = cluster_ci(paired, lambda r:r["predator"]["return_pct"]-r["target"]["return_pct"])
@@ -77,10 +79,12 @@ def build(stages, partial=False):
                                   "predator_change":r["predator"]["return_pct"]-baseline["predator"]["return_pct"]})
             if pairs:
                 ci,n = cluster_ci(pairs, lambda r:r["target_change"])
+                predator_ci,_ = cluster_ci(pairs, lambda r:r["predator_change"])
                 comparisons.append({"case":case,"reference":reference,"independent_seeds":n,
                                     "target_return_change_pp":stats.mean(r["target_change"] for r in pairs),
                                     "target_change_ci95":ci,
-                                    "predator_return_change_pp":stats.mean(r["predator_change"] for r in pairs)})
+                                    "predator_return_change_pp":stats.mean(r["predator_change"] for r in pairs),
+                                    "predator_change_ci95":predator_ci})
     return {"stages":stages,"plans":plans,"runs":len(rows),"combined":combined,
             "by_order":by_order,"by_stage":by_stage,"comparisons":comparisons,"worlds":rows,
             "audit_totals":{k:sum(r[k] for r in rows) for k in ["audits","all_skipped","all_errors","all_disabled"]},
