@@ -1,6 +1,7 @@
 //! Built-in bots. `factory` builds one by name.
 
 pub mod astra_a;
+pub mod astra_b;
 pub mod astra_c;
 pub mod baseline;
 pub mod common;
@@ -28,6 +29,7 @@ pub const NAMES: &[&str] = &[
     "tracker",
     "coral",
     "astra_a",
+    "astra_b",
     "astra_c",
 ];
 
@@ -70,6 +72,7 @@ pub fn factory(name: &str, start: &Start) -> Option<Box<dyn Bot>> {
         "drift" => Box::new(strategic::Drift::new(start)),
         "tracker" => Box::new(strategic::Tracker::new(start)),
         "astra_a" => Box::new(astra_a::AstraA::new(start)),
+        "astra_b" => Box::new(astra_b::AstraB::new(start)),
         "astra_c" => Box::new(astra_c::AstraC::new(start)),
         "coral" => Box::new(coral::Coral::new(start)),
         _ => return None,
