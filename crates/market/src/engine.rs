@@ -589,10 +589,14 @@ impl<'a> Shared<'a> {
             if whole <= 0 {
                 continue;
             }
-            a.share_frac[s] -= whole * 1_000_000;
             if a.sellable(s) < whole {
                 self.free_shares(a, s, whole);
             }
+            // A concurrent taker may already have bought these shares. Cancel
+            // only frees the resting remainder; pending fills stay reserved.
+            // Defer the uncollectible fraction until shares are available again.
+            let whole = whole.min(a.sellable(s).max(0));
+            a.share_frac[s] -= whole * 1_000_000;
             a.shares[s] -= whole;
             a.stats.burned_shares += whole;
             self.burned[s].fetch_add(whole, Ordering::Relaxed);
@@ -1201,5 +1205,67 @@ mod scheduling_tests {
         let shared = Shared::new(&cfg, 1, &factory).unwrap();
         shared.step(0, 0, 10);
         assert_eq!(shared.accounts[0].lock().stats.decisions, 1);
+    }
+
+    #[test]
+    fn idle_burn_preserves_shares_already_sold_with_pending_settlement() {
+        // Reproduce fills arriving between a tick's mailbox drain and idle fee.
+        // Cancel releases only the still-resting quantity, never pending fills.
+        for (sold, owed, expected_burn) in [(20, 1, 0), (13, 10, 7)] {
+            let mut cfg = config();
+            cfg.bots[0].count = 2;
+            cfg.bots[0].shares_each = 20;
+            let factory = |_: &str, _: &Start| -> Option<Box<dyn Bot>> { Some(Box::new(Idle)) };
+            let shared = Shared::new(&cfg, 1, &factory).unwrap();
+            let marks = shared.marks();
+            {
+                let mut seller = shared.accounts[0].lock();
+                shared.place(
+                    &mut seller,
+                    1,
+                    Action::Limit {
+                        stock: 0,
+                        side: Side::Sell,
+                        price: marks[0],
+                        qty: 20,
+                        tif: Tif::Gtc,
+                        cid: 0,
+                    },
+                    false,
+                );
+            }
+            {
+                let mut buyer = shared.accounts[1].lock();
+                shared.place(
+                    &mut buyer,
+                    1,
+                    Action::Limit {
+                        stock: 0,
+                        side: Side::Buy,
+                        price: marks[0],
+                        qty: sold,
+                        tif: Tif::Ioc,
+                        cid: 0,
+                    },
+                    false,
+                );
+            }
+            {
+                let mut seller = shared.accounts[0].lock();
+                assert_eq!(seller.shares[0], 20);
+                seller.share_frac[0] = owed * 1_000_000;
+                shared.charge_idle(&mut seller, 1, &marks);
+                assert_eq!(seller.stats.burned_shares, expected_burn);
+                assert!(seller.share_frac[0] >= (owed - expected_burn) * 1_000_000);
+            }
+            shared.audit().unwrap();
+            {
+                let mut seller = shared.accounts[0].lock();
+                shared.drain_mailbox(&mut seller);
+                assert_eq!(seller.shares[0], 20 - sold - expected_burn);
+                assert_eq!(seller.reserved_sell[0], 0);
+            }
+            shared.audit().unwrap();
+        }
     }
 }
