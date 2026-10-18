@@ -390,3 +390,70 @@ fn allocation_cap_and_actual_equity_both_constrain_spending() {
         assert!(spend <= equity.min(1_000_000) - o.account.gross);
     }
 }
+
+#[test]
+fn larger_pulse_uses_actual_cash_and_stock_not_an_invented_endowment() {
+    let mut s = start();
+    s.params.insert("mode".into(), 6.0);
+    s.params.insert("pulse_qty".into(), 400.0);
+    let mut bot = Falcon::new(&s);
+    let mut o = observation(100, false);
+    o.account.cash = 1_000_000_000;
+    o.account.equity = 1_000_400_000;
+    o.account.buying_power = 1_000_000_000;
+    let buys = bot.on_tick(&o);
+    assert_eq!(buys.len(), 2);
+    assert!(buys.iter().all(|a| matches!(
+        a,
+        Action::Limit {
+            side: Side::Buy,
+            qty: 400,
+            ..
+        }
+    )));
+    // A positive signal switches the relay to selling, but it still only owns
+    // twenty shares per stock. Increasing the pulse cannot manufacture stock.
+    let mut sell_bot = Falcon::new(&s);
+    let sell_obs = observation(100, true);
+    let sells = sell_bot.on_tick(&sell_obs);
+    assert_eq!(sells.len(), 2);
+    assert!(sells.iter().all(|a| matches!(
+        a,
+        Action::Limit {
+            side: Side::Sell,
+            qty: 20,
+            ..
+        }
+    )));
+    let mut constrained = Falcon::new(&s);
+    o.account.buying_power = 100_000;
+    let spend: i64 = constrained
+        .on_tick(&o)
+        .iter()
+        .map(|a| match a {
+            Action::Limit {
+                side: Side::Buy,
+                price,
+                qty,
+                ..
+            } => (price + (price * 5 + 9999) / 10000) * qty,
+            _ => 0,
+        })
+        .sum();
+    assert!(spend > 0 && spend <= o.account.buying_power);
+}
+
+#[test]
+fn explicit_default_pulse_preserves_existing_modes() {
+    for mode in [6, 7, 8, 9] {
+        let mut a = start();
+        a.params.insert("mode".into(), mode as f64);
+        let mut b = a.clone();
+        b.params.insert("pulse_qty".into(), 4.0);
+        let (mut left, mut right) = (Falcon::new(&a), Falcon::new(&b));
+        for tick in 0..180 {
+            let o = observation(tick, tick % 90 < 45);
+            assert_eq!(left.on_tick(&o), right.on_tick(&o));
+        }
+    }
+}

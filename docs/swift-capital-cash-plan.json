@@ -1,0 +1,5503 @@
+{
+  "stage": "cash-mechanism",
+  "created_utc": "2026-10-18T03:26:09.271306+00:00",
+  "binary": "runs/swift-capital-20261018/cash-mechanism/hunt-eval-frozen.exe",
+  "binary_sha256": "d331dfeaaf46651770e1c113f32372ea54683926da0db3f6fe4a26e46cbb5f5b",
+  "sources": {
+    "Cargo.lock": "af4b085c4c3f1623cbb066390627548fb92a64d9968c61d2e8b5e51ca28cf54d",
+    "Cargo.toml": "926b56d255e5d00bccccfb964cb94b2aa2877bec98efab2ded635d4c1ab7f5ff",
+    "crates/bot-api/Cargo.toml": "0379b14b07bcec3d49406d7ed8bc4476f1ab4c65ca228322dea686c59989ca1a",
+    "crates/bot-api/src/lib.rs": "42596d2dade57bf52b34e7dacc45f41b77b3578a1e29935b2df0146c3777073c",
+    "crates/bots/Cargo.toml": "e10e5cf4569960d45d5597705addbd1e39e21c16fc363d0034310feb0a7efe99",
+    "crates/bots/src/astra_a.rs": "7f6e2e2b679cc90a4dcab180f2ba75b64fd64fdbe28f245963d3391563b6d9ca",
+    "crates/bots/src/astra_b.rs": "c0ec4e810c5b7e5c1027fd9c59edd743435a18ef60a7f22b5e9dec97d5f1f1a8",
+    "crates/bots/src/astra_c.rs": "edd6939eb267ff2236e431387c142ed88030e7282491e27f75ec953d6e068b5f",
+    "crates/bots/src/baseline.rs": "56fc23273b39f282219e2c9514b91df5901d5bcb739aed509799d6842ddaad43",
+    "crates/bots/src/common.rs": "393445421b81f620ec11912590495ffa069397f3348276028bd3da1e6cd1e381",
+    "crates/bots/src/coral.rs": "cf16eac59c3eebb936794ab65b8d88c745fe40a131d644f12988b9d422904a11",
+    "crates/bots/src/falcon.rs": "5724bf45d1bc3a68c061e93afdfd0ae4c06c4945f74b5f6552c2b671835276b8",
+    "crates/bots/src/falcon_tests.rs": "ded9f736f6514934055946ddf6361492014880c25dc48df2fe273a5e17845349",
+    "crates/bots/src/lib.rs": "7d46da37202e82fc1ea26c9d8d073d4cf6d3a4ca81d5ff7bd44ea9ef9f2e4769",
+    "crates/bots/src/strategic.rs": "10eed5bc501a0679ed28f5018fdac3ed879a7fe37b36eb0fb9a236373e8bba3e",
+    "crates/bots/src/swift.rs": "bfdbf02ec196234a3346b1f046e5f3b6080c9c9ed511bc1382f66e5d62ccf9fb",
+    "crates/bots/src/swift_tests.rs": "4cbe7f5c553a5c9f35a5e729516b1c100084934b96a205ffc498861452edb04d",
+    "crates/cli/Cargo.toml": "61e88f854ceac38b67dd54b4d308c31468de4d32e5121a5a84ed6d4538f74e56",
+    "crates/cli/src/bin/hunt-eval.rs": "6b1a3e8b47c0e2a4264e5b7e804b415ad883a0e1960466543fc219a105e969cf",
+    "crates/cli/src/bin/swift-eval.rs": "69b6d82dcdc7b4ef6708d739a97acca37482a5f18191b248bfc60454275bc720",
+    "crates/cli/src/main.rs": "204f7a4c457f714b574c71daa97320d35dec403abfd3f9944a0328dfd8e8cb35",
+    "crates/cli/tests/astra_a.rs": "739bd629488d8c9a99a1f2936f7d633c6d0ae597c8de7007eb45a8aafb692709",
+    "crates/cli/tests/astra_b.rs": "0258edf1c1f080a22b1fd0bf79ab198bb63f76ce04c5a188d21ef88e691fe7a9",
+    "crates/cli/tests/astra_c.rs": "c02ebdde6790f7782360054ec578db02fff0512b8b5e7f6989efe71610f02a5d",
+    "crates/cli/tests/coral.rs": "5cb51baf219c20838e02dd9a2d1ccbc6302e59e0f03424268b1bb4cb4e41a2e6",
+    "crates/market/Cargo.toml": "685d8e7f22b25ea326a51a2358067318ef921a0a109b07b8b190954c77c80896",
+    "crates/market/src/account.rs": "9514704a4c5f8810dd739d498bd68ad604aa377982c87a00a3aed615a5eb14b9",
+    "crates/market/src/book.rs": "0715638e00cfc8d3018a164b564b2b877d66bc3b8e6bbaded73d1dc457769ff7",
+    "crates/market/src/config.rs": "4df1b2cf5bd5c611eaf020e7c3ba3f631aaa354fac40563e76132fcbb87a7487",
+    "crates/market/src/engine.rs": "658ee32314bd67487f989c1d27e4e065c545f381d97d556a2b6f2180d5a8059a",
+    "crates/market/src/lib.rs": "07e43130a0cee3ca4f85842b2ed7ea2a7d3080b0d885f33bda5fd808c72db5f8",
+    "crates/market/src/pace.rs": "217daf1c524224a1180c262ade480019a96086c99463e699f50b31eaf66f7567",
+    "crates/market/src/quality.rs": "64d8dbaff1d952b52ea6a63e89f73460f35be391fb139b4222deedda8c460230",
+    "crates/market/src/report.rs": "b048510f81f21410159bca9217a1cdb04bb0f3992e38b1d13bcc709a0f870b44",
+    "crates/market/src/world.rs": "7c053b3e8b45a7860098900128d9957d98863887bacf0ddc6984cdabf055cd17",
+    "crates/market/tests/engine.rs": "877f5d60a4753445a7b0763dd283ad2e535dfd4cb6f60e747aaa904ba7b8aa41",
+    "tools/swift_hunt.py": "2a8259c74c811d443a506c1166ed02e73055b6779397e204132dfbd94f426574",
+    "tools/swift_capital.py": "3cd4c2c8d107679cfe77a3156540fee863d9bdb667e1c1f88383bfa934ea039f",
+    "tools/swift_stress.py": "57d94e208b7777684024416f4989e012db6b0a45bab669dad64ee8c5a0b43d5f"
+  },
+  "swift_sha256": "bfdbf02ec196234a3346b1f046e5f3b6080c9c9ed511bc1382f66e5d62ccf9fb",
+  "jobs": [
+    {
+      "id": "alone-alone",
+      "case": "alone",
+      "mode": null,
+      "allocation": null,
+      "multiple": null,
+      "order": "alone",
+      "first_seed": 17001,
+      "seeds": 20,
+      "scenario": "runs/swift-capital-20261018/cash-mechanism/alone-alone.toml",
+      "scenario_sha256": "57027dbc91b53a83d70c365d5968ea9d91fae7a4b7a8ec6f99ad709665e9b828",
+      "config": {
+        "ticks": 3000,
+        "seed": 7,
+        "market": {
+          "tick_size": 1,
+          "opening_spread": 0.15,
+          "book_depth": 10,
+          "trade_tape_limit": 200
+        },
+        "fees": {
+          "trade_fee_bps": 5,
+          "idle_period": 50,
+          "idle_rate": 0.002,
+          "credit_ratio": 0.01,
+          "credit_side": "both"
+        },
+        "margin": {
+          "max_leverage": 4.0,
+          "maintenance_leverage": 5.0,
+          "loan_rate": 0.003,
+          "interest_period": 50,
+          "mark_window": 20
+        },
+        "rules": {
+          "max_actions_per_tick": 20,
+          "max_open_orders": 40
+        },
+        "schedule": {
+          "threads": 4,
+          "max_tick_skew": 16,
+          "skip_decision_lag": 2,
+          "decision_budget_us": 2000,
+          "check_interval": 500
+        },
+        "world": {
+          "dividend_period": 50,
+          "min_dividend": 0,
+          "sectors": [
+            "tech",
+            "consumer",
+            "energy"
+          ],
+          "seasons": {
+            "calm_to_turbulent": 0.002,
+            "turbulent_to_calm": 0.01,
+            "turbulent_rate_mult": 3.0,
+            "turbulent_size_mult": 2.0
+          },
+          "news": {
+            "market": {
+              "events_per_1000_ticks": 1.5,
+              "change_sd": 0.08
+            },
+            "sector": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.1
+            },
+            "stock": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.12
+            },
+            "disclosure": {
+              "lead_ticks": 120,
+              "stages": [
+                [
+                  0,
+                  0.05
+                ],
+                [
+                  30,
+                  0.25
+                ],
+                [
+                  60,
+                  1.0
+                ]
+              ],
+              "range_widths": [
+                3.0,
+                1.5
+              ]
+            }
+          }
+        },
+        "scoring": {
+          "terminal_ratio": 0.5,
+          "terminal_payments": [
+            10,
+            50
+          ],
+          "terminal_hints": [
+            [
+              0,
+              30
+            ],
+            [
+              1000,
+              16
+            ],
+            [
+              2000,
+              6
+            ]
+          ],
+          "objective": "rank_percentile",
+          "series_seeds": 20
+        },
+        "stocks": [
+          {
+            "name": "T1",
+            "sector": "tech",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 1.4,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "T2",
+            "sector": "tech",
+            "dividend": 80,
+            "initial_price": 8000,
+            "market_loading": 1.3,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "T3",
+            "sector": "tech",
+            "dividend": 120,
+            "initial_price": 12000,
+            "market_loading": 1.2,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "T4",
+            "sector": "tech",
+            "dividend": 60,
+            "initial_price": 6000,
+            "market_loading": 1.5,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C1",
+            "sector": "consumer",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.8,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "C2",
+            "sector": "consumer",
+            "dividend": 90,
+            "initial_price": 9000,
+            "market_loading": 0.7,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C3",
+            "sector": "consumer",
+            "dividend": 110,
+            "initial_price": 11000,
+            "market_loading": 0.9,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "E1",
+            "sector": "energy",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.6,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "E2",
+            "sector": "energy",
+            "dividend": 130,
+            "initial_price": 13000,
+            "market_loading": 0.5,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "E3",
+            "sector": "energy",
+            "dividend": 70,
+            "initial_price": 7000,
+            "market_loading": 0.7,
+            "sector_loading": 0.8
+          }
+        ],
+        "combos": [
+          {
+            "a": "T1",
+            "b": "T2",
+            "bonus": 20
+          },
+          {
+            "a": "C1",
+            "b": "C3",
+            "bonus": 20
+          },
+          {
+            "a": "T3",
+            "b": "E2",
+            "bonus": 25
+          },
+          {
+            "a": "E1",
+            "b": "C2",
+            "bonus": 15
+          },
+          {
+            "a": "T4",
+            "b": "E3",
+            "bonus": -20
+          }
+        ],
+        "bots": [
+          {
+            "bot": "grid",
+            "count": 6,
+            "count_max": 10,
+            "cash": 4000000,
+            "shares_each": 120
+          },
+          {
+            "bot": "value",
+            "count": 4,
+            "count_max": 10,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "momentum",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "news",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "noise",
+            "count": 6,
+            "count_max": 14,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hold",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hunter",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "shark",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "tracker",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "coral",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20,
+            "params": {
+              "jitter": 1.0
+            }
+          },
+          {
+            "bot": "swift",
+            "owner": "target",
+            "count": 1,
+            "cash": 2000000,
+            "shares_each": 20
+          }
+        ]
+      }
+    },
+    {
+      "id": "cash-reserve-100-predator_first",
+      "case": "cash-reserve-100",
+      "mode": "cash",
+      "allocation": "reserve",
+      "multiple": 100,
+      "order": "predator_first",
+      "first_seed": 17001,
+      "seeds": 20,
+      "scenario": "runs/swift-capital-20261018/cash-mechanism/cash-reserve-100-predator_first.toml",
+      "scenario_sha256": "c05115db10c5e02babe5462ef1c161b855350aae365515346d60c91ee0f7f255",
+      "config": {
+        "ticks": 3000,
+        "seed": 7,
+        "market": {
+          "tick_size": 1,
+          "opening_spread": 0.15,
+          "book_depth": 10,
+          "trade_tape_limit": 200
+        },
+        "fees": {
+          "trade_fee_bps": 5,
+          "idle_period": 50,
+          "idle_rate": 0.002,
+          "credit_ratio": 0.01,
+          "credit_side": "both"
+        },
+        "margin": {
+          "max_leverage": 4.0,
+          "maintenance_leverage": 5.0,
+          "loan_rate": 0.003,
+          "interest_period": 50,
+          "mark_window": 20
+        },
+        "rules": {
+          "max_actions_per_tick": 20,
+          "max_open_orders": 40
+        },
+        "schedule": {
+          "threads": 4,
+          "max_tick_skew": 16,
+          "skip_decision_lag": 2,
+          "decision_budget_us": 2000,
+          "check_interval": 500
+        },
+        "world": {
+          "dividend_period": 50,
+          "min_dividend": 0,
+          "sectors": [
+            "tech",
+            "consumer",
+            "energy"
+          ],
+          "seasons": {
+            "calm_to_turbulent": 0.002,
+            "turbulent_to_calm": 0.01,
+            "turbulent_rate_mult": 3.0,
+            "turbulent_size_mult": 2.0
+          },
+          "news": {
+            "market": {
+              "events_per_1000_ticks": 1.5,
+              "change_sd": 0.08
+            },
+            "sector": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.1
+            },
+            "stock": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.12
+            },
+            "disclosure": {
+              "lead_ticks": 120,
+              "stages": [
+                [
+                  0,
+                  0.05
+                ],
+                [
+                  30,
+                  0.25
+                ],
+                [
+                  60,
+                  1.0
+                ]
+              ],
+              "range_widths": [
+                3.0,
+                1.5
+              ]
+            }
+          }
+        },
+        "scoring": {
+          "terminal_ratio": 0.5,
+          "terminal_payments": [
+            10,
+            50
+          ],
+          "terminal_hints": [
+            [
+              0,
+              30
+            ],
+            [
+              1000,
+              16
+            ],
+            [
+              2000,
+              6
+            ]
+          ],
+          "objective": "rank_percentile",
+          "series_seeds": 20
+        },
+        "stocks": [
+          {
+            "name": "T1",
+            "sector": "tech",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 1.4,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "T2",
+            "sector": "tech",
+            "dividend": 80,
+            "initial_price": 8000,
+            "market_loading": 1.3,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "T3",
+            "sector": "tech",
+            "dividend": 120,
+            "initial_price": 12000,
+            "market_loading": 1.2,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "T4",
+            "sector": "tech",
+            "dividend": 60,
+            "initial_price": 6000,
+            "market_loading": 1.5,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C1",
+            "sector": "consumer",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.8,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "C2",
+            "sector": "consumer",
+            "dividend": 90,
+            "initial_price": 9000,
+            "market_loading": 0.7,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C3",
+            "sector": "consumer",
+            "dividend": 110,
+            "initial_price": 11000,
+            "market_loading": 0.9,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "E1",
+            "sector": "energy",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.6,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "E2",
+            "sector": "energy",
+            "dividend": 130,
+            "initial_price": 13000,
+            "market_loading": 0.5,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "E3",
+            "sector": "energy",
+            "dividend": 70,
+            "initial_price": 7000,
+            "market_loading": 0.7,
+            "sector_loading": 0.8
+          }
+        ],
+        "combos": [
+          {
+            "a": "T1",
+            "b": "T2",
+            "bonus": 20
+          },
+          {
+            "a": "C1",
+            "b": "C3",
+            "bonus": 20
+          },
+          {
+            "a": "T3",
+            "b": "E2",
+            "bonus": 25
+          },
+          {
+            "a": "E1",
+            "b": "C2",
+            "bonus": 15
+          },
+          {
+            "a": "T4",
+            "b": "E3",
+            "bonus": -20
+          }
+        ],
+        "bots": [
+          {
+            "bot": "grid",
+            "count": 6,
+            "count_max": 10,
+            "cash": 4000000,
+            "shares_each": 120
+          },
+          {
+            "bot": "value",
+            "count": 4,
+            "count_max": 10,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "momentum",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "news",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "noise",
+            "count": 6,
+            "count_max": 14,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hold",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hunter",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "shark",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "tracker",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "coral",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20,
+            "params": {
+              "jitter": 1.0
+            }
+          },
+          {
+            "bot": "falcon",
+            "owner": "predator",
+            "count": 1,
+            "cash": 20000000,
+            "shares_each": 200,
+            "params": {
+              "mode": 4.0
+            }
+          },
+          {
+            "bot": "swift",
+            "owner": "target",
+            "count": 1,
+            "cash": 2000000,
+            "shares_each": 20
+          }
+        ]
+      }
+    },
+    {
+      "id": "cash-reserve-100-target_first",
+      "case": "cash-reserve-100",
+      "mode": "cash",
+      "allocation": "reserve",
+      "multiple": 100,
+      "order": "target_first",
+      "first_seed": 17001,
+      "seeds": 20,
+      "scenario": "runs/swift-capital-20261018/cash-mechanism/cash-reserve-100-target_first.toml",
+      "scenario_sha256": "880ea3fae603a6e2f7fe795a0766a6aecbf173c779ce8dd83a05eae48ff68fc5",
+      "config": {
+        "ticks": 3000,
+        "seed": 7,
+        "market": {
+          "tick_size": 1,
+          "opening_spread": 0.15,
+          "book_depth": 10,
+          "trade_tape_limit": 200
+        },
+        "fees": {
+          "trade_fee_bps": 5,
+          "idle_period": 50,
+          "idle_rate": 0.002,
+          "credit_ratio": 0.01,
+          "credit_side": "both"
+        },
+        "margin": {
+          "max_leverage": 4.0,
+          "maintenance_leverage": 5.0,
+          "loan_rate": 0.003,
+          "interest_period": 50,
+          "mark_window": 20
+        },
+        "rules": {
+          "max_actions_per_tick": 20,
+          "max_open_orders": 40
+        },
+        "schedule": {
+          "threads": 4,
+          "max_tick_skew": 16,
+          "skip_decision_lag": 2,
+          "decision_budget_us": 2000,
+          "check_interval": 500
+        },
+        "world": {
+          "dividend_period": 50,
+          "min_dividend": 0,
+          "sectors": [
+            "tech",
+            "consumer",
+            "energy"
+          ],
+          "seasons": {
+            "calm_to_turbulent": 0.002,
+            "turbulent_to_calm": 0.01,
+            "turbulent_rate_mult": 3.0,
+            "turbulent_size_mult": 2.0
+          },
+          "news": {
+            "market": {
+              "events_per_1000_ticks": 1.5,
+              "change_sd": 0.08
+            },
+            "sector": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.1
+            },
+            "stock": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.12
+            },
+            "disclosure": {
+              "lead_ticks": 120,
+              "stages": [
+                [
+                  0,
+                  0.05
+                ],
+                [
+                  30,
+                  0.25
+                ],
+                [
+                  60,
+                  1.0
+                ]
+              ],
+              "range_widths": [
+                3.0,
+                1.5
+              ]
+            }
+          }
+        },
+        "scoring": {
+          "terminal_ratio": 0.5,
+          "terminal_payments": [
+            10,
+            50
+          ],
+          "terminal_hints": [
+            [
+              0,
+              30
+            ],
+            [
+              1000,
+              16
+            ],
+            [
+              2000,
+              6
+            ]
+          ],
+          "objective": "rank_percentile",
+          "series_seeds": 20
+        },
+        "stocks": [
+          {
+            "name": "T1",
+            "sector": "tech",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 1.4,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "T2",
+            "sector": "tech",
+            "dividend": 80,
+            "initial_price": 8000,
+            "market_loading": 1.3,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "T3",
+            "sector": "tech",
+            "dividend": 120,
+            "initial_price": 12000,
+            "market_loading": 1.2,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "T4",
+            "sector": "tech",
+            "dividend": 60,
+            "initial_price": 6000,
+            "market_loading": 1.5,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C1",
+            "sector": "consumer",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.8,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "C2",
+            "sector": "consumer",
+            "dividend": 90,
+            "initial_price": 9000,
+            "market_loading": 0.7,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C3",
+            "sector": "consumer",
+            "dividend": 110,
+            "initial_price": 11000,
+            "market_loading": 0.9,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "E1",
+            "sector": "energy",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.6,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "E2",
+            "sector": "energy",
+            "dividend": 130,
+            "initial_price": 13000,
+            "market_loading": 0.5,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "E3",
+            "sector": "energy",
+            "dividend": 70,
+            "initial_price": 7000,
+            "market_loading": 0.7,
+            "sector_loading": 0.8
+          }
+        ],
+        "combos": [
+          {
+            "a": "T1",
+            "b": "T2",
+            "bonus": 20
+          },
+          {
+            "a": "C1",
+            "b": "C3",
+            "bonus": 20
+          },
+          {
+            "a": "T3",
+            "b": "E2",
+            "bonus": 25
+          },
+          {
+            "a": "E1",
+            "b": "C2",
+            "bonus": 15
+          },
+          {
+            "a": "T4",
+            "b": "E3",
+            "bonus": -20
+          }
+        ],
+        "bots": [
+          {
+            "bot": "grid",
+            "count": 6,
+            "count_max": 10,
+            "cash": 4000000,
+            "shares_each": 120
+          },
+          {
+            "bot": "value",
+            "count": 4,
+            "count_max": 10,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "momentum",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "news",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "noise",
+            "count": 6,
+            "count_max": 14,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hold",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hunter",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "shark",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "tracker",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "coral",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20,
+            "params": {
+              "jitter": 1.0
+            }
+          },
+          {
+            "bot": "swift",
+            "owner": "target",
+            "count": 1,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "falcon",
+            "owner": "predator",
+            "count": 1,
+            "cash": 20000000,
+            "shares_each": 200,
+            "params": {
+              "mode": 4.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "relay-scaled-100-predator_first",
+      "case": "relay-scaled-100",
+      "mode": "relay",
+      "allocation": "scaled",
+      "multiple": 100,
+      "order": "predator_first",
+      "first_seed": 17001,
+      "seeds": 20,
+      "scenario": "runs/swift-capital-20261018/cash-mechanism/relay-scaled-100-predator_first.toml",
+      "scenario_sha256": "33e99e6c8af8449017e026d40200714d5321c66ee3ca696a55c20604ec1cdc0e",
+      "config": {
+        "ticks": 3000,
+        "seed": 7,
+        "market": {
+          "tick_size": 1,
+          "opening_spread": 0.15,
+          "book_depth": 10,
+          "trade_tape_limit": 200
+        },
+        "fees": {
+          "trade_fee_bps": 5,
+          "idle_period": 50,
+          "idle_rate": 0.002,
+          "credit_ratio": 0.01,
+          "credit_side": "both"
+        },
+        "margin": {
+          "max_leverage": 4.0,
+          "maintenance_leverage": 5.0,
+          "loan_rate": 0.003,
+          "interest_period": 50,
+          "mark_window": 20
+        },
+        "rules": {
+          "max_actions_per_tick": 20,
+          "max_open_orders": 40
+        },
+        "schedule": {
+          "threads": 4,
+          "max_tick_skew": 16,
+          "skip_decision_lag": 2,
+          "decision_budget_us": 2000,
+          "check_interval": 500
+        },
+        "world": {
+          "dividend_period": 50,
+          "min_dividend": 0,
+          "sectors": [
+            "tech",
+            "consumer",
+            "energy"
+          ],
+          "seasons": {
+            "calm_to_turbulent": 0.002,
+            "turbulent_to_calm": 0.01,
+            "turbulent_rate_mult": 3.0,
+            "turbulent_size_mult": 2.0
+          },
+          "news": {
+            "market": {
+              "events_per_1000_ticks": 1.5,
+              "change_sd": 0.08
+            },
+            "sector": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.1
+            },
+            "stock": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.12
+            },
+            "disclosure": {
+              "lead_ticks": 120,
+              "stages": [
+                [
+                  0,
+                  0.05
+                ],
+                [
+                  30,
+                  0.25
+                ],
+                [
+                  60,
+                  1.0
+                ]
+              ],
+              "range_widths": [
+                3.0,
+                1.5
+              ]
+            }
+          }
+        },
+        "scoring": {
+          "terminal_ratio": 0.5,
+          "terminal_payments": [
+            10,
+            50
+          ],
+          "terminal_hints": [
+            [
+              0,
+              30
+            ],
+            [
+              1000,
+              16
+            ],
+            [
+              2000,
+              6
+            ]
+          ],
+          "objective": "rank_percentile",
+          "series_seeds": 20
+        },
+        "stocks": [
+          {
+            "name": "T1",
+            "sector": "tech",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 1.4,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "T2",
+            "sector": "tech",
+            "dividend": 80,
+            "initial_price": 8000,
+            "market_loading": 1.3,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "T3",
+            "sector": "tech",
+            "dividend": 120,
+            "initial_price": 12000,
+            "market_loading": 1.2,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "T4",
+            "sector": "tech",
+            "dividend": 60,
+            "initial_price": 6000,
+            "market_loading": 1.5,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C1",
+            "sector": "consumer",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.8,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "C2",
+            "sector": "consumer",
+            "dividend": 90,
+            "initial_price": 9000,
+            "market_loading": 0.7,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C3",
+            "sector": "consumer",
+            "dividend": 110,
+            "initial_price": 11000,
+            "market_loading": 0.9,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "E1",
+            "sector": "energy",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.6,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "E2",
+            "sector": "energy",
+            "dividend": 130,
+            "initial_price": 13000,
+            "market_loading": 0.5,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "E3",
+            "sector": "energy",
+            "dividend": 70,
+            "initial_price": 7000,
+            "market_loading": 0.7,
+            "sector_loading": 0.8
+          }
+        ],
+        "combos": [
+          {
+            "a": "T1",
+            "b": "T2",
+            "bonus": 20
+          },
+          {
+            "a": "C1",
+            "b": "C3",
+            "bonus": 20
+          },
+          {
+            "a": "T3",
+            "b": "E2",
+            "bonus": 25
+          },
+          {
+            "a": "E1",
+            "b": "C2",
+            "bonus": 15
+          },
+          {
+            "a": "T4",
+            "b": "E3",
+            "bonus": -20
+          }
+        ],
+        "bots": [
+          {
+            "bot": "grid",
+            "count": 6,
+            "count_max": 10,
+            "cash": 4000000,
+            "shares_each": 120
+          },
+          {
+            "bot": "value",
+            "count": 4,
+            "count_max": 10,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "momentum",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "news",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "noise",
+            "count": 6,
+            "count_max": 14,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hold",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hunter",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "shark",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "tracker",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "coral",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20,
+            "params": {
+              "jitter": 1.0
+            }
+          },
+          {
+            "bot": "falcon",
+            "owner": "predator",
+            "count": 1,
+            "cash": 20000000,
+            "shares_each": 200,
+            "params": {
+              "mode": 6.0
+            }
+          },
+          {
+            "bot": "swift",
+            "owner": "target",
+            "count": 1,
+            "cash": 2000000,
+            "shares_each": 20
+          }
+        ]
+      }
+    },
+    {
+      "id": "relay-scaled-100-target_first",
+      "case": "relay-scaled-100",
+      "mode": "relay",
+      "allocation": "scaled",
+      "multiple": 100,
+      "order": "target_first",
+      "first_seed": 17001,
+      "seeds": 20,
+      "scenario": "runs/swift-capital-20261018/cash-mechanism/relay-scaled-100-target_first.toml",
+      "scenario_sha256": "9c06a05d7e5a528750548a1d55de78458940ea7147820f3ebb5f5574299ebfd4",
+      "config": {
+        "ticks": 3000,
+        "seed": 7,
+        "market": {
+          "tick_size": 1,
+          "opening_spread": 0.15,
+          "book_depth": 10,
+          "trade_tape_limit": 200
+        },
+        "fees": {
+          "trade_fee_bps": 5,
+          "idle_period": 50,
+          "idle_rate": 0.002,
+          "credit_ratio": 0.01,
+          "credit_side": "both"
+        },
+        "margin": {
+          "max_leverage": 4.0,
+          "maintenance_leverage": 5.0,
+          "loan_rate": 0.003,
+          "interest_period": 50,
+          "mark_window": 20
+        },
+        "rules": {
+          "max_actions_per_tick": 20,
+          "max_open_orders": 40
+        },
+        "schedule": {
+          "threads": 4,
+          "max_tick_skew": 16,
+          "skip_decision_lag": 2,
+          "decision_budget_us": 2000,
+          "check_interval": 500
+        },
+        "world": {
+          "dividend_period": 50,
+          "min_dividend": 0,
+          "sectors": [
+            "tech",
+            "consumer",
+            "energy"
+          ],
+          "seasons": {
+            "calm_to_turbulent": 0.002,
+            "turbulent_to_calm": 0.01,
+            "turbulent_rate_mult": 3.0,
+            "turbulent_size_mult": 2.0
+          },
+          "news": {
+            "market": {
+              "events_per_1000_ticks": 1.5,
+              "change_sd": 0.08
+            },
+            "sector": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.1
+            },
+            "stock": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.12
+            },
+            "disclosure": {
+              "lead_ticks": 120,
+              "stages": [
+                [
+                  0,
+                  0.05
+                ],
+                [
+                  30,
+                  0.25
+                ],
+                [
+                  60,
+                  1.0
+                ]
+              ],
+              "range_widths": [
+                3.0,
+                1.5
+              ]
+            }
+          }
+        },
+        "scoring": {
+          "terminal_ratio": 0.5,
+          "terminal_payments": [
+            10,
+            50
+          ],
+          "terminal_hints": [
+            [
+              0,
+              30
+            ],
+            [
+              1000,
+              16
+            ],
+            [
+              2000,
+              6
+            ]
+          ],
+          "objective": "rank_percentile",
+          "series_seeds": 20
+        },
+        "stocks": [
+          {
+            "name": "T1",
+            "sector": "tech",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 1.4,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "T2",
+            "sector": "tech",
+            "dividend": 80,
+            "initial_price": 8000,
+            "market_loading": 1.3,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "T3",
+            "sector": "tech",
+            "dividend": 120,
+            "initial_price": 12000,
+            "market_loading": 1.2,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "T4",
+            "sector": "tech",
+            "dividend": 60,
+            "initial_price": 6000,
+            "market_loading": 1.5,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C1",
+            "sector": "consumer",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.8,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "C2",
+            "sector": "consumer",
+            "dividend": 90,
+            "initial_price": 9000,
+            "market_loading": 0.7,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C3",
+            "sector": "consumer",
+            "dividend": 110,
+            "initial_price": 11000,
+            "market_loading": 0.9,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "E1",
+            "sector": "energy",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.6,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "E2",
+            "sector": "energy",
+            "dividend": 130,
+            "initial_price": 13000,
+            "market_loading": 0.5,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "E3",
+            "sector": "energy",
+            "dividend": 70,
+            "initial_price": 7000,
+            "market_loading": 0.7,
+            "sector_loading": 0.8
+          }
+        ],
+        "combos": [
+          {
+            "a": "T1",
+            "b": "T2",
+            "bonus": 20
+          },
+          {
+            "a": "C1",
+            "b": "C3",
+            "bonus": 20
+          },
+          {
+            "a": "T3",
+            "b": "E2",
+            "bonus": 25
+          },
+          {
+            "a": "E1",
+            "b": "C2",
+            "bonus": 15
+          },
+          {
+            "a": "T4",
+            "b": "E3",
+            "bonus": -20
+          }
+        ],
+        "bots": [
+          {
+            "bot": "grid",
+            "count": 6,
+            "count_max": 10,
+            "cash": 4000000,
+            "shares_each": 120
+          },
+          {
+            "bot": "value",
+            "count": 4,
+            "count_max": 10,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "momentum",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "news",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "noise",
+            "count": 6,
+            "count_max": 14,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hold",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hunter",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "shark",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "tracker",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "coral",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20,
+            "params": {
+              "jitter": 1.0
+            }
+          },
+          {
+            "bot": "swift",
+            "owner": "target",
+            "count": 1,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "falcon",
+            "owner": "predator",
+            "count": 1,
+            "cash": 20000000,
+            "shares_each": 200,
+            "params": {
+              "mode": 6.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "cash-scaled-100-predator_first",
+      "case": "cash-scaled-100",
+      "mode": "cash",
+      "allocation": "scaled",
+      "multiple": 100,
+      "order": "predator_first",
+      "first_seed": 17001,
+      "seeds": 20,
+      "scenario": "runs/swift-capital-20261018/cash-mechanism/cash-scaled-100-predator_first.toml",
+      "scenario_sha256": "c05115db10c5e02babe5462ef1c161b855350aae365515346d60c91ee0f7f255",
+      "config": {
+        "ticks": 3000,
+        "seed": 7,
+        "market": {
+          "tick_size": 1,
+          "opening_spread": 0.15,
+          "book_depth": 10,
+          "trade_tape_limit": 200
+        },
+        "fees": {
+          "trade_fee_bps": 5,
+          "idle_period": 50,
+          "idle_rate": 0.002,
+          "credit_ratio": 0.01,
+          "credit_side": "both"
+        },
+        "margin": {
+          "max_leverage": 4.0,
+          "maintenance_leverage": 5.0,
+          "loan_rate": 0.003,
+          "interest_period": 50,
+          "mark_window": 20
+        },
+        "rules": {
+          "max_actions_per_tick": 20,
+          "max_open_orders": 40
+        },
+        "schedule": {
+          "threads": 4,
+          "max_tick_skew": 16,
+          "skip_decision_lag": 2,
+          "decision_budget_us": 2000,
+          "check_interval": 500
+        },
+        "world": {
+          "dividend_period": 50,
+          "min_dividend": 0,
+          "sectors": [
+            "tech",
+            "consumer",
+            "energy"
+          ],
+          "seasons": {
+            "calm_to_turbulent": 0.002,
+            "turbulent_to_calm": 0.01,
+            "turbulent_rate_mult": 3.0,
+            "turbulent_size_mult": 2.0
+          },
+          "news": {
+            "market": {
+              "events_per_1000_ticks": 1.5,
+              "change_sd": 0.08
+            },
+            "sector": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.1
+            },
+            "stock": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.12
+            },
+            "disclosure": {
+              "lead_ticks": 120,
+              "stages": [
+                [
+                  0,
+                  0.05
+                ],
+                [
+                  30,
+                  0.25
+                ],
+                [
+                  60,
+                  1.0
+                ]
+              ],
+              "range_widths": [
+                3.0,
+                1.5
+              ]
+            }
+          }
+        },
+        "scoring": {
+          "terminal_ratio": 0.5,
+          "terminal_payments": [
+            10,
+            50
+          ],
+          "terminal_hints": [
+            [
+              0,
+              30
+            ],
+            [
+              1000,
+              16
+            ],
+            [
+              2000,
+              6
+            ]
+          ],
+          "objective": "rank_percentile",
+          "series_seeds": 20
+        },
+        "stocks": [
+          {
+            "name": "T1",
+            "sector": "tech",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 1.4,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "T2",
+            "sector": "tech",
+            "dividend": 80,
+            "initial_price": 8000,
+            "market_loading": 1.3,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "T3",
+            "sector": "tech",
+            "dividend": 120,
+            "initial_price": 12000,
+            "market_loading": 1.2,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "T4",
+            "sector": "tech",
+            "dividend": 60,
+            "initial_price": 6000,
+            "market_loading": 1.5,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C1",
+            "sector": "consumer",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.8,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "C2",
+            "sector": "consumer",
+            "dividend": 90,
+            "initial_price": 9000,
+            "market_loading": 0.7,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C3",
+            "sector": "consumer",
+            "dividend": 110,
+            "initial_price": 11000,
+            "market_loading": 0.9,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "E1",
+            "sector": "energy",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.6,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "E2",
+            "sector": "energy",
+            "dividend": 130,
+            "initial_price": 13000,
+            "market_loading": 0.5,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "E3",
+            "sector": "energy",
+            "dividend": 70,
+            "initial_price": 7000,
+            "market_loading": 0.7,
+            "sector_loading": 0.8
+          }
+        ],
+        "combos": [
+          {
+            "a": "T1",
+            "b": "T2",
+            "bonus": 20
+          },
+          {
+            "a": "C1",
+            "b": "C3",
+            "bonus": 20
+          },
+          {
+            "a": "T3",
+            "b": "E2",
+            "bonus": 25
+          },
+          {
+            "a": "E1",
+            "b": "C2",
+            "bonus": 15
+          },
+          {
+            "a": "T4",
+            "b": "E3",
+            "bonus": -20
+          }
+        ],
+        "bots": [
+          {
+            "bot": "grid",
+            "count": 6,
+            "count_max": 10,
+            "cash": 4000000,
+            "shares_each": 120
+          },
+          {
+            "bot": "value",
+            "count": 4,
+            "count_max": 10,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "momentum",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "news",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "noise",
+            "count": 6,
+            "count_max": 14,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hold",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hunter",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "shark",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "tracker",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "coral",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20,
+            "params": {
+              "jitter": 1.0
+            }
+          },
+          {
+            "bot": "falcon",
+            "owner": "predator",
+            "count": 1,
+            "cash": 20000000,
+            "shares_each": 200,
+            "params": {
+              "mode": 4.0
+            }
+          },
+          {
+            "bot": "swift",
+            "owner": "target",
+            "count": 1,
+            "cash": 2000000,
+            "shares_each": 20
+          }
+        ]
+      }
+    },
+    {
+      "id": "cash-scaled-100-target_first",
+      "case": "cash-scaled-100",
+      "mode": "cash",
+      "allocation": "scaled",
+      "multiple": 100,
+      "order": "target_first",
+      "first_seed": 17001,
+      "seeds": 20,
+      "scenario": "runs/swift-capital-20261018/cash-mechanism/cash-scaled-100-target_first.toml",
+      "scenario_sha256": "880ea3fae603a6e2f7fe795a0766a6aecbf173c779ce8dd83a05eae48ff68fc5",
+      "config": {
+        "ticks": 3000,
+        "seed": 7,
+        "market": {
+          "tick_size": 1,
+          "opening_spread": 0.15,
+          "book_depth": 10,
+          "trade_tape_limit": 200
+        },
+        "fees": {
+          "trade_fee_bps": 5,
+          "idle_period": 50,
+          "idle_rate": 0.002,
+          "credit_ratio": 0.01,
+          "credit_side": "both"
+        },
+        "margin": {
+          "max_leverage": 4.0,
+          "maintenance_leverage": 5.0,
+          "loan_rate": 0.003,
+          "interest_period": 50,
+          "mark_window": 20
+        },
+        "rules": {
+          "max_actions_per_tick": 20,
+          "max_open_orders": 40
+        },
+        "schedule": {
+          "threads": 4,
+          "max_tick_skew": 16,
+          "skip_decision_lag": 2,
+          "decision_budget_us": 2000,
+          "check_interval": 500
+        },
+        "world": {
+          "dividend_period": 50,
+          "min_dividend": 0,
+          "sectors": [
+            "tech",
+            "consumer",
+            "energy"
+          ],
+          "seasons": {
+            "calm_to_turbulent": 0.002,
+            "turbulent_to_calm": 0.01,
+            "turbulent_rate_mult": 3.0,
+            "turbulent_size_mult": 2.0
+          },
+          "news": {
+            "market": {
+              "events_per_1000_ticks": 1.5,
+              "change_sd": 0.08
+            },
+            "sector": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.1
+            },
+            "stock": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.12
+            },
+            "disclosure": {
+              "lead_ticks": 120,
+              "stages": [
+                [
+                  0,
+                  0.05
+                ],
+                [
+                  30,
+                  0.25
+                ],
+                [
+                  60,
+                  1.0
+                ]
+              ],
+              "range_widths": [
+                3.0,
+                1.5
+              ]
+            }
+          }
+        },
+        "scoring": {
+          "terminal_ratio": 0.5,
+          "terminal_payments": [
+            10,
+            50
+          ],
+          "terminal_hints": [
+            [
+              0,
+              30
+            ],
+            [
+              1000,
+              16
+            ],
+            [
+              2000,
+              6
+            ]
+          ],
+          "objective": "rank_percentile",
+          "series_seeds": 20
+        },
+        "stocks": [
+          {
+            "name": "T1",
+            "sector": "tech",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 1.4,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "T2",
+            "sector": "tech",
+            "dividend": 80,
+            "initial_price": 8000,
+            "market_loading": 1.3,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "T3",
+            "sector": "tech",
+            "dividend": 120,
+            "initial_price": 12000,
+            "market_loading": 1.2,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "T4",
+            "sector": "tech",
+            "dividend": 60,
+            "initial_price": 6000,
+            "market_loading": 1.5,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C1",
+            "sector": "consumer",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.8,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "C2",
+            "sector": "consumer",
+            "dividend": 90,
+            "initial_price": 9000,
+            "market_loading": 0.7,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C3",
+            "sector": "consumer",
+            "dividend": 110,
+            "initial_price": 11000,
+            "market_loading": 0.9,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "E1",
+            "sector": "energy",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.6,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "E2",
+            "sector": "energy",
+            "dividend": 130,
+            "initial_price": 13000,
+            "market_loading": 0.5,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "E3",
+            "sector": "energy",
+            "dividend": 70,
+            "initial_price": 7000,
+            "market_loading": 0.7,
+            "sector_loading": 0.8
+          }
+        ],
+        "combos": [
+          {
+            "a": "T1",
+            "b": "T2",
+            "bonus": 20
+          },
+          {
+            "a": "C1",
+            "b": "C3",
+            "bonus": 20
+          },
+          {
+            "a": "T3",
+            "b": "E2",
+            "bonus": 25
+          },
+          {
+            "a": "E1",
+            "b": "C2",
+            "bonus": 15
+          },
+          {
+            "a": "T4",
+            "b": "E3",
+            "bonus": -20
+          }
+        ],
+        "bots": [
+          {
+            "bot": "grid",
+            "count": 6,
+            "count_max": 10,
+            "cash": 4000000,
+            "shares_each": 120
+          },
+          {
+            "bot": "value",
+            "count": 4,
+            "count_max": 10,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "momentum",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "news",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "noise",
+            "count": 6,
+            "count_max": 14,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hold",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hunter",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "shark",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "tracker",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "coral",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20,
+            "params": {
+              "jitter": 1.0
+            }
+          },
+          {
+            "bot": "swift",
+            "owner": "target",
+            "count": 1,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "falcon",
+            "owner": "predator",
+            "count": 1,
+            "cash": 20000000,
+            "shares_each": 200,
+            "params": {
+              "mode": 4.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "cash-reserve-300-predator_first",
+      "case": "cash-reserve-300",
+      "mode": "cash",
+      "allocation": "reserve",
+      "multiple": 300,
+      "order": "predator_first",
+      "first_seed": 17001,
+      "seeds": 20,
+      "scenario": "runs/swift-capital-20261018/cash-mechanism/cash-reserve-300-predator_first.toml",
+      "scenario_sha256": "c05115db10c5e02babe5462ef1c161b855350aae365515346d60c91ee0f7f255",
+      "config": {
+        "ticks": 3000,
+        "seed": 7,
+        "market": {
+          "tick_size": 1,
+          "opening_spread": 0.15,
+          "book_depth": 10,
+          "trade_tape_limit": 200
+        },
+        "fees": {
+          "trade_fee_bps": 5,
+          "idle_period": 50,
+          "idle_rate": 0.002,
+          "credit_ratio": 0.01,
+          "credit_side": "both"
+        },
+        "margin": {
+          "max_leverage": 4.0,
+          "maintenance_leverage": 5.0,
+          "loan_rate": 0.003,
+          "interest_period": 50,
+          "mark_window": 20
+        },
+        "rules": {
+          "max_actions_per_tick": 20,
+          "max_open_orders": 40
+        },
+        "schedule": {
+          "threads": 4,
+          "max_tick_skew": 16,
+          "skip_decision_lag": 2,
+          "decision_budget_us": 2000,
+          "check_interval": 500
+        },
+        "world": {
+          "dividend_period": 50,
+          "min_dividend": 0,
+          "sectors": [
+            "tech",
+            "consumer",
+            "energy"
+          ],
+          "seasons": {
+            "calm_to_turbulent": 0.002,
+            "turbulent_to_calm": 0.01,
+            "turbulent_rate_mult": 3.0,
+            "turbulent_size_mult": 2.0
+          },
+          "news": {
+            "market": {
+              "events_per_1000_ticks": 1.5,
+              "change_sd": 0.08
+            },
+            "sector": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.1
+            },
+            "stock": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.12
+            },
+            "disclosure": {
+              "lead_ticks": 120,
+              "stages": [
+                [
+                  0,
+                  0.05
+                ],
+                [
+                  30,
+                  0.25
+                ],
+                [
+                  60,
+                  1.0
+                ]
+              ],
+              "range_widths": [
+                3.0,
+                1.5
+              ]
+            }
+          }
+        },
+        "scoring": {
+          "terminal_ratio": 0.5,
+          "terminal_payments": [
+            10,
+            50
+          ],
+          "terminal_hints": [
+            [
+              0,
+              30
+            ],
+            [
+              1000,
+              16
+            ],
+            [
+              2000,
+              6
+            ]
+          ],
+          "objective": "rank_percentile",
+          "series_seeds": 20
+        },
+        "stocks": [
+          {
+            "name": "T1",
+            "sector": "tech",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 1.4,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "T2",
+            "sector": "tech",
+            "dividend": 80,
+            "initial_price": 8000,
+            "market_loading": 1.3,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "T3",
+            "sector": "tech",
+            "dividend": 120,
+            "initial_price": 12000,
+            "market_loading": 1.2,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "T4",
+            "sector": "tech",
+            "dividend": 60,
+            "initial_price": 6000,
+            "market_loading": 1.5,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C1",
+            "sector": "consumer",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.8,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "C2",
+            "sector": "consumer",
+            "dividend": 90,
+            "initial_price": 9000,
+            "market_loading": 0.7,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C3",
+            "sector": "consumer",
+            "dividend": 110,
+            "initial_price": 11000,
+            "market_loading": 0.9,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "E1",
+            "sector": "energy",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.6,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "E2",
+            "sector": "energy",
+            "dividend": 130,
+            "initial_price": 13000,
+            "market_loading": 0.5,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "E3",
+            "sector": "energy",
+            "dividend": 70,
+            "initial_price": 7000,
+            "market_loading": 0.7,
+            "sector_loading": 0.8
+          }
+        ],
+        "combos": [
+          {
+            "a": "T1",
+            "b": "T2",
+            "bonus": 20
+          },
+          {
+            "a": "C1",
+            "b": "C3",
+            "bonus": 20
+          },
+          {
+            "a": "T3",
+            "b": "E2",
+            "bonus": 25
+          },
+          {
+            "a": "E1",
+            "b": "C2",
+            "bonus": 15
+          },
+          {
+            "a": "T4",
+            "b": "E3",
+            "bonus": -20
+          }
+        ],
+        "bots": [
+          {
+            "bot": "grid",
+            "count": 6,
+            "count_max": 10,
+            "cash": 4000000,
+            "shares_each": 120
+          },
+          {
+            "bot": "value",
+            "count": 4,
+            "count_max": 10,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "momentum",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "news",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "noise",
+            "count": 6,
+            "count_max": 14,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hold",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hunter",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "shark",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "tracker",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "coral",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20,
+            "params": {
+              "jitter": 1.0
+            }
+          },
+          {
+            "bot": "falcon",
+            "owner": "predator",
+            "count": 1,
+            "cash": 20000000,
+            "shares_each": 200,
+            "params": {
+              "mode": 4.0
+            }
+          },
+          {
+            "bot": "swift",
+            "owner": "target",
+            "count": 1,
+            "cash": 2000000,
+            "shares_each": 20
+          }
+        ]
+      }
+    },
+    {
+      "id": "cash-reserve-300-target_first",
+      "case": "cash-reserve-300",
+      "mode": "cash",
+      "allocation": "reserve",
+      "multiple": 300,
+      "order": "target_first",
+      "first_seed": 17001,
+      "seeds": 20,
+      "scenario": "runs/swift-capital-20261018/cash-mechanism/cash-reserve-300-target_first.toml",
+      "scenario_sha256": "880ea3fae603a6e2f7fe795a0766a6aecbf173c779ce8dd83a05eae48ff68fc5",
+      "config": {
+        "ticks": 3000,
+        "seed": 7,
+        "market": {
+          "tick_size": 1,
+          "opening_spread": 0.15,
+          "book_depth": 10,
+          "trade_tape_limit": 200
+        },
+        "fees": {
+          "trade_fee_bps": 5,
+          "idle_period": 50,
+          "idle_rate": 0.002,
+          "credit_ratio": 0.01,
+          "credit_side": "both"
+        },
+        "margin": {
+          "max_leverage": 4.0,
+          "maintenance_leverage": 5.0,
+          "loan_rate": 0.003,
+          "interest_period": 50,
+          "mark_window": 20
+        },
+        "rules": {
+          "max_actions_per_tick": 20,
+          "max_open_orders": 40
+        },
+        "schedule": {
+          "threads": 4,
+          "max_tick_skew": 16,
+          "skip_decision_lag": 2,
+          "decision_budget_us": 2000,
+          "check_interval": 500
+        },
+        "world": {
+          "dividend_period": 50,
+          "min_dividend": 0,
+          "sectors": [
+            "tech",
+            "consumer",
+            "energy"
+          ],
+          "seasons": {
+            "calm_to_turbulent": 0.002,
+            "turbulent_to_calm": 0.01,
+            "turbulent_rate_mult": 3.0,
+            "turbulent_size_mult": 2.0
+          },
+          "news": {
+            "market": {
+              "events_per_1000_ticks": 1.5,
+              "change_sd": 0.08
+            },
+            "sector": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.1
+            },
+            "stock": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.12
+            },
+            "disclosure": {
+              "lead_ticks": 120,
+              "stages": [
+                [
+                  0,
+                  0.05
+                ],
+                [
+                  30,
+                  0.25
+                ],
+                [
+                  60,
+                  1.0
+                ]
+              ],
+              "range_widths": [
+                3.0,
+                1.5
+              ]
+            }
+          }
+        },
+        "scoring": {
+          "terminal_ratio": 0.5,
+          "terminal_payments": [
+            10,
+            50
+          ],
+          "terminal_hints": [
+            [
+              0,
+              30
+            ],
+            [
+              1000,
+              16
+            ],
+            [
+              2000,
+              6
+            ]
+          ],
+          "objective": "rank_percentile",
+          "series_seeds": 20
+        },
+        "stocks": [
+          {
+            "name": "T1",
+            "sector": "tech",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 1.4,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "T2",
+            "sector": "tech",
+            "dividend": 80,
+            "initial_price": 8000,
+            "market_loading": 1.3,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "T3",
+            "sector": "tech",
+            "dividend": 120,
+            "initial_price": 12000,
+            "market_loading": 1.2,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "T4",
+            "sector": "tech",
+            "dividend": 60,
+            "initial_price": 6000,
+            "market_loading": 1.5,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C1",
+            "sector": "consumer",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.8,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "C2",
+            "sector": "consumer",
+            "dividend": 90,
+            "initial_price": 9000,
+            "market_loading": 0.7,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C3",
+            "sector": "consumer",
+            "dividend": 110,
+            "initial_price": 11000,
+            "market_loading": 0.9,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "E1",
+            "sector": "energy",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.6,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "E2",
+            "sector": "energy",
+            "dividend": 130,
+            "initial_price": 13000,
+            "market_loading": 0.5,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "E3",
+            "sector": "energy",
+            "dividend": 70,
+            "initial_price": 7000,
+            "market_loading": 0.7,
+            "sector_loading": 0.8
+          }
+        ],
+        "combos": [
+          {
+            "a": "T1",
+            "b": "T2",
+            "bonus": 20
+          },
+          {
+            "a": "C1",
+            "b": "C3",
+            "bonus": 20
+          },
+          {
+            "a": "T3",
+            "b": "E2",
+            "bonus": 25
+          },
+          {
+            "a": "E1",
+            "b": "C2",
+            "bonus": 15
+          },
+          {
+            "a": "T4",
+            "b": "E3",
+            "bonus": -20
+          }
+        ],
+        "bots": [
+          {
+            "bot": "grid",
+            "count": 6,
+            "count_max": 10,
+            "cash": 4000000,
+            "shares_each": 120
+          },
+          {
+            "bot": "value",
+            "count": 4,
+            "count_max": 10,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "momentum",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "news",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "noise",
+            "count": 6,
+            "count_max": 14,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hold",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hunter",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "shark",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "tracker",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "coral",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20,
+            "params": {
+              "jitter": 1.0
+            }
+          },
+          {
+            "bot": "swift",
+            "owner": "target",
+            "count": 1,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "falcon",
+            "owner": "predator",
+            "count": 1,
+            "cash": 20000000,
+            "shares_each": 200,
+            "params": {
+              "mode": 4.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "relay-scaled-300-predator_first",
+      "case": "relay-scaled-300",
+      "mode": "relay",
+      "allocation": "scaled",
+      "multiple": 300,
+      "order": "predator_first",
+      "first_seed": 17001,
+      "seeds": 20,
+      "scenario": "runs/swift-capital-20261018/cash-mechanism/relay-scaled-300-predator_first.toml",
+      "scenario_sha256": "33e99e6c8af8449017e026d40200714d5321c66ee3ca696a55c20604ec1cdc0e",
+      "config": {
+        "ticks": 3000,
+        "seed": 7,
+        "market": {
+          "tick_size": 1,
+          "opening_spread": 0.15,
+          "book_depth": 10,
+          "trade_tape_limit": 200
+        },
+        "fees": {
+          "trade_fee_bps": 5,
+          "idle_period": 50,
+          "idle_rate": 0.002,
+          "credit_ratio": 0.01,
+          "credit_side": "both"
+        },
+        "margin": {
+          "max_leverage": 4.0,
+          "maintenance_leverage": 5.0,
+          "loan_rate": 0.003,
+          "interest_period": 50,
+          "mark_window": 20
+        },
+        "rules": {
+          "max_actions_per_tick": 20,
+          "max_open_orders": 40
+        },
+        "schedule": {
+          "threads": 4,
+          "max_tick_skew": 16,
+          "skip_decision_lag": 2,
+          "decision_budget_us": 2000,
+          "check_interval": 500
+        },
+        "world": {
+          "dividend_period": 50,
+          "min_dividend": 0,
+          "sectors": [
+            "tech",
+            "consumer",
+            "energy"
+          ],
+          "seasons": {
+            "calm_to_turbulent": 0.002,
+            "turbulent_to_calm": 0.01,
+            "turbulent_rate_mult": 3.0,
+            "turbulent_size_mult": 2.0
+          },
+          "news": {
+            "market": {
+              "events_per_1000_ticks": 1.5,
+              "change_sd": 0.08
+            },
+            "sector": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.1
+            },
+            "stock": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.12
+            },
+            "disclosure": {
+              "lead_ticks": 120,
+              "stages": [
+                [
+                  0,
+                  0.05
+                ],
+                [
+                  30,
+                  0.25
+                ],
+                [
+                  60,
+                  1.0
+                ]
+              ],
+              "range_widths": [
+                3.0,
+                1.5
+              ]
+            }
+          }
+        },
+        "scoring": {
+          "terminal_ratio": 0.5,
+          "terminal_payments": [
+            10,
+            50
+          ],
+          "terminal_hints": [
+            [
+              0,
+              30
+            ],
+            [
+              1000,
+              16
+            ],
+            [
+              2000,
+              6
+            ]
+          ],
+          "objective": "rank_percentile",
+          "series_seeds": 20
+        },
+        "stocks": [
+          {
+            "name": "T1",
+            "sector": "tech",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 1.4,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "T2",
+            "sector": "tech",
+            "dividend": 80,
+            "initial_price": 8000,
+            "market_loading": 1.3,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "T3",
+            "sector": "tech",
+            "dividend": 120,
+            "initial_price": 12000,
+            "market_loading": 1.2,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "T4",
+            "sector": "tech",
+            "dividend": 60,
+            "initial_price": 6000,
+            "market_loading": 1.5,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C1",
+            "sector": "consumer",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.8,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "C2",
+            "sector": "consumer",
+            "dividend": 90,
+            "initial_price": 9000,
+            "market_loading": 0.7,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C3",
+            "sector": "consumer",
+            "dividend": 110,
+            "initial_price": 11000,
+            "market_loading": 0.9,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "E1",
+            "sector": "energy",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.6,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "E2",
+            "sector": "energy",
+            "dividend": 130,
+            "initial_price": 13000,
+            "market_loading": 0.5,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "E3",
+            "sector": "energy",
+            "dividend": 70,
+            "initial_price": 7000,
+            "market_loading": 0.7,
+            "sector_loading": 0.8
+          }
+        ],
+        "combos": [
+          {
+            "a": "T1",
+            "b": "T2",
+            "bonus": 20
+          },
+          {
+            "a": "C1",
+            "b": "C3",
+            "bonus": 20
+          },
+          {
+            "a": "T3",
+            "b": "E2",
+            "bonus": 25
+          },
+          {
+            "a": "E1",
+            "b": "C2",
+            "bonus": 15
+          },
+          {
+            "a": "T4",
+            "b": "E3",
+            "bonus": -20
+          }
+        ],
+        "bots": [
+          {
+            "bot": "grid",
+            "count": 6,
+            "count_max": 10,
+            "cash": 4000000,
+            "shares_each": 120
+          },
+          {
+            "bot": "value",
+            "count": 4,
+            "count_max": 10,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "momentum",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "news",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "noise",
+            "count": 6,
+            "count_max": 14,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hold",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hunter",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "shark",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "tracker",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "coral",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20,
+            "params": {
+              "jitter": 1.0
+            }
+          },
+          {
+            "bot": "falcon",
+            "owner": "predator",
+            "count": 1,
+            "cash": 20000000,
+            "shares_each": 200,
+            "params": {
+              "mode": 6.0
+            }
+          },
+          {
+            "bot": "swift",
+            "owner": "target",
+            "count": 1,
+            "cash": 2000000,
+            "shares_each": 20
+          }
+        ]
+      }
+    },
+    {
+      "id": "relay-scaled-300-target_first",
+      "case": "relay-scaled-300",
+      "mode": "relay",
+      "allocation": "scaled",
+      "multiple": 300,
+      "order": "target_first",
+      "first_seed": 17001,
+      "seeds": 20,
+      "scenario": "runs/swift-capital-20261018/cash-mechanism/relay-scaled-300-target_first.toml",
+      "scenario_sha256": "9c06a05d7e5a528750548a1d55de78458940ea7147820f3ebb5f5574299ebfd4",
+      "config": {
+        "ticks": 3000,
+        "seed": 7,
+        "market": {
+          "tick_size": 1,
+          "opening_spread": 0.15,
+          "book_depth": 10,
+          "trade_tape_limit": 200
+        },
+        "fees": {
+          "trade_fee_bps": 5,
+          "idle_period": 50,
+          "idle_rate": 0.002,
+          "credit_ratio": 0.01,
+          "credit_side": "both"
+        },
+        "margin": {
+          "max_leverage": 4.0,
+          "maintenance_leverage": 5.0,
+          "loan_rate": 0.003,
+          "interest_period": 50,
+          "mark_window": 20
+        },
+        "rules": {
+          "max_actions_per_tick": 20,
+          "max_open_orders": 40
+        },
+        "schedule": {
+          "threads": 4,
+          "max_tick_skew": 16,
+          "skip_decision_lag": 2,
+          "decision_budget_us": 2000,
+          "check_interval": 500
+        },
+        "world": {
+          "dividend_period": 50,
+          "min_dividend": 0,
+          "sectors": [
+            "tech",
+            "consumer",
+            "energy"
+          ],
+          "seasons": {
+            "calm_to_turbulent": 0.002,
+            "turbulent_to_calm": 0.01,
+            "turbulent_rate_mult": 3.0,
+            "turbulent_size_mult": 2.0
+          },
+          "news": {
+            "market": {
+              "events_per_1000_ticks": 1.5,
+              "change_sd": 0.08
+            },
+            "sector": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.1
+            },
+            "stock": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.12
+            },
+            "disclosure": {
+              "lead_ticks": 120,
+              "stages": [
+                [
+                  0,
+                  0.05
+                ],
+                [
+                  30,
+                  0.25
+                ],
+                [
+                  60,
+                  1.0
+                ]
+              ],
+              "range_widths": [
+                3.0,
+                1.5
+              ]
+            }
+          }
+        },
+        "scoring": {
+          "terminal_ratio": 0.5,
+          "terminal_payments": [
+            10,
+            50
+          ],
+          "terminal_hints": [
+            [
+              0,
+              30
+            ],
+            [
+              1000,
+              16
+            ],
+            [
+              2000,
+              6
+            ]
+          ],
+          "objective": "rank_percentile",
+          "series_seeds": 20
+        },
+        "stocks": [
+          {
+            "name": "T1",
+            "sector": "tech",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 1.4,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "T2",
+            "sector": "tech",
+            "dividend": 80,
+            "initial_price": 8000,
+            "market_loading": 1.3,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "T3",
+            "sector": "tech",
+            "dividend": 120,
+            "initial_price": 12000,
+            "market_loading": 1.2,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "T4",
+            "sector": "tech",
+            "dividend": 60,
+            "initial_price": 6000,
+            "market_loading": 1.5,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C1",
+            "sector": "consumer",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.8,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "C2",
+            "sector": "consumer",
+            "dividend": 90,
+            "initial_price": 9000,
+            "market_loading": 0.7,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C3",
+            "sector": "consumer",
+            "dividend": 110,
+            "initial_price": 11000,
+            "market_loading": 0.9,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "E1",
+            "sector": "energy",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.6,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "E2",
+            "sector": "energy",
+            "dividend": 130,
+            "initial_price": 13000,
+            "market_loading": 0.5,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "E3",
+            "sector": "energy",
+            "dividend": 70,
+            "initial_price": 7000,
+            "market_loading": 0.7,
+            "sector_loading": 0.8
+          }
+        ],
+        "combos": [
+          {
+            "a": "T1",
+            "b": "T2",
+            "bonus": 20
+          },
+          {
+            "a": "C1",
+            "b": "C3",
+            "bonus": 20
+          },
+          {
+            "a": "T3",
+            "b": "E2",
+            "bonus": 25
+          },
+          {
+            "a": "E1",
+            "b": "C2",
+            "bonus": 15
+          },
+          {
+            "a": "T4",
+            "b": "E3",
+            "bonus": -20
+          }
+        ],
+        "bots": [
+          {
+            "bot": "grid",
+            "count": 6,
+            "count_max": 10,
+            "cash": 4000000,
+            "shares_each": 120
+          },
+          {
+            "bot": "value",
+            "count": 4,
+            "count_max": 10,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "momentum",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "news",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "noise",
+            "count": 6,
+            "count_max": 14,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hold",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hunter",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "shark",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "tracker",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "coral",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20,
+            "params": {
+              "jitter": 1.0
+            }
+          },
+          {
+            "bot": "swift",
+            "owner": "target",
+            "count": 1,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "falcon",
+            "owner": "predator",
+            "count": 1,
+            "cash": 20000000,
+            "shares_each": 200,
+            "params": {
+              "mode": 6.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "cash-scaled-300-predator_first",
+      "case": "cash-scaled-300",
+      "mode": "cash",
+      "allocation": "scaled",
+      "multiple": 300,
+      "order": "predator_first",
+      "first_seed": 17001,
+      "seeds": 20,
+      "scenario": "runs/swift-capital-20261018/cash-mechanism/cash-scaled-300-predator_first.toml",
+      "scenario_sha256": "c05115db10c5e02babe5462ef1c161b855350aae365515346d60c91ee0f7f255",
+      "config": {
+        "ticks": 3000,
+        "seed": 7,
+        "market": {
+          "tick_size": 1,
+          "opening_spread": 0.15,
+          "book_depth": 10,
+          "trade_tape_limit": 200
+        },
+        "fees": {
+          "trade_fee_bps": 5,
+          "idle_period": 50,
+          "idle_rate": 0.002,
+          "credit_ratio": 0.01,
+          "credit_side": "both"
+        },
+        "margin": {
+          "max_leverage": 4.0,
+          "maintenance_leverage": 5.0,
+          "loan_rate": 0.003,
+          "interest_period": 50,
+          "mark_window": 20
+        },
+        "rules": {
+          "max_actions_per_tick": 20,
+          "max_open_orders": 40
+        },
+        "schedule": {
+          "threads": 4,
+          "max_tick_skew": 16,
+          "skip_decision_lag": 2,
+          "decision_budget_us": 2000,
+          "check_interval": 500
+        },
+        "world": {
+          "dividend_period": 50,
+          "min_dividend": 0,
+          "sectors": [
+            "tech",
+            "consumer",
+            "energy"
+          ],
+          "seasons": {
+            "calm_to_turbulent": 0.002,
+            "turbulent_to_calm": 0.01,
+            "turbulent_rate_mult": 3.0,
+            "turbulent_size_mult": 2.0
+          },
+          "news": {
+            "market": {
+              "events_per_1000_ticks": 1.5,
+              "change_sd": 0.08
+            },
+            "sector": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.1
+            },
+            "stock": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.12
+            },
+            "disclosure": {
+              "lead_ticks": 120,
+              "stages": [
+                [
+                  0,
+                  0.05
+                ],
+                [
+                  30,
+                  0.25
+                ],
+                [
+                  60,
+                  1.0
+                ]
+              ],
+              "range_widths": [
+                3.0,
+                1.5
+              ]
+            }
+          }
+        },
+        "scoring": {
+          "terminal_ratio": 0.5,
+          "terminal_payments": [
+            10,
+            50
+          ],
+          "terminal_hints": [
+            [
+              0,
+              30
+            ],
+            [
+              1000,
+              16
+            ],
+            [
+              2000,
+              6
+            ]
+          ],
+          "objective": "rank_percentile",
+          "series_seeds": 20
+        },
+        "stocks": [
+          {
+            "name": "T1",
+            "sector": "tech",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 1.4,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "T2",
+            "sector": "tech",
+            "dividend": 80,
+            "initial_price": 8000,
+            "market_loading": 1.3,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "T3",
+            "sector": "tech",
+            "dividend": 120,
+            "initial_price": 12000,
+            "market_loading": 1.2,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "T4",
+            "sector": "tech",
+            "dividend": 60,
+            "initial_price": 6000,
+            "market_loading": 1.5,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C1",
+            "sector": "consumer",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.8,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "C2",
+            "sector": "consumer",
+            "dividend": 90,
+            "initial_price": 9000,
+            "market_loading": 0.7,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C3",
+            "sector": "consumer",
+            "dividend": 110,
+            "initial_price": 11000,
+            "market_loading": 0.9,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "E1",
+            "sector": "energy",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.6,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "E2",
+            "sector": "energy",
+            "dividend": 130,
+            "initial_price": 13000,
+            "market_loading": 0.5,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "E3",
+            "sector": "energy",
+            "dividend": 70,
+            "initial_price": 7000,
+            "market_loading": 0.7,
+            "sector_loading": 0.8
+          }
+        ],
+        "combos": [
+          {
+            "a": "T1",
+            "b": "T2",
+            "bonus": 20
+          },
+          {
+            "a": "C1",
+            "b": "C3",
+            "bonus": 20
+          },
+          {
+            "a": "T3",
+            "b": "E2",
+            "bonus": 25
+          },
+          {
+            "a": "E1",
+            "b": "C2",
+            "bonus": 15
+          },
+          {
+            "a": "T4",
+            "b": "E3",
+            "bonus": -20
+          }
+        ],
+        "bots": [
+          {
+            "bot": "grid",
+            "count": 6,
+            "count_max": 10,
+            "cash": 4000000,
+            "shares_each": 120
+          },
+          {
+            "bot": "value",
+            "count": 4,
+            "count_max": 10,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "momentum",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "news",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "noise",
+            "count": 6,
+            "count_max": 14,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hold",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hunter",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "shark",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "tracker",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "coral",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20,
+            "params": {
+              "jitter": 1.0
+            }
+          },
+          {
+            "bot": "falcon",
+            "owner": "predator",
+            "count": 1,
+            "cash": 20000000,
+            "shares_each": 200,
+            "params": {
+              "mode": 4.0
+            }
+          },
+          {
+            "bot": "swift",
+            "owner": "target",
+            "count": 1,
+            "cash": 2000000,
+            "shares_each": 20
+          }
+        ]
+      }
+    },
+    {
+      "id": "cash-scaled-300-target_first",
+      "case": "cash-scaled-300",
+      "mode": "cash",
+      "allocation": "scaled",
+      "multiple": 300,
+      "order": "target_first",
+      "first_seed": 17001,
+      "seeds": 20,
+      "scenario": "runs/swift-capital-20261018/cash-mechanism/cash-scaled-300-target_first.toml",
+      "scenario_sha256": "880ea3fae603a6e2f7fe795a0766a6aecbf173c779ce8dd83a05eae48ff68fc5",
+      "config": {
+        "ticks": 3000,
+        "seed": 7,
+        "market": {
+          "tick_size": 1,
+          "opening_spread": 0.15,
+          "book_depth": 10,
+          "trade_tape_limit": 200
+        },
+        "fees": {
+          "trade_fee_bps": 5,
+          "idle_period": 50,
+          "idle_rate": 0.002,
+          "credit_ratio": 0.01,
+          "credit_side": "both"
+        },
+        "margin": {
+          "max_leverage": 4.0,
+          "maintenance_leverage": 5.0,
+          "loan_rate": 0.003,
+          "interest_period": 50,
+          "mark_window": 20
+        },
+        "rules": {
+          "max_actions_per_tick": 20,
+          "max_open_orders": 40
+        },
+        "schedule": {
+          "threads": 4,
+          "max_tick_skew": 16,
+          "skip_decision_lag": 2,
+          "decision_budget_us": 2000,
+          "check_interval": 500
+        },
+        "world": {
+          "dividend_period": 50,
+          "min_dividend": 0,
+          "sectors": [
+            "tech",
+            "consumer",
+            "energy"
+          ],
+          "seasons": {
+            "calm_to_turbulent": 0.002,
+            "turbulent_to_calm": 0.01,
+            "turbulent_rate_mult": 3.0,
+            "turbulent_size_mult": 2.0
+          },
+          "news": {
+            "market": {
+              "events_per_1000_ticks": 1.5,
+              "change_sd": 0.08
+            },
+            "sector": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.1
+            },
+            "stock": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.12
+            },
+            "disclosure": {
+              "lead_ticks": 120,
+              "stages": [
+                [
+                  0,
+                  0.05
+                ],
+                [
+                  30,
+                  0.25
+                ],
+                [
+                  60,
+                  1.0
+                ]
+              ],
+              "range_widths": [
+                3.0,
+                1.5
+              ]
+            }
+          }
+        },
+        "scoring": {
+          "terminal_ratio": 0.5,
+          "terminal_payments": [
+            10,
+            50
+          ],
+          "terminal_hints": [
+            [
+              0,
+              30
+            ],
+            [
+              1000,
+              16
+            ],
+            [
+              2000,
+              6
+            ]
+          ],
+          "objective": "rank_percentile",
+          "series_seeds": 20
+        },
+        "stocks": [
+          {
+            "name": "T1",
+            "sector": "tech",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 1.4,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "T2",
+            "sector": "tech",
+            "dividend": 80,
+            "initial_price": 8000,
+            "market_loading": 1.3,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "T3",
+            "sector": "tech",
+            "dividend": 120,
+            "initial_price": 12000,
+            "market_loading": 1.2,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "T4",
+            "sector": "tech",
+            "dividend": 60,
+            "initial_price": 6000,
+            "market_loading": 1.5,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C1",
+            "sector": "consumer",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.8,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "C2",
+            "sector": "consumer",
+            "dividend": 90,
+            "initial_price": 9000,
+            "market_loading": 0.7,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C3",
+            "sector": "consumer",
+            "dividend": 110,
+            "initial_price": 11000,
+            "market_loading": 0.9,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "E1",
+            "sector": "energy",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.6,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "E2",
+            "sector": "energy",
+            "dividend": 130,
+            "initial_price": 13000,
+            "market_loading": 0.5,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "E3",
+            "sector": "energy",
+            "dividend": 70,
+            "initial_price": 7000,
+            "market_loading": 0.7,
+            "sector_loading": 0.8
+          }
+        ],
+        "combos": [
+          {
+            "a": "T1",
+            "b": "T2",
+            "bonus": 20
+          },
+          {
+            "a": "C1",
+            "b": "C3",
+            "bonus": 20
+          },
+          {
+            "a": "T3",
+            "b": "E2",
+            "bonus": 25
+          },
+          {
+            "a": "E1",
+            "b": "C2",
+            "bonus": 15
+          },
+          {
+            "a": "T4",
+            "b": "E3",
+            "bonus": -20
+          }
+        ],
+        "bots": [
+          {
+            "bot": "grid",
+            "count": 6,
+            "count_max": 10,
+            "cash": 4000000,
+            "shares_each": 120
+          },
+          {
+            "bot": "value",
+            "count": 4,
+            "count_max": 10,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "momentum",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "news",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "noise",
+            "count": 6,
+            "count_max": 14,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hold",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hunter",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "shark",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "tracker",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "coral",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20,
+            "params": {
+              "jitter": 1.0
+            }
+          },
+          {
+            "bot": "swift",
+            "owner": "target",
+            "count": 1,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "falcon",
+            "owner": "predator",
+            "count": 1,
+            "cash": 20000000,
+            "shares_each": 200,
+            "params": {
+              "mode": 4.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "relay-cash_active-100-predator_first",
+      "case": "relay-cash_active-100",
+      "mode": "relay",
+      "allocation": "cash_active",
+      "multiple": 100,
+      "order": "predator_first",
+      "first_seed": 17001,
+      "seeds": 20,
+      "scenario": "runs/swift-capital-20261018/cash-mechanism/relay-cash_active-100-predator_first.toml",
+      "scenario_sha256": "33e99e6c8af8449017e026d40200714d5321c66ee3ca696a55c20604ec1cdc0e",
+      "config": {
+        "ticks": 3000,
+        "seed": 7,
+        "market": {
+          "tick_size": 1,
+          "opening_spread": 0.15,
+          "book_depth": 10,
+          "trade_tape_limit": 200
+        },
+        "fees": {
+          "trade_fee_bps": 5,
+          "idle_period": 50,
+          "idle_rate": 0.002,
+          "credit_ratio": 0.01,
+          "credit_side": "both"
+        },
+        "margin": {
+          "max_leverage": 4.0,
+          "maintenance_leverage": 5.0,
+          "loan_rate": 0.003,
+          "interest_period": 50,
+          "mark_window": 20
+        },
+        "rules": {
+          "max_actions_per_tick": 20,
+          "max_open_orders": 40
+        },
+        "schedule": {
+          "threads": 4,
+          "max_tick_skew": 16,
+          "skip_decision_lag": 2,
+          "decision_budget_us": 2000,
+          "check_interval": 500
+        },
+        "world": {
+          "dividend_period": 50,
+          "min_dividend": 0,
+          "sectors": [
+            "tech",
+            "consumer",
+            "energy"
+          ],
+          "seasons": {
+            "calm_to_turbulent": 0.002,
+            "turbulent_to_calm": 0.01,
+            "turbulent_rate_mult": 3.0,
+            "turbulent_size_mult": 2.0
+          },
+          "news": {
+            "market": {
+              "events_per_1000_ticks": 1.5,
+              "change_sd": 0.08
+            },
+            "sector": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.1
+            },
+            "stock": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.12
+            },
+            "disclosure": {
+              "lead_ticks": 120,
+              "stages": [
+                [
+                  0,
+                  0.05
+                ],
+                [
+                  30,
+                  0.25
+                ],
+                [
+                  60,
+                  1.0
+                ]
+              ],
+              "range_widths": [
+                3.0,
+                1.5
+              ]
+            }
+          }
+        },
+        "scoring": {
+          "terminal_ratio": 0.5,
+          "terminal_payments": [
+            10,
+            50
+          ],
+          "terminal_hints": [
+            [
+              0,
+              30
+            ],
+            [
+              1000,
+              16
+            ],
+            [
+              2000,
+              6
+            ]
+          ],
+          "objective": "rank_percentile",
+          "series_seeds": 20
+        },
+        "stocks": [
+          {
+            "name": "T1",
+            "sector": "tech",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 1.4,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "T2",
+            "sector": "tech",
+            "dividend": 80,
+            "initial_price": 8000,
+            "market_loading": 1.3,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "T3",
+            "sector": "tech",
+            "dividend": 120,
+            "initial_price": 12000,
+            "market_loading": 1.2,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "T4",
+            "sector": "tech",
+            "dividend": 60,
+            "initial_price": 6000,
+            "market_loading": 1.5,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C1",
+            "sector": "consumer",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.8,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "C2",
+            "sector": "consumer",
+            "dividend": 90,
+            "initial_price": 9000,
+            "market_loading": 0.7,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C3",
+            "sector": "consumer",
+            "dividend": 110,
+            "initial_price": 11000,
+            "market_loading": 0.9,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "E1",
+            "sector": "energy",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.6,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "E2",
+            "sector": "energy",
+            "dividend": 130,
+            "initial_price": 13000,
+            "market_loading": 0.5,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "E3",
+            "sector": "energy",
+            "dividend": 70,
+            "initial_price": 7000,
+            "market_loading": 0.7,
+            "sector_loading": 0.8
+          }
+        ],
+        "combos": [
+          {
+            "a": "T1",
+            "b": "T2",
+            "bonus": 20
+          },
+          {
+            "a": "C1",
+            "b": "C3",
+            "bonus": 20
+          },
+          {
+            "a": "T3",
+            "b": "E2",
+            "bonus": 25
+          },
+          {
+            "a": "E1",
+            "b": "C2",
+            "bonus": 15
+          },
+          {
+            "a": "T4",
+            "b": "E3",
+            "bonus": -20
+          }
+        ],
+        "bots": [
+          {
+            "bot": "grid",
+            "count": 6,
+            "count_max": 10,
+            "cash": 4000000,
+            "shares_each": 120
+          },
+          {
+            "bot": "value",
+            "count": 4,
+            "count_max": 10,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "momentum",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "news",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "noise",
+            "count": 6,
+            "count_max": 14,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hold",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hunter",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "shark",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "tracker",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "coral",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20,
+            "params": {
+              "jitter": 1.0
+            }
+          },
+          {
+            "bot": "falcon",
+            "owner": "predator",
+            "count": 1,
+            "cash": 20000000,
+            "shares_each": 200,
+            "params": {
+              "mode": 6.0
+            }
+          },
+          {
+            "bot": "swift",
+            "owner": "target",
+            "count": 1,
+            "cash": 2000000,
+            "shares_each": 20
+          }
+        ]
+      }
+    },
+    {
+      "id": "relay-cash_active-100-target_first",
+      "case": "relay-cash_active-100",
+      "mode": "relay",
+      "allocation": "cash_active",
+      "multiple": 100,
+      "order": "target_first",
+      "first_seed": 17001,
+      "seeds": 20,
+      "scenario": "runs/swift-capital-20261018/cash-mechanism/relay-cash_active-100-target_first.toml",
+      "scenario_sha256": "9c06a05d7e5a528750548a1d55de78458940ea7147820f3ebb5f5574299ebfd4",
+      "config": {
+        "ticks": 3000,
+        "seed": 7,
+        "market": {
+          "tick_size": 1,
+          "opening_spread": 0.15,
+          "book_depth": 10,
+          "trade_tape_limit": 200
+        },
+        "fees": {
+          "trade_fee_bps": 5,
+          "idle_period": 50,
+          "idle_rate": 0.002,
+          "credit_ratio": 0.01,
+          "credit_side": "both"
+        },
+        "margin": {
+          "max_leverage": 4.0,
+          "maintenance_leverage": 5.0,
+          "loan_rate": 0.003,
+          "interest_period": 50,
+          "mark_window": 20
+        },
+        "rules": {
+          "max_actions_per_tick": 20,
+          "max_open_orders": 40
+        },
+        "schedule": {
+          "threads": 4,
+          "max_tick_skew": 16,
+          "skip_decision_lag": 2,
+          "decision_budget_us": 2000,
+          "check_interval": 500
+        },
+        "world": {
+          "dividend_period": 50,
+          "min_dividend": 0,
+          "sectors": [
+            "tech",
+            "consumer",
+            "energy"
+          ],
+          "seasons": {
+            "calm_to_turbulent": 0.002,
+            "turbulent_to_calm": 0.01,
+            "turbulent_rate_mult": 3.0,
+            "turbulent_size_mult": 2.0
+          },
+          "news": {
+            "market": {
+              "events_per_1000_ticks": 1.5,
+              "change_sd": 0.08
+            },
+            "sector": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.1
+            },
+            "stock": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.12
+            },
+            "disclosure": {
+              "lead_ticks": 120,
+              "stages": [
+                [
+                  0,
+                  0.05
+                ],
+                [
+                  30,
+                  0.25
+                ],
+                [
+                  60,
+                  1.0
+                ]
+              ],
+              "range_widths": [
+                3.0,
+                1.5
+              ]
+            }
+          }
+        },
+        "scoring": {
+          "terminal_ratio": 0.5,
+          "terminal_payments": [
+            10,
+            50
+          ],
+          "terminal_hints": [
+            [
+              0,
+              30
+            ],
+            [
+              1000,
+              16
+            ],
+            [
+              2000,
+              6
+            ]
+          ],
+          "objective": "rank_percentile",
+          "series_seeds": 20
+        },
+        "stocks": [
+          {
+            "name": "T1",
+            "sector": "tech",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 1.4,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "T2",
+            "sector": "tech",
+            "dividend": 80,
+            "initial_price": 8000,
+            "market_loading": 1.3,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "T3",
+            "sector": "tech",
+            "dividend": 120,
+            "initial_price": 12000,
+            "market_loading": 1.2,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "T4",
+            "sector": "tech",
+            "dividend": 60,
+            "initial_price": 6000,
+            "market_loading": 1.5,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C1",
+            "sector": "consumer",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.8,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "C2",
+            "sector": "consumer",
+            "dividend": 90,
+            "initial_price": 9000,
+            "market_loading": 0.7,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C3",
+            "sector": "consumer",
+            "dividend": 110,
+            "initial_price": 11000,
+            "market_loading": 0.9,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "E1",
+            "sector": "energy",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.6,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "E2",
+            "sector": "energy",
+            "dividend": 130,
+            "initial_price": 13000,
+            "market_loading": 0.5,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "E3",
+            "sector": "energy",
+            "dividend": 70,
+            "initial_price": 7000,
+            "market_loading": 0.7,
+            "sector_loading": 0.8
+          }
+        ],
+        "combos": [
+          {
+            "a": "T1",
+            "b": "T2",
+            "bonus": 20
+          },
+          {
+            "a": "C1",
+            "b": "C3",
+            "bonus": 20
+          },
+          {
+            "a": "T3",
+            "b": "E2",
+            "bonus": 25
+          },
+          {
+            "a": "E1",
+            "b": "C2",
+            "bonus": 15
+          },
+          {
+            "a": "T4",
+            "b": "E3",
+            "bonus": -20
+          }
+        ],
+        "bots": [
+          {
+            "bot": "grid",
+            "count": 6,
+            "count_max": 10,
+            "cash": 4000000,
+            "shares_each": 120
+          },
+          {
+            "bot": "value",
+            "count": 4,
+            "count_max": 10,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "momentum",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "news",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "noise",
+            "count": 6,
+            "count_max": 14,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hold",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hunter",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "shark",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "tracker",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "coral",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20,
+            "params": {
+              "jitter": 1.0
+            }
+          },
+          {
+            "bot": "swift",
+            "owner": "target",
+            "count": 1,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "falcon",
+            "owner": "predator",
+            "count": 1,
+            "cash": 20000000,
+            "shares_each": 200,
+            "params": {
+              "mode": 6.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "relay-cash_active-300-predator_first",
+      "case": "relay-cash_active-300",
+      "mode": "relay",
+      "allocation": "cash_active",
+      "multiple": 300,
+      "order": "predator_first",
+      "first_seed": 17001,
+      "seeds": 20,
+      "scenario": "runs/swift-capital-20261018/cash-mechanism/relay-cash_active-300-predator_first.toml",
+      "scenario_sha256": "33e99e6c8af8449017e026d40200714d5321c66ee3ca696a55c20604ec1cdc0e",
+      "config": {
+        "ticks": 3000,
+        "seed": 7,
+        "market": {
+          "tick_size": 1,
+          "opening_spread": 0.15,
+          "book_depth": 10,
+          "trade_tape_limit": 200
+        },
+        "fees": {
+          "trade_fee_bps": 5,
+          "idle_period": 50,
+          "idle_rate": 0.002,
+          "credit_ratio": 0.01,
+          "credit_side": "both"
+        },
+        "margin": {
+          "max_leverage": 4.0,
+          "maintenance_leverage": 5.0,
+          "loan_rate": 0.003,
+          "interest_period": 50,
+          "mark_window": 20
+        },
+        "rules": {
+          "max_actions_per_tick": 20,
+          "max_open_orders": 40
+        },
+        "schedule": {
+          "threads": 4,
+          "max_tick_skew": 16,
+          "skip_decision_lag": 2,
+          "decision_budget_us": 2000,
+          "check_interval": 500
+        },
+        "world": {
+          "dividend_period": 50,
+          "min_dividend": 0,
+          "sectors": [
+            "tech",
+            "consumer",
+            "energy"
+          ],
+          "seasons": {
+            "calm_to_turbulent": 0.002,
+            "turbulent_to_calm": 0.01,
+            "turbulent_rate_mult": 3.0,
+            "turbulent_size_mult": 2.0
+          },
+          "news": {
+            "market": {
+              "events_per_1000_ticks": 1.5,
+              "change_sd": 0.08
+            },
+            "sector": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.1
+            },
+            "stock": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.12
+            },
+            "disclosure": {
+              "lead_ticks": 120,
+              "stages": [
+                [
+                  0,
+                  0.05
+                ],
+                [
+                  30,
+                  0.25
+                ],
+                [
+                  60,
+                  1.0
+                ]
+              ],
+              "range_widths": [
+                3.0,
+                1.5
+              ]
+            }
+          }
+        },
+        "scoring": {
+          "terminal_ratio": 0.5,
+          "terminal_payments": [
+            10,
+            50
+          ],
+          "terminal_hints": [
+            [
+              0,
+              30
+            ],
+            [
+              1000,
+              16
+            ],
+            [
+              2000,
+              6
+            ]
+          ],
+          "objective": "rank_percentile",
+          "series_seeds": 20
+        },
+        "stocks": [
+          {
+            "name": "T1",
+            "sector": "tech",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 1.4,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "T2",
+            "sector": "tech",
+            "dividend": 80,
+            "initial_price": 8000,
+            "market_loading": 1.3,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "T3",
+            "sector": "tech",
+            "dividend": 120,
+            "initial_price": 12000,
+            "market_loading": 1.2,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "T4",
+            "sector": "tech",
+            "dividend": 60,
+            "initial_price": 6000,
+            "market_loading": 1.5,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C1",
+            "sector": "consumer",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.8,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "C2",
+            "sector": "consumer",
+            "dividend": 90,
+            "initial_price": 9000,
+            "market_loading": 0.7,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C3",
+            "sector": "consumer",
+            "dividend": 110,
+            "initial_price": 11000,
+            "market_loading": 0.9,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "E1",
+            "sector": "energy",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.6,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "E2",
+            "sector": "energy",
+            "dividend": 130,
+            "initial_price": 13000,
+            "market_loading": 0.5,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "E3",
+            "sector": "energy",
+            "dividend": 70,
+            "initial_price": 7000,
+            "market_loading": 0.7,
+            "sector_loading": 0.8
+          }
+        ],
+        "combos": [
+          {
+            "a": "T1",
+            "b": "T2",
+            "bonus": 20
+          },
+          {
+            "a": "C1",
+            "b": "C3",
+            "bonus": 20
+          },
+          {
+            "a": "T3",
+            "b": "E2",
+            "bonus": 25
+          },
+          {
+            "a": "E1",
+            "b": "C2",
+            "bonus": 15
+          },
+          {
+            "a": "T4",
+            "b": "E3",
+            "bonus": -20
+          }
+        ],
+        "bots": [
+          {
+            "bot": "grid",
+            "count": 6,
+            "count_max": 10,
+            "cash": 4000000,
+            "shares_each": 120
+          },
+          {
+            "bot": "value",
+            "count": 4,
+            "count_max": 10,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "momentum",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "news",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "noise",
+            "count": 6,
+            "count_max": 14,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hold",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hunter",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "shark",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "tracker",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "coral",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20,
+            "params": {
+              "jitter": 1.0
+            }
+          },
+          {
+            "bot": "falcon",
+            "owner": "predator",
+            "count": 1,
+            "cash": 20000000,
+            "shares_each": 200,
+            "params": {
+              "mode": 6.0
+            }
+          },
+          {
+            "bot": "swift",
+            "owner": "target",
+            "count": 1,
+            "cash": 2000000,
+            "shares_each": 20
+          }
+        ]
+      }
+    },
+    {
+      "id": "relay-cash_active-300-target_first",
+      "case": "relay-cash_active-300",
+      "mode": "relay",
+      "allocation": "cash_active",
+      "multiple": 300,
+      "order": "target_first",
+      "first_seed": 17001,
+      "seeds": 20,
+      "scenario": "runs/swift-capital-20261018/cash-mechanism/relay-cash_active-300-target_first.toml",
+      "scenario_sha256": "9c06a05d7e5a528750548a1d55de78458940ea7147820f3ebb5f5574299ebfd4",
+      "config": {
+        "ticks": 3000,
+        "seed": 7,
+        "market": {
+          "tick_size": 1,
+          "opening_spread": 0.15,
+          "book_depth": 10,
+          "trade_tape_limit": 200
+        },
+        "fees": {
+          "trade_fee_bps": 5,
+          "idle_period": 50,
+          "idle_rate": 0.002,
+          "credit_ratio": 0.01,
+          "credit_side": "both"
+        },
+        "margin": {
+          "max_leverage": 4.0,
+          "maintenance_leverage": 5.0,
+          "loan_rate": 0.003,
+          "interest_period": 50,
+          "mark_window": 20
+        },
+        "rules": {
+          "max_actions_per_tick": 20,
+          "max_open_orders": 40
+        },
+        "schedule": {
+          "threads": 4,
+          "max_tick_skew": 16,
+          "skip_decision_lag": 2,
+          "decision_budget_us": 2000,
+          "check_interval": 500
+        },
+        "world": {
+          "dividend_period": 50,
+          "min_dividend": 0,
+          "sectors": [
+            "tech",
+            "consumer",
+            "energy"
+          ],
+          "seasons": {
+            "calm_to_turbulent": 0.002,
+            "turbulent_to_calm": 0.01,
+            "turbulent_rate_mult": 3.0,
+            "turbulent_size_mult": 2.0
+          },
+          "news": {
+            "market": {
+              "events_per_1000_ticks": 1.5,
+              "change_sd": 0.08
+            },
+            "sector": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.1
+            },
+            "stock": {
+              "events_per_1000_ticks": 2.0,
+              "change_sd": 0.12
+            },
+            "disclosure": {
+              "lead_ticks": 120,
+              "stages": [
+                [
+                  0,
+                  0.05
+                ],
+                [
+                  30,
+                  0.25
+                ],
+                [
+                  60,
+                  1.0
+                ]
+              ],
+              "range_widths": [
+                3.0,
+                1.5
+              ]
+            }
+          }
+        },
+        "scoring": {
+          "terminal_ratio": 0.5,
+          "terminal_payments": [
+            10,
+            50
+          ],
+          "terminal_hints": [
+            [
+              0,
+              30
+            ],
+            [
+              1000,
+              16
+            ],
+            [
+              2000,
+              6
+            ]
+          ],
+          "objective": "rank_percentile",
+          "series_seeds": 20
+        },
+        "stocks": [
+          {
+            "name": "T1",
+            "sector": "tech",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 1.4,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "T2",
+            "sector": "tech",
+            "dividend": 80,
+            "initial_price": 8000,
+            "market_loading": 1.3,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "T3",
+            "sector": "tech",
+            "dividend": 120,
+            "initial_price": 12000,
+            "market_loading": 1.2,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "T4",
+            "sector": "tech",
+            "dividend": 60,
+            "initial_price": 6000,
+            "market_loading": 1.5,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C1",
+            "sector": "consumer",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.8,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "C2",
+            "sector": "consumer",
+            "dividend": 90,
+            "initial_price": 9000,
+            "market_loading": 0.7,
+            "sector_loading": 1.1
+          },
+          {
+            "name": "C3",
+            "sector": "consumer",
+            "dividend": 110,
+            "initial_price": 11000,
+            "market_loading": 0.9,
+            "sector_loading": 0.9
+          },
+          {
+            "name": "E1",
+            "sector": "energy",
+            "dividend": 100,
+            "initial_price": 10000,
+            "market_loading": 0.6,
+            "sector_loading": 1.2
+          },
+          {
+            "name": "E2",
+            "sector": "energy",
+            "dividend": 130,
+            "initial_price": 13000,
+            "market_loading": 0.5,
+            "sector_loading": 1.0
+          },
+          {
+            "name": "E3",
+            "sector": "energy",
+            "dividend": 70,
+            "initial_price": 7000,
+            "market_loading": 0.7,
+            "sector_loading": 0.8
+          }
+        ],
+        "combos": [
+          {
+            "a": "T1",
+            "b": "T2",
+            "bonus": 20
+          },
+          {
+            "a": "C1",
+            "b": "C3",
+            "bonus": 20
+          },
+          {
+            "a": "T3",
+            "b": "E2",
+            "bonus": 25
+          },
+          {
+            "a": "E1",
+            "b": "C2",
+            "bonus": 15
+          },
+          {
+            "a": "T4",
+            "b": "E3",
+            "bonus": -20
+          }
+        ],
+        "bots": [
+          {
+            "bot": "grid",
+            "count": 6,
+            "count_max": 10,
+            "cash": 4000000,
+            "shares_each": 120
+          },
+          {
+            "bot": "value",
+            "count": 4,
+            "count_max": 10,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "momentum",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "news",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "noise",
+            "count": 6,
+            "count_max": 14,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hold",
+            "count": 3,
+            "count_max": 8,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "hunter",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "shark",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "tracker",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "coral",
+            "count": 2,
+            "count_max": 5,
+            "cash": 2000000,
+            "shares_each": 20,
+            "params": {
+              "jitter": 1.0
+            }
+          },
+          {
+            "bot": "swift",
+            "owner": "target",
+            "count": 1,
+            "cash": 2000000,
+            "shares_each": 20
+          },
+          {
+            "bot": "falcon",
+            "owner": "predator",
+            "count": 1,
+            "cash": 20000000,
+            "shares_each": 200,
+            "params": {
+              "mode": 6.0
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "notes": [
+    "Capital setup uses public opening prices only, with all fees unchanged.",
+    "Reserve keeps 200 shares/stock and a fixed 10x initial-equity trading allocation.",
+    "Scaled increases both starting shares and fixed allocation in proportion to total wealth.",
+    "10x treatments coincide and are measured once; no duplicated evidence."
+  ]
+}

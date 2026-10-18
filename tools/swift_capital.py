@@ -26,6 +26,10 @@ def cases():
             for allocation, multiple in STRUCTURES for mode in MODES]
 
 
+def available_cases():
+    return cases() + [(f"relay-cash_active-{m}", "relay", "cash_active", m) for m in [100, 300]]
+
+
 def prepare(stage, first, seeds, selected=None):
     out = BASE / stage
     if out.exists():
@@ -37,9 +41,9 @@ def prepare(stage, first, seeds, selected=None):
     shutil.copy2(ROOT / "target/release/hunt-eval.exe", binary)
     config = tomllib.loads((ROOT / "scenarios/baseline.toml").read_text(encoding="utf-8"))
     jobs = []
-    treatments = [("alone", None, None, None)] + [c for c in cases() if selected is None or c[0] in selected]
+    treatments = [("alone", None, None, None)] + [c for c in (available_cases() if selected else cases()) if selected is None or c[0] in selected]
     if selected:
-        assert set(selected) <= {c[0] for c in cases()}
+        assert set(selected) <= {c[0] for c in available_cases()}
     for key, mode, allocation, multiple in treatments:
         for order in (["alone"] if mode is None else ["predator_first", "target_first"]):
             cfg = copy.deepcopy(config)
@@ -106,7 +110,7 @@ def run(stage):
                "--first-seed", str(job["first_seed"]), "--seeds", str(job["seeds"])]
         if job["mode"]:
             cmd += ["--capital-multiple", str(job["multiple"]), "--allocation",
-                    "reserve" if job["allocation"] == "reserve" else "scaled"]
+                    "scaled" if job["allocation"] == "base" else job["allocation"]]
         print(f"START {stage} {i+1}/{len(plan['jobs'])} {job['id']}", flush=True)
         with (out / f"{job['id']}.log").open("w", encoding="utf-8") as log:
             subprocess.run(cmd, stdout=log, stderr=subprocess.STDOUT, cwd=ROOT, check=True)

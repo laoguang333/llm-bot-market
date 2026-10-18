@@ -77,7 +77,11 @@ impl Falcon {
         Self {
             signals: (0..s.shares.len()).map(|_| Signal::default()).collect(),
             enabled: vec![false; s.shares.len()],
-            pulse: s.shares.iter().map(|q| (q / 5).max(1)).collect(),
+            pulse: s
+                .shares
+                .iter()
+                .map(|q| s.param("pulse_qty", (q / 5).max(1) as f64).max(1.0) as Qty)
+                .collect(),
             mode: s.param("mode", 0.0) as i32,
             leverage: s.param("leverage", 1.0).clamp(0.0, s.rules.max_leverage),
             cap: s.param("cap", 0.25).clamp(0.0, 1.0),
