@@ -304,7 +304,7 @@ fn supply_quotes_are_backed_and_do_not_cross_each_other() {
 
 #[test]
 fn all_modes_ignore_identity_and_private_information() {
-    for mode in 0..=5 {
+    for mode in 0..=9 {
         let mut a = start();
         a.params.insert("mode".into(), mode as f64);
         let mut b = a.clone();

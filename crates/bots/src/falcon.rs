@@ -60,6 +60,7 @@ impl Signal {
 pub struct Falcon {
     signals: Vec<Signal>,
     enabled: Vec<bool>,
+    pulse: Vec<Qty>,
     mode: i32,
     leverage: f64,
     cap: f64,
@@ -75,6 +76,7 @@ impl Falcon {
         Self {
             signals: (0..s.shares.len()).map(|_| Signal::default()).collect(),
             enabled: vec![false; s.shares.len()],
+            pulse: s.shares.iter().map(|q| (q / 5).max(1)).collect(),
             mode: s.param("mode", 0.0) as i32,
             leverage: s.param("leverage", 1.0).clamp(0.0, s.rules.max_leverage),
             cap: s.param("cap", 0.25).clamp(0.0, 1.0),
@@ -131,6 +133,9 @@ impl Bot for Falcon {
                 5 => {
                     self.enabled[s] = true;
                 } // Signal-blind constant-exposure control.
+                6..=9 => {
+                    self.enabled[s] = true;
+                }
                 _ => {
                     // Earlier entry/exit than Swift; no claim that target trades next.
                     if ready && score > self.entry {
@@ -181,6 +186,46 @@ impl Bot for Falcon {
                 continue;
             }
             if (ba - bb) as f64 / mid > 0.012 {
+                continue;
+            }
+            if (6..=9).contains(&self.mode) {
+                // Inventory-limited relays test feedback rather than carrying a
+                // full contrarian position. The target's state is only inferred.
+                let buy = match self.mode {
+                    7 => (obs.tick / 20).is_multiple_of(2), // Signal-blind pulse control.
+                    8 => score < 0.15, // Maintain positive flow, supply passively above entry.
+                    _ => !self.signals[s].active,
+                };
+                let pulse = self.pulse[s] * if self.mode == 9 { 5 } else { 1 };
+                if buy {
+                    let price = if self.mode == 9 {
+                        self.price(ba as f64 * 1.005, true)
+                    } else {
+                        ba
+                    };
+                    let cost = price + (price * self.fee + 9999) / 10000;
+                    let q = pulse
+                        .min((target - have).max(0))
+                        .min((budget / cost as f64) as Qty);
+                    if q > 0 {
+                        out.push(Action::ioc(s, Side::Buy, price, q));
+                        budget -= (q * cost) as f64;
+                    }
+                } else {
+                    let q = pulse.min(sellable);
+                    if q > 0 {
+                        let price = if self.mode == 9 {
+                            self.price(bb as f64 * 0.995, false)
+                        } else {
+                            bb
+                        };
+                        out.push(if self.mode == 8 {
+                            Action::limit(s, Side::Sell, ba, q)
+                        } else {
+                            Action::ioc(s, Side::Sell, price, q)
+                        });
+                    }
+                }
                 continue;
             }
             if (self.mode == 2 || self.mode == 3) && score > 0.15 && sellable > 0 {

@@ -26,6 +26,10 @@ DEV = [
     ("cash", "falcon", {"mode": 4.0}),
     ("blind", "falcon", {"mode": 5.0}),
     ("coral", "coral", {}),
+    ("relay", "falcon", {"mode": 6.0}),
+    ("clock", "falcon", {"mode": 7.0}),
+    ("trap", "falcon", {"mode": 8.0}),
+    ("sweep", "falcon", {"mode": 9.0}),
 ]
 
 
@@ -144,7 +148,8 @@ if __name__ == "__main__":
     p.add_argument("--first-seed", type=int, default=10001)
     p.add_argument("--seeds", type=int, default=8)
     p.add_argument("--candidate", choices=[r[0] for r in DEV], default="pursuit")
+    p.add_argument("--cases", nargs="+", choices=[r[0] for r in DEV])
     a = p.parse_args()
     if a.mode == "run": run(a.stage)
-    elif a.mode == "prepare-dev": prepare(a.stage,a.first_seed,a.seeds,DEV)
-    else: prepare(a.stage,a.first_seed,a.seeds,[r for r in DEV if r[0] in [a.candidate,"cash","blind","coral"]])
+    elif a.mode == "prepare-dev": prepare(a.stage,a.first_seed,a.seeds,[r for r in DEV if not a.cases or r[0] in a.cases])
+    else: prepare(a.stage,a.first_seed,a.seeds,[r for r in DEV if r[0] in [a.candidate,"cash","blind","coral","clock"]])
