@@ -3,8 +3,8 @@
 //! What they lean on:
 //! - A share is worth its remaining dividends plus the terminal payments, nothing else,
 //!   so prices far above that are a gift to whoever sells.
-//! - The idle fee is offset by 1% of traded notional, so trading about 20% of equity per
-//!   idle period makes it free, and crossing a spread under ~1.8% to get there still pays.
+//! - The idle fee can be offset by eligible traded notional. The turnover needed
+//!   depends on the scenario fee/credit rates (60% of equity at 0.6% / 1%).
 //! - Private news arrives before the price moves.
 //! - Combo bonuses make a share worth more to the account that completes a set with it.
 
@@ -45,7 +45,7 @@ fn combo_adjust(
             have <= partner && have > 0
         };
         if binding {
-            adj += c.bonus as f64 * p / my_units as f64;
+            adj += rules.combo_cents(c.bonus) * p / my_units as f64;
         }
     }
     adj

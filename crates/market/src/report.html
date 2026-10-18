@@ -132,7 +132,7 @@ document.getElementById('corr').innerHTML = '<tr><th></th>' + names.map(n => `<t
     const a = Math.min(1, Math.abs(v)) * 0.55, col = v >= 0 ? `rgba(42,120,214,${a})` : `rgba(227,73,72,${a})`;
     return `<td style="background:${col}">${v.toFixed(2)}</td>`;
   }).join('') + '</tr>').join('');
-document.getElementById('combos').textContent = '组合股息规则：' + D.combos.map(([a, b, bonus]) => `${a}+${b} ${bonus > 0 ? '+' : ''}${bonus}`).join('，');
+document.getElementById('combos').textContent = `组合股息规则（分/套，每 ${D.combo_period} tick，整仓取整）：` + D.combos.map(([a, b, bonus]) => `${a}+${b} ${bonus > 0 ? '+' : ''}${bonus}`).join('，');
 </script>
 </body>
 </html>

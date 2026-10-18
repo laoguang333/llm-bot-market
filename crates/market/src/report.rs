@@ -48,6 +48,7 @@ pub struct MatchResult {
     pub dividend_period: Tick,
     pub dividend_scale: i64,
     pub combo_period: Tick,
+    pub combo_scale: i64,
     pub terminal_payment_ticks: Tick,
     pub terminal_payments: i64,
     pub threads: usize,
@@ -232,6 +233,7 @@ pub fn run_match_observed(
         dividend_period: rules.dividend_period,
         dividend_scale: rules.dividend_scale,
         combo_period: rules.combo_period,
+        combo_scale: rules.combo_scale,
         terminal_payment_ticks: rules.terminal_payment_ticks,
         threads: run.threads,
         decision_budget_us: cfg.schedule.decision_budget_us,
@@ -538,7 +540,13 @@ fn report_html(cfg: &Config, shared: &Shared, result: &MatchResult) -> Result<St
         .rules
         .combos
         .iter()
-        .map(|c| serde_json::json!([cfg.stocks[c.a].name, cfg.stocks[c.b].name, c.bonus]))
+        .map(|c| {
+            serde_json::json!([
+                cfg.stocks[c.a].name,
+                cfg.stocks[c.b].name,
+                shared.rules.combo_cents(c.bonus)
+            ])
+        })
         .collect();
     let seasons: Vec<_> = shared
         .world
@@ -549,6 +557,7 @@ fn report_html(cfg: &Config, shared: &Shared, result: &MatchResult) -> Result<St
     let data = serde_json::json!({
         "seed": result.seed, "ticks": cfg.ticks, "width": cw, "stocks": stocks, "corr": corr, "combos": combos,
         "seasons": seasons, "by_strategy": result.by_strategy, "wall": result.wall_seconds, "threads": result.threads,
+        "combo_period": result.combo_period,
         "accounts": result.accounts.len(), "trades": result.trades,
     });
     Ok(include_str!("report.html").replace("/*DATA*/null", &serde_json::to_string(&data)?))

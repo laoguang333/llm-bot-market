@@ -591,7 +591,7 @@ impl<'a> Shared<'a> {
         if tick > 0 && tick.is_multiple_of(self.rules.combo_period) {
             for (r, c) in self.rules.combos.iter().enumerate() {
                 if c.active(tick) {
-                    let amt = c.sets(&a.shares) * c.bonus;
+                    let amt = self.rules.combo_payment(c.sets(&a.shares), c.bonus);
                     if amt != 0 {
                         total += amt;
                         a.stats.combo_dividends += amt;

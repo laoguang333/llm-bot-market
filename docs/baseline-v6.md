@@ -2,7 +2,7 @@
 
 后续更新：当前 v6 已缩减为标准版和较早进退版两个 Swift，且使用逐 tick 股息；本文实验中的五 Swift 配置另行归档，历史成绩不代表缩减后的基准。见 [当前基准](baseline-v6-current.md)。
 
-**这是周期派息 v6 的历史验收报告。** 验收时它曾成为默认基准；随后普通股息改为逐 tick 派发，当前 [baseline.toml](../scenarios/baseline.toml) 与 [baseline-per-tick.toml](../scenarios/baseline-per-tick.toml) 相同，沿用这里的五个 Swift 阵容。原周期规则保存在 [baseline-v6-five-swift.toml](../scenarios/baseline-v6-five-swift.toml)，以下成绩不代表新规则。新机制、测速和对照见[逐 tick 派息报告](per-tick-dividends.md)。
+**这是周期派息、五 Swift v6 的历史验收报告。** 验收时它曾成为默认基准；随后先改为逐 tick 普通股息，再缩减到两个 Swift、缩小 single 资金并扩容背景，之后组合收益也改为逐 tick，闲置费提高到 0.6%。当前默认见[新版 v6](baseline-v6-current.md)，已不沿用这里的五 Swift 阵容。原周期规则保存在 [baseline-v6-five-swift.toml](../scenarios/baseline-v6-five-swift.toml)，以下“未打穿”只描述本批额外 Swift 挑战者，不代表当前新版结论，也不撤销 Swift 已打穿 v5 的历史结果。
 
 v6 在 v5 原有人群中增加五个不同参数的小资金 Swift，要求新策略面对同类抢单竞争。原有背景策略、人数范围、股票、费用、观察和调度规则均未因本次升级改变。每个 Swift 为现金 20,000 元、每标的 20 股、独立 owner；挑战时会再追加一个候选账户，因此 `--bot swift` 的 v6 挑战共有六个 Swift。
 

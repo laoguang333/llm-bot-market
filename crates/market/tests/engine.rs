@@ -278,6 +278,89 @@ fn per_tick_news_disclosure_does_not_change_rate_before_effective_tick() {
     }
 }
 
+#[test]
+fn per_tick_combos_round_each_rule_symmetrically_without_carry() {
+    for (bonus, large_payment, small_payment) in
+        [(20, 4, 0), (-20, -4, 0), (25, 5, 1), (-25, -5, -1)]
+    {
+        let mut cfg = config(6, "[fees]\nidle_rate=0", &group("large", 100000, 10));
+        cfg.world.combo_period = Some(1);
+        cfg.world.combo_scale = 50;
+        cfg.combos = vec![market::config::ComboCfg {
+            a: "A".into(),
+            a_units: 1,
+            b: "B".into(),
+            b_units: 1,
+            bonus,
+            start_tick: 2,
+            end_tick: Some(4),
+        }];
+        let mut small = cfg.bots[0].clone();
+        small.bot = "small".into();
+        small.shares_each = 1;
+        cfg.bots.push(small);
+        let h = Harness::new(vec![("large", idle()), ("small", idle())]);
+        let shared = Shared::new(&cfg, 7, &|n, s| h.factory(n, s)).unwrap();
+        shared.run().unwrap();
+        for (name, per_tick) in [("large", large_payment), ("small", small_payment)] {
+            let log = h.log(name);
+            for o in &log {
+                let paid: Money = o
+                    .income
+                    .iter()
+                    .filter_map(|i| match i {
+                        Income::Combo { rule: 0, amount } => Some(*amount),
+                        _ => None,
+                    })
+                    .sum();
+                assert_eq!(
+                    paid,
+                    if (2..=4).contains(&o.tick) {
+                        per_tick
+                    } else {
+                        0
+                    }
+                );
+            }
+            assert_eq!(
+                log.last().unwrap().account.cash - log[0].account.cash,
+                3 * per_tick
+            );
+        }
+        shared.audit().unwrap();
+    }
+}
+
+#[test]
+fn higher_idle_fee_keeps_turnover_credit_and_period_timing() {
+    let mut cfg = config(
+        51,
+        "[fees]\nidle_period=50\nidle_rate=0.006\ncredit_ratio=0.01\ntrade_fee_bps=0",
+        &group("idle", 100000, 0),
+    );
+    cfg.bots[0].shares_each = 0;
+    let h = Harness::new(vec![("idle", idle())]);
+    let shared = Shared::new(&cfg, 7, &|n, s| h.factory(n, s)).unwrap();
+    {
+        let mut account = shared.accounts[0].lock();
+        account.samples = 50;
+        account.equity_sum = 50 * 100000;
+        account.credit_notional = 20000;
+        assert_eq!(shared.idle_estimate(&account), (600, 200, 400));
+        account.credit_notional = 60000;
+        assert_eq!(shared.idle_estimate(&account), (600, 600, 0));
+        account.samples = 0;
+        account.equity_sum = 0;
+        account.credit_notional = 0;
+    }
+    shared.run().unwrap();
+    let log = h.log("idle");
+    assert_eq!(log[49].account.cash, 100000);
+    assert_eq!(log[50].account.cash, 99400);
+    assert_eq!(shared.accounts[0].lock().stats.idle_fees, 600);
+    shared.audit().unwrap();
+}
+
 /// Two stocks, no news, no dividends, no idle fee unless overridden.
 fn config(ticks: Tick, extra: &str, bots: &str) -> Config {
     let text = format!(

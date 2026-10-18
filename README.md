@@ -1,6 +1,8 @@
 # llm-bot-market
 
-当前默认为[扩容后的 v6](docs/baseline-v6-current.md)：98–222 个账户，seed 7 为 146 个；保留标准 Swift 与较早进退的单次入场 Swift，后者现金 2,000 元、每股初始 2 股，同一股票持仓后不再补仓。普通股息逐 tick 派发。`baseline.toml`、`baseline-v6.toml`、`baseline-per-tick.toml` 内容相同；扩容前配置归档到 `baseline-v6-pre-expansion.toml`，五 Swift 的旧配置分别保存在 `baseline-v6-five-swift.toml`（周期派息）、`baseline-per-tick-five-swift.toml`（逐 tick）。[扩容报告](docs/v6-population.md)记录流动性、涨幅和性能变化；历史成绩不代表当前基准。[交易调查台](docs/swift-debugger.md) 支持整轮操作与 FIFO 逐笔进出场连线。
+当前默认为[扩容后的 v6](docs/baseline-v6-current.md)：98–222 个账户，seed 7 为 146 个；保留标准 Swift 与较早进退的单次入场 Swift，后者现金 2,000 元、每股初始 2 股，同一股票持仓后不再补仓。普通股息与组合收益逐 tick 派发，闲置费为每 50 ticks 平均权益的 0.6%。`baseline.toml`、`baseline-v6.toml`、`baseline-per-tick.toml` 内容相同；扩容前配置归档到 `baseline-v6-pre-expansion.toml`，五 Swift 的旧配置分别保存在 `baseline-v6-five-swift.toml`（周期派息）、`baseline-per-tick-five-swift.toml`（逐 tick）。[扩容报告](docs/v6-population.md)记录流动性、涨幅和性能变化；历史成绩不代表当前基准。[交易调查台](docs/swift-debugger.md) 支持整轮操作与 FIFO 逐笔进出场连线。
+
+**当前新闻阵容已采用 NewsV2：** 原 6–16 个 `news` 账户等额替换为 `news_v2`，融合 Swift 的订单流、盘口信号与已收到的新闻；原人数和资金不变。普通 Swift、小资金 single 与其他背景策略继续参与，版本仍叫 v6，暂不要求新 bot 打穿。替换前配置为 `baseline-v6-legacy-news.toml`，Astra/Falcon 暂不纳入。
 
 一个连续限价盘口的股票市场，让多个 LLM 各自写的交易 bot 在里面对抗，只比谁赚得多（按收益率的排名百分位计分）。完整规则见 [PRD.md](PRD.md)，内置策略的对比结果见 [docs/strategies.md](docs/strategies.md)。每个账户是一个独立的 owner；场景里写了 `owner` 的那组只能有一个账户。
 
@@ -14,7 +16,7 @@ cargo build --release
 ./target/release/llm-market run scenarios/tournament.toml --out runs/t1
 # 在 20 个随机世界里各跑一局，输出每个策略的平均排名百分位 ± 标准差
 ./target/release/llm-market series scenarios/tournament.toml --out runs/series --seeds 20
-# 当前默认：两个 Swift 的 v6、逐 tick 普通股息
+# 当前默认：两个 Swift 的 v6、逐 tick 普通/组合股息、0.6% 闲置费
 ./target/release/llm-market series scenarios/baseline.toml --out runs/base --seeds 20
 # 打穿测试：一个挑战者账户加入基准市场，在留出种子 1001–1020 上跑
 ./target/release/llm-market challenge scenarios/baseline.toml --bot shark --out runs/ch-shark --seeds 20
@@ -57,7 +59,7 @@ pub trait Bot: Send {
 
 WASM 沙箱（让外部 LLM 提交编译好的 bot）还没做，见 PRD 第 7 节。
 
-当前默认普通股息每个个人 tick 发放（tick 0 除外）。`Rules.dividend_scale = 50`，股票股息和新闻变化的整数单位都是 **1/50 分**；先乘账户在该股票的持仓，再四舍五入到分，不累计余数。新闻公开不会提前改变派息，仍等 `effective_tick`。组合奖励继续每 50 tick，终值提示的每单位也仍代表 50 tick。`summary.json` 记录这些单位，`bars.csv` 另提供 `dividend_cents_per_payment`。旧场景省略新字段时保持原规则。设计、性能和市场影响见[逐 tick 派息报告](docs/per-tick-dividends.md)。
+当前默认普通股息与组合收益均每个个人 tick 发放（tick 0 除外）。`Rules.dividend_scale = 50`，股票股息和新闻变化的整数单位都是 **1/50 分**；先乘账户在该股票的持仓，再四舍五入到分，不累计余数。新闻公开不会提前改变派息，仍等 `effective_tick`。组合独立使用 `combo_scale=50`，按每条规则的整仓套数合计后对称取整，负组合也逐 tick 扣款。终值提示的每单位仍代表 50 tick。当前闲置费为每 50 ticks 平均权益的 **0.6%**，合格成交额的 1% 抵扣不变。旧场景省略新字段时保持原规则；改造前扩容场景为 `baseline-v6-periodic-combos.toml`。设计、性能和市场影响见[普通派息报告](docs/per-tick-dividends.md)及[组合与费用改造报告](docs/per-tick-combos.md)。
 
 当前运行的所有 bot 都先经过代码审查。`Start.seed` 与世界种子的关系有意保留，不作为安全边界；审查时禁止策略利用这一关系重建隐藏新闻或终值。这种可推导性本身是已接受的设计。
 
@@ -81,7 +83,7 @@ Windows 上可用 `python tools/bench_bot.py coral-train --first-seed 1` 跑当�
 
 固定 Swift 的后续 [跨市场压力测试](docs/swift-stress.md) 共 780 局，覆盖消息传播、波动、对手、手续费、资金容量和决策频率，并单独检验拥挤效应。原版 v5 通过复核，但小资金优势不能外推到大资金或大量同策略竞争者。
 
-新增 [News 修复与增强版](docs/news-v2.md)：`news_fixed` 补全事件退出，`news_v2` 将新闻方向与 Swift 信号、执行结合。每组 40 局，增强版在 v5/v6 平均收益 +151.24%/+21.24%，同批 Swift +136.91%/+11.02%；增强版仍未打穿 v6。旧 News 与正式 Swift 均保留。[920 局机制研究](docs/swift-mechanism.md)发现，单纯增加随机成交活跃度不足以恢复新闻环境下的高收益；真实成交方向有用，已出现大阳线不是入场必要条件，分红也贡献了大量收益。
+新增 [News 修复与增强版](docs/news-v2.md)：`news_fixed` 补全事件退出，`news_v2` 将新闻方向与 Swift 信号、执行结合，现已替换当前 v6 背景里的旧 News。在此前周期派息的研究中，每组 40 局，增强版在当时 v5/v6 平均收益 +151.24%/+21.24%，同批 Swift +136.91%/+11.02%；增强版未打穿当时的 v6。旧实现与历史配置保留，这些成绩不能作为新阵容的表现。[920 局机制研究](docs/swift-mechanism.md)发现，单纯增加随机成交活跃度不足以恢复新闻环境下的高收益；真实成交方向有用，已出现大阳线不是入场必要条件，分红也贡献了大量收益。
 
 **机制审计补充：** 旧周期派息的 160 局轨迹中，15 局的普通派息超过按统一股权登记计算的全市场上限，[详情及逐局证据](docs/swift-mechanism.md)已归档。当前逐 tick 方案按用户选择保留个人时钟和邮箱结算，接受转手期间少量多派/少派，不增加统一登记；这不是严格股权归属修复。上述收益均是旧机制记录，新机制需要单独验证。
 

@@ -107,7 +107,16 @@ class LedgerTests(unittest.TestCase):
         a=analyze([frame(0,1000,1),frame(1,1015,1,income=inc,st=st),frame(2,1015,1,end=True,st=st)],shares=1)
         self.assertEqual(a["validation"]["cash_error"],0)
         self.assertEqual(a["validation"]["dividend_error"],0)
+        self.assertEqual(a["validation"]["combo_error"],0)
         self.assertEqual(a["curves"][-1][6],0)
+
+    def test_combo_ledger_counts_positive_negative_and_missing_events(self):
+        st=stats(combo_dividends=2)
+        events=[{"Combo":{"amount":3}},{"Combo":{"amount":-1}}]
+        frames=[frame(0,1000,1),frame(1,1002,1,income=events,st=st),frame(2,1002,1,end=True,st=st)]
+        self.assertEqual(analyze(frames)["validation"]["combo_error"],0)
+        frames[1]["income"].pop()
+        self.assertEqual(analyze(frames)["validation"]["combo_error"],1)
 
     def test_unknown_inventory_has_no_invented_profit(self):
         f=fill("Sell",1,100,0,1)

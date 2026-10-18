@@ -28,6 +28,7 @@ def analyze_account(start, result, frames, final_marks):
     fills=[]; pairs=[]; adjustments=[]; events=[]; incomes=[0]*n
     balance=start["cash"]
     trade_fees=0
+    combo_income=0
     idle_cash_recorded=0
     peak=result["initial_equity"]
     max_drawdown=0
@@ -69,6 +70,7 @@ def analyze_account(start, result, frames, final_marks):
             if kind in ["Dividend","Combo","BadDebtWrittenOff"]:
                 balance+=data["amount"]
                 if kind=="Dividend":incomes[data["stock"]]+=data["amount"]
+                if kind=="Combo":combo_income+=data["amount"]
             elif kind=="Interest":balance-=data["amount"]
             # IdleFee.paid includes destroyed STOCK value, not just cash.
             # The engine records its exact cash component separately below.
@@ -129,6 +131,7 @@ def analyze_account(start, result, frames, final_marks):
             final_shares=result["shares"][s],open_lots=list(lots[s])))
     validation=dict(cash_error=balance-result["cash"],fill_count_error=len(fills)-result["stats"]["trades"],
         trade_fee_error=trade_fees-result["stats"]["trade_fees"],dividend_error=sum(incomes)-result["stats"]["dividends"],
+        combo_error=combo_income-result["stats"]["combo_dividends"],
         frame_count=len(frames),expected_frame_count=start["rules"]["ticks_total"]+1,
         unknown_inventory=sum(a["kind"] in ["unknown_inventory","unmatched_sell"] for a in adjustments),
         swift_mismatches=sum(f["swift_verified"] is False for f in frames))
@@ -174,7 +177,7 @@ def build(run_dir):
         quote_fields=manifest["quote_fields"],clock_note=manifest["clock_note"],source_scenario=manifest["source_scenario"],
         source_trace_sha256=hashlib.sha256((run_dir/"trace-manifest.json").read_bytes()).hexdigest())
     (dest/"manifest.json").write_text(json.dumps(output,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
-    bad=[a for a in accounts if any(a["validation"][k] for k in ["cash_error","fill_count_error","trade_fee_error","dividend_error","unknown_inventory","swift_mismatches"])
+    bad=[a for a in accounts if any(a["validation"][k] for k in ["cash_error","fill_count_error","trade_fee_error","dividend_error","combo_error","unknown_inventory","swift_mismatches"])
          or a["validation"]["frame_count"]!=a["validation"]["expected_frame_count"]]
     print(f"Built {dest}; {len(bad)} accounts with validation discrepancies",flush=True)
     if bad:

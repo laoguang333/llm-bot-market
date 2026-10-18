@@ -177,7 +177,7 @@ function tableData() {
     }
     if($("newsTruth").checked) for(const n of market.news) if(!$("stockOnly").checked||n.changes.some(c=>c[0]===s)) rows.push({action:"frame",key:n.effective,cells:[n.effective,"全局真值（事后）",JSON.stringify(n)]});
     rows.sort((a,b)=>a.key-b.key);
-    return {headers:["回报 / 生效 tick","事件","原始内容（单位见说明）"],rows,help:`普通消息按实际收报时点；新闻股息变化单位为 1/${a.start.rules.dividend_scale} 分，现金流金额为分，终值提示是支付次数。公开与生效分开；全局真值为事后信息。`};
+    return {headers:["回报 / 生效 tick","事件","原始内容（单位见说明）"],rows,help:`普通消息按实际收报时点；新闻股息变化单位为 1/${a.start.rules.dividend_scale} 分，组合规则单位为 1/${a.start.rules.combo_scale??1} 分/套，每 ${a.start.rules.combo_period} tick 按整仓取整。现金流金额为分，终值提示是支付次数。公开与生效分开；全局真值为事后信息。`};
   }
   case "counterparties": {
     const sums=new Map();
@@ -306,7 +306,7 @@ function bind() {
 async function main() {
   setBusy(true);
   [manifest,market]=await Promise.all([fetchJSON("/data/manifest.json"),fetchJSON("/data/market.json.gz")]);
-  $("runMeta").textContent=`seed ${manifest.seed_display??manifest.result.seed} · ${manifest.result.threads} 线程 · ${manifest.rules.ticks_total} ticks · ${manifest.accounts.length} 账户`;
+  $("runMeta").textContent=`seed ${manifest.seed_display??manifest.result.seed} · ${manifest.result.threads} 线程 · ${manifest.rules.ticks_total} ticks · ${manifest.accounts.length} 账户 · 闲置费 ${pct(manifest.rules.idle_rate)} / ${manifest.rules.idle_period} ticks · 组合每 ${manifest.rules.combo_period} tick`;
   $("stock").innerHTML=manifest.rules.stocks.map((s,i)=>`<option value="${i}">${esc(s.name)}</option>`).join("");
   $("compare").innerHTML+=[...manifest.accounts].sort((a,b)=>(b.strategy==="swift")-(a.strategy==="swift")).map(a=>`<option value="${a.index}">${esc(a.name)}</option>`).join("");
   $("cursor").max=manifest.rules.ticks_total;$("tick").max=manifest.rules.ticks_total;

@@ -189,6 +189,9 @@ pub struct WorldCfg {
     pub dividend_scale: i64,
     /// Defaults to the ordinary period for legacy scenarios.
     pub combo_period: Option<Tick>,
+    /// Combination reward rate units per cent; legacy scenarios use integer cents.
+    #[serde(default = "one_qty")]
+    pub combo_scale: i64,
     #[serde(default)]
     pub min_dividend: Money,
     pub sectors: Vec<String>,
@@ -437,6 +440,7 @@ impl Config {
             bail!("periods must be positive");
         }
         if self.world.dividend_scale <= 0
+            || self.world.combo_scale <= 0
             || !self
                 .terminal_payment_ticks()
                 .is_multiple_of(self.world.dividend_period)
@@ -444,7 +448,7 @@ impl Config {
                 .terminal_payment_ticks()
                 .is_multiple_of(self.combo_period())
         {
-            bail!("dividend_scale must be positive; terminal_payment_ticks must be a multiple of ordinary and combo periods");
+            bail!("dividend_scale and combo_scale must be positive; terminal_payment_ticks must be a multiple of ordinary and combo periods");
         }
         for p in [
             self.world.seasons.calm_to_turbulent,
@@ -650,6 +654,7 @@ impl Config {
             dividend_period: self.world.dividend_period,
             dividend_scale: self.world.dividend_scale,
             combo_period: self.combo_period(),
+            combo_scale: self.world.combo_scale,
             terminal_payment_ticks: self.terminal_payment_ticks(),
             min_dividend: self.world.min_dividend,
             trade_fee_bps: self.fees.trade_fee_bps,

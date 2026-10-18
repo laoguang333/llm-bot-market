@@ -113,7 +113,8 @@ pub struct ComboRule {
     pub a_units: Qty,
     pub b: usize,
     pub b_units: Qty,
-    /// Cents paid per complete set per combo period; negative values are charged.
+    /// Rate units per complete set per combo period; divide by Rules::combo_scale
+    /// for cents. Negative values are charged.
     pub bonus: Money,
     pub start_tick: Tick,
     pub end_tick: Tick,
@@ -147,6 +148,9 @@ pub struct Rules {
     /// Ordinary dividend/news rate units per cent. No per-account remainder is kept.
     pub dividend_scale: i64,
     pub combo_period: Tick,
+    /// Combo rate units per cent. Round each account/rule total, without carry.
+    #[serde(default = "default_combo_scale")]
+    pub combo_scale: i64,
     /// Duration of one terminal-payment unit used by the hidden range and hints.
     pub terminal_payment_ticks: Tick,
     pub min_dividend: Money,
@@ -197,6 +201,16 @@ pub struct Rules {
     pub objective: String,
 }
 
+fn default_combo_scale() -> i64 {
+    1
+}
+
+/// Round positive payouts and negative charges symmetrically, halves away from zero.
+fn rounded_combo(amount: i128, scale: i64) -> Money {
+    let magnitude = (amount.abs() + i128::from(scale / 2)) / i128::from(scale);
+    (amount.signum() * magnitude) as Money
+}
+
 impl Rules {
     /// Cents per share per ordinary payment, before rounding an account's total.
     pub fn dividend_cents(&self, rate: Money) -> f64 {
@@ -211,6 +225,18 @@ impl Rules {
 
     pub fn terminal_dividend_payments(&self, units: f64) -> f64 {
         units * (self.terminal_payment_ticks / self.dividend_period) as f64
+    }
+
+    pub fn combo_cents(&self, rate: Money) -> f64 {
+        rate as f64 / self.combo_scale as f64
+    }
+
+    /// Round the entire position in this combo, not each individual set.
+    pub fn combo_payment(&self, sets: Qty, rate: Money) -> Money {
+        if sets == 0 || rate == 0 {
+            return 0;
+        }
+        rounded_combo(i128::from(sets) * i128::from(rate), self.combo_scale)
     }
 
     pub fn terminal_combo_payments(&self, units: f64) -> f64 {
@@ -243,10 +269,14 @@ impl Rules {
             .sum();
         for c in &self.combos {
             if c.active(self.last_tick()) {
-                v += c.sets(shares)
-                    * c.bonus
-                    * n
-                    * (self.terminal_payment_ticks / self.combo_period) as i64;
+                // Round terminal cash flow once after aggregating future periods.
+                v += rounded_combo(
+                    i128::from(c.sets(shares))
+                        * i128::from(c.bonus)
+                        * i128::from(n)
+                        * i128::from(self.terminal_payment_ticks / self.combo_period),
+                    self.combo_scale,
+                );
             }
         }
         v

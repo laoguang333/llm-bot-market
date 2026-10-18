@@ -119,7 +119,7 @@ impl AstraA {
             } else {
                 before - c.sets(&after)
             };
-            v += delta as f64 * c.bonus as f64 * periods / qty as f64;
+            v += delta as f64 * self.rules.combo_cents(c.bonus) * periods / qty as f64;
         }
         v * if buy { self.combo } else { self.protection }
     }

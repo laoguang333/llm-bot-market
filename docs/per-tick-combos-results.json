@@ -1,0 +1,3420 @@
+{
+  "plan": {
+    "binary_sha256": "f758c1f6018065ba07ea68d292150751ce92c3307b4fcb7456586b890498c11c",
+    "scenario_sha256": "916fed0cd2dfc921bc17ab8a22b722b14d4c29308ea070e73566ee4a8865783d",
+    "source_commit": "346a377",
+    "impact_seeds": [
+      25201,
+      25202,
+      25203,
+      25204,
+      25205,
+      25206,
+      25207,
+      25208,
+      25209,
+      25210,
+      25211,
+      25212
+    ],
+    "perf_seeds": [
+      7,
+      11,
+      19
+    ],
+    "threads": 4,
+    "perf_repeats": 3,
+    "impact_repeats": 1,
+    "conditions": [
+      "before",
+      "fee",
+      "combo",
+      "after"
+    ],
+    "binaries": {
+      "before": "f758c1f6018065ba07ea68d292150751ce92c3307b4fcb7456586b890498c11c",
+      "after": "b4ba2b5f40cd8ac808d1df88b1cd899b61a5442bfabd20d9173763e8c98bf2a8"
+    },
+    "scenarios": {
+      "before": "4c08e4d447425c43dd0a03e9efebce1d7b3e33857a05cf28c712231fb7acd041",
+      "fee": "4e859149fc1fdc28b84e137bf703312414ee8e3b9287cb870d92165c216a7b19",
+      "combo": "c965615e1433200d615b3024e073d65e336106d3aad9e70193026652b7be9a16",
+      "after": "4ad520a0527f4a2bbc16454f65a9e9a31845f8a6c2af48f83a251c06d0d4b4bc"
+    },
+    "bot_sources": {
+      "crates\\bots\\src\\astra_a.rs": "786aa85a4f575410a5c3176c1c3584313d31c74bcf27e0390199a9d60bf93872",
+      "crates\\bots\\src\\astra_b.rs": "c5d559818af1662c288d9f09700a9e9225e9b0dc43a515918f52c7b6389088d9",
+      "crates\\bots\\src\\astra_c.rs": "61fc7aff4ccb500f177352b213f0d28437d1db1d999986a76ad36e3469c859af",
+      "crates\\bots\\src\\baseline.rs": "87efc94dce8d5bbd6d78b32abb630ea30f0ec397e3c76265860bd2ab140d8998",
+      "crates\\bots\\src\\common.rs": "c9612b2bb163444cc7b12e592b1b6db200423036452616330f905bea425ea46a",
+      "crates\\bots\\src\\coral.rs": "715515f8cb369c6fc089b7706abca4eb2e6434564c60fc540ac098786cd9d95a",
+      "crates\\bots\\src\\falcon.rs": "5724bf45d1bc3a68c061e93afdfd0ae4c06c4945f74b5f6552c2b671835276b8",
+      "crates\\bots\\src\\falcon_tests.rs": "3506df596fc40dd6a23eeaa4b571ae596eb53028f87af262fd84d3d5d72673cd",
+      "crates\\bots\\src\\lib.rs": "c7ecd63278ded7399f78eaa3a0c0f3d76eb76495731cdababfe81d9bb0ec8612",
+      "crates\\bots\\src\\news.rs": "8d4f1128b6a9e2c9a802cfd2f722f266670b390e466042b315962cb27e6c42d3",
+      "crates\\bots\\src\\news_tests.rs": "7981ca11d1d26ab2fd1e87863acf23a328ebc8108f10c41aae1a71dbfd144eb6",
+      "crates\\bots\\src\\news_test_support.rs": "9de04c3a514b88ac328ac010710dbf4e57e1b9deb211cae836685aa08a62908d",
+      "crates\\bots\\src\\news_v2.rs": "d466d398894aec86f1db23473ed303ec380d0db5aec877d9c65a708416b3b874",
+      "crates\\bots\\src\\news_v2_tests.rs": "0baac230efd703891bab0c2849a7a9350d575a2f57a454baf1ba331d95870b11",
+      "crates\\bots\\src\\strategic.rs": "c3e596e81fc588c96da9b082f8e070acd0aff410567a0adc42fb4db187855561",
+      "crates\\bots\\src\\swift.rs": "c2b75a59419e810cf9cb9bc81fbe29c9fb73c8f693e93bcbb1c196f40e64ab05",
+      "crates\\bots\\src\\swift_tests.rs": "cb7fae1e23312765deab806eef9c56c7166c5af05a8ec7e2a60cb48da9fa42b4"
+    },
+    "note": "Fixed user-selected 0.6% fee and per-tick rounded combos; no strategy fitting. Single-thread compatibility, interleaved timing, then paired market effects."
+  },
+  "compatibility": "All three seeds: one-thread trades and account settlement identical",
+  "performance": {
+    "old_engine_old_rules": {
+      "runs": [
+        {
+          "seed": 11,
+          "wall": 1.4208226999617182,
+          "engine": 1.3101080999999999,
+          "audits": 6
+        },
+        {
+          "seed": 11,
+          "wall": 1.463555600028485,
+          "engine": 1.323729,
+          "audits": 6
+        },
+        {
+          "seed": 11,
+          "wall": 1.3955989999813028,
+          "engine": 1.2940314,
+          "audits": 6
+        },
+        {
+          "seed": 19,
+          "wall": 1.3661371999769472,
+          "engine": 1.2674601,
+          "audits": 6
+        },
+        {
+          "seed": 19,
+          "wall": 1.5922861999715678,
+          "engine": 1.472868,
+          "audits": 6
+        },
+        {
+          "seed": 19,
+          "wall": 1.326383999956306,
+          "engine": 1.2199415,
+          "audits": 6
+        },
+        {
+          "seed": 7,
+          "wall": 1.3466543999966234,
+          "engine": 1.2336937,
+          "audits": 6
+        },
+        {
+          "seed": 7,
+          "wall": 1.3040112999733537,
+          "engine": 1.1964955,
+          "audits": 6
+        },
+        {
+          "seed": 7,
+          "wall": 1.2557801000075415,
+          "engine": 1.1471827,
+          "audits": 6
+        }
+      ],
+      "median_wall": 1.3661371999769472,
+      "median_engine": 1.2674601
+    },
+    "new_engine_old_rules": {
+      "runs": [
+        {
+          "seed": 11,
+          "wall": 1.3792956999968737,
+          "engine": 1.2581338,
+          "audits": 6
+        },
+        {
+          "seed": 11,
+          "wall": 1.4119260999723338,
+          "engine": 1.3070477999999999,
+          "audits": 6
+        },
+        {
+          "seed": 11,
+          "wall": 1.3438159000361338,
+          "engine": 1.2375988,
+          "audits": 6
+        },
+        {
+          "seed": 19,
+          "wall": 1.3845860000001267,
+          "engine": 1.2859403,
+          "audits": 6
+        },
+        {
+          "seed": 19,
+          "wall": 1.502048800000921,
+          "engine": 1.3898237,
+          "audits": 6
+        },
+        {
+          "seed": 19,
+          "wall": 1.3676429000333883,
+          "engine": 1.2548386,
+          "audits": 6
+        },
+        {
+          "seed": 7,
+          "wall": 1.269358299963642,
+          "engine": 1.1548218000000001,
+          "audits": 6
+        },
+        {
+          "seed": 7,
+          "wall": 1.280556700017769,
+          "engine": 1.1714052,
+          "audits": 6
+        },
+        {
+          "seed": 7,
+          "wall": 1.2482431000098586,
+          "engine": 1.1540764000000001,
+          "audits": 6
+        }
+      ],
+      "median_wall": 1.3676429000333883,
+      "median_engine": 1.2548386
+    },
+    "new_engine_new_rules": {
+      "runs": [
+        {
+          "seed": 11,
+          "wall": 1.366776899958495,
+          "engine": 1.2489900999999999,
+          "audits": 6
+        },
+        {
+          "seed": 11,
+          "wall": 1.5034067000378855,
+          "engine": 1.3906506,
+          "audits": 6
+        },
+        {
+          "seed": 11,
+          "wall": 1.3673168999957852,
+          "engine": 1.2385662,
+          "audits": 6
+        },
+        {
+          "seed": 19,
+          "wall": 1.3637672000331804,
+          "engine": 1.2529018,
+          "audits": 6
+        },
+        {
+          "seed": 19,
+          "wall": 1.4157778000226244,
+          "engine": 1.3124246,
+          "audits": 6
+        },
+        {
+          "seed": 19,
+          "wall": 1.339861500018742,
+          "engine": 1.2495226,
+          "audits": 6
+        },
+        {
+          "seed": 7,
+          "wall": 1.2556957000051625,
+          "engine": 1.1531561,
+          "audits": 6
+        },
+        {
+          "seed": 7,
+          "wall": 1.4763665000209585,
+          "engine": 1.3242021,
+          "audits": 6
+        },
+        {
+          "seed": 7,
+          "wall": 1.2272590000065975,
+          "engine": 1.1326392,
+          "audits": 6
+        }
+      ],
+      "median_wall": 1.366776899958495,
+      "median_engine": 1.2495226
+    }
+  },
+  "summary": {
+    "before": {
+      "worlds": 12,
+      "quality_pass": 8,
+      "median_spread": 0.0008864991492125604,
+      "median_depth_yuan": 29298.6575,
+      "mean_two_sided": 0.993,
+      "mean_total_combo_yuan": 124616.275,
+      "mean_total_idle_yuan": 460721.61,
+      "strategy_mean_return_pct": {
+        "coral": 78.9047785147436,
+        "grid": -32.234261099189766,
+        "hold": 5.103661198038316,
+        "hunter": 81.20781975682608,
+        "momentum": 42.20542953734313,
+        "news": 10.852209329785744,
+        "noise": -13.06413252975036,
+        "shark": 25.942311329621564,
+        "swift": 157.12027096879018,
+        "tracker": 43.96685158369629,
+        "value": 41.368772623760236
+      },
+      "swift": {
+        "swift-standard": {
+          "mean_return_pct": 196.20580133613902,
+          "losses": 0,
+          "mean_idle_yuan": 3394.8358333333335,
+          "mean_combo_yuan": 370.4
+        },
+        "swift-early-single": {
+          "mean_return_pct": 118.03474060144137,
+          "losses": 0,
+          "mean_idle_yuan": 307.6666666666667,
+          "mean_combo_yuan": 11.708333333333334
+        }
+      },
+      "stock_worlds_doubled_within_100_ticks": 7,
+      "quality_failures": [
+        {
+          "seed": 25201,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 1.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        {
+          "seed": 25203,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 1.5,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        {
+          "seed": 25205,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 1.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        {
+          "seed": 25211,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        }
+      ],
+      "account_range": [
+        140,
+        177
+      ]
+    },
+    "fee": {
+      "worlds": 12,
+      "quality_pass": 7,
+      "median_spread": 0.0009277419743311483,
+      "median_depth_yuan": 28462.5625,
+      "mean_two_sided": 0.9922777777777778,
+      "mean_total_combo_yuan": 115869.04166666667,
+      "mean_total_idle_yuan": 1977337.0483333333,
+      "strategy_mean_return_pct": {
+        "coral": 60.214388416761444,
+        "grid": -43.83816109952782,
+        "hold": -16.560506331618036,
+        "hunter": 56.19231544923162,
+        "momentum": 17.416812378946474,
+        "news": -11.45449868579741,
+        "noise": -27.56785748945321,
+        "shark": 10.938135549919481,
+        "swift": 128.0734444173197,
+        "tracker": 32.517206585832014,
+        "value": 16.01847420687996
+      },
+      "swift": {
+        "swift-standard": {
+          "mean_return_pct": 166.53972727991297,
+          "losses": 0,
+          "mean_idle_yuan": 12956.185833333333,
+          "mean_combo_yuan": 348.5708333333333
+        },
+        "swift-early-single": {
+          "mean_return_pct": 89.60716155472643,
+          "losses": 0,
+          "mean_idle_yuan": 1127.6966666666667,
+          "mean_combo_yuan": 11.8375
+        }
+      },
+      "stock_worlds_doubled_within_100_ticks": 7,
+      "quality_failures": [
+        {
+          "seed": 25201,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        {
+          "seed": 25203,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        {
+          "seed": 25204,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 1.5,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        {
+          "seed": 25205,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.5,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        {
+          "seed": 25211,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        }
+      ],
+      "account_range": [
+        140,
+        177
+      ]
+    },
+    "combo": {
+      "worlds": 12,
+      "quality_pass": 8,
+      "median_spread": 0.0008912173166249868,
+      "median_depth_yuan": 28703.2675,
+      "mean_two_sided": 0.9921666666666666,
+      "mean_total_combo_yuan": 128789.9325,
+      "mean_total_idle_yuan": 461891.44666666666,
+      "strategy_mean_return_pct": {
+        "coral": 77.74578825007521,
+        "grid": -31.97764214745813,
+        "hold": 4.900350331879324,
+        "hunter": 84.09352035815934,
+        "momentum": 41.63838487421082,
+        "news": 9.91626855609289,
+        "noise": -12.74744316647623,
+        "shark": 26.93088231622427,
+        "swift": 160.5655965392453,
+        "tracker": 41.19242198518613,
+        "value": 40.995498119220485
+      },
+      "swift": {
+        "swift-standard": {
+          "mean_return_pct": 206.88738225043525,
+          "losses": 0,
+          "mean_idle_yuan": 3580.2,
+          "mean_combo_yuan": 303.92083333333335
+        },
+        "swift-early-single": {
+          "mean_return_pct": 114.24381082805533,
+          "losses": 0,
+          "mean_idle_yuan": 330.8258333333333,
+          "mean_combo_yuan": 11.055833333333334
+        }
+      },
+      "stock_worlds_doubled_within_100_ticks": 6,
+      "quality_failures": [
+        {
+          "seed": 25201,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        {
+          "seed": 25203,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.5,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        {
+          "seed": 25205,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 1.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        {
+          "seed": 25211,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        }
+      ],
+      "account_range": [
+        140,
+        177
+      ]
+    },
+    "after": {
+      "worlds": 12,
+      "quality_pass": 8,
+      "median_spread": 0.0009132424614135712,
+      "median_depth_yuan": 29417.25,
+      "mean_two_sided": 0.9927777777777778,
+      "mean_total_combo_yuan": 119392.85416666667,
+      "mean_total_idle_yuan": 1972576.3533333333,
+      "strategy_mean_return_pct": {
+        "coral": 59.966720713084484,
+        "grid": -43.724649337062516,
+        "hold": -16.563549277097525,
+        "hunter": 55.1708954767232,
+        "momentum": 18.84254268091893,
+        "news": -12.515323560638464,
+        "noise": -27.1307898899738,
+        "shark": 13.18893709044872,
+        "swift": 131.10817524409745,
+        "tracker": 27.782927659718958,
+        "value": 16.66180006333029
+      },
+      "swift": {
+        "swift-standard": {
+          "mean_return_pct": 171.26304905166168,
+          "losses": 0,
+          "mean_idle_yuan": 12848.206666666667,
+          "mean_combo_yuan": 309.6175
+        },
+        "swift-early-single": {
+          "mean_return_pct": 90.95330143653322,
+          "losses": 0,
+          "mean_idle_yuan": 1127.92,
+          "mean_combo_yuan": 11.69
+        }
+      },
+      "stock_worlds_doubled_within_100_ticks": 6,
+      "quality_failures": [
+        {
+          "seed": 25201,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        {
+          "seed": 25203,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        {
+          "seed": 25205,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 1.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        {
+          "seed": 25211,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        }
+      ],
+      "account_range": [
+        140,
+        177
+      ]
+    }
+  },
+  "worlds": {
+    "before": [
+      {
+        "seed": 25201,
+        "threads": 4,
+        "accounts": 148,
+        "engine_seconds": 1.0436905,
+        "wall_seconds": 1.1346179000101984,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": false,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 1.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        "two_sided": 0.9656666666666667,
+        "median_spread": 0.0008871802454532013,
+        "median_depth_yuan": 27343.42,
+        "world_fingerprint": {
+          "news_sha256": "22fac632024e3c5578fe4ee8e8df23f5817622f3f41f0070dcbd07d10c60cfca",
+          "rates_sha256": "16d85b4f4201cb13d972ed8eafa222f1b599145a6b0b007e653dccddac27de0f",
+          "terminal_payments": 39
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 191.38799614550192,
+            "idle_yuan": 4602.84,
+            "combo_yuan": 155.45,
+            "dividend_yuan": 20134.19
+          },
+          "swift-early-single": {
+            "return_pct": 112.86008064299055,
+            "idle_yuan": 354.67,
+            "combo_yuan": 7.6,
+            "dividend_yuan": 903.19
+          }
+        },
+        "strategy_returns": {
+          "coral": 91.23902912586514,
+          "grid": -44.682023978685336,
+          "hold": -2.0813712846045402,
+          "hunter": 70.23575827559661,
+          "momentum": 35.49637184846087,
+          "news": -3.900503933046448,
+          "noise": -19.218677023631884,
+          "shark": 43.58585679139952,
+          "swift": 152.12403839424624,
+          "tracker": 50.431568527700165,
+          "value": 37.35088540971609
+        },
+        "total_combo_yuan": 102257.5,
+        "total_idle_yuan": 416151.94
+      },
+      {
+        "seed": 25202,
+        "threads": 4,
+        "accounts": 169,
+        "engine_seconds": 1.1997722,
+        "wall_seconds": 1.3002398000098765,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.991,
+        "median_spread": 0.0014609203798392988,
+        "median_depth_yuan": 12467.5,
+        "world_fingerprint": {
+          "news_sha256": "98643ba66c18ec598349fe6d61b535b28165f78c2bd76cba7459965b252598a8",
+          "rates_sha256": "1635d04ee21aa719522d2b7f8d16d897604c89b2fbb231d3e978655151c77b7c",
+          "terminal_payments": 17
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 101.05078141544195,
+            "idle_yuan": 3745.8,
+            "combo_yuan": 1.15,
+            "dividend_yuan": 11630.13
+          },
+          "swift-early-single": {
+            "return_pct": 52.18383380627674,
+            "idle_yuan": 324.77,
+            "combo_yuan": -0.45,
+            "dividend_yuan": 476.48
+          }
+        },
+        "strategy_returns": {
+          "coral": 23.95956863326416,
+          "grid": -49.73111008989156,
+          "hold": -17.84307146739514,
+          "hunter": 45.84300522758763,
+          "momentum": 11.250384707692742,
+          "news": -40.79403179091884,
+          "noise": -38.77056396231781,
+          "shark": -38.5092753377663,
+          "swift": 76.61730761085934,
+          "tracker": -3.0122234188665074,
+          "value": 24.133826438595
+        },
+        "total_combo_yuan": 114126.2,
+        "total_idle_yuan": 444295.62
+      },
+      {
+        "seed": 25203,
+        "threads": 4,
+        "accounts": 146,
+        "engine_seconds": 1.1085168,
+        "wall_seconds": 1.1957743999664672,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": false,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 1.5,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        "two_sided": 0.9946666666666667,
+        "median_spread": 0.0006449532408900354,
+        "median_depth_yuan": 31283.805,
+        "world_fingerprint": {
+          "news_sha256": "8440b64d25086f301229779778d323e14625a421a595ea8ca73e3c0216b9ca25",
+          "rates_sha256": "a8834b2e8b04afc3b5c5db9d23c7f7500d840aee21f2bf69ceb5445b4660f6f8",
+          "terminal_payments": 32
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 110.643112335771,
+            "idle_yuan": 2386.32,
+            "combo_yuan": 193.1,
+            "dividend_yuan": 17678.88
+          },
+          "swift-early-single": {
+            "return_pct": 67.80954675942417,
+            "idle_yuan": 249.14,
+            "combo_yuan": 5.9,
+            "dividend_yuan": 809.95
+          }
+        },
+        "strategy_returns": {
+          "coral": 80.37029267382033,
+          "grid": -33.17213997547467,
+          "hold": -3.332548640068729,
+          "hunter": 40.44041482443825,
+          "momentum": 16.22973683065253,
+          "news": -5.340434643672863,
+          "noise": -14.755127345466386,
+          "shark": 32.13844011855453,
+          "swift": 89.22632954759757,
+          "tracker": 82.12033880039873,
+          "value": 29.61149170735285
+        },
+        "total_combo_yuan": 126879.15,
+        "total_idle_yuan": 383862.65
+      },
+      {
+        "seed": 25204,
+        "threads": 4,
+        "accounts": 163,
+        "engine_seconds": 1.1902839,
+        "wall_seconds": 1.2978127999813296,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0007110214848144101,
+        "median_depth_yuan": 32299.184999999998,
+        "world_fingerprint": {
+          "news_sha256": "51cbe8bc8263e80dce895e2272fb0e84c63c0a21ef3a9dd32d509f240a7cee34",
+          "rates_sha256": "37586c2375d56ba371ecd86a955427e1ada432d5db624193bf9043f48bdb35b5",
+          "terminal_payments": 35
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 236.33338833883388,
+            "idle_yuan": 2931.53,
+            "combo_yuan": 402.8,
+            "dividend_yuan": 29699.09
+          },
+          "swift-early-single": {
+            "return_pct": 153.03685368536853,
+            "idle_yuan": 276.87,
+            "combo_yuan": 17.2,
+            "dividend_yuan": 1149.0
+          }
+        },
+        "strategy_returns": {
+          "coral": 117.77177014576458,
+          "grid": -34.143042980470604,
+          "hold": 27.415050351188963,
+          "hunter": 153.6136413641364,
+          "momentum": 128.12683924642465,
+          "news": 42.479928149064904,
+          "noise": -6.116853074196309,
+          "shark": 79.72447744774477,
+          "swift": 194.6851210121012,
+          "tracker": 27.484543454345438,
+          "value": 70.46400727029224
+        },
+        "total_combo_yuan": 121404.65,
+        "total_idle_yuan": 510933.29
+      },
+      {
+        "seed": 25205,
+        "threads": 4,
+        "accounts": 140,
+        "engine_seconds": 1.0204031,
+        "wall_seconds": 1.1127321000094526,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": false,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 1.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0006671150445234761,
+        "median_depth_yuan": 29082.72,
+        "world_fingerprint": {
+          "news_sha256": "f239da3d5c55407d7628df0164d4af7d5bf2ab5d02f189ace1dcbee0476e1150",
+          "rates_sha256": "4e600ebc49e1bec4505d623a7c816fabef25f6d12ee9a03b7c18dea2d8ed120a",
+          "terminal_payments": 33
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 229.86243383445526,
+            "idle_yuan": 1860.18,
+            "combo_yuan": 294.4,
+            "dividend_yuan": 28774.09
+          },
+          "swift-early-single": {
+            "return_pct": 161.2284449708898,
+            "idle_yuan": 213.27,
+            "combo_yuan": 11.55,
+            "dividend_yuan": 1230.75
+          }
+        },
+        "strategy_returns": {
+          "coral": 117.17009179303412,
+          "grid": -24.162710155619745,
+          "hold": 9.751126775210771,
+          "hunter": 81.23779804239884,
+          "momentum": 28.63317300755498,
+          "news": 9.116853724090818,
+          "noise": -3.5382325161849826,
+          "shark": 25.952506226567746,
+          "swift": 195.5454394026725,
+          "tracker": 72.98382414374778,
+          "value": 42.62718288696693
+        },
+        "total_combo_yuan": 119353.75,
+        "total_idle_yuan": 406404.25
+      },
+      {
+        "seed": 25206,
+        "threads": 4,
+        "accounts": 173,
+        "engine_seconds": 1.2354107,
+        "wall_seconds": 1.3357280000345781,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0008858180529719195,
+        "median_depth_yuan": 29891.16,
+        "world_fingerprint": {
+          "news_sha256": "b6d394db514d20d2400816135ec3f19de1b6918732f94e47389e42e38fc822f0",
+          "rates_sha256": "3ff05ed38078a728d7d1f7d3e6c6f38989f3f4e7727c5cd4f2b121cb7de93559",
+          "terminal_payments": 25
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 214.0813316250175,
+            "idle_yuan": 4514.41,
+            "combo_yuan": 927.65,
+            "dividend_yuan": 27581.76
+          },
+          "swift-early-single": {
+            "return_pct": 133.52022523928983,
+            "idle_yuan": 402.01,
+            "combo_yuan": 15.5,
+            "dividend_yuan": 961.3
+          }
+        },
+        "strategy_returns": {
+          "coral": 104.21672283293317,
+          "grid": -24.788947360598154,
+          "hold": 25.226280631251413,
+          "hunter": 107.23155485452399,
+          "momentum": 68.64590286824793,
+          "news": 33.314557411016246,
+          "noise": 0.1002648607327813,
+          "shark": 22.855638937638098,
+          "swift": 173.80077843215366,
+          "tracker": 16.02592485922544,
+          "value": 39.808670910050125
+        },
+        "total_combo_yuan": 149031.85,
+        "total_idle_yuan": 571822.66
+      },
+      {
+        "seed": 25207,
+        "threads": 4,
+        "accounts": 156,
+        "engine_seconds": 1.1423218,
+        "wall_seconds": 1.2401095000095665,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0010140917250282349,
+        "median_depth_yuan": 29514.595,
+        "world_fingerprint": {
+          "news_sha256": "89c92e52828f9be999c9a3569ab63f2ce3730c6775954b199b0863de56f1ae11",
+          "rates_sha256": "b6b694ec33168040f9f5945467d9d7f4cc011d3ecfadfe94217cc15ac902bc8b",
+          "terminal_payments": 33
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 308.5797013839479,
+            "idle_yuan": 5442.97,
+            "combo_yuan": 232.45,
+            "dividend_yuan": 42963.68
+          },
+          "swift-early-single": {
+            "return_pct": 195.09680145937764,
+            "idle_yuan": 414.35,
+            "combo_yuan": 21.9,
+            "dividend_yuan": 1685.38
+          }
+        },
+        "strategy_returns": {
+          "coral": 116.06754971138776,
+          "grid": -37.34872486134956,
+          "hold": 19.757787716191707,
+          "hunter": 138.01577069368585,
+          "momentum": 83.79753810270209,
+          "news": 37.941709254480415,
+          "noise": -2.67005033306591,
+          "shark": 59.66468552231062,
+          "swift": 251.8382514216628,
+          "tracker": 95.3755882358186,
+          "value": 66.03677295141195
+        },
+        "total_combo_yuan": 121834.2,
+        "total_idle_yuan": 495947.1
+      },
+      {
+        "seed": 25208,
+        "threads": 4,
+        "accounts": 167,
+        "engine_seconds": 1.2803615,
+        "wall_seconds": 1.3849847000092268,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9936666666666667,
+        "median_spread": 0.0010642543567912731,
+        "median_depth_yuan": 21996.41,
+        "world_fingerprint": {
+          "news_sha256": "5bfcb5304baa4f96f2fc664f17ef51788888ade42bdde4f12010804f094d7c4f",
+          "rates_sha256": "e2124dfa15cad322837bd1a0c52c9d6e7cbf7a8cc5964d3ae400383db8ad099c",
+          "terminal_payments": 26
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 155.0726383179171,
+            "idle_yuan": 2664.0,
+            "combo_yuan": 109.5,
+            "dividend_yuan": 23513.35
+          },
+          "swift-early-single": {
+            "return_pct": 121.02710688591985,
+            "idle_yuan": 285.61,
+            "combo_yuan": 6.3,
+            "dividend_yuan": 1013.76
+          }
+        },
+        "strategy_returns": {
+          "coral": 46.484346748791445,
+          "grid": -24.704811019126815,
+          "hold": 2.8148132004600424,
+          "hunter": 52.741443452380956,
+          "momentum": 17.668492995781946,
+          "news": 21.521557916004863,
+          "noise": -17.80913438891744,
+          "shark": 18.395870038662945,
+          "swift": 138.04987260191848,
+          "tracker": 6.182942039225765,
+          "value": 24.79035304574873
+        },
+        "total_combo_yuan": 123989.8,
+        "total_idle_yuan": 456365.93
+      },
+      {
+        "seed": 25209,
+        "threads": 4,
+        "accounts": 160,
+        "engine_seconds": 1.1434396,
+        "wall_seconds": 1.2392872999771498,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9943333333333333,
+        "median_spread": 0.001711644890740001,
+        "median_depth_yuan": 10224.8,
+        "world_fingerprint": {
+          "news_sha256": "853204502d8b492da2490f88dcdd09eee2279bcd761722df1d21674abe44fe62",
+          "rates_sha256": "83709bb6952287fb3685cb531237934924ae54ec0dce70a0bb3c3aab61788247",
+          "terminal_payments": 21
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 152.63465487704963,
+            "idle_yuan": 4742.79,
+            "combo_yuan": 511.6,
+            "dividend_yuan": 22717.09
+          },
+          "swift-early-single": {
+            "return_pct": 94.80613102648408,
+            "idle_yuan": 414.27,
+            "combo_yuan": 6.35,
+            "dividend_yuan": 710.07
+          }
+        },
+        "strategy_returns": {
+          "coral": 14.559478038705223,
+          "grid": -48.440577268705034,
+          "hold": -16.01752709894249,
+          "hunter": 28.518134649556824,
+          "momentum": 25.892508551237444,
+          "news": -19.918391084368118,
+          "noise": -26.234919824219787,
+          "shark": -10.833568943266645,
+          "swift": 123.72039295176685,
+          "tracker": -26.540874396597893,
+          "value": 35.87130438803915
+        },
+        "total_combo_yuan": 111489.85,
+        "total_idle_yuan": 449415.28
+      },
+      {
+        "seed": 25210,
+        "threads": 4,
+        "accounts": 149,
+        "engine_seconds": 0.988711,
+        "wall_seconds": 1.0829030000022613,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0009442872737672938,
+        "median_depth_yuan": 15538.435,
+        "world_fingerprint": {
+          "news_sha256": "4baf1af1c32090431ad9e806bca6ecf80053b492944d76793e7fd0e760b78aa3",
+          "rates_sha256": "13de8d68485c108ab370790593eb6f5a380dd2e9cebea9e2202d9ec4528dcf4c",
+          "terminal_payments": 21
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 143.363485148944,
+            "idle_yuan": 4065.05,
+            "combo_yuan": 271.0,
+            "dividend_yuan": 18257.59
+          },
+          "swift-early-single": {
+            "return_pct": 75.94735758482061,
+            "idle_yuan": 316.49,
+            "combo_yuan": 4.9,
+            "dividend_yuan": 656.75
+          }
+        },
+        "strategy_returns": {
+          "coral": 11.272432505324803,
+          "grid": -28.11520362881172,
+          "hold": -14.954929610337434,
+          "hunter": 20.803384697073135,
+          "momentum": -0.34125511149990023,
+          "news": -11.032901896495408,
+          "noise": -20.2615210993672,
+          "shark": -12.790167203060152,
+          "swift": 109.65542136688231,
+          "tracker": 9.734810311758396,
+          "value": 18.56576217471507
+        },
+        "total_combo_yuan": 116248.05,
+        "total_idle_yuan": 407152.51
+      },
+      {
+        "seed": 25211,
+        "threads": 4,
+        "accounts": 177,
+        "engine_seconds": 1.3330908,
+        "wall_seconds": 1.4412684999988414,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": false,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0005561348653917795,
+        "median_depth_yuan": 40288.265,
+        "world_fingerprint": {
+          "news_sha256": "8d9605be4821d1090bfd6b92fdd930850086ffbd34db6871d540148e7aa4029e",
+          "rates_sha256": "b8c8eb96139e6ce65d07e0b06392ec47a1fda136caebb21c517a6b20589719ef",
+          "terminal_payments": 42
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 158.41411280626286,
+            "idle_yuan": 2166.88,
+            "combo_yuan": 450.2,
+            "dividend_yuan": 23337.86
+          },
+          "swift-early-single": {
+            "return_pct": 82.45010286691425,
+            "idle_yuan": 212.82,
+            "combo_yuan": 15.65,
+            "dividend_yuan": 864.86
+          }
+        },
+        "strategy_returns": {
+          "coral": 62.37442963042129,
+          "grid": -25.240647517926472,
+          "hold": -2.801020653538889,
+          "hunter": 43.27134822454378,
+          "momentum": 18.276262920022774,
+          "news": -1.0100295241403265,
+          "noise": -9.809960055574853,
+          "shark": 31.952712391232716,
+          "swift": 120.43210783658856,
+          "tracker": 44.22563479128258,
+          "value": 41.28349962702168
+        },
+        "total_combo_yuan": 151543.1,
+        "total_idle_yuan": 493600.6
+      },
+      {
+        "seed": 25212,
+        "threads": 4,
+        "accounts": 150,
+        "engine_seconds": 1.5027306,
+        "wall_seconds": 1.6351350999902934,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0006885473921741619,
+        "median_depth_yuan": 36655.14,
+        "world_fingerprint": {
+          "news_sha256": "97481e9403e639b1bab44d07eeb21c6300c7739c9b84e219e8aa067a708ad127",
+          "rates_sha256": "35ca2f921300895d8bbc0129144c90b797fa52a2cb31307da88565d9c73d3142",
+          "terminal_payments": 21
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 353.0459798045251,
+            "idle_yuan": 1615.26,
+            "combo_yuan": 895.5,
+            "dividend_yuan": 54235.5
+          },
+          "swift-early-single": {
+            "return_pct": 166.45040228954048,
+            "idle_yuan": 227.73,
+            "combo_yuan": 28.1,
+            "dividend_yuan": 1601.15
+          }
+        },
+        "strategy_returns": {
+          "coral": 161.37163033761124,
+          "grid": -12.281194353617543,
+          "hold": 33.30934445704412,
+          "hunter": 192.54158277599066,
+          "momentum": 72.78919848083949,
+          "news": 67.84819837541367,
+          "noise": 2.315184405205463,
+          "shark": 59.1705599654409,
+          "swift": 259.7481910470328,
+          "tracker": 152.59014165631694,
+          "value": 65.88151467521304
+        },
+        "total_combo_yuan": 137237.2,
+        "total_idle_yuan": 492707.49
+      }
+    ],
+    "fee": [
+      {
+        "seed": 25201,
+        "threads": 4,
+        "accounts": 148,
+        "engine_seconds": 1.0635545,
+        "wall_seconds": 1.1362820999929681,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": false,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        "two_sided": 0.9663333333333334,
+        "median_spread": 0.0009243309104659468,
+        "median_depth_yuan": 27478.17,
+        "world_fingerprint": {
+          "news_sha256": "22fac632024e3c5578fe4ee8e8df23f5817622f3f41f0070dcbd07d10c60cfca",
+          "rates_sha256": "16d85b4f4201cb13d972ed8eafa222f1b599145a6b0b007e653dccddac27de0f",
+          "terminal_payments": 39
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 148.30038706482122,
+            "idle_yuan": 15088.54,
+            "combo_yuan": 111.75,
+            "dividend_yuan": 19030.11
+          },
+          "swift-early-single": {
+            "return_pct": 62.949983042361794,
+            "idle_yuan": 1125.28,
+            "combo_yuan": 3.9,
+            "dividend_yuan": 803.92
+          }
+        },
+        "strategy_returns": {
+          "coral": 75.52207992161803,
+          "grid": -55.012175372217186,
+          "hold": -21.968203082521786,
+          "hunter": 55.25265535080777,
+          "momentum": 16.250800777359668,
+          "news": -28.153699823865686,
+          "noise": -36.60710775449385,
+          "shark": 42.10697847187455,
+          "swift": 105.62518505359151,
+          "tracker": 29.889677777957225,
+          "value": 10.440663424740245
+        },
+        "total_combo_yuan": 96761.75,
+        "total_idle_yuan": 1742203.01
+      },
+      {
+        "seed": 25202,
+        "threads": 4,
+        "accounts": 169,
+        "engine_seconds": 1.1506456,
+        "wall_seconds": 1.2476210999884643,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9836666666666667,
+        "median_spread": 0.0016051364365971107,
+        "median_depth_yuan": 11967.08,
+        "world_fingerprint": {
+          "news_sha256": "98643ba66c18ec598349fe6d61b535b28165f78c2bd76cba7459965b252598a8",
+          "rates_sha256": "1635d04ee21aa719522d2b7f8d16d897604c89b2fbb231d3e978655151c77b7c",
+          "terminal_payments": 17
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 71.13427004362374,
+            "idle_yuan": 12265.47,
+            "combo_yuan": 183.35,
+            "dividend_yuan": 11638.44
+          },
+          "swift-early-single": {
+            "return_pct": 39.43712676294948,
+            "idle_yuan": 1122.19,
+            "combo_yuan": 3.0,
+            "dividend_yuan": 463.25
+          }
+        },
+        "strategy_returns": {
+          "coral": 13.876161181934977,
+          "grid": -58.94618210859716,
+          "hold": -34.71200967416317,
+          "hunter": 26.169362645740183,
+          "momentum": -12.854725198706818,
+          "news": -54.185669244778346,
+          "noise": -50.577048681909766,
+          "shark": -40.20754509432985,
+          "swift": 55.28569840328662,
+          "tracker": -5.093717667915076,
+          "value": -1.5826728890488901
+        },
+        "total_combo_yuan": 109609.35,
+        "total_idle_yuan": 1783697.25
+      },
+      {
+        "seed": 25203,
+        "threads": 4,
+        "accounts": 146,
+        "engine_seconds": 1.1080682,
+        "wall_seconds": 1.2029118000064045,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": false,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        "two_sided": 0.995,
+        "median_spread": 0.0006744225257123588,
+        "median_depth_yuan": 29954.04,
+        "world_fingerprint": {
+          "news_sha256": "8440b64d25086f301229779778d323e14625a421a595ea8ca73e3c0216b9ca25",
+          "rates_sha256": "a8834b2e8b04afc3b5c5db9d23c7f7500d840aee21f2bf69ceb5445b4660f6f8",
+          "terminal_payments": 32
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 102.35895165852943,
+            "idle_yuan": 9855.5,
+            "combo_yuan": 152.2,
+            "dividend_yuan": 17088.5
+          },
+          "swift-early-single": {
+            "return_pct": 42.88419629947824,
+            "idle_yuan": 988.14,
+            "combo_yuan": 8.15,
+            "dividend_yuan": 750.58
+          }
+        },
+        "strategy_returns": {
+          "coral": 63.165369090185216,
+          "grid": -46.1121964856873,
+          "hold": -22.560230392054148,
+          "hunter": 15.637336818724723,
+          "momentum": -1.3588896016918144,
+          "news": -24.772348369758816,
+          "noise": -28.374501731949923,
+          "shark": 8.757910231963626,
+          "swift": 72.62157397900384,
+          "tracker": 71.65751165206355,
+          "value": 7.527890443287303
+        },
+        "total_combo_yuan": 115248.2,
+        "total_idle_yuan": 1893276.24
+      },
+      {
+        "seed": 25204,
+        "threads": 4,
+        "accounts": 163,
+        "engine_seconds": 1.1851723,
+        "wall_seconds": 1.2841423000209033,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": false,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 1.5,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        "two_sided": 0.9963333333333333,
+        "median_spread": 0.0007556357835523278,
+        "median_depth_yuan": 32728.53,
+        "world_fingerprint": {
+          "news_sha256": "51cbe8bc8263e80dce895e2272fb0e84c63c0a21ef3a9dd32d509f240a7cee34",
+          "rates_sha256": "37586c2375d56ba371ecd86a955427e1ada432d5db624193bf9043f48bdb35b5",
+          "terminal_payments": 35
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 243.16724422442246,
+            "idle_yuan": 14083.32,
+            "combo_yuan": 416.1,
+            "dividend_yuan": 31355.65
+          },
+          "swift-early-single": {
+            "return_pct": 138.08388338833885,
+            "idle_yuan": 1192.43,
+            "combo_yuan": 10.65,
+            "dividend_yuan": 1156.02
+          }
+        },
+        "strategy_returns": {
+          "coral": 102.1593509350935,
+          "grid": -43.12344865856012,
+          "hold": 1.3009668274519754,
+          "hunter": 106.68433718371837,
+          "momentum": 72.78976382013201,
+          "news": 15.614794760726074,
+          "noise": -19.884867375626452,
+          "shark": 64.63194719471947,
+          "swift": 190.62556380638065,
+          "tracker": 10.648024385771912,
+          "value": 44.47169010379299
+        },
+        "total_combo_yuan": 116134.9,
+        "total_idle_yuan": 2222885.23
+      },
+      {
+        "seed": 25205,
+        "threads": 4,
+        "accounts": 140,
+        "engine_seconds": 1.0065161,
+        "wall_seconds": 1.0918807000271045,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": false,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.5,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        "two_sided": 0.995,
+        "median_spread": 0.0006722689075630252,
+        "median_depth_yuan": 28295.58,
+        "world_fingerprint": {
+          "news_sha256": "f239da3d5c55407d7628df0164d4af7d5bf2ab5d02f189ace1dcbee0476e1150",
+          "rates_sha256": "4e600ebc49e1bec4505d623a7c816fabef25f6d12ee9a03b7c18dea2d8ed120a",
+          "terminal_payments": 33
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 209.5562876436341,
+            "idle_yuan": 7289.89,
+            "combo_yuan": 247.95,
+            "dividend_yuan": 29425.63
+          },
+          "swift-early-single": {
+            "return_pct": 119.0850250384699,
+            "idle_yuan": 805.31,
+            "combo_yuan": 9.5,
+            "dividend_yuan": 1138.97
+          }
+        },
+        "strategy_returns": {
+          "coral": 91.51487590049479,
+          "grid": -37.45091401922373,
+          "hold": -14.612952494769333,
+          "hunter": 37.74141500404529,
+          "momentum": 4.793509110014405,
+          "news": -11.17358723852862,
+          "noise": -19.96579119159645,
+          "shark": 5.172803779830677,
+          "swift": 164.320656341052,
+          "tracker": 80.17211237963292,
+          "value": 17.882518434191017
+        },
+        "total_combo_yuan": 107969.3,
+        "total_idle_yuan": 1848023.84
+      },
+      {
+        "seed": 25206,
+        "threads": 4,
+        "accounts": 173,
+        "engine_seconds": 1.2780767,
+        "wall_seconds": 1.3974363000015728,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0009311530381963496,
+        "median_depth_yuan": 29329.58,
+        "world_fingerprint": {
+          "news_sha256": "b6d394db514d20d2400816135ec3f19de1b6918732f94e47389e42e38fc822f0",
+          "rates_sha256": "3ff05ed38078a728d7d1f7d3e6c6f38989f3f4e7727c5cd4f2b121cb7de93559",
+          "terminal_payments": 25
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 157.609389635978,
+            "idle_yuan": 17489.69,
+            "combo_yuan": 782.5,
+            "dividend_yuan": 24562.55
+          },
+          "swift-early-single": {
+            "return_pct": 90.4628602805801,
+            "idle_yuan": 1290.49,
+            "combo_yuan": 17.6,
+            "dividend_yuan": 964.92
+          }
+        },
+        "strategy_returns": {
+          "coral": 84.66885230604693,
+          "grid": -37.713870432294506,
+          "hold": -1.178071738498475,
+          "hunter": 82.44164450521647,
+          "momentum": 37.8892127122385,
+          "news": 7.793814173996992,
+          "noise": -16.56030894185474,
+          "shark": 2.204361469103766,
+          "swift": 124.03612495827906,
+          "tracker": 12.03277247817052,
+          "value": 11.885153117105444
+        },
+        "total_combo_yuan": 134937.1,
+        "total_idle_yuan": 2288689.07
+      },
+      {
+        "seed": 25207,
+        "threads": 4,
+        "accounts": 156,
+        "engine_seconds": 1.1341193999999999,
+        "wall_seconds": 1.2541450000135228,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0010710363842760349,
+        "median_depth_yuan": 28629.545,
+        "world_fingerprint": {
+          "news_sha256": "89c92e52828f9be999c9a3569ab63f2ce3730c6775954b199b0863de56f1ae11",
+          "rates_sha256": "b6b694ec33168040f9f5945467d9d7f4cc011d3ecfadfe94217cc15ac902bc8b",
+          "terminal_payments": 33
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 272.0546838639269,
+            "idle_yuan": 19209.51,
+            "combo_yuan": 289.1,
+            "dividend_yuan": 46711.54
+          },
+          "swift-early-single": {
+            "return_pct": 155.9613543109951,
+            "idle_yuan": 1327.55,
+            "combo_yuan": -0.45,
+            "dividend_yuan": 1603.03
+          }
+        },
+        "strategy_returns": {
+          "coral": 82.65904434303934,
+          "grid": -47.77474277257677,
+          "hold": -3.486379855453141,
+          "hunter": 128.17809168186852,
+          "momentum": 66.15200602011103,
+          "news": 9.863691562036923,
+          "noise": -14.967604570926445,
+          "shark": 40.48375318971373,
+          "swift": 214.008019087461,
+          "tracker": 54.34137649410561,
+          "value": 38.83526033579779
+        },
+        "total_combo_yuan": 113679.4,
+        "total_idle_yuan": 2095381.02
+      },
+      {
+        "seed": 25208,
+        "threads": 4,
+        "accounts": 167,
+        "engine_seconds": 1.2722528,
+        "wall_seconds": 1.393041400006041,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9943333333333333,
+        "median_spread": 0.0011336261867649143,
+        "median_depth_yuan": 21440.71,
+        "world_fingerprint": {
+          "news_sha256": "5bfcb5304baa4f96f2fc664f17ef51788888ade42bdde4f12010804f094d7c4f",
+          "rates_sha256": "e2124dfa15cad322837bd1a0c52c9d6e7cbf7a8cc5964d3ae400383db8ad099c",
+          "terminal_payments": 26
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 153.02313506337785,
+            "idle_yuan": 10175.39,
+            "combo_yuan": 318.0,
+            "dividend_yuan": 24702.5
+          },
+          "swift-early-single": {
+            "return_pct": 80.09431740322029,
+            "idle_yuan": 1090.82,
+            "combo_yuan": 11.7,
+            "dividend_yuan": 869.11
+          }
+        },
+        "strategy_returns": {
+          "coral": 32.49404048190019,
+          "grid": -37.24801625466909,
+          "hold": -17.66968950349924,
+          "hunter": 38.52547961630695,
+          "momentum": -2.760307936686365,
+          "news": -0.2828938148182735,
+          "noise": -32.85140525972079,
+          "shark": -0.9837907735036419,
+          "swift": 116.55872623329907,
+          "tracker": -5.599339724648855,
+          "value": 2.139996255891039
+        },
+        "total_combo_yuan": 119560.05,
+        "total_idle_yuan": 1893554.06
+      },
+      {
+        "seed": 25209,
+        "threads": 4,
+        "accounts": 160,
+        "engine_seconds": 1.1288518,
+        "wall_seconds": 1.2290520999813452,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9953333333333333,
+        "median_spread": 0.0018549291125378856,
+        "median_depth_yuan": 10356.564999999999,
+        "world_fingerprint": {
+          "news_sha256": "853204502d8b492da2490f88dcdd09eee2279bcd761722df1d21674abe44fe62",
+          "rates_sha256": "83709bb6952287fb3685cb531237934924ae54ec0dce70a0bb3c3aab61788247",
+          "terminal_payments": 21
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 103.71630967961609,
+            "idle_yuan": 14462.08,
+            "combo_yuan": 478.95,
+            "dividend_yuan": 19636.06
+          },
+          "swift-early-single": {
+            "return_pct": 73.930368904353,
+            "idle_yuan": 1378.09,
+            "combo_yuan": 12.45,
+            "dividend_yuan": 779.39
+          }
+        },
+        "strategy_returns": {
+          "coral": 4.974536815361024,
+          "grid": -56.665216304007295,
+          "hold": -33.38907598344346,
+          "hunter": 9.943562395590599,
+          "momentum": 0.1701653280163829,
+          "news": -36.10533146327449,
+          "noise": -38.86873516987476,
+          "shark": -22.169450664039992,
+          "swift": 88.82333929198455,
+          "tracker": -32.75232937153964,
+          "value": 9.689858547513285
+        },
+        "total_combo_yuan": 102359.2,
+        "total_idle_yuan": 1713401.28
+      },
+      {
+        "seed": 25210,
+        "threads": 4,
+        "accounts": 149,
+        "engine_seconds": 1.0523165,
+        "wall_seconds": 1.1575809000059962,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0010236010217507746,
+        "median_depth_yuan": 14739.595,
+        "world_fingerprint": {
+          "news_sha256": "4baf1af1c32090431ad9e806bca6ecf80053b492944d76793e7fd0e760b78aa3",
+          "rates_sha256": "13de8d68485c108ab370790593eb6f5a380dd2e9cebea9e2202d9ec4528dcf4c",
+          "terminal_payments": 21
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 108.11213874711486,
+            "idle_yuan": 11756.7,
+            "combo_yuan": 234.2,
+            "dividend_yuan": 15732.93
+          },
+          "swift-early-single": {
+            "return_pct": 39.03183684969063,
+            "idle_yuan": 1056.02,
+            "combo_yuan": 10.4,
+            "dividend_yuan": 540.18
+          }
+        },
+        "strategy_returns": {
+          "coral": 1.2846834676424117,
+          "grid": -40.96229035056402,
+          "hold": -32.4955238026172,
+          "hunter": 2.629343974513179,
+          "momentum": -18.21227784492958,
+          "news": -29.751401357005857,
+          "noise": -34.87202409978003,
+          "shark": -20.016701342609146,
+          "swift": 73.57198779840274,
+          "tracker": 2.2342052888036465,
+          "value": -3.407428153697782
+        },
+        "total_combo_yuan": 105426.35,
+        "total_idle_yuan": 1709133.16
+      },
+      {
+        "seed": 25211,
+        "threads": 4,
+        "accounts": 177,
+        "engine_seconds": 1.5346003000000001,
+        "wall_seconds": 1.6653705000062473,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": false,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0005665000713530624,
+        "median_depth_yuan": 38527.48,
+        "world_fingerprint": {
+          "news_sha256": "8d9605be4821d1090bfd6b92fdd930850086ffbd34db6871d540148e7aa4029e",
+          "rates_sha256": "b8c8eb96139e6ce65d07e0b06392ec47a1fda136caebb21c517a6b20589719ef",
+          "terminal_payments": 42
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 127.6008496539931,
+            "idle_yuan": 10786.97,
+            "combo_yuan": 533.5,
+            "dividend_yuan": 22184.12
+          },
+          "swift-early-single": {
+            "return_pct": 78.75998610628689,
+            "idle_yuan": 1025.63,
+            "combo_yuan": 20.5,
+            "dividend_yuan": 975.02
+          }
+        },
+        "strategy_returns": {
+          "coral": 46.44966646182346,
+          "grid": -38.92264779686786,
+          "hold": -23.143824867965193,
+          "hunter": 25.15474790926337,
+          "momentum": -4.805728484783713,
+          "news": -20.343208111790954,
+          "noise": -25.281954872151122,
+          "shark": 18.615429146516323,
+          "swift": 103.18041788014,
+          "tracker": 42.91417514984726,
+          "value": 15.242345640053177
+        },
+        "total_combo_yuan": 143287.75,
+        "total_idle_yuan": 2290489.58
+      },
+      {
+        "seed": 25212,
+        "threads": 4,
+        "accounts": 150,
+        "engine_seconds": 1.4254346,
+        "wall_seconds": 1.5668259999947622,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9946666666666667,
+        "median_spread": 0.000719062357576779,
+        "median_depth_yuan": 35636.815,
+        "world_fingerprint": {
+          "news_sha256": "97481e9403e639b1bab44d07eeb21c6300c7739c9b84e219e8aa067a708ad127",
+          "rates_sha256": "35ca2f921300895d8bbc0129144c90b797fa52a2cb31307da88565d9c73d3142",
+          "terminal_payments": 21
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 301.8430800799179,
+            "idle_yuan": 13011.17,
+            "combo_yuan": 435.25,
+            "dividend_yuan": 49409.92
+          },
+          "swift-early-single": {
+            "return_pct": 154.60500026999298,
+            "idle_yuan": 1130.41,
+            "combo_yuan": 34.65,
+            "dividend_yuan": 1576.3
+          }
+        },
+        "strategy_returns": {
+          "coral": 123.8040000959975,
+          "grid": -26.126232639068775,
+          "hold": 5.188918588116715,
+          "hunter": 145.94980830498406,
+          "momentum": 50.948219846284,
+          "news": 34.04185469749215,
+          "noise": -12.002940223554186,
+          "shark": 32.661930989794264,
+          "swift": 228.22404017495546,
+          "tracker": 129.76201018773511,
+          "value": 39.096415222933935
+        },
+        "total_combo_yuan": 125455.15,
+        "total_idle_yuan": 2247310.84
+      }
+    ],
+    "combo": [
+      {
+        "seed": 25201,
+        "threads": 4,
+        "accounts": 148,
+        "engine_seconds": 1.0090703,
+        "wall_seconds": 1.0876216000178829,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": false,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        "two_sided": 0.9623333333333334,
+        "median_spread": 0.0008920038228735266,
+        "median_depth_yuan": 28564.61,
+        "world_fingerprint": {
+          "news_sha256": "22fac632024e3c5578fe4ee8e8df23f5817622f3f41f0070dcbd07d10c60cfca",
+          "rates_sha256": "16d85b4f4201cb13d972ed8eafa222f1b599145a6b0b007e653dccddac27de0f",
+          "terminal_payments": 39
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 295.3406062759412,
+            "idle_yuan": 5136.16,
+            "combo_yuan": 186.04,
+            "dividend_yuan": 19610.03
+          },
+          "swift-early-single": {
+            "return_pct": 104.20657095021993,
+            "idle_yuan": 361.29,
+            "combo_yuan": 0.35,
+            "dividend_yuan": 817.11
+          }
+        },
+        "strategy_returns": {
+          "coral": 86.14105764221237,
+          "grid": -43.00792520088237,
+          "hold": -3.2146452469778115,
+          "hunter": 78.09186867789639,
+          "momentum": 37.3450137936806,
+          "news": -22.252096703072976,
+          "noise": -19.454227509024903,
+          "shark": 61.47301582174562,
+          "swift": 199.77358861308056,
+          "tracker": 24.096026663867313,
+          "value": 35.56435643283826
+        },
+        "total_combo_yuan": 103907.83,
+        "total_idle_yuan": 411121.17
+      },
+      {
+        "seed": 25202,
+        "threads": 4,
+        "accounts": 169,
+        "engine_seconds": 1.1658321,
+        "wall_seconds": 1.254455400048755,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9836666666666667,
+        "median_spread": 0.0015372790161414297,
+        "median_depth_yuan": 12091.56,
+        "world_fingerprint": {
+          "news_sha256": "98643ba66c18ec598349fe6d61b535b28165f78c2bd76cba7459965b252598a8",
+          "rates_sha256": "1635d04ee21aa719522d2b7f8d16d897604c89b2fbb231d3e978655151c77b7c",
+          "terminal_payments": 17
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 93.56004616492312,
+            "idle_yuan": 3664.64,
+            "combo_yuan": 52.96,
+            "dividend_yuan": 12012.09
+          },
+          "swift-early-single": {
+            "return_pct": 57.915801956715086,
+            "idle_yuan": 383.22,
+            "combo_yuan": 0.01,
+            "dividend_yuan": 469.21
+          }
+        },
+        "strategy_returns": {
+          "coral": 22.23690405601909,
+          "grid": -48.61009943708682,
+          "hold": -18.450300795533156,
+          "hunter": 54.58160013189978,
+          "momentum": 9.131492383493567,
+          "news": -40.960913345474566,
+          "noise": -39.80990019784967,
+          "shark": -34.67412199586821,
+          "swift": 75.7379240608191,
+          "tracker": -5.447551685957511,
+          "value": 20.56713833065097
+        },
+        "total_combo_yuan": 120985.26,
+        "total_idle_yuan": 438399.51
+      },
+      {
+        "seed": 25203,
+        "threads": 4,
+        "accounts": 146,
+        "engine_seconds": 1.1264521,
+        "wall_seconds": 1.2107799000223167,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": false,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.5,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        "two_sided": 0.995,
+        "median_spread": 0.0006134342091810653,
+        "median_depth_yuan": 31473.91,
+        "world_fingerprint": {
+          "news_sha256": "8440b64d25086f301229779778d323e14625a421a595ea8ca73e3c0216b9ca25",
+          "rates_sha256": "a8834b2e8b04afc3b5c5db9d23c7f7500d840aee21f2bf69ceb5445b4660f6f8",
+          "terminal_payments": 32
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 107.85281729983444,
+            "idle_yuan": 2460.26,
+            "combo_yuan": 8.74,
+            "dividend_yuan": 16976.22
+          },
+          "swift-early-single": {
+            "return_pct": 72.16724640110638,
+            "idle_yuan": 246.23,
+            "combo_yuan": 10.1,
+            "dividend_yuan": 851.9
+          }
+        },
+        "strategy_returns": {
+          "coral": 81.65909614765512,
+          "grid": -33.62152479633784,
+          "hold": -2.8186847798755275,
+          "hunter": 35.13806235986841,
+          "momentum": 17.393447603880727,
+          "news": -5.132892551809403,
+          "noise": -12.561685101039815,
+          "shark": 28.500568675248598,
+          "swift": 90.01003185047041,
+          "tracker": 79.7623637599121,
+          "value": 31.579932959474466
+        },
+        "total_combo_yuan": 131607.89,
+        "total_idle_yuan": 387208.73
+      },
+      {
+        "seed": 25204,
+        "threads": 4,
+        "accounts": 163,
+        "engine_seconds": 1.2103903,
+        "wall_seconds": 1.3180006999755278,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.000706865355440676,
+        "median_depth_yuan": 33066.895000000004,
+        "world_fingerprint": {
+          "news_sha256": "51cbe8bc8263e80dce895e2272fb0e84c63c0a21ef3a9dd32d509f240a7cee34",
+          "rates_sha256": "37586c2375d56ba371ecd86a955427e1ada432d5db624193bf9043f48bdb35b5",
+          "terminal_payments": 35
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 235.23187568756873,
+            "idle_yuan": 3975.69,
+            "combo_yuan": 403.1,
+            "dividend_yuan": 27313.23
+          },
+          "swift-early-single": {
+            "return_pct": 148.72029702970298,
+            "idle_yuan": 311.13,
+            "combo_yuan": 2.89,
+            "dividend_yuan": 1034.93
+          }
+        },
+        "strategy_returns": {
+          "coral": 123.7619482260726,
+          "grid": -33.395085188889475,
+          "hold": 26.9546373868156,
+          "hunter": 168.53535753575358,
+          "momentum": 117.49713971397139,
+          "news": 42.712573913641364,
+          "noise": -5.023682923847941,
+          "shark": 73.09026677667767,
+          "swift": 191.97608635863585,
+          "tracker": 18.686179867986798,
+          "value": 67.59559238532549
+        },
+        "total_combo_yuan": 128549.41,
+        "total_idle_yuan": 511408.22
+      },
+      {
+        "seed": 25205,
+        "threads": 4,
+        "accounts": 140,
+        "engine_seconds": 1.0083671,
+        "wall_seconds": 1.0914634000509977,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": false,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 1.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0006529191871559332,
+        "median_depth_yuan": 28511.835,
+        "world_fingerprint": {
+          "news_sha256": "f239da3d5c55407d7628df0164d4af7d5bf2ab5d02f189ace1dcbee0476e1150",
+          "rates_sha256": "4e600ebc49e1bec4505d623a7c816fabef25f6d12ee9a03b7c18dea2d8ed120a",
+          "terminal_payments": 33
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 269.4187479178675,
+            "idle_yuan": 1246.65,
+            "combo_yuan": 396.18,
+            "dividend_yuan": 34352.45
+          },
+          "swift-early-single": {
+            "return_pct": 107.20906990148538,
+            "idle_yuan": 145.36,
+            "combo_yuan": 18.41,
+            "dividend_yuan": 1094.94
+          }
+        },
+        "strategy_returns": {
+          "coral": 110.13048618051553,
+          "grid": -24.53072219278488,
+          "hold": 8.523435337997313,
+          "hunter": 83.31850943106886,
+          "momentum": 28.84043442821714,
+          "news": 12.61831920888338,
+          "noise": -2.8045440255568606,
+          "shark": 23.6920440063667,
+          "swift": 188.31390890967646,
+          "tracker": 77.7293465673236,
+          "value": 42.72472678266427
+        },
+        "total_combo_yuan": 122119.28,
+        "total_idle_yuan": 403769.31
+      },
+      {
+        "seed": 25206,
+        "threads": 4,
+        "accounts": 173,
+        "engine_seconds": 1.2609529,
+        "wall_seconds": 1.37420399999246,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0008904308103764469,
+        "median_depth_yuan": 30318.82,
+        "world_fingerprint": {
+          "news_sha256": "b6d394db514d20d2400816135ec3f19de1b6918732f94e47389e42e38fc822f0",
+          "rates_sha256": "3ff05ed38078a728d7d1f7d3e6c6f38989f3f4e7727c5cd4f2b121cb7de93559",
+          "terminal_payments": 25
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 205.01795346633793,
+            "idle_yuan": 4952.12,
+            "combo_yuan": 640.36,
+            "dividend_yuan": 26278.42
+          },
+          "swift-early-single": {
+            "return_pct": 137.69904930070305,
+            "idle_yuan": 470.43,
+            "combo_yuan": 24.72,
+            "dividend_yuan": 1011.75
+          }
+        },
+        "strategy_returns": {
+          "coral": 100.09123878020507,
+          "grid": -24.246477831271392,
+          "hold": 24.31920327792074,
+          "hunter": 115.13143893309216,
+          "momentum": 71.52783123741642,
+          "news": 33.36793929018759,
+          "noise": 0.6797773390506379,
+          "shark": 22.51819272625913,
+          "swift": 171.3585013835205,
+          "tracker": 11.121704717966388,
+          "value": 38.28875105342337
+        },
+        "total_combo_yuan": 149215.27,
+        "total_idle_yuan": 573208.68
+      },
+      {
+        "seed": 25207,
+        "threads": 4,
+        "accounts": 156,
+        "engine_seconds": 1.1176827,
+        "wall_seconds": 1.220607299997937,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0010312106727954598,
+        "median_depth_yuan": 28841.925,
+        "world_fingerprint": {
+          "news_sha256": "89c92e52828f9be999c9a3569ab63f2ce3730c6775954b199b0863de56f1ae11",
+          "rates_sha256": "b6b694ec33168040f9f5945467d9d7f4cc011d3ecfadfe94217cc15ac902bc8b",
+          "terminal_payments": 33
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 317.04823756613473,
+            "idle_yuan": 5309.08,
+            "combo_yuan": 182.58,
+            "dividend_yuan": 54314.64
+          },
+          "swift-early-single": {
+            "return_pct": 159.9981811275939,
+            "idle_yuan": 363.15,
+            "combo_yuan": 3.85,
+            "dividend_yuan": 1491.98
+          }
+        },
+        "strategy_returns": {
+          "coral": 110.15411600126251,
+          "grid": -36.950458303652844,
+          "hold": 20.339685121088756,
+          "hunter": 148.68669833644503,
+          "momentum": 87.14996513827889,
+          "news": 38.91370931867591,
+          "noise": -1.3794274831620548,
+          "shark": 58.14326562491641,
+          "swift": 238.52320934686432,
+          "tracker": 84.08872709246113,
+          "value": 67.62166015088525
+        },
+        "total_combo_yuan": 128085.79,
+        "total_idle_yuan": 502358.52
+      },
+      {
+        "seed": 25208,
+        "threads": 4,
+        "accounts": 167,
+        "engine_seconds": 1.2647054,
+        "wall_seconds": 1.3611393999890424,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.995,
+        "median_spread": 0.0010467289719626168,
+        "median_depth_yuan": 22221.11,
+        "world_fingerprint": {
+          "news_sha256": "5bfcb5304baa4f96f2fc664f17ef51788888ade42bdde4f12010804f094d7c4f",
+          "rates_sha256": "e2124dfa15cad322837bd1a0c52c9d6e7cbf7a8cc5964d3ae400383db8ad099c",
+          "terminal_payments": 26
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 140.0372559095581,
+            "idle_yuan": 2363.69,
+            "combo_yuan": 248.77,
+            "dividend_yuan": 23035.9
+          },
+          "swift-early-single": {
+            "return_pct": 99.55116264131551,
+            "idle_yuan": 250.9,
+            "combo_yuan": 12.9,
+            "dividend_yuan": 903.11
+          }
+        },
+        "strategy_returns": {
+          "coral": 43.887581898766705,
+          "grid": -24.51620365232731,
+          "hold": 2.551142759261977,
+          "hunter": 57.43542576652963,
+          "momentum": 16.383930244197497,
+          "news": 22.76217094506213,
+          "noise": -17.316286479744775,
+          "shark": 14.499951059560514,
+          "swift": 119.7942092754368,
+          "tracker": 7.136329998501199,
+          "value": 25.915567738859107
+        },
+        "total_combo_yuan": 132520.45,
+        "total_idle_yuan": 463249.93
+      },
+      {
+        "seed": 25209,
+        "threads": 4,
+        "accounts": 160,
+        "engine_seconds": 1.1341229,
+        "wall_seconds": 1.2293727000360377,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9943333333333333,
+        "median_spread": 0.0016760946993505132,
+        "median_depth_yuan": 10733.29,
+        "world_fingerprint": {
+          "news_sha256": "853204502d8b492da2490f88dcdd09eee2279bcd761722df1d21674abe44fe62",
+          "rates_sha256": "83709bb6952287fb3685cb531237934924ae54ec0dce70a0bb3c3aab61788247",
+          "terminal_payments": 21
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 151.69818899564805,
+            "idle_yuan": 4810.74,
+            "combo_yuan": 486.08,
+            "dividend_yuan": 22499.53
+          },
+          "swift-early-single": {
+            "return_pct": 133.1920813781509,
+            "idle_yuan": 444.17,
+            "combo_yuan": 13.03,
+            "dividend_yuan": 875.83
+          }
+        },
+        "strategy_returns": {
+          "coral": 13.837454142622207,
+          "grid": -48.88683928483096,
+          "hold": -16.179860442916272,
+          "hunter": 32.81385998233686,
+          "momentum": 24.912799477472127,
+          "news": -18.63344718613337,
+          "noise": -25.667783913769803,
+          "shark": -11.254052870869033,
+          "swift": 142.44513518689948,
+          "tracker": -30.90064303777714,
+          "value": 36.44262076704538
+        },
+        "total_combo_yuan": 111632.86,
+        "total_idle_yuan": 454980.43
+      },
+      {
+        "seed": 25210,
+        "threads": 4,
+        "accounts": 149,
+        "engine_seconds": 1.1153163,
+        "wall_seconds": 1.2263899000245146,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9963333333333333,
+        "median_spread": 0.0009515653249595584,
+        "median_depth_yuan": 16048.39,
+        "world_fingerprint": {
+          "news_sha256": "4baf1af1c32090431ad9e806bca6ecf80053b492944d76793e7fd0e760b78aa3",
+          "rates_sha256": "13de8d68485c108ab370790593eb6f5a380dd2e9cebea9e2202d9ec4528dcf4c",
+          "terminal_payments": 21
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 139.70471267730784,
+            "idle_yuan": 3916.28,
+            "combo_yuan": 181.42,
+            "dividend_yuan": 16966.89
+          },
+          "swift-early-single": {
+            "return_pct": 53.705449541085585,
+            "idle_yuan": 314.82,
+            "combo_yuan": 8.14,
+            "dividend_yuan": 508.93
+          }
+        },
+        "strategy_returns": {
+          "coral": 18.817502200357115,
+          "grid": -28.146200752599967,
+          "hold": -14.547568557922576,
+          "hunter": 19.358901422797263,
+          "momentum": -0.7199100001674672,
+          "news": -11.759357086353932,
+          "noise": -20.436834729634263,
+          "shark": -12.052856430761896,
+          "swift": 96.70508110919671,
+          "tracker": 8.19876990706125,
+          "value": 17.596007973799658
+        },
+        "total_combo_yuan": 117963.99,
+        "total_idle_yuan": 406489.46
+      },
+      {
+        "seed": 25211,
+        "threads": 4,
+        "accounts": 177,
+        "engine_seconds": 1.5168842,
+        "wall_seconds": 1.684417599986773,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": false,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0005377438959724186,
+        "median_depth_yuan": 41412.08,
+        "world_fingerprint": {
+          "news_sha256": "8d9605be4821d1090bfd6b92fdd930850086ffbd34db6871d540148e7aa4029e",
+          "rates_sha256": "b8c8eb96139e6ce65d07e0b06392ec47a1fda136caebb21c517a6b20589719ef",
+          "terminal_payments": 42
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 153.89096107088466,
+            "idle_yuan": 2423.56,
+            "combo_yuan": 289.03,
+            "dividend_yuan": 22116.6
+          },
+          "swift-early-single": {
+            "return_pct": 84.88524327357257,
+            "idle_yuan": 306.33,
+            "combo_yuan": 12.22,
+            "dividend_yuan": 868.07
+          }
+        },
+        "strategy_returns": {
+          "coral": 65.62555849461025,
+          "grid": -25.105540800412204,
+          "hold": -1.9856449443806163,
+          "hunter": 31.2116252972453,
+          "momentum": 15.646509821169827,
+          "news": -0.8118236834370947,
+          "noise": -10.140361236540466,
+          "shark": 38.312844559631635,
+          "swift": 119.38810217222861,
+          "tracker": 48.277277544731525,
+          "value": 41.4676259875982
+        },
+        "total_combo_yuan": 160361.85,
+        "total_idle_yuan": 496272.95
+      },
+      {
+        "seed": 25212,
+        "threads": 4,
+        "accounts": 150,
+        "engine_seconds": 1.4763523,
+        "wall_seconds": 1.5829038999509066,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.996,
+        "median_spread": 0.0006784605825241824,
+        "median_depth_yuan": 36662.42,
+        "world_fingerprint": {
+          "news_sha256": "97481e9403e639b1bab44d07eeb21c6300c7739c9b84e219e8aa067a708ad127",
+          "rates_sha256": "35ca2f921300895d8bbc0129144c90b797fa52a2cb31307da88565d9c73d3142",
+          "terminal_payments": 21
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 373.8471839732167,
+            "idle_yuan": 2703.53,
+            "combo_yuan": 571.79,
+            "dividend_yuan": 45909.68
+          },
+          "swift-early-single": {
+            "return_pct": 211.67557643501266,
+            "idle_yuan": 372.88,
+            "combo_yuan": 26.05,
+            "dividend_yuan": 1595.06
+          }
+        },
+        "strategy_returns": {
+          "coral": 156.606515230604,
+          "grid": -12.714628328421528,
+          "hold": 33.31280486707346,
+          "hunter": 184.81889642297872,
+          "momentum": 74.55196464891912,
+          "news": 68.17104055294563,
+          "noise": 0.9456382634051503,
+          "shark": 60.921469841784116,
+          "swift": 292.7613802041147,
+          "tracker": 171.56053242615693,
+          "value": 66.58199686808143
+        },
+        "total_combo_yuan": 138529.31,
+        "total_idle_yuan": 494230.45
+      }
+    ],
+    "after": [
+      {
+        "seed": 25201,
+        "threads": 4,
+        "accounts": 148,
+        "engine_seconds": 1.0644874,
+        "wall_seconds": 1.1378750000149012,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": false,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        "two_sided": 0.967,
+        "median_spread": 0.0009126169290440338,
+        "median_depth_yuan": 27085.93,
+        "world_fingerprint": {
+          "news_sha256": "22fac632024e3c5578fe4ee8e8df23f5817622f3f41f0070dcbd07d10c60cfca",
+          "rates_sha256": "16d85b4f4201cb13d972ed8eafa222f1b599145a6b0b007e653dccddac27de0f",
+          "terminal_payments": 39
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 162.89361908299554,
+            "idle_yuan": 16592.39,
+            "combo_yuan": 195.61,
+            "dividend_yuan": 19869.38
+          },
+          "swift-early-single": {
+            "return_pct": 69.67382117497591,
+            "idle_yuan": 1177.73,
+            "combo_yuan": 5.43,
+            "dividend_yuan": 769.34
+          }
+        },
+        "strategy_returns": {
+          "coral": 75.85614240348652,
+          "grid": -55.392394320029084,
+          "hold": -23.109127208434366,
+          "hunter": 51.68255435865135,
+          "momentum": 20.697313743713075,
+          "news": -32.1470621197684,
+          "noise": -33.36239051964435,
+          "shark": 41.29868322593496,
+          "swift": 116.28372012898572,
+          "tracker": 15.584224282261236,
+          "value": 11.01730387435991
+        },
+        "total_combo_yuan": 98414.58,
+        "total_idle_yuan": 1761126.22
+      },
+      {
+        "seed": 25202,
+        "threads": 4,
+        "accounts": 169,
+        "engine_seconds": 1.1535283,
+        "wall_seconds": 1.255266299995128,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9903333333333333,
+        "median_spread": 0.0016122531237404273,
+        "median_depth_yuan": 11982.6,
+        "world_fingerprint": {
+          "news_sha256": "98643ba66c18ec598349fe6d61b535b28165f78c2bd76cba7459965b252598a8",
+          "rates_sha256": "1635d04ee21aa719522d2b7f8d16d897604c89b2fbb231d3e978655151c77b7c",
+          "terminal_payments": 17
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 73.22987696412689,
+            "idle_yuan": 12572.02,
+            "combo_yuan": 193.86,
+            "dividend_yuan": 11284.09
+          },
+          "swift-early-single": {
+            "return_pct": 33.19242090551013,
+            "idle_yuan": 1275.71,
+            "combo_yuan": 9.26,
+            "dividend_yuan": 458.21
+          }
+        },
+        "strategy_returns": {
+          "coral": 12.027972484576399,
+          "grid": -58.03767027396563,
+          "hold": -35.00466105134612,
+          "hunter": 28.22191684263388,
+          "momentum": -9.485310519108326,
+          "news": -54.867306389134136,
+          "noise": -51.69028207191563,
+          "shark": -41.82731448147992,
+          "swift": 53.21114893481851,
+          "tracker": -22.108793117009625,
+          "value": 2.2345980157553678
+        },
+        "total_combo_yuan": 112946.13,
+        "total_idle_yuan": 1778933.87
+      },
+      {
+        "seed": 25203,
+        "threads": 4,
+        "accounts": 146,
+        "engine_seconds": 1.1048437,
+        "wall_seconds": 1.1947627000045031,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": false,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        "two_sided": 0.9913333333333333,
+        "median_spread": 0.0006840184233276893,
+        "median_depth_yuan": 30906.625,
+        "world_fingerprint": {
+          "news_sha256": "8440b64d25086f301229779778d323e14625a421a595ea8ca73e3c0216b9ca25",
+          "rates_sha256": "a8834b2e8b04afc3b5c5db9d23c7f7500d840aee21f2bf69ceb5445b4660f6f8",
+          "terminal_payments": 32
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 94.45073654212854,
+            "idle_yuan": 9452.09,
+            "combo_yuan": 98.84,
+            "dividend_yuan": 16687.8
+          },
+          "swift-early-single": {
+            "return_pct": 53.10934978940971,
+            "idle_yuan": 949.21,
+            "combo_yuan": 6.83,
+            "dividend_yuan": 772.62
+          }
+        },
+        "strategy_returns": {
+          "coral": 58.926391981758364,
+          "grid": -45.41461735528985,
+          "hold": -22.718405564402907,
+          "hunter": 13.90931783416801,
+          "momentum": -4.791829532284867,
+          "news": -25.042311228338537,
+          "noise": -29.239746316483426,
+          "shark": 12.159557352965145,
+          "swift": 73.78004316576913,
+          "tracker": 69.21551378341081,
+          "value": 8.316345106133312
+        },
+        "total_combo_yuan": 117500.12,
+        "total_idle_yuan": 1888641.94
+      },
+      {
+        "seed": 25204,
+        "threads": 4,
+        "accounts": 163,
+        "engine_seconds": 1.20716,
+        "wall_seconds": 1.3128641999792308,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0007423610107253772,
+        "median_depth_yuan": 31632.975,
+        "world_fingerprint": {
+          "news_sha256": "51cbe8bc8263e80dce895e2272fb0e84c63c0a21ef3a9dd32d509f240a7cee34",
+          "rates_sha256": "37586c2375d56ba371ecd86a955427e1ada432d5db624193bf9043f48bdb35b5",
+          "terminal_payments": 35
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 260.37150715071505,
+            "idle_yuan": 14911.17,
+            "combo_yuan": 398.66,
+            "dividend_yuan": 31483.19
+          },
+          "swift-early-single": {
+            "return_pct": 148.26017601760176,
+            "idle_yuan": 1336.17,
+            "combo_yuan": 7.64,
+            "dividend_yuan": 1132.8
+          }
+        },
+        "strategy_returns": {
+          "coral": 91.55801189493948,
+          "grid": -43.7721326612974,
+          "hold": 1.3823220783616803,
+          "hunter": 120.38117436743674,
+          "momentum": 84.74138476347635,
+          "news": 14.527189906490648,
+          "noise": -19.426654748808215,
+          "shark": 57.11673267326732,
+          "swift": 204.31584158415842,
+          "tracker": 9.557219471947198,
+          "value": 43.99387166977567
+        },
+        "total_combo_yuan": 120130.37,
+        "total_idle_yuan": 2231566.43
+      },
+      {
+        "seed": 25205,
+        "threads": 4,
+        "accounts": 140,
+        "engine_seconds": 0.9911341,
+        "wall_seconds": 1.15568979998352,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": false,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 1.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0007207856622165507,
+        "median_depth_yuan": 28775.07,
+        "world_fingerprint": {
+          "news_sha256": "f239da3d5c55407d7628df0164d4af7d5bf2ab5d02f189ace1dcbee0476e1150",
+          "rates_sha256": "4e600ebc49e1bec4505d623a7c816fabef25f6d12ee9a03b7c18dea2d8ed120a",
+          "terminal_payments": 33
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 225.87766843460648,
+            "idle_yuan": 6498.39,
+            "combo_yuan": 304.94,
+            "dividend_yuan": 31132.64
+          },
+          "swift-early-single": {
+            "return_pct": 122.98171953740966,
+            "idle_yuan": 683.63,
+            "combo_yuan": 10.73,
+            "dividend_yuan": 1155.31
+          }
+        },
+        "strategy_returns": {
+          "coral": 88.84606232384498,
+          "grid": -37.29099520029672,
+          "hold": -14.111755654146549,
+          "hunter": 57.22313586344383,
+          "momentum": 4.939041202994796,
+          "news": -12.403366216405258,
+          "noise": -19.79850756834384,
+          "shark": 17.489311719696047,
+          "swift": 174.42969398600806,
+          "tracker": 56.68233135387528,
+          "value": 18.490598392612576
+        },
+        "total_combo_yuan": 112813.84,
+        "total_idle_yuan": 1839627.05
+      },
+      {
+        "seed": 25206,
+        "threads": 4,
+        "accounts": 173,
+        "engine_seconds": 1.2553594000000001,
+        "wall_seconds": 1.3576754000387155,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0009138679937831086,
+        "median_depth_yuan": 30299.64,
+        "world_fingerprint": {
+          "news_sha256": "b6d394db514d20d2400816135ec3f19de1b6918732f94e47389e42e38fc822f0",
+          "rates_sha256": "3ff05ed38078a728d7d1f7d3e6c6f38989f3f4e7727c5cd4f2b121cb7de93559",
+          "terminal_payments": 25
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 181.99679152445657,
+            "idle_yuan": 16172.28,
+            "combo_yuan": 732.0,
+            "dividend_yuan": 29406.58
+          },
+          "swift-early-single": {
+            "return_pct": 102.75573595753613,
+            "idle_yuan": 1342.69,
+            "combo_yuan": 31.25,
+            "dividend_yuan": 1107.28
+          }
+        },
+        "strategy_returns": {
+          "coral": 81.01447851505722,
+          "grid": -37.34190753431202,
+          "hold": -0.8432291610590127,
+          "hunter": 79.81003509943044,
+          "momentum": 42.23752308110552,
+          "news": 6.260292662735626,
+          "noise": -16.13529784932405,
+          "shark": 4.0685551452247894,
+          "swift": 142.37626374099636,
+          "tracker": 8.914757372495401,
+          "value": 11.45325198278503
+        },
+        "total_combo_yuan": 142374.1,
+        "total_idle_yuan": 2275583.9
+      },
+      {
+        "seed": 25207,
+        "threads": 4,
+        "accounts": 156,
+        "engine_seconds": 1.1455129,
+        "wall_seconds": 1.2424495000159368,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0010499543940576108,
+        "median_depth_yuan": 30059.43,
+        "world_fingerprint": {
+          "news_sha256": "89c92e52828f9be999c9a3569ab63f2ce3730c6775954b199b0863de56f1ae11",
+          "rates_sha256": "b6b694ec33168040f9f5945467d9d7f4cc011d3ecfadfe94217cc15ac902bc8b",
+          "terminal_payments": 33
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 275.518004162008,
+            "idle_yuan": 19078.54,
+            "combo_yuan": 227.03,
+            "dividend_yuan": 48612.42
+          },
+          "swift-early-single": {
+            "return_pct": 148.24184583451472,
+            "idle_yuan": 1354.48,
+            "combo_yuan": 14.16,
+            "dividend_yuan": 1579.07
+          }
+        },
+        "strategy_returns": {
+          "coral": 86.1735913100696,
+          "grid": -46.63219094884813,
+          "hold": -3.758156840297654,
+          "hunter": 111.3543199111249,
+          "momentum": 62.43548798385127,
+          "news": 9.51137556546562,
+          "noise": -16.055441267246717,
+          "shark": 41.720352379780564,
+          "swift": 211.87992499826137,
+          "tracker": 59.378935317687464,
+          "value": 37.887815971433746
+        },
+        "total_combo_yuan": 117101.8,
+        "total_idle_yuan": 2081302.33
+      },
+      {
+        "seed": 25208,
+        "threads": 4,
+        "accounts": 167,
+        "engine_seconds": 1.2620669,
+        "wall_seconds": 1.371956399991177,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.995,
+        "median_spread": 0.0010888798148904315,
+        "median_depth_yuan": 21570.46,
+        "world_fingerprint": {
+          "news_sha256": "5bfcb5304baa4f96f2fc664f17ef51788888ade42bdde4f12010804f094d7c4f",
+          "rates_sha256": "e2124dfa15cad322837bd1a0c52c9d6e7cbf7a8cc5964d3ae400383db8ad099c",
+          "terminal_payments": 26
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 122.08421655532717,
+            "idle_yuan": 8847.01,
+            "combo_yuan": 375.64,
+            "dividend_yuan": 23301.52
+          },
+          "swift-early-single": {
+            "return_pct": 95.92379667694415,
+            "idle_yuan": 980.52,
+            "combo_yuan": 15.2,
+            "dividend_yuan": 997.86
+          }
+        },
+        "strategy_returns": {
+          "coral": 35.67912039416086,
+          "grid": -36.608237321127945,
+          "hold": -18.079328628933588,
+          "hunter": 34.290555948098664,
+          "momentum": -9.415002596137375,
+          "news": -0.8683994362951188,
+          "noise": -30.35274012932511,
+          "shark": 7.482335560123327,
+          "swift": 109.00400661613565,
+          "tracker": -10.619647139431315,
+          "value": 3.9135848656981747
+        },
+        "total_combo_yuan": 125229.75,
+        "total_idle_yuan": 1872191.61
+      },
+      {
+        "seed": 25209,
+        "threads": 4,
+        "accounts": 160,
+        "engine_seconds": 1.1514362,
+        "wall_seconds": 1.2505939999828115,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.993,
+        "median_spread": 0.0019191952615730784,
+        "median_depth_yuan": 10139.79,
+        "world_fingerprint": {
+          "news_sha256": "853204502d8b492da2490f88dcdd09eee2279bcd761722df1d21674abe44fe62",
+          "rates_sha256": "83709bb6952287fb3685cb531237934924ae54ec0dce70a0bb3c3aab61788247",
+          "terminal_payments": 21
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 99.088406167204,
+            "idle_yuan": 13232.49,
+            "combo_yuan": 339.12,
+            "dividend_yuan": 21974.62
+          },
+          "swift-early-single": {
+            "return_pct": 71.8525553037316,
+            "idle_yuan": 1316.27,
+            "combo_yuan": 10.46,
+            "dividend_yuan": 807.54
+          }
+        },
+        "strategy_returns": {
+          "coral": 4.1827381775749,
+          "grid": -57.14700565561742,
+          "hold": -33.79456067867822,
+          "hunter": 5.119715022185335,
+          "momentum": 2.9473203667189662,
+          "news": -35.96706215884062,
+          "noise": -38.26517274768304,
+          "shark": -11.196909861719769,
+          "swift": 85.4704807354678,
+          "tracker": -36.355127632180974,
+          "value": 10.57395705187546
+        },
+        "total_combo_yuan": 106115.58,
+        "total_idle_yuan": 1704864.17
+      },
+      {
+        "seed": 25210,
+        "threads": 4,
+        "accounts": 149,
+        "engine_seconds": 1.1370866,
+        "wall_seconds": 1.2263112000073306,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0010029252055011768,
+        "median_depth_yuan": 15079.240000000002,
+        "world_fingerprint": {
+          "news_sha256": "4baf1af1c32090431ad9e806bca6ecf80053b492944d76793e7fd0e760b78aa3",
+          "rates_sha256": "13de8d68485c108ab370790593eb6f5a380dd2e9cebea9e2202d9ec4528dcf4c",
+          "terminal_payments": 21
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 114.7705969680223,
+            "idle_yuan": 12111.49,
+            "combo_yuan": 202.78,
+            "dividend_yuan": 16432.82
+          },
+          "swift-early-single": {
+            "return_pct": 34.07805337927896,
+            "idle_yuan": 1011.42,
+            "combo_yuan": 1.93,
+            "dividend_yuan": 542.16
+          }
+        },
+        "strategy_returns": {
+          "coral": 6.845669179468471,
+          "grid": -41.41219784031614,
+          "hold": -32.616170658984615,
+          "hunter": 6.185565055318961,
+          "momentum": -18.329661328344727,
+          "news": -29.78499561132603,
+          "noise": -34.75509241732916,
+          "shark": -22.2280715299676,
+          "swift": 74.42432517365063,
+          "tracker": 6.074814248922697,
+          "value": -3.369401314851724
+        },
+        "total_combo_yuan": 107649.7,
+        "total_idle_yuan": 1703052.73
+      },
+      {
+        "seed": 25211,
+        "threads": 4,
+        "accounts": 177,
+        "engine_seconds": 1.4330645,
+        "wall_seconds": 1.5255681999842636,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": false,
+          "failed_checks": [
+            {
+              "name": "value_crossings",
+              "value": 0.0,
+              "threshold": 2.0,
+              "at_least": true,
+              "pass": false
+            }
+          ]
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0005673226498713319,
+        "median_depth_yuan": 39008.84,
+        "world_fingerprint": {
+          "news_sha256": "8d9605be4821d1090bfd6b92fdd930850086ffbd34db6871d540148e7aa4029e",
+          "rates_sha256": "b8c8eb96139e6ce65d07e0b06392ec47a1fda136caebb21c517a6b20589719ef",
+          "terminal_payments": 42
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 131.1918668341037,
+            "idle_yuan": 10271.0,
+            "combo_yuan": 346.68,
+            "dividend_yuan": 21321.55
+          },
+          "swift-early-single": {
+            "return_pct": 73.55438587116252,
+            "idle_yuan": 943.47,
+            "combo_yuan": 13.11,
+            "dividend_yuan": 934.67
+          }
+        },
+        "strategy_returns": {
+          "coral": 44.52693094408968,
+          "grid": -38.846784527502834,
+          "hold": -23.208501883666873,
+          "hunter": 17.0534239987175,
+          "momentum": -5.123458794658733,
+          "news": -22.268753172843134,
+          "noise": -25.306844657600127,
+          "shark": 18.256290022354627,
+          "swift": 102.37312635263311,
+          "tracker": 45.93665446513658,
+          "value": 16.025401520365048
+        },
+        "total_combo_yuan": 145361.59,
+        "total_idle_yuan": 2292010.41
+      },
+      {
+        "seed": 25212,
+        "threads": 4,
+        "accounts": 150,
+        "engine_seconds": 1.2278214,
+        "wall_seconds": 1.3383041999768466,
+        "audits": 6,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "quality": {
+          "pass": true,
+          "failed_checks": []
+        },
+        "two_sided": 0.9966666666666667,
+        "median_spread": 0.0007262296264531597,
+        "median_depth_yuan": 36420.225000000006,
+        "world_fingerprint": {
+          "news_sha256": "97481e9403e639b1bab44d07eeb21c6300c7739c9b84e219e8aa067a708ad127",
+          "rates_sha256": "35ca2f921300895d8bbc0129144c90b797fa52a2cb31307da88565d9c73d3142",
+          "terminal_payments": 21
+        },
+        "swift": {
+          "swift-standard": {
+            "return_pct": 313.6832982342459,
+            "idle_yuan": 14439.61,
+            "combo_yuan": 300.25,
+            "dividend_yuan": 45175.76
+          },
+          "swift-early-single": {
+            "return_pct": 137.81575679032346,
+            "idle_yuan": 1163.74,
+            "combo_yuan": 14.28,
+            "dividend_yuan": 1446.3
+          }
+        },
+        "strategy_returns": {
+          "coral": 133.96353894798736,
+          "grid": -26.79965840614699,
+          "hold": 7.098983926417913,
+          "hunter": 136.8190314194688,
+          "momentum": 55.25770379970121,
+          "news": 32.86651547059776,
+          "noise": -11.181308385981964,
+          "shark": 33.92772287920514,
+          "swift": 225.7495275122847,
+          "tracker": 131.13424950951276,
+          "value": 39.40427362402091
+        },
+        "total_combo_yuan": 127076.69,
+        "total_idle_yuan": 2242015.58
+      }
+    ]
+  },
+  "exogenous_worlds_matched": true,
+  "scope": "Fixed user-selected fee and payment frequency; no bot tuning or challenger pass test. Multithreaded paths may differ.",
+  "recording": {
+    "accounts": 146,
+    "seed": 7,
+    "threads": 4,
+    "ticks": 3000,
+    "account_checks": "all passed",
+    "swift": [
+      {
+        "name": "swift-standard",
+        "index": 144,
+        "initial_equity_yuan": 37842.0,
+        "return_pct": 106.68820358332015,
+        "profit_yuan": 40372.95,
+        "episodes": 70,
+        "closed": 69,
+        "max_buy_orders": 62,
+        "buys_while_held": 1457,
+        "median_requested": 220.5,
+        "median_filled": 12.0,
+        "median_fill_ratio": 0.07183061889250814,
+        "fully_filled": 5,
+        "avg_gross_yuan": 25741.996266666665,
+        "avg_gross_equity_ratio": 0.46877812359128873,
+        "net_price_traded_yuan": 22824.69,
+        "net_price_initial_yuan": -1246.01,
+        "final_shares": [
+          0,
+          0,
+          0,
+          61,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "stats": {
+          "bad_debt": 0,
+          "bot_errors": 0,
+          "burned_shares": 6,
+          "combo_dividends": 18564,
+          "credited_notional": 237556210,
+          "decision_nanos_max": 63100,
+          "decision_nanos_total": 6222000,
+          "decisions": 3000,
+          "dividends": 2100875,
+          "idle_cash_fees": 900847,
+          "idle_fees": 929684,
+          "idle_stock_fees": 28837,
+          "interest": 60500,
+          "liquidations": 0,
+          "max_leverage": 1.5007446098220696,
+          "orders": 3301,
+          "over_budget_decisions": 0,
+          "rejects": 0,
+          "skipped": 0,
+          "trade_fees": 120649,
+          "trades": 3724,
+          "volume_notional": 237556210
+        },
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "combo_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      },
+      {
+        "name": "swift-early-single",
+        "index": 145,
+        "initial_equity_yuan": 3784.2,
+        "return_pct": 54.139316103800006,
+        "profit_yuan": 2048.74,
+        "episodes": 103,
+        "closed": 103,
+        "max_buy_orders": 1,
+        "buys_while_held": 0,
+        "median_requested": 15,
+        "median_filled": 10,
+        "median_fill_ratio": 1.0,
+        "fully_filled": 54,
+        "avg_gross_yuan": 967.13436,
+        "avg_gross_equity_ratio": 0.20440589775021048,
+        "net_price_traded_yuan": 2078.02,
+        "net_price_initial_yuan": -129.31,
+        "final_shares": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "stats": {
+          "bad_debt": 0,
+          "bot_errors": 0,
+          "burned_shares": 0,
+          "combo_dividends": 1135,
+          "credited_notional": 16154466,
+          "decision_nanos_max": 73700,
+          "decision_nanos_total": 4421500,
+          "decisions": 3000,
+          "dividends": 79844,
+          "idle_cash_fees": 70976,
+          "idle_fees": 70976,
+          "idle_stock_fees": 0,
+          "interest": 0,
+          "liquidations": 0,
+          "max_leverage": 0.9987236576122415,
+          "orders": 302,
+          "over_budget_decisions": 0,
+          "rejects": 0,
+          "skipped": 0,
+          "trade_fees": 8237,
+          "trades": 312,
+          "volume_notional": 16154466
+        },
+        "validation": {
+          "cash_error": 0,
+          "fill_count_error": 0,
+          "trade_fee_error": 0,
+          "dividend_error": 0,
+          "combo_error": 0,
+          "frame_count": 3001,
+          "expected_frame_count": 3001,
+          "unknown_inventory": 0,
+          "swift_mismatches": 0
+        }
+      }
+    ],
+    "timing": {
+      "cpu_budget": 10,
+      "record_including_gate_seconds": 102.93457700003637,
+      "pack_seconds": 262.7175818999531
+    },
+    "binary_sha256": "7324f81f4b8bd74697d363dca10f5cfcde71fa390aa9e48f08cbc275c40bff37",
+    "swift_sha256": "c2b75a59419e810cf9cb9bc81fbe29c9fb73c8f693e93bcbb1c196f40e64ab05",
+    "raw_trace_mib": 1901.4752759933472,
+    "packed_mib": 205.84559726715088
+  }
+}

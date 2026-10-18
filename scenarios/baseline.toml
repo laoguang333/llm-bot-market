@@ -1,7 +1,9 @@
 # Per-tick ordinary dividends; v6 crowd. Legacy scenario is preserved separately.
-# Current v6: 98-222 accounts, two Swift profiles; early-single has one tenth of its former capital.
+# Current v6: 98-222 accounts, two Swift profiles and 6-16 NewsV2 accounts.
+# NewsV2 replaces legacy News; account counts/capital and its default strategy parameters stay unchanged.
+# Pre-replacement rules: baseline-v6-legacy-news.toml. No challenger pass requirement for this v6.
 # Population and capital validation: docs/v6-population.md. Old crowd: baseline-v6-pre-expansion.toml.
-# Per-tick validation is recorded in docs/per-tick-dividends.md.
+# Ordinary dividends: docs/per-tick-dividends.md. Combo/fee migration: docs/per-tick-combos.md.
 # baseline.toml matches this file; baseline-v6-five-swift.toml retains the old periodic five-Swift rules.
 # Money/prices: integer cents. Ordinary rates/news use 1/50 cent per tick; pay the rounded account/stock total at ticks 1..ticks-1.
 ticks = 3000
@@ -18,7 +20,7 @@ trade_tape_limit = 200
 [fees]
 trade_fee_bps = 5
 idle_period = 50
-idle_rate = 0.002
+idle_rate = 0.006
 credit_ratio = 0.01
 credit_side = "both"
 
@@ -45,8 +47,10 @@ check_interval = 500
 dividend_period = 1
 # Rate/news units: 50 units = 1 cent per share per tick (100 = 2 cents/tick).
 dividend_scale = 50
-# Combination rewards retain their original 50-tick frequency.
-combo_period = 50
+# Combo rates: 50 units = 1 cent per complete set per tick.
+# Round the account/rule total; negative bonuses round symmetrically.
+combo_period = 1
+combo_scale = 50
 min_dividend = 0
 sectors = ["tech", "consumer", "energy"]
 
@@ -214,7 +218,7 @@ cash = 2_000_000
 shares_each = 20
 
 [[bots]]
-bot = "news"
+bot = "news_v2"
 count = 6
 count_max = 16
 cash = 2_000_000

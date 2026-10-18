@@ -141,7 +141,7 @@
 
 ### 4.4 组合股息（默认开启）
 
-- 场景里公开若干条组合规则，每条形如：同时持有 A 股 `a_units` 和 B 股 `b_units` 算一套，每个 `combo_period` 每套额外支付 `bonus` 分。当前默认仍为 50 tick，金额不除以普通股息的 `dividend_scale`。旧场景省略时沿用普通周期。
+- 场景里公开若干条组合规则，每条形如：同时持有 A 股 `a_units` 和 B 股 `b_units` 算一套，每个 `combo_period` 每套额外支付 `bonus / combo_scale` 分。当前默认 `combo_period=1`、`combo_scale=50`，tick 0 不发。先乘该账户完整套数再四舍五入到分，正负对称、半分远离零，不累计余数。旧场景省略周期时沿用普通周期，省略 scale 时为 1。
 - `bonus` 可以为负：同时持有 A 和 B 会被多扣钱，用来制造此消彼长（负相关）。
 - 套数 = `min(floor(持有A / a_units), floor(持有B / b_units))`，只按同一账户自己的持股计算，不能把不同账户的持股拼成一套。
 - 同一只股票可以出现在多条规则里，各条独立计算后相加。
@@ -233,7 +233,7 @@ pub trait Bot {
 
 ### 7.3 Start
 
-账户名、owner、bot 自己的随机种子、场景给这组 bot 的参数、初始现金和持股，以及全部公开规则：股票列表和行业、组合规则、`dividend_period`、`dividend_scale`、`combo_period`、`terminal_payment_ticks`、`trade_fee_bps`、闲置费参数、`tick_size`、`max_actions_per_tick`、`max_open_orders`、新闻层级的频率和幅度、新闻披露阶段、市场季节的切换概率和倍数、借款参数、总 tick 数、清算期长度和终值计算方式、排名目标。
+账户名、owner、bot 自己的随机种子、场景给这组 bot 的参数、初始现金和持股，以及全部公开规则：股票列表和行业、组合规则、`dividend_period`、`dividend_scale`、`combo_period`、`combo_scale`、`terminal_payment_ticks`、`trade_fee_bps`、闲置费参数、`tick_size`、`max_actions_per_tick`、`max_open_orders`、新闻层级的频率和幅度、新闻披露阶段、市场季节的切换概率和倍数、借款参数、总 tick 数、清算期长度和终值计算方式、排名目标。
 
 ### 7.4 Observation（每次决策）
 
@@ -256,7 +256,7 @@ pub trait Bot {
 
 - 交易执行的个人 tick 是 `0..ticks`（即从 `0` 到 `ticks-1`，共 `ticks` 次），最后一次执行完成后停止。股息和组合终值统一按 `ticks-1` 的状态计算，恰在 `ticks` 生效的新闻和组合不计入终值。清算期长度 `H = ceil(terminal_ratio × ticks)` 个 tick（默认 `terminal_ratio = 0.5`），默认终值单位数 `n = floor(H / terminal_payment_ticks)`。
 - 终值每单位时长 `terminal_payment_ticks` 在当前场景仍为 50 tick；旧场景省略时等于普通周期。终值普通派息次数为 `n × terminal_payment_ticks / dividend_period`，组合次数为 `n × terminal_payment_ticks / combo_period`。配置要求时长为两种周期的整数倍。
-- 最终权益 = 现金（负数为借款）+ Σ 四舍五入到分(结束时持股 × 结束时股息整数 / dividend_scale × 终值普通派息次数) + Σ 结束时组合套数 × bonus × 终值组合次数（组合可正可负）。期末一次兑现，普通股息对每账户每股票的整笔终值舍入一次。
+- 最终权益 = 现金（负数为借款）+ Σ 四舍五入到分(结束时持股 × 结束时股息整数 / dividend_scale × 终值普通派息次数) + Σ 四舍五入到分(结束时组合套数 × bonus / combo_scale × 终值组合次数)（组合可正可负）。期末一次兑现，普通股息按每账户每股票、组合按每账户每规则的整笔终值各舍入一次，不重复累加局内已舍入的单 tick 金额。
 - 只用结束时的股息，不再推演之后的新闻；结束时已披露但还没生效的新闻不计入终值。
 - 只算有限次数的股息、不算永续价值，这个截断就是持股的风险折价：比赛越长，清算期越长，股票的终值越高。
 - **`n` 不公开，只给区间。** 场景可以设 `scoring.terminal_payments = [最小, 最大]`，开局从中均匀抽取终值单位数 `n`，不告诉任何 bot。`scoring.terminal_hints = [[tick, 宽度], ...]` 规定在哪些 tick 私下给每个账户一个宽度固定、一定包含 `n` 的区间，真值在区间里的位置对每个账户独立随机。越往后区间越窄。不设 `terminal_payments` 时使用上面的固定单位数。当前默认范围 `[10, 50]`，在 tick 0、1000、2000 分别给宽 30、16、6 的区间；每单位仍为 50 tick，避免改派息频率时无意改变终值。
@@ -312,7 +312,9 @@ pub trait Bot {
 | value_crossings | ≥ 2 | 价格在"大家能知道的价值" ±5% 两侧来回的次数（清算期派息次数从公开范围中点出发，随私下区间变窄移向真值） |
 | abs_return_autocorr | ≥ 0.05 | 绝对收益一阶自相关（波动聚集） |
 
-基准市场会升级：一个 bot 打穿它以后就并进基准，当前是 v5（v2 加入了 hunter，v3 加入了 shark，v4 加入了 tracker，v5 加入了 coral；旧版保留为 `scenarios/baseline-v1.toml` 到 `baseline-v4.toml`）。v5 每局加入 2–5 个 coral，窗口、分位、报价边际、组合价值权重和单股预算按账户随机放缩；单独挑战时仍使用固定默认参数。"打穿基准市场"的标准：挑战者以一个账户（现金 20,000、每只股票 20 股）加入基准市场，在留出的种子 1001–1020 上平均百分位 ≥ 90，且至少 80% 的世界排进前 25%。调参只用种子 1–20。命令是 `llm-market challenge`。
+基准市场根据实验与用户选择升级，当前是 [v6](docs/baseline-v6-current.md)：98–222 个账户，包含普通 Swift、小资金单次入场 Swift，以及等额替换旧 News 的 6–16 个 NewsV2；其他背景策略保留。普通与组合股息逐 tick 发放，闲置费每 50 ticks 为平均权益的 0.6%。三个 Astra 与 Falcon 猎手暂不加入。用户明确 v6 当前不要求有新 bot 打穿，也不据此自动启动挑战者研发。
+
+历史升级中 v2 加入 hunter、v3 加入 shark、v4 加入 tracker、v5 加入 coral；Swift 曾打穿 v5，随后进入 v6 背景。旧场景和冻结结果保留。后续用户要求挑战时，仍使用 `llm-market challenge` 另加一个候选账户（默认现金 20,000 元、每股 20 股），门槛为平均排名百分位 ≥90、至少 80% 的世界进入前 25%。CLI 默认验收种子 1001–1020、原训练集 1–20，但这些种子已经使用，不能重新宣称未见留出；新研究须明确其版本和样本边界。基准成员自身的盈利不自动等于追加挑战者通过验收。
 
 其他参考检查：
 
@@ -335,7 +337,7 @@ trade_tape_limit = 200
 [fees]
 trade_fee_bps = 5
 idle_period = 50
-idle_rate = 0.002
+idle_rate = 0.006          # 当前 v6 每 50 ticks 平均权益的 0.6%
 credit_ratio = 0.01
 credit_side = "both"        # both | maker | taker
 
@@ -364,7 +366,8 @@ max_fuel_strikes = 20
 [world]
 dividend_period = 1
 dividend_scale = 50        # 费率单位：1/50 分，每账户每股票整仓舍入
-combo_period = 50          # 组合奖励保留旧频率
+combo_period = 1
+combo_scale = 50          # 组合独立费率单位：1/50 分，整仓套数合计舍入
 min_dividend = 0
 sectors = ["tech", "consumer", "energy"]
 
@@ -403,7 +406,7 @@ a = "T1"
 a_units = 1
 b = "T2"
 b_units = 1
-bonus = 30                  # 分 / 套 / 分红周期；负数为负相关组合
+bonus = 30                  # 30/50 = 0.6 分 / 套 / tick；负数为负组合
 
 [scoring]
 terminal_payment_ticks = 50 # 每个隐藏终值单位的时长

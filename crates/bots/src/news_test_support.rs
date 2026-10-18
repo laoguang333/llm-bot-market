@@ -35,6 +35,7 @@ pub fn start() -> Start {
             dividend_period: 50,
             dividend_scale: 1,
             combo_period: 50,
+            combo_scale: 1,
             terminal_payment_ticks: 50,
             min_dividend: 0,
             trade_fee_bps: 5,

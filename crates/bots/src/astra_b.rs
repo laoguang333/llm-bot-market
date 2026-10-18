@@ -136,7 +136,7 @@ impl AstraB {
             } else {
                 exact
             };
-            v += weight * c.bonus as f64 * periods;
+            v += weight * self.rules.combo_cents(c.bonus) * periods;
         }
         v * self.combo
     }
