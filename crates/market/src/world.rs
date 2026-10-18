@@ -40,6 +40,9 @@ pub struct World {
     /// Per stock: (effective tick, new dividend), ascending.
     pub timelines: Vec<Vec<(Tick, Money)>>,
     pub initial_dividends: Vec<Money>,
+    /// Internal lookup only: callers still request their own personal tick.
+    /// Large worlds retain the sparse timeline instead of allocating an unbounded table.
+    dividend_cache: Vec<Vec<Money>>,
     /// Per account, ascending by tick.
     pub deliveries: Vec<Vec<Delivery>>,
     /// Opening price of each stock.
@@ -63,6 +66,39 @@ fn mix(mut x: u64) -> u64 {
 fn unit(seed: u64, a: u64, b: u64) -> f64 {
     (mix(seed ^ mix(a.wrapping_mul(0x9e3779b97f4a7c15) ^ mix(b))) >> 11) as f64
         / (1u64 << 53) as f64
+}
+
+fn cache_dividends(
+    initial: &[Money],
+    timelines: &[Vec<(Tick, Money)>],
+    ticks: Tick,
+) -> Vec<Vec<Money>> {
+    const MAX_CACHE_BYTES: usize = 8 * 1024 * 1024;
+    let len = ticks as usize;
+    if len
+        .checked_mul(initial.len())
+        .and_then(|n| n.checked_mul(std::mem::size_of::<Money>()))
+        .is_none_or(|bytes| bytes > MAX_CACHE_BYTES)
+    {
+        return Vec::new();
+    }
+    initial
+        .iter()
+        .zip(timelines)
+        .map(|(&initial, timeline)| {
+            let mut values = Vec::with_capacity(len);
+            let mut value = initial;
+            for &(tick, next) in timeline {
+                values.resize((tick as usize).min(len), value);
+                value = next;
+                if tick as usize >= len {
+                    break;
+                }
+            }
+            values.resize(len, value);
+            values
+        })
+        .collect()
 }
 
 impl World {
@@ -213,6 +249,7 @@ impl World {
             rate_mult: s.turbulent_rate_mult,
             size_mult: s.turbulent_size_mult,
             events,
+            dividend_cache: cache_dividends(&initial, &timelines, ticks),
             timelines,
             initial_dividends: initial,
             deliveries,
@@ -305,6 +342,13 @@ impl World {
     }
 
     pub fn dividend(&self, stock: usize, tick: Tick) -> Money {
+        if let Some(value) = self
+            .dividend_cache
+            .get(stock)
+            .and_then(|values| values.get(tick as usize))
+        {
+            return *value;
+        }
         let tl = &self.timelines[stock];
         let i = tl.partition_point(|(t, _)| *t <= tick);
         if i == 0 {
@@ -326,6 +370,58 @@ impl World {
             turbulent,
             rate_mult: if turbulent { self.rate_mult } else { 1.0 },
             size_mult: if turbulent { self.size_mult } else { 1.0 },
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn cached_dividends_match_timeline_at_boundaries_and_in_arbitrary_order() {
+        let initial = [10, 20, 30];
+        let timelines = vec![
+            vec![(0, 11), (3, 15), (3, 17), (7, 12), (9, 50)],
+            vec![],
+            vec![(20, 99)],
+        ];
+        let cache = cache_dividends(&initial, &timelines, 9);
+        for tick in [8, 0, 3, 2, 7, 6, 1, 5, 4] {
+            for stock in 0..initial.len() {
+                let expected = timelines[stock]
+                    .iter()
+                    .rev()
+                    .find(|(t, _)| *t <= tick)
+                    .map_or(initial[stock], |(_, value)| *value);
+                assert_eq!(cache[stock][tick as usize], expected);
+            }
+        }
+        assert!(cache_dividends(&initial, &timelines, Tick::MAX).is_empty());
+    }
+
+    #[test]
+    fn generated_world_cache_and_sparse_fallback_agree_including_future_ticks() {
+        let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../scenarios/baseline.toml");
+        let cfg = Config::load(std::path::Path::new(path)).unwrap();
+        let mut world = World::generate(&cfg, 7, 2);
+        let cache = world.dividend_cache.clone();
+        assert!(!cache.is_empty());
+        for tick in (0..cfg.ticks + cfg.world.news.disclosure.lead_ticks + 1).rev() {
+            for stock in 0..cfg.stocks.len() {
+                let expected = world.timelines[stock]
+                    .iter()
+                    .rev()
+                    .find(|(t, _)| *t <= tick)
+                    .map_or(world.initial_dividends[stock], |(_, value)| *value);
+                assert_eq!(world.dividend(stock, tick), expected);
+            }
+        }
+        world.dividend_cache.clear();
+        for (stock, values) in cache.iter().enumerate() {
+            for (tick, &expected) in values.iter().enumerate() {
+                assert_eq!(world.dividend(stock, tick as Tick), expected);
+            }
         }
     }
 }

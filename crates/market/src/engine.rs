@@ -18,44 +18,46 @@ pub type BotFactory<'f> = dyn Fn(&str, &Start) -> Option<Box<dyn Bot>> + Sync + 
 
 const MAX_CONSECUTIVE_BOT_ERRORS: u32 = 20;
 
-/// Fenwick tree over completed-tick values, for the lower median.
-struct Fenwick {
-    tree: Vec<i64>,
+/// Completed ticks only advance by one. The lower median therefore moves only
+/// forward, at most `ticks` times across the entire run, rather than requiring
+/// a tree search and two tree updates per account tick under the scheduler lock.
+struct TickProgress {
+    counts: Vec<usize>,
+    rank: usize,
+    reference: Tick,
+    at_or_below: usize,
 }
 
-impl Fenwick {
-    fn new(n: usize) -> Self {
+impl TickProgress {
+    fn new(ticks: Tick, accounts: usize) -> Self {
+        let mut counts = vec![0; ticks as usize + 1];
+        counts[0] = accounts;
         Self {
-            tree: vec![0; n + 1],
+            counts,
+            rank: accounts.div_ceil(2),
+            reference: 0,
+            at_or_below: accounts,
         }
     }
-    fn add(&mut self, i: usize, v: i64) {
-        let mut i = i + 1;
-        while i < self.tree.len() {
-            self.tree[i] += v;
-            i += i.isolate_lowest_one();
+    fn complete(&mut self, tick: Tick) {
+        self.counts[tick as usize] -= 1;
+        self.counts[tick as usize + 1] += 1;
+        // Moving a value below the reference keeps it at or below; only a
+        // value equal to the reference can cross this boundary in one step.
+        if tick == self.reference {
+            self.at_or_below -= 1;
         }
-    }
-    /// Smallest value with cumulative count >= k (k >= 1).
-    fn kth(&self, mut k: i64) -> usize {
-        let mut pos = 0;
-        let mut step = self.tree.len().next_power_of_two();
-        while step > 0 {
-            let next = pos + step;
-            if next < self.tree.len() && self.tree[next] < k {
-                pos = next;
-                k -= self.tree[next];
-            }
-            step >>= 1;
+        while self.at_or_below < self.rank {
+            self.reference += 1;
+            self.at_or_below += self.counts[self.reference as usize];
         }
-        pos
     }
 }
 
 struct Sched {
     idle: BinaryHeap<Reverse<(Tick, u32)>>,
     running: Vec<(u32, Tick)>,
-    fen: Fenwick,
+    progress: TickProgress,
     finished: usize,
     next_check: Tick,
     pausing: bool,
@@ -181,15 +183,19 @@ impl<'a> Shared<'a> {
             }
         }
 
-        let mut fen = Fenwick::new(cfg.ticks as usize + 1);
-        fen.add(0, n as i64);
         let idle = (0..n as u32).map(|i| Reverse((0, i))).collect();
         let check = cfg.schedule.check_interval;
         Ok(Shared {
             markets: world
                 .opening_prices
                 .iter()
-                .map(|&p| RwLock::new(StockMarket::new(p, cfg.margin.mark_window)))
+                .map(|&p| {
+                    RwLock::new(StockMarket::with_depth_cache(
+                        p,
+                        cfg.margin.mark_window,
+                        cfg.market.book_depth,
+                    ))
+                })
                 .collect(),
             marks: world
                 .opening_prices
@@ -204,7 +210,7 @@ impl<'a> Shared<'a> {
             sched: Mutex::new(Sched {
                 idle,
                 running: Vec::new(),
-                fen,
+                progress: TickProgress::new(cfg.ticks, n),
                 finished: 0,
                 next_check: if check == 0 { Tick::MAX } else { check },
                 pausing: false,
@@ -300,8 +306,7 @@ impl<'a> Shared<'a> {
                     if t - min < skew {
                         s.idle.pop();
                         s.running.push((i, t));
-                        let k = (n as i64 - 1) / 2 + 1;
-                        let reference = s.fen.kth(k) as Tick;
+                        let reference = s.progress.reference;
                         break (i as usize, t, reference);
                     }
                 }
@@ -318,8 +323,7 @@ impl<'a> Shared<'a> {
                 ));
             }
             s.running.retain(|r| r.0 as usize != idx);
-            s.fen.add(tick as usize, -1);
-            s.fen.add(tick as usize + 1, 1);
+            s.progress.complete(tick);
             if tick + 1 < ticks {
                 s.idle.push(Reverse((tick + 1, idx as u32)));
             } else {
@@ -1149,6 +1153,43 @@ impl<'a> Shared<'a> {
 #[cfg(test)]
 mod scheduling_tests {
     use super::*;
+
+    #[test]
+    fn incremental_reference_matches_sorted_accounts_with_skew_and_early_finishes() {
+        use rand::{Rng, SeedableRng};
+        let mut rng = rand_chacha::ChaCha8Rng::seed_from_u64(37);
+        for accounts in [1, 2, 3, 4, 52, 53] {
+            let ticks = 91;
+            let mut progress = TickProgress::new(ticks, accounts);
+            let mut completed = vec![0; accounts];
+            let mut active: Vec<_> = (0..accounts).collect();
+            while !active.is_empty() {
+                let pos = if rng.gen_bool(0.5) {
+                    0
+                } else {
+                    rng.gen_range(0..active.len())
+                };
+                let account = active[pos];
+                progress.complete(completed[account]);
+                completed[account] += 1;
+                if completed[account] == ticks {
+                    active.swap_remove(pos);
+                }
+                let mut sorted = completed.clone();
+                sorted.sort_unstable();
+                assert_eq!(progress.reference, sorted[(accounts - 1) / 2]);
+                assert_eq!(
+                    progress.at_or_below,
+                    completed
+                        .iter()
+                        .filter(|&&t| t <= progress.reference)
+                        .count()
+                );
+            }
+            assert_eq!(progress.reference, ticks);
+            assert_eq!(progress.counts[ticks as usize], accounts);
+        }
+    }
 
     struct Idle;
     impl Bot for Idle {
