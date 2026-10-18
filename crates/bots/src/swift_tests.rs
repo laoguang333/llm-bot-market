@@ -225,6 +225,97 @@ fn fundamental_channels_cannot_change_orders() {
 }
 
 #[test]
+fn single_entry_waits_for_flat_and_finishes_partial_exits() {
+    let mut s = start();
+    s.params.insert("single_entry".into(), 1.0);
+    let mut bot = Swift::new(&s);
+    let mut o = observation(100, true);
+    o.account.shares = vec![0, 20];
+    let entry = bot.on_tick(&o);
+    assert!(entry.iter().any(|a| matches!(
+        a,
+        Action::Limit {
+            stock: 0,
+            side: Side::Buy,
+            ..
+        }
+    )));
+    assert!(!entry.iter().any(|a| matches!(
+        a,
+        Action::Limit {
+            stock: 1,
+            side: Side::Buy,
+            ..
+        }
+    )));
+
+    // Zero fills may retry. One share filled locks this position, even if far
+    // below the target. A large equity change cannot cause a trim either.
+    o.tick += 1;
+    assert!(!bot.on_tick(&o).is_empty());
+    o.tick += 1;
+    o.account.shares = vec![1, 20];
+    o.account.sellable = vec![1, 20];
+    assert!(bot.on_tick(&o).is_empty());
+    o.tick += 1;
+    o.account.equity = 1;
+    assert!(bot.on_tick(&o).is_empty());
+
+    // A decisive sell signal starts the exit, but only one share is sellable.
+    o = observation(104, false);
+    o.trades.iter_mut().for_each(|ts| ts[0].qty = 10_000);
+    o.account.sellable = vec![1, 0];
+    assert_eq!(bot.on_tick(&o), vec![Action::ioc(0, Side::Sell, 9990, 1)]);
+    o = observation(105, true);
+    o.trades.iter_mut().for_each(|ts| ts[0].qty = 100_000);
+    o.account.shares = vec![19, 20];
+    o.account.sellable = vec![19, 20];
+    let exit = bot.on_tick(&o);
+    assert!(exit.contains(&Action::ioc(0, Side::Sell, 9990, 19)));
+    assert!(exit.iter().all(|a| matches!(
+        a,
+        Action::Limit {
+            side: Side::Sell,
+            ..
+        }
+    )));
+    o.tick += 1;
+    o.account.shares = vec![0, 20];
+    let reentry = bot.on_tick(&o);
+    assert!(reentry.iter().any(|a| matches!(
+        a,
+        Action::Limit {
+            stock: 0,
+            side: Side::Buy,
+            ..
+        }
+    )));
+    assert!(reentry.contains(&Action::ioc(1, Side::Sell, 9990, 20)));
+}
+
+#[test]
+fn default_swift_still_tops_up_and_resizes_positions() {
+    let mut bot = Swift::new(&start());
+    let mut o = observation(100, true);
+    assert!(bot.on_tick(&o).iter().all(|a| matches!(
+        a,
+        Action::Limit {
+            side: Side::Buy,
+            ..
+        }
+    )));
+    o.tick += 1;
+    o.account.equity = 100_000;
+    assert!(bot.on_tick(&o).iter().all(|a| matches!(
+        a,
+        Action::Limit {
+            side: Side::Sell,
+            ..
+        }
+    )));
+}
+
+#[test]
 fn execution_respects_total_budget_and_available_shares() {
     let mut bot = Swift::new(&start());
     let mut o = observation(100, true);

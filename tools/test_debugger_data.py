@@ -30,6 +30,31 @@ def analyze(frames,cash=1000,shares=0):
 
 
 class LedgerTests(unittest.TestCase):
+    def test_scaled_position_is_one_episode_until_flat(self):
+        trades=[fill("Buy",4,100,4,1),fill("Buy",2,110,2,2),
+                fill("Sell",1,120,1,3),fill("Buy",1,115,1,4),
+                fill("Sell",6,90,6,5)]
+        a=analyze([frame(0,1000,0),frame(1,911,0,fills=trades,st=stats(trades=5,trade_fees=14)),
+                   frame(2,911,0,end=True,st=stats(trades=5,trade_fees=14))])
+        e,=a["episodes"]
+        self.assertTrue(e["closed"])
+        self.assertEqual((e["buy_qty"],e["sell_qty"],e["peak_qty"]),(7,7,6))
+        self.assertEqual(e["price_pnl"],-89)
+        self.assertEqual(e["price_pnl"],sum(p["price_pnl"] for p in a["pairs"]))
+        self.assertEqual(e["fill_ids"],list(range(5)))
+        self.assertEqual([f["episode_id"] for f in a["fills"]],[0]*5)
+
+    def test_flat_then_reentry_in_same_receipt_batch_is_two_episodes(self):
+        trades=[fill("Buy",1,100,1,0),fill("Sell",1,110,1,0),fill("Buy",2,105,1,0)]
+        a=analyze([frame(0,797,2,fills=trades,st=stats(trades=3,trade_fees=3)),
+                   frame(1,797,2,end=True,st=stats(trades=3,trade_fees=3))])
+        closed,opened=a["episodes"]
+        self.assertEqual(closed["price_pnl"],8)
+        self.assertEqual(closed["fill_ids"],[0,1])
+        self.assertFalse(opened["closed"])
+        self.assertEqual(opened["remaining"],2)
+        self.assertIsNone(opened["price_pnl"])
+
     def test_preview_is_not_counted_twice_and_final_flush_is_counted(self):
         buy=fill("Buy",2,100,2,0);sell=fill("Sell",1,130,1,1)
         f0=frame(0,798,2,post_fills=[buy]);f0["pre"]["shares"]=[0]
@@ -62,6 +87,19 @@ class LedgerTests(unittest.TestCase):
         self.assertEqual(a["pairs"],[])
         self.assertEqual(a["adjustments"][0]["kind"],"inventory_reduction")
         self.assertEqual(a["curves"][-1][6],0)
+        self.assertTrue(a["episodes"][0]["adjusted"])
+        self.assertFalse(a["episodes"][0]["closed"])
+        self.assertIsNone(a["episodes"][0]["price_pnl"])
+
+    def test_destroyed_last_share_is_not_a_trade_exit(self):
+        st=stats(idle_fees=100,idle_stock_fees=100)
+        a=analyze([frame(0,1000,1),frame(1,1000,0,st=st),frame(2,1000,0,end=True,st=st)],shares=1)
+        e,=a["episodes"]
+        self.assertTrue(e["closed"])
+        self.assertTrue(e["initial"])
+        self.assertIsNone(e["exit_tick"])
+        self.assertIsNone(e["exit_price"])
+        self.assertIsNone(e["price_pnl"])
 
     def test_dividend_combo_interest_and_residual_reconcile(self):
         st=stats(dividends=20,combo_dividends=-3,interest=2)

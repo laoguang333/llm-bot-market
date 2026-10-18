@@ -31,6 +31,7 @@ pub struct Probe {
     start: Start,
     tape: Vec<Tape>,
     target: Vec<f64>,
+    exiting: Vec<bool>,
 }
 
 impl Probe {
@@ -39,6 +40,7 @@ impl Probe {
             start: s.clone(),
             tape: (0..s.shares.len()).map(|_| Tape::default()).collect(),
             target: vec![0.0; s.shares.len()],
+            exiting: vec![false; s.shares.len()],
         }
     }
     pub fn evaluate(&mut self, o: &Observation) -> (Vec<Signal>, Vec<Action>) {
@@ -109,8 +111,26 @@ impl Probe {
                 self.target[s] = 0.0;
                 reason = "end_exit";
             }
-            let target = (eq * self.target[s] / mid) as Qty;
+            let mut target = (eq * self.target[s] / mid) as Qty;
             let have = o.account.shares[s];
+            let mut execution_reason = "at_target";
+            if self.start.param("single_entry", 0.0) > 0.0 {
+                if have == 0 {
+                    self.exiting[s] = false;
+                } else if self.target[s] == 0.0 {
+                    self.exiting[s] = true;
+                }
+                if self.exiting[s] {
+                    if self.target[s] != 0.0 {
+                        reason = "finish_exit";
+                    }
+                    self.target[s] = 0.0;
+                    target = 0;
+                } else if have > 0 {
+                    target = have;
+                    execution_reason = "single_entry_hold";
+                }
+            }
             let p = &mut signals[s];
             *p = Signal {
                 flow10,
@@ -124,7 +144,7 @@ impl Probe {
                 ema30: t.price[1],
                 budget,
                 signal_reason: reason,
-                execution_reason: "at_target",
+                execution_reason,
             };
             if actions.len() >= r.max_actions_per_tick {
                 p.execution_reason = "action_limit";

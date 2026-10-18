@@ -1,5 +1,6 @@
 # Per-tick ordinary dividends; v6 crowd. Legacy scenario is preserved separately.
-# Current v6: v5 plus two small Swift accounts (standard and early).
+# Current v6: 98-222 accounts, two Swift profiles; early-single has one tenth of its former capital.
+# Population and capital validation: docs/v6-population.md. Old crowd: baseline-v6-pre-expansion.toml.
 # Per-tick validation is recorded in docs/per-tick-dividends.md.
 # baseline.toml matches this file; baseline-v6-five-swift.toml retains the old periodic five-Swift rules.
 # Money/prices: integer cents. Ordinary rates/news use 1/50 cent per tick; pay the rounded account/stock total at ticks 1..ticks-1.
@@ -192,72 +193,72 @@ bonus = -20
 
 [[bots]]
 bot = "grid"
-count = 6
-count_max = 10
+count = 24
+count_max = 40
 # grid traders run larger accounts than the rest of the crowd
 cash = 4_000_000
 shares_each = 120
 
 [[bots]]
 bot = "value"
+count = 16
+count_max = 40
+cash = 2_000_000
+shares_each = 20
+
+[[bots]]
+bot = "momentum"
+count = 6
+count_max = 16
+cash = 2_000_000
+shares_each = 20
+
+[[bots]]
+bot = "news"
+count = 6
+count_max = 16
+cash = 2_000_000
+shares_each = 20
+
+[[bots]]
+bot = "noise"
+count = 18
+count_max = 42
+cash = 2_000_000
+shares_each = 20
+
+[[bots]]
+bot = "hold"
+count = 6
+count_max = 16
+cash = 2_000_000
+shares_each = 20
+
+[[bots]]
+bot = "hunter"
 count = 4
 count_max = 10
 cash = 2_000_000
 shares_each = 20
 
 [[bots]]
-bot = "momentum"
-count = 3
-count_max = 8
-cash = 2_000_000
-shares_each = 20
-
-[[bots]]
-bot = "news"
-count = 3
-count_max = 8
-cash = 2_000_000
-shares_each = 20
-
-[[bots]]
-bot = "noise"
-count = 6
-count_max = 14
-cash = 2_000_000
-shares_each = 20
-
-[[bots]]
-bot = "hold"
-count = 3
-count_max = 8
-cash = 2_000_000
-shares_each = 20
-
-[[bots]]
-bot = "hunter"
-count = 2
-count_max = 5
-cash = 2_000_000
-shares_each = 20
-
-[[bots]]
 bot = "shark"
-count = 2
-count_max = 5
+count = 4
+count_max = 10
 cash = 2_000_000
 shares_each = 20
 
 [[bots]]
 bot = "tracker"
-count = 2
-count_max = 5
+count = 4
+count_max = 10
 cash = 2_000_000
 shares_each = 20
 
 [[bots]]
 bot = "coral"
-count = 2
-count_max = 5
+count = 8
+count_max = 20
 cash = 2_000_000
 shares_each = 20
 # Diversify the crowd; the standalone challenger's default parameters stay fixed.
@@ -275,8 +276,9 @@ params = { entry = 0.15, exit = -0.3, depth = 0.3, momentum = 5.0, cap = 0.35, l
 
 [[bots]]
 bot = "swift"
-owner = "swift-early"
+owner = "swift-early-single"
 count = 1
-cash = 2_000_000
-shares_each = 20
-params = { entry = 0.05, exit = -0.1, depth = 0.2, momentum = 3.0, cap = 0.25, leverage = 1.0, spread = 0.01 }
+# One tenth of standard Swift capital and starting inventory.
+cash = 200_000
+shares_each = 2
+params = { entry = 0.05, exit = -0.1, depth = 0.2, momentum = 3.0, cap = 0.25, leverage = 1.0, spread = 0.01, single_entry = 1.0 }

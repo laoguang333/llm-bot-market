@@ -5,6 +5,7 @@ import gzip
 import hashlib
 import json
 from pathlib import Path
+from debugger_episodes import Episodes
 
 
 def read_json(path):
@@ -18,6 +19,7 @@ def save_gzip(path, value):
 
 def analyze_account(start, result, frames, final_marks):
     n=len(start["shares"])
+    episodes=Episodes(start)
     lots=[deque() for _ in range(n)]
     for s,q in enumerate(start["shares"]):
         if q:
@@ -39,6 +41,7 @@ def analyze_account(start, result, frames, final_marks):
         for raw in frame["fills"]:
             f=dict(raw,receipt_tick=tick,id=len(fills))
             fills.append(f)
+            episodes.fill(f)
             s,q,p,fee=f["stock"],f["qty"],f["price"],f["fee"]
             trade_fees+=fee
             balance+=(-p*q-fee) if f["side"]=="Buy" else (p*q-fee)
@@ -48,7 +51,7 @@ def analyze_account(start, result, frames, final_marks):
                 left=q
                 while left and lots[s]:
                     lot=lots[s][0]; take=min(left,lot["qty"])
-                    pairs.append(dict(stock=s,qty=take,entry_tick=lot["tick"],exit_tick=f["tick"],
+                    pairs.append(dict(stock=s,qty=take,episode_id=f["episode_id"],entry_tick=lot["tick"],exit_tick=f["tick"],
                         entry_receipt_tick=lot["receipt_tick"],exit_receipt_tick=tick,
                         entry_price=lot["price"],exit_price=p,
                         price_pnl=None if lot.get("unknown") else (p-lot["price"]-lot["fee"]-fee/q)*take,
@@ -76,6 +79,8 @@ def analyze_account(start, result, frames, final_marks):
         if inventory is not None:
             for s,target in enumerate(inventory):
                 delta=target-sum(l["qty"] for l in lots[s])
+                if delta:
+                    episodes.adjustment(s,delta,tick)
                 if delta<0:
                     left=-delta;removed=0
                     while left and lots[s]:
@@ -128,6 +133,7 @@ def analyze_account(start, result, frames, final_marks):
         unknown_inventory=sum(a["kind"] in ["unknown_inventory","unmatched_sell"] for a in adjustments),
         swift_mismatches=sum(f["swift_verified"] is False for f in frames))
     return dict(start=start,result=result,frames=frames,fills=fills,pairs=pairs,adjustments=adjustments,
+        episodes=episodes.finish(fills,frames[-1]["tick"]),
         events=events,curves=curves,stocks=stock_stats,max_drawdown=max_drawdown,validation=validation)
 
 
@@ -164,7 +170,7 @@ def build(run_dir):
         accounts.append(dict(index=idx,name=start["account"],strategy=meta["strategy"],result=result,
                              validation=account["validation"],max_drawdown=account["max_drawdown"]))
         print(f"Pack {idx+1}/{len(manifest['starts'])} {start['account']}: {account['validation']}",flush=True)
-    output=dict(schema=1,rules=rules,result=manifest["result"],accounts=accounts,seed_display=str(manifest["result"]["seed"]),
+    output=dict(schema=2,rules=rules,result=manifest["result"],accounts=accounts,seed_display=str(manifest["result"]["seed"]),
         quote_fields=manifest["quote_fields"],clock_note=manifest["clock_note"],source_scenario=manifest["source_scenario"],
         source_trace_sha256=hashlib.sha256((run_dir/"trace-manifest.json").read_bytes()).hexdigest())
     (dest/"manifest.json").write_text(json.dumps(output,ensure_ascii=False,separators=(",",":")),encoding="utf-8")

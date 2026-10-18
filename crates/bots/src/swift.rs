@@ -52,6 +52,8 @@ pub struct Swift {
     momentum_weight: f64,
     max_spread: f64,
     target: Vec<f64>,
+    single_entry: bool,
+    exiting: Vec<bool>,
 }
 
 impl Swift {
@@ -70,6 +72,8 @@ impl Swift {
             momentum_weight: s.param("momentum", 5.0),
             max_spread: s.param("spread", 0.012),
             target: vec![0.0; n],
+            single_entry: s.param("single_entry", 0.0) > 0.0,
+            exiting: vec![false; n],
         }
     }
 }
@@ -119,8 +123,24 @@ impl Bot for Swift {
             if obs.tick.saturating_add(20) >= obs.ticks_total {
                 self.target[s] = 0.0;
             }
-            let target = (eq * self.target[s] / mid) as Qty;
+            let mut target = (eq * self.target[s] / mid) as Qty;
             let have = obs.account.shares[s];
+            if self.single_entry {
+                if have == 0 {
+                    self.exiting[s] = false;
+                } else if self.target[s] == 0.0 {
+                    self.exiting[s] = true;
+                }
+                if self.exiting[s] {
+                    // Finish a partially filled exit even if the signal rebounds.
+                    self.target[s] = 0.0;
+                    target = 0;
+                } else if have > 0 {
+                    // One filled entry per stock, including a partial IOC fill.
+                    // No topping up or equity-driven trimming before the exit.
+                    target = have;
+                }
+            }
             if out.len() >= self.actions {
                 continue;
             }
