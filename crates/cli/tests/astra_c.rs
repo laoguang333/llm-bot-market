@@ -20,6 +20,7 @@ fn fixture(
         account_index: 0,
         n_accounts: 10,
         news_multiplier: 1.0,
+        forecast_access: Default::default(),
         seed: 1,
         cash: 2_000_000,
         shares: vec![100],
@@ -78,6 +79,7 @@ fn fixture(
         season_changes: vec![],
         income: vec![],
         terminal_hints: vec![],
+        social: None,
     };
     for tick in (2400..2990).step_by(5) {
         obs.tick = tick;

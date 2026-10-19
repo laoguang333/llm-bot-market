@@ -1,12 +1,7 @@
-# Per-tick ordinary dividends; v6 crowd. Legacy scenario is preserved separately.
-# Current v6: 98-222 accounts, two Swift profiles and 6-16 NewsV2 accounts.
-# NewsV2 replaces legacy News; account counts/capital and its default strategy parameters stay unchanged.
-# Pre-replacement rules: baseline-v6-legacy-news.toml. No challenger pass requirement for this v6.
-# Population and capital validation: docs/v6-population.md. Old crowd: baseline-v6-pre-expansion.toml.
-# Ordinary dividends: docs/per-tick-dividends.md. Combo/fee migration: docs/per-tick-combos.md.
-# baseline.toml matches this file; baseline-v6-five-swift.toml retains the old periodic five-Swift rules.
-# Money/prices: integer cents. Ordinary rates/news use 1/50 cent per tick; pay the rounded account/stock total at ticks 1..ticks-1.
-ticks = 3000
+# v13: profit/loss-effect crowd with minority market-leader followers.
+# Rebalance the Noise population range; retain 100..224 total accounts.
+# Horizon v3, capital, news access, market rules and fees remain as in v12.
+ticks = 10000
 seed = 7
 
 [market]
@@ -54,6 +49,19 @@ combo_scale = 50
 min_dividend = 0
 sectors = ["tech", "consumer", "energy"]
 
+[world.dragon]
+model = "growth"
+enabled = true
+probability = 0.5
+candidates = 3
+# All stocks have irregular business updates; candidates share early growth bias.
+[world.dragon.trend]
+# This is the opportunity rate; total effective news also includes ordinary events.
+events_per_1000_ticks = 3.5
+growth_log_bias = [2.3, 2.65]
+step_sd = 0.018
+max_step = 0.16
+
 [world.seasons]
 calm_to_turbulent = 0.002
 turbulent_to_calm = 0.01
@@ -80,15 +88,15 @@ stages = [[0, 0.05], [30, 0.25], [60, 1.0]]
 range_widths = [3.0, 1.5]
 
 [scoring]
-# Hidden terminal units remain 50 ticks long, preserving the terminal scale.
+# Random terminal duration scales with game length. Rounded to 50-tick units.
+# At 3000 ticks: 10..50 units; at 10000 ticks: 33..167 (mean 5000 ticks).
 terminal_payment_ticks = 50
-terminal_ratio = 0.5
-# Terminal units (each 50 ticks) are drawn from this range and not announced. Each account
-# privately gets its own range of the given width containing the truth at these ticks.
-terminal_payments = [10, 50]
-terminal_hints = [[0, 30], [1000, 16], [2000, 6]]
+terminal_ratio_range = [0.16666666666666666, 0.8333333333333334]
+# (time / total ticks, uncertainty width / total ticks), also scales with length.
+terminal_hint_fractions = [[0.0, 0.5], [0.3333333333333333, 0.26666666666666666], [0.6666666666666666, 0.1]]
 objective = "rank_percentile"
 series_seeds = 20
+
 
 [[stocks]]
 name = "T1"
@@ -226,8 +234,8 @@ shares_each = 20
 
 [[bots]]
 bot = "noise"
-count = 18
-count_max = 42
+count = 9
+count_max = 21
 cash = 2_000_000
 shares_each = 20
 
@@ -286,3 +294,73 @@ count = 1
 cash = 200_000
 shares_each = 2
 params = { entry = 0.05, exit = -0.1, depth = 0.2, momentum = 3.0, cap = 0.25, leverage = 1.0, spread = 0.01, single_entry = 1.0 }
+
+
+[[bots]]
+bot = "titan"
+owner = "titan-value"
+count = 1
+cash = 20_000_000
+shares_each = 200
+news_multiplier = 1.0
+
+
+# Reviewed Horizon v3, promoted from the fixed-parameter research configuration.
+[[bots]]
+bot = "horizon"
+owner = "horizon-incumbent"
+count = 1
+cash = 20_000_000
+shares_each = 200
+news_multiplier = 1.0
+forecast_access = { horizon = 1000, coverage = 0.5, range_width = 3.0 }
+params = { leverage = 2.0, cap = 0.45, clip = 0.025, research = 1.0, staged = 1.0, terminal_guard = 1.0 }
+
+# Reviewed ProfitEffect crowd: group-only P&L sharing plus individual price signals.
+# Counts are drawn independently, as for all existing population groups.
+# Together 9..21 members; roughly one third also follow market leaders.
+# All members are distinct owners; only these four groups share experience.
+
+# No extra market-leader preference.
+[[bots]]
+bot = "profit_effect"
+count = 6
+count_max = 14
+cash = 2_000_000
+shares_each = 20
+news_multiplier = 1.0
+social_group = "profit-circle"
+params = { leader_weight = 0.0, leader_min_return = 0.005, confidence = 0.25, cap = 0.30, clip = 0.02, chase = 0.03 }
+
+# Lower market-leader weight.
+[[bots]]
+bot = "profit_effect"
+count = 1
+count_max = 3
+cash = 2_000_000
+shares_each = 20
+news_multiplier = 1.0
+social_group = "profit-circle"
+params = { leader_weight = 0.5, leader_min_return = 0.005, confidence = 0.25, cap = 0.30, clip = 0.02, chase = 0.03 }
+
+# Medium market-leader weight.
+[[bots]]
+bot = "profit_effect"
+count = 1
+count_max = 2
+cash = 2_000_000
+shares_each = 20
+news_multiplier = 1.0
+social_group = "profit-circle"
+params = { leader_weight = 0.8, leader_min_return = 0.005, confidence = 0.25, cap = 0.30, clip = 0.02, chase = 0.03 }
+
+# Higher market-leader weight.
+[[bots]]
+bot = "profit_effect"
+count = 1
+count_max = 2
+cash = 2_000_000
+shares_each = 20
+news_multiplier = 1.0
+social_group = "profit-circle"
+params = { leader_weight = 1.1, leader_min_return = 0.005, confidence = 0.25, cap = 0.30, clip = 0.02, chase = 0.03 }

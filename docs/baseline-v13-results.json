@@ -1,0 +1,57 @@
+{
+  "runs": 20,
+  "timed_runs": 18,
+  "seeds": [
+    7,
+    27006,
+    28012
+  ],
+  "repeats": 3,
+  "threads": 4,
+  "cpu_budget": 10,
+  "audits": 400,
+  "skips": 0,
+  "errors": 0,
+  "disabled": 0,
+  "external_world_pairs_verified": 9,
+  "per_run_population_and_endowment_verified": true,
+  "equal_population_or_capital_between_versions": false,
+  "configurations": {
+    "v12": {
+      "wall_median": 5.003347499994561,
+      "wall_min": 4.602705600031186,
+      "wall_max": 5.398337399994489,
+      "quality_pass": 6,
+      "populations": {
+        "7": 148,
+        "27006": 180,
+        "28012": 168
+      }
+    },
+    "v13": {
+      "wall_median": 5.03104390000226,
+      "wall_min": 4.644549299962819,
+      "wall_max": 6.086534800007939,
+      "quality_pass": 4,
+      "populations": {
+        "7": 160,
+        "27006": 175,
+        "28012": 183
+      }
+    }
+  },
+  "v13_crowd": {
+    "7": {
+      "total": 17,
+      "leaders": 3
+    },
+    "27006": {
+      "total": 19,
+      "leaders": 5
+    },
+    "28012": {
+      "total": 20,
+      "leaders": 6
+    }
+  }
+}

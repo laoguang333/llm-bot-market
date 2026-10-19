@@ -73,6 +73,30 @@ fn idle() -> Script {
 }
 
 #[test]
+fn social_group_is_opt_in_and_reused_worker_does_not_leak_it() {
+    let groups=[group("member",100000,10),group("peer",100000,20),group("outsider",100000,1000),group("alone",100000,1)].join("\n");
+    let mut cfg=config(20,"[fees]\nidle_rate=0",&groups);
+    cfg.world.dividend_period=1;
+    cfg.stocks[0].dividend=2;
+    cfg.schedule.threads=1;
+    cfg.bots[0].social_group=Some("circle".into());
+    cfg.bots[1].social_group=Some("circle".into());
+    cfg.bots[3].social_group=Some("other".into());
+    let h=Harness::new(vec![("member",idle()),("peer",idle()),("outsider",idle()),("alone",idle())]);
+    let shared=Shared::new(&cfg,7,&|n,s|h.factory(n,s)).unwrap();
+    shared.run().unwrap();shared.audit().unwrap();
+    assert!(h.log("outsider").iter().all(|o|o.social.is_none()));
+    assert!(h.log("alone").iter().all(|o|o.social.as_ref().unwrap().peers==0));
+    let member=h.log("member");let peer=h.log("peer");
+    assert!(member.last().unwrap().social.as_ref().unwrap().peer_stock[0]>0.0);
+    for o in member {
+        let v=o.social.as_ref().unwrap();assert_eq!(v.peers,1);
+        // Only a snapshot published by the one other member can be received.
+        assert!(peer.iter().any(|p| (p.social.as_ref().unwrap().own_stock[0]-v.peer_stock[0]).abs()<1e-10));
+    }
+}
+
+#[test]
 fn observer_preserves_execution_and_sees_final_maker_delivery() {
     use market::account::Account;
     use market::engine::MatchObserver;
@@ -516,6 +540,17 @@ fn liquidation_rechecks_slippage_and_stops_when_no_liquidity_remains() {
         let result = market::report::run_match(&cfg, 1, &|n, s| h.factory(n, s), None).unwrap();
         let buyer = &result.accounts[1];
         assert_eq!(buyer.stats.liquidations, 1);
+        let event = &buyer.liquidation_events[0];
+        assert_eq!(
+            event.cash_before + event.sale_notional - event.trade_fees + event.bad_debt,
+            event.cash_after
+        );
+        assert_eq!(event.bad_debt, buyer.stats.bad_debt);
+        assert_eq!(event.shares_after, buyer.shares);
+        assert_eq!(
+            event.sale_notional,
+            (event.shares_before[0] - event.shares_after[0]) * bid
+        );
         if bid == 100 {
             assert_eq!(buyer.cash, 0);
             assert_eq!(buyer.shares, [0, 0]);
@@ -859,7 +894,10 @@ fn rank_ties_are_averaged() {
 
 #[test]
 fn baseline_conserves_money_and_shares_multithreaded() {
-    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../scenarios/baseline.toml");
+    let path = concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../scenarios/baseline-v6.toml"
+    );
     let mut cfg = Config::load(std::path::Path::new(path)).unwrap();
     cfg.ticks = 600;
     cfg.schedule.threads = 4;
@@ -900,7 +938,10 @@ fn baseline_conserves_money_and_shares_multithreaded() {
 
 #[test]
 fn news_arrives_before_it_takes_effect() {
-    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../scenarios/baseline.toml");
+    let path = concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../scenarios/baseline-v6.toml"
+    );
     let mut cfg = Config::load(std::path::Path::new(path)).unwrap();
     cfg.ticks = 1500;
     cfg.schedule.threads = 1; // no skipped decisions, so each delivery is observed on its tick
@@ -973,7 +1014,10 @@ fn news_arrives_before_it_takes_effect() {
 
 #[test]
 fn terminal_hints_contain_the_hidden_payment_count() {
-    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../scenarios/baseline.toml");
+    let path = concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../scenarios/baseline-v6.toml"
+    );
     let mut cfg = Config::load(std::path::Path::new(path)).unwrap();
     cfg.ticks = 2100;
     cfg.schedule.threads = 1;

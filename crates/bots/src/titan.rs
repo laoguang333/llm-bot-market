@@ -184,6 +184,7 @@ mod tests {
                 high: 30,
             }],
             stage: 0,
+            forecast: false,
             first_reveal_tick: 1,
             public_tick: 61,
             effective_tick: 121,

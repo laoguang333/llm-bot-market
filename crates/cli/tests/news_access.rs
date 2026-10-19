@@ -49,3 +49,45 @@ fn per_group_news_access_tracks_realized_population_and_preserves_other_accounts
         assert!(advantaged.world.deliveries[last].len() > ordinary.world.deliveries[last].len());
     }
 }
+
+#[test]
+fn forecast_permissions_follow_realized_groups_and_legacy_starts_disable_them() {
+    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../scenarios/baseline-v9.toml");
+    let mut cfg = Config::load(&path).unwrap();
+    let mut group = cfg.bots[0].clone();
+    group.bot = "horizon".into();
+    group.owner = Some("researcher".into());
+    group.count = 1;
+    group.count_max = None;
+    group.forecast_access = bot_api::ForecastAccess {
+        horizon: 1000,
+        coverage: 0.5,
+        range_width: 3.0,
+    };
+    cfg.bots.push(group);
+    let shared = Shared::new(&cfg, 7, &|name, start| {
+        assert_eq!(
+            start.forecast_access.horizon,
+            if start.owner == "researcher" { 1000 } else { 0 }
+        );
+        let mut old = serde_json::to_value(start).unwrap();
+        old.as_object_mut().unwrap().remove("forecast_access");
+        assert_eq!(
+            serde_json::from_value::<bot_api::Start>(old)
+                .unwrap()
+                .forecast_access,
+            bot_api::ForecastAccess::default()
+        );
+        bots::factory(name, start)
+    })
+    .unwrap();
+    let last = shared.n_accounts() - 1;
+    assert!(shared.world.deliveries[last].iter().any(|d| d.forecast));
+    assert!(shared.world.deliveries[..last]
+        .iter()
+        .all(|ds| ds.iter().all(|d| !d.forecast)));
+    for bad in [-1.0, 1.1, f64::NAN] {
+        cfg.bots.last_mut().unwrap().forecast_access.coverage = bad;
+        assert!(cfg.validate().is_err());
+    }
+}

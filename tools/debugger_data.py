@@ -134,7 +134,8 @@ def analyze_account(start, result, frames, final_marks):
         combo_error=combo_income-result["stats"]["combo_dividends"],
         frame_count=len(frames),expected_frame_count=start["rules"]["ticks_total"]+1,
         unknown_inventory=sum(a["kind"] in ["unknown_inventory","unmatched_sell"] for a in adjustments),
-        swift_mismatches=sum(f["swift_verified"] is False for f in frames))
+        swift_mismatches=sum(f["swift_verified"] is False for f in frames),
+        profit_effect_mismatches=sum(f.get("profit_effect_verified") is False for f in frames))
     return dict(start=start,result=result,frames=frames,fills=fills,pairs=pairs,adjustments=adjustments,
         episodes=episodes.finish(fills,frames[-1]["tick"]),
         events=events,curves=curves,stocks=stock_stats,max_drawdown=max_drawdown,validation=validation)
@@ -163,7 +164,7 @@ def build(run_dir):
                 changes=[[stocks[s],int(d)] for s,d in (x.rsplit(":",1) for x in row["changes"].split())]))
     save_gzip(dest/"market.json.gz",dict(bars=bars,trades=trades,news=news))
     accounts=[]
-    for meta in sorted(manifest["starts"],key=lambda m:m["start"]["account_index"]):
+    for ordinal,meta in enumerate(sorted(manifest["starts"],key=lambda m:m["start"]["account_index"]),1):
         start=meta["start"];idx=start["account_index"]
         result=next(a for a in manifest["result"]["accounts"] if a["account"]==start["account"])
         with (run_dir/f"trace/account-{idx}.jsonl").open(encoding="utf-8") as f:
@@ -172,12 +173,12 @@ def build(run_dir):
         save_gzip(dest/f"account-{idx}.json.gz",account)
         accounts.append(dict(index=idx,name=start["account"],strategy=meta["strategy"],result=result,
                              validation=account["validation"],max_drawdown=account["max_drawdown"]))
-        print(f"Pack {idx+1}/{len(manifest['starts'])} {start['account']}: {account['validation']}",flush=True)
+        print(f"Pack {ordinal}/{len(manifest['starts'])} {start['account']}: {account['validation']}",flush=True)
     output=dict(schema=2,rules=rules,result=manifest["result"],accounts=accounts,seed_display=str(manifest["result"]["seed"]),
         quote_fields=manifest["quote_fields"],clock_note=manifest["clock_note"],source_scenario=manifest["source_scenario"],
         source_trace_sha256=hashlib.sha256((run_dir/"trace-manifest.json").read_bytes()).hexdigest())
     (dest/"manifest.json").write_text(json.dumps(output,ensure_ascii=False,separators=(",",":")),encoding="utf-8")
-    bad=[a for a in accounts if any(a["validation"][k] for k in ["cash_error","fill_count_error","trade_fee_error","dividend_error","combo_error","unknown_inventory","swift_mismatches"])
+    bad=[a for a in accounts if any(a["validation"][k] for k in ["cash_error","fill_count_error","trade_fee_error","dividend_error","combo_error","unknown_inventory","swift_mismatches","profit_effect_mismatches"])
          or a["validation"]["frame_count"]!=a["validation"]["expected_frame_count"]]
     print(f"Built {dest}; {len(bad)} accounts with validation discrepancies",flush=True)
     if bad:

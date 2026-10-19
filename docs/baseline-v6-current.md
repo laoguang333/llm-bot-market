@@ -1,4 +1,6 @@
-# 当前 v6：扩容背景、两个 Swift、NewsV2、逐 tick 股息
+# 归档 v6：扩容背景、两个 Swift、NewsV2、逐 tick 股息
+
+> 当前默认已经升级为 [v13](baseline-v13.md)：1 万 ticks，保留两个 Swift、NewsV2、Titan、Horizon v3，并加入赚钱／亏钱效应群体。本页保留 v6 当时的配置和验证口径；`baseline-v6.toml` / `baseline-per-tick.toml` 仍对应本页，默认别名已转向 v13。
 
 **当前现金流规则（2026-10-19）：** 闲置费改为每 50 ticks 平均权益的 0.6%；普通股息及组合收益都逐 tick 派发，按单股持仓/单条组合的完整套数合计后四舍五入。负组合同样逐 tick 扣款。组合单位为 1/50 分，终值的一单位仍代表 50 ticks。[改造报告](per-tick-combos.md)包含 48 局四组对照与性能验证；此前扩容但组合每 50 ticks、闲置费 0.2% 的版本归档为 `baseline-v6-periodic-combos.toml`。
 

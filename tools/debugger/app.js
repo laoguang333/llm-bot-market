@@ -82,7 +82,18 @@ function renderPrice() {
   renderEpisodeBanner();
   series.push(fillSeries(a,"买入","Buy",C.up),fillSeries(a,"卖出","Sell",C.down));
   if(state.compare) series.push(fillSeries(state.compare,"对比买入","Buy",C.purple,true),fillSeries(state.compare,"对比卖出","Sell",C.gold,true));
-  series.push({name:"收到新闻",type:"scatter",symbol:"pin",symbolSize:14,itemStyle:{color:C.gold},data:a.frames.filter(f=>f.tick<=($("asof").checked?state.tick:manifest.rules.ticks_total)).flatMap(f=>f.news.filter(n=>n.changes.some(c=>c.stock===s)).map(n=>({value:[String(Math.floor(f.tick/p)*p),(bs[Math.floor(f.tick/p)]?.high??f.quotes?.[s]?.[5]??manifest.rules.stocks[s].initial_price)/100],newsTick:f.tick,details:`收到新闻 #${n.id} · tick ${f.tick} · ${n.public?"公开":"提前披露"} · 生效 ${n.effective_tick}`}))),tooltip:{formatter:v=>esc(v.data.details)}});
+  series.push({name:"收到新闻",type:"scatter",symbol:"pin",symbolSize:14,itemStyle:{color:C.gold},data:a.frames.filter(f=>f.tick<=($("asof").checked?state.tick:manifest.rules.ticks_total)).flatMap(f=>f.news.filter(n=>n.changes.some(c=>c.stock===s)).map(n=>({value:[String(Math.floor(f.tick/p)*p),(bs[Math.floor(f.tick/p)]?.high??f.quotes?.[s]?.[5]??manifest.rules.stocks[s].initial_price)/100],newsTick:f.tick,details:`收到新闻 #${n.id} · tick ${f.tick} · ${n.public?"公开":n.forecast?"远期研究":"提前披露"} · 生效 ${n.effective_tick}`}))),tooltip:{formatter:v=>esc(v.data.details)}});
+  if($("researchLinks").checked) {
+    const limit=$("asof").checked?state.tick:manifest.rules.ticks_total;
+    const xy=t=>[String(Math.floor(t/p)*p),(bs[Math.floor(t/p)]?.close??bs[Math.floor(t/p)]?.frame?.quotes?.[s]?.[5]??manifest.rules.stocks[s].initial_price)/100];
+    const rows=researchRows(a,s,limit);
+    series.push({name:"收报→生效",type:"scatter",symbol:"diamond",symbolSize:8,itemStyle:{color:C.purple},
+      data:rows.map(r=>({value:xy(r.received),researchId:r.id,details:`消息 #${r.id} · ${r.forecast?"远期研究":"普通消息"} · 收到 ${r.received} → 生效 ${r.effective}`})),
+      tooltip:{formatter:v=>esc(v.data.details)},markLine:{symbol:["circle","arrow"],silent:true,label:{show:false},lineStyle:{type:"dashed",color:C.purple,opacity:.4},
+        data:rows.filter(r=>r.effective<=limit&&r.effective<manifest.rules.ticks_total).map(r=>[{coord:xy(r.received)},{coord:xy(r.effective)}])}});
+  }
+  series.push({name:"强平",type:"scatter",symbol:"rect",symbolSize:12,itemStyle:{color:"#ff7c48"},
+    data:(a.result.liquidation_events??[]).filter(e=>e.shares_before[s]>0&&e.tick<=($("asof").checked?state.tick:manifest.rules.ticks_total)).map(e=>({value:[String(Math.floor(e.tick/p)*p),(bs[Math.floor(e.tick/p)]?.high??manifest.rules.stocks[s].initial_price)/100],riskTick:e.tick,details:`强平 tick ${e.tick} · 核销 ${money(e.bad_debt)} 元`})),tooltip:{formatter:v=>esc(v.data.details)}});
   if($("newsTruth").checked) {
     for(const [field,label,col] of [["public_tick","新闻公开（事后）",C.gold],["effective","股息生效（事后）",C.purple]]) series.push({name:label,type:"scatter",symbol:"diamond",symbolSize:8,itemStyle:{color:col},data:market.news.filter(n=>n.changes.some(c=>c[0]===s)&&n[field]<=($("asof").checked?state.tick:manifest.rules.ticks_total)).map(n=>({value:[String(Math.floor(n[field]/p)*p),(bs[Math.floor(n[field]/p)]?.high??manifest.rules.stocks[s].initial_price)/100],details:`新闻 #${n.id} · ${label} tick ${n[field]} · 变化 ${n.changes.find(c=>c[0]===s)[1]}`})),tooltip:{formatter:v=>esc(v.data.details)}});
   }
@@ -90,11 +101,14 @@ function renderPrice() {
   if(sw) {
     for(const [key,name,col] of [["score","Swift 总信号",C.cyan],["flow10","主动方向 10",C.up],["flow30","主动方向 30",C.gold],["depth","盘口不平衡",C.purple],["momentum","动量（加权）","#7cabee"]]) series.push(line(name,bs.map(b=>b.frame?.swift?.[s]?.[key] == null?null:b.frame.swift[s][key]*(key==="momentum"?(a.start.params.momentum??5):1)),2,col));
     series.at(-5).markLine={symbol:"none",silent:true,label:{fontSize:9,color:C.muted,textBorderWidth:0,textBorderColor:"transparent",position:"insideEndTop",formatter:"{b}"},data:[{name:"入场",yAxis:a.start.params.entry??.15},{name:"退出",yAxis:a.start.params.exit??-.3}],lineStyle:{color:C.muted,width:1,type:"dashed"}};
+  } else if(meta(state.index).strategy==="profit_effect") {
+    for(const [key,name,col,mult] of [["score","收益效应总信号",C.cyan,1],["leader_contribution","市场领涨加分",C.up,1],["peer_profit","同伴盈亏贡献 %",C.gold,100],["own_profit","自身盈亏贡献 %",C.purple,100]]) series.push(line(name,bs.map(b=>b.frame?.profit_effect?.[s]?.[key]==null?null:b.frame.profit_effect[s][key]*mult),2,col));
   } else {
     series.push(line("观察成交方向（非内部信号）",bs.map(b=>{const q=b.frame?.quotes?.[s];return q?(q[9]-q[10])/Math.max(1,q[9]+q[10]):null;}),2,C.cyan));
   }
   series.push(line("持股",bs.map(b=>b.frame?.post.shares[s]??null),3,C.cyan,{step:"end",areaStyle:{color:C.cyan,opacity:.1}}));
   if(sw) series.push(line("目标股数",bs.map(b=>b.frame?.swift?.[s]?.target_shares??null),3,C.gold,{step:"end",lineStyle:{type:"dashed",color:C.gold,width:1}}));
+  if(meta(state.index).strategy==="profit_effect") series.push(line("目标股数",bs.map(b=>b.frame?.profit_effect?.[s]?.target_shares??null),3,C.gold,{step:"end",lineStyle:{type:"dashed",color:C.gold,width:1}}));
   $("chartTitle").textContent=`${stockName(s)} · ${p} tick K 线 · ${sw?"Swift 信号与执行":"实际交易与观察"}`;
   priceChart.setOption({animation:false,backgroundColor:"transparent",textStyle:{color:C.muted},legend:{type:"scroll",top:0,textStyle:{color:C.muted,fontSize:10},selected:priceLegend},tooltip:{trigger:"axis",axisPointer:{type:"cross"},backgroundColor:"#172537",borderColor:C.line,textStyle:{color:"#e1eaf6",fontSize:11},confine:true},axisPointer:{link:[{xAxisIndex:"all"}]},grid:[{left:64,right:35,top:42,height:"39%"},{left:64,right:35,top:"49%",height:"9%"},{left:64,right:35,top:"63%",height:"13%"},{left:64,right:35,top:"81%",height:"10%"}],xAxis:[0,1,2,3].map(i=>({type:"category",data:labels,gridIndex:i,boundaryGap:true,...axisStyle,axisLabel:{...axisStyle.axisLabel,show:i===3},axisPointer:{label:{show:i===0}}})),yAxis:["元","量","信号","股"].map((name,i)=>({type:"value",name,gridIndex:i,scale:true,...axisStyle,nameTextStyle:{color:C.muted,fontSize:10},splitNumber:i===0?5:2})),dataZoom:[{type:"inside",filterMode:"weakFilter",xAxisIndex:[0,1,2,3],start:state.zoom[0],end:state.zoom[1]},{type:"slider",filterMode:"weakFilter",xAxisIndex:[0,1,2,3],start:state.zoom[0],end:state.zoom[1],bottom:0,height:15,borderColor:C.line,textStyle:{color:C.muted},dataBackground:{lineStyle:{color:C.cyan},areaStyle:{color:C.cyan}}}],series},true);
 }
@@ -116,6 +130,10 @@ function renderSnapshot() {
   html+=kv([["决策前杠杆",f.pre?num(f.pre.leverage,3)+" 倍":"—"],["该股本次收到普通分红",money(f.income.reduce((sum,i)=>sum+(i.Dividend?.stock===s?i.Dividend.amount:0),0))],["累计普通 / 组合分红",`${money(f.stats.dividends)} / ${money(f.stats.combo_dividends)}`],["累计成交费 / 利息",`${money(f.stats.trade_fees)} / ${money(f.stats.interest)}`]]);
   if(q) html+=kv([["观察买一 / 卖一",`${money(q[0]||null)} / ${money(q[1]||null)}`],["价差 / 中间价",q[0]&&q[1]?pct((q[1]-q[0])/((q[0]+q[1])/2)):"单边盘口"],["本次观察 主买 / 主卖量",`${q[9]} / ${q[10]}`],["每股每次派息（元）",num(q[6]/a.start.rules.dividend_scale/100,4)]]);
   if(sig) html+=`<div class="reason"><b>${esc(reasonNames[sig.signal_reason]||sig.signal_reason)}</b><br>${esc(reasonNames[sig.execution_reason]||sig.execution_reason)}</div>`+kv([["总信号",num(sig.score,4)],["目标比例 / 股数",`${pct(sig.target_fraction)} / ${sig.target_shares}`],["主动方向 10 / 30",`${num(sig.flow10,4)} / ${num(sig.flow30,4)}`],["盘口不平衡",num(sig.depth,4)],["动量 / EMA30",`${num(sig.momentum,5)} / ${money(sig.ema30)}`],["成交量 EMA10",num(sig.volume10,1)],["预算",money(sig.budget)],["与真实动作逐项核对",f.swift_verified?"一致":"不一致，请停止据此归因"]])+`<div class="small muted">score = 0.7 × flow10 + 0.3 × flow30 + ${a.start.params.depth??.3} × depth + ${a.start.params.momentum??5} × momentum。目标信号与实际成交分开记录。</div>`;
+  else if(f.profit_effect?.[s]) {
+    const effect=f.profit_effect[s];
+    html+='<div class="reason"><b>赚钱／亏钱效应</b><br>同组实际盈亏影响目标仓位；部分成员另参考市场领涨股票。</div>'+kv([["同伴数 / 记忆尺度",`${f.social?.peers??0} / ${f.social?.memory_ticks??100} ticks`],["同伴该股盈亏贡献",pct(effect.peer_profit)],["自身该股盈亏贡献",pct(effect.own_profit)],["自身账户净收益记忆",pct(f.social?.own_net??0)],["简单价格变化记忆",pct(effect.price_return)],["市场领涨权重",num(a.start.params.leader_weight??0,2)],["正涨幅领先名次",effect.leader_rank??"未启用／未入选"],["市场领涨加分",num(effect.leader_contribution??0,4)],["总信号",num(effect.score,4)],["目标比例 / 股数",`${pct(effect.target_fraction)} / ${effect.target_shares}`],["与真实动作逐项核对",f.profit_effect_verified?"一致":"不一致，请停止据此归因"]])+ '<div class="small muted">盈亏贡献以初始权益为分母，包含浮盈、实际交易费与到账股息；不是买入价收益率。组内均值排除自己。领涨加分只用于近期上涨超过门槛的前两名，空仓时也能触发；不保证盈利或立即成交。</div>';
+  }
   else if(f.decided) html+='<div class="reason">此账户展示实际输入和动作；没有推断其未记录的内部交易理由。</div>';
   const book=f.books?.[s];
   if(book) html+=`<div class="mini-heading">当时可见的 10 档盘口 · 聚合数量，不含账户身份</div><div class="book">${["bids","asks"].map((side,i)=>`<div><b>${i?"卖盘":"买盘"}</b>${book[side].map(l=>`<div class="book-row"><span>${money(l.price)}</span><span>${l.qty}</span></div>`).join("")}</div>`).join("")}</div>`;
@@ -129,6 +147,7 @@ function setCursor(t,redraw=true) {
   state.tick=Math.max(0,Math.min(manifest.rules.ticks_total,Math.round(Number(t)||0)));
   $("cursor").value=state.tick; $("tick").value=state.tick;
   renderMetrics();renderSnapshot();
+  if($("asof").checked && ["research","risk"].includes(state.tab))renderTable();
   if(redraw) {
     if($("asof").checked) {renderPrice();renderEquity();}
     else {
@@ -166,6 +185,16 @@ function tableData() {
     pairs.sort((a,b)=>sorting==="worst"?(a.price_pnl??0)-(b.price_pnl??0):sorting==="best"?(b.price_pnl??0)-(a.price_pnl??0):a.exit_receipt_tick-b.exit_receipt_tick);
     return {headers:["标的","入场撮合","出场撮合","来源","股数","入价 / 元","出价 / 元","净价差 / 元","持有回报 ticks"],help:"FIFO 按实际回报顺序配对，部分成交会拆行；已扣两端交易费，不含分红、闲置费与利息。初始库存不是一次交易入场。",rows:pairs.map(p=>({action:"pair",key:p.id,cells:[stockName(p.stock),p.entry_tick,p.exit_tick,p.initial?"初始 / 调整库存":"买入成交",p.qty,money(p.entry_price),money(p.exit_price),money(p.price_pnl),p.holding_ticks]}))};
   }
+  case "research": {
+    const limit=$("asof").checked?state.tick:manifest.rules.ticks_total;
+    const rows=researchRows(a,s,limit);
+    return {headers:["消息","首次收到","来源","公开","生效","提前 ticks","最新变化区间（率单位）","同期买 / 卖股数","同期强平"],
+      help:"当前标的：只使用账户实际收到的消息。交易窗口为首次收报至生效后 100 ticks；重叠窗口可能重复包含成交，不代表该消息导致交易。点击展开时间线；打开连线可与进出场叠加。",
+      rows:rows.map(r=>({action:"research",key:r.id,cells:[`#${r.id}`,r.received,r.forecast?"远期研究":"普通消息",r.publicTick,r.effective,r.effective-r.received,`${r.latest.low} ~ ${r.latest.high}`,`${r.buy} / ${r.sell}`,r.risks.length]}))};
+  }
+  case "risk": return {headers:["触发 tick","触发前现金 / 元","触发前市值 / 元","触发前权益 / 元","实际卖出额 / 元","手续费 / 元","核销 / 元","处理后现金 / 元","处理后市值 / 元"],
+    help:"账户整体风险记录；点击回到触发时刻。现金后 = 现金前 + 卖出额 − 手续费 + 坏账核销。没有买盘时，强平可保留未卖出的仓位；核销才是实际补贴。旧录制没有这些字段。",
+    rows:(a.result.liquidation_events??[]).filter(e=>(!$("stockOnly").checked||e.shares_before[s]>0||e.shares_before.every(q=>q===0))&&(!$("asof").checked||e.tick<=state.tick)).map(e=>({action:"risk",key:e.tick,cells:[e.tick,money(e.cash_before),money(e.gross_before),money(e.cash_before+e.gross_before),money(e.sale_notional),money(e.trade_fees),money(e.bad_debt),money(e.cash_after),money(e.gross_after)]}))};
   case "news": {
     let rows=[];
     for(const f of a.frames) {
@@ -260,9 +289,23 @@ function selectPair(id) {
   $("pairEntry").onclick=()=>setCursor(p.entry_receipt_tick);$("pairExit").onclick=()=>setCursor(p.exit_receipt_tick);
 }
 async function changeCompare(value) {$("compare").value=value;const comparison=value===""?null:await loadAccount(+value);if($("compare").value!==value)return;state.compare=comparison;renderPrice();renderEquity();}
+function selectResearch(id) {
+  const limit=$("asof").checked?state.tick:manifest.rules.ticks_total;
+  const r=researchRows(state.account,state.stock,limit).find(r=>r.id===id);if(!r)return;
+  setCursor($("asof").checked?limit:r.received,false);focusInterval(r.received,Math.min(limit,r.effective+100));
+  $("selection").hidden=false;
+  $("selection").innerHTML=`<h3>消息 #${id} · ${stockName(state.stock)} · ${r.forecast?"远期研究":"普通披露"}</h3>`+
+    kv([["首次收报 → 公开 → 生效",`${r.received} → ${r.publicTick} → ${r.effective}`],["期间买 / 卖股数",`${r.buy} / ${r.sell}`],["提前 ticks",r.effective-r.received],["同期强平",r.risks.length]])+
+    `<p class="small muted">这里只建立时间关联，不把重叠消息硬分配给某笔交易。变化区间按收报顺序列出，成交按真实撮合 / 回报时间列出。</p><p><button id="researchReceipt">收报时刻</button> <button id="researchEffect">生效时刻</button></p><details open><summary>区间更新、实际成交及强平记录</summary><pre>${esc(JSON.stringify({updates:r.updates,fills:r.fills,risk:r.risks},null,2))}</pre></details>`;
+  $("researchReceipt").onclick=()=>setCursor(r.received);$("researchEffect").onclick=()=>setCursor(Math.min(limit,r.effective));
+}
+function selectRisk(tick) {
+  setCursor(tick);const e=(state.account.result.liquidation_events??[]).find(e=>e.tick===tick);if(!e)return;
+  $("selection").hidden=false;$("selection").innerHTML=`<h3>强平 · tick ${tick}</h3><p>现金前 + 卖出额 − 手续费 + 核销 = 现金后。标记价为邻近采样，其他线程可继续成交；触发市值以 gross_before 为准。</p><pre>${esc(JSON.stringify(e,null,2))}</pre>`;
+}
 function handleRow(row) {
   const key=Number(row.dataset.key);switch(row.dataset.action) {
-    case "episode":selectEpisode(key);break;case "fill":selectFill(key);break;case "pair":selectPair(key);break;case "frame":setCursor(key);break;
+    case "research":selectResearch(key);break;case "risk":selectRisk(key);break;case "episode":selectEpisode(key);break;case "fill":selectFill(key);break;case "pair":selectPair(key);break;case "frame":setCursor(key);break;
     case "stock":state.stock=key;state.selectedEpisode=null;state.selectedPair=null;$("focusEpisode").checked=false;$("selection").hidden=true;$("stock").value=key;renderAll();break;case "compare":if(Number.isFinite(key))changeCompare(String(key)).catch(error);break;
   }
 }
@@ -280,7 +323,7 @@ function bind() {
   $("stock").onchange=()=>{state.stock=+$("stock").value;state.page=0;state.selectedEpisode=null;state.selectedPair=null;$("focusEpisode").checked=false;$("selection").hidden=true;renderAll();};
   $("period").onchange=()=>{state.period=+$("period").value;renderPrice();};
   $("compare").onchange=()=>changeCompare($("compare").value).catch(error);
-  for(const id of ["asof","quotes","newsTruth"]) $(id).onchange=()=>{renderPrice();renderEquity();renderTable();};
+  for(const id of ["asof","quotes","newsTruth","researchLinks"]) $(id).onchange=()=>{renderPrice();renderEquity();renderTable();};
   for(const id of ["lineMode","initialLines","focusEpisode"]) $(id).onchange=renderPrice;
   $("clearEpisode").onclick=()=>{state.selectedEpisode=null;state.selectedPair=null;$("focusEpisode").checked=false;renderPrice();};
   $("resetZoom").onclick=()=>{state.zoom=[0,100];renderPrice();renderEquity();};
@@ -294,7 +337,7 @@ function bind() {
   $("table").onkeydown=e=>{if(e.key==="Enter"&&e.target.matches("tr[data-action]"))handleRow(e.target);};
   $("exportRows").onclick=exportCSV;$("exportFrame").onclick=()=>download(`${state.account.start.account}-tick-${state.tick}.json`,JSON.stringify({source_trace_sha256:manifest.source_trace_sha256,account:state.account.start.account,stock:state.stock,rules:state.account.start.rules,params:state.account.start.params,frame:frameAt(state.account,state.tick)},null,2),"application/json");
   document.addEventListener("keydown",e=>{if(e.target.closest("input,select,textarea,button,summary"))return;if(e.key==="ArrowLeft"){e.preventDefault();setCursor(state.tick-1);}if(e.key==="ArrowRight"){e.preventDefault();setCursor(state.tick+1);}if(e.key===" "){e.preventDefault();play();}if(e.key==="[")nextFill(-1);if(e.key==="]")nextFill(1);});
-  priceChart.on("click",e=>{if(e.data?.linkKind==="episode")selectEpisode(e.data.linkId);else if(e.data?.linkKind==="pair")selectPair(e.data.linkId);else if(e.data?.fillId!=null)selectFill(e.data.fillId,e.data.comparison);else if(e.data?.newsTick!=null)setCursor(e.data.newsTick);else if(e.seriesType!=="scatter"&&buckets[e.dataIndex])setCursor(buckets[e.dataIndex].tick);});
+  priceChart.on("click",e=>{if(e.data?.researchId!=null)selectResearch(e.data.researchId);else if(e.data?.riskTick!=null)selectRisk(e.data.riskTick);else if(e.data?.linkKind==="episode")selectEpisode(e.data.linkId);else if(e.data?.linkKind==="pair")selectPair(e.data.linkId);else if(e.data?.fillId!=null)selectFill(e.data.fillId,e.data.comparison);else if(e.data?.newsTick!=null)setCursor(e.data.newsTick);else if(e.seriesType!=="scatter"&&buckets[e.dataIndex])setCursor(buckets[e.dataIndex].tick);});
   priceChart.on("legendselectchanged",e=>{priceLegend=e.selected;});
   equityChart.on("legendselectchanged",e=>{equityLegend=e.selected;});
   priceChart.getZr().on("click",e=>{if(e.target)return;for(let i=0;i<4;i++)if(priceChart.containPixel({gridIndex:i},[e.offsetX,e.offsetY])){const value=priceChart.convertFromPixel({xAxisIndex:i},[e.offsetX,e.offsetY]);const b=buckets[Math.round(value[0]??value)];if(b)setCursor(b.tick);break;}});
@@ -306,7 +349,7 @@ function bind() {
 async function main() {
   setBusy(true);
   [manifest,market]=await Promise.all([fetchJSON("/data/manifest.json"),fetchJSON("/data/market.json.gz")]);
-  $("runMeta").textContent=`seed ${manifest.seed_display??manifest.result.seed} · ${manifest.result.threads} 线程 · ${manifest.rules.ticks_total} ticks · ${manifest.accounts.length} 账户 · 闲置费 ${pct(manifest.rules.idle_rate)} / ${manifest.rules.idle_period} ticks · 组合每 ${manifest.rules.combo_period} tick`;
+  $("runMeta").textContent=`seed ${manifest.seed_display??manifest.result.seed} · ${manifest.result.threads} 线程 · ${manifest.rules.ticks_total} ticks · ${manifest.accounts.length} 个录制 / ${manifest.result.accounts.length} 个参赛账户 · 闲置费 ${pct(manifest.rules.idle_rate)} / ${manifest.rules.idle_period} ticks · 组合每 ${manifest.rules.combo_period} tick`;
   $("stock").innerHTML=manifest.rules.stocks.map((s,i)=>`<option value="${i}">${esc(s.name)}</option>`).join("");
   $("compare").innerHTML+=[...manifest.accounts].sort((a,b)=>(b.strategy==="swift")-(a.strategy==="swift")).map(a=>`<option value="${a.index}">${esc(a.name)}</option>`).join("");
   $("cursor").max=manifest.rules.ticks_total;$("tick").max=manifest.rules.ticks_total;
@@ -315,7 +358,7 @@ async function main() {
   const kind=document.createElement("label");kind.id="eventKindLabel";kind.innerHTML='事件 <select id="eventKind"><option value="news">新闻与提示</option><option value="cash">现金流</option><option value="all">全部</option></select>';traded.after(kind);
   priceChart=echarts.init($("priceChart"));equityChart=echarts.init($("equityChart"));bind();
   if(manifest.schema<2)error(Error("此录制尚未生成整轮操作数据，请先用 pack 命令重新打包。原成交数据仍可查看。"));
-  const bad=manifest.accounts.filter(a=>["cash_error","fill_count_error","trade_fee_error","dividend_error","unknown_inventory","swift_mismatches"].some(k=>a.validation[k]!==0)||a.validation.frame_count!==a.validation.expected_frame_count);
+  const bad=manifest.accounts.filter(a=>["cash_error","fill_count_error","trade_fee_error","dividend_error","unknown_inventory","swift_mismatches"].some(k=>a.validation[k]!==0)||(a.validation.profit_effect_mismatches??0)!==0||a.validation.frame_count!==a.validation.expected_frame_count);
   if(bad.length)error(Error(`${bad.length} 个账户的数据核对失败，不应据此下结论。请查看「核对与规则」。`));
   await selectAccount(manifest.accounts.find(a=>a.strategy==="swift")?.index??manifest.accounts[0].index);
 }

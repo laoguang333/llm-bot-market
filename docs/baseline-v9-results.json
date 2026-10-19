@@ -1,0 +1,4144 @@
+{
+  "runs": 184,
+  "audits": 3680,
+  "skipped": 0,
+  "bot_errors": 0,
+  "disabled": 0,
+  "liquidation_events": 602,
+  "bad_debt_yuan": 7497833.6,
+  "risk_reconciliation_errors": 0,
+  "worst_liquidations": [
+    {
+      "group": "bench",
+      "arm": "v8",
+      "seed": 27006,
+      "repeat": 2,
+      "account": "tracker#3",
+      "strategy": "tracker",
+      "tick": 8483,
+      "cash_before": -476477124,
+      "gross_before": 7161120,
+      "shares_before": [
+        288,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "marks_before": [
+        24865,
+        15872,
+        6187,
+        10976,
+        8265,
+        7163,
+        105933,
+        6579,
+        7383,
+        10939
+      ],
+      "cash_after": 0,
+      "gross_after": 0,
+      "shares_after": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sale_notional": 1529875,
+      "fills": [
+        {
+          "order_id": 5169377,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5315,
+          "qty": 81,
+          "fee": 216,
+          "maker": false,
+          "tick": 8483
+        },
+        {
+          "order_id": 5169377,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5314,
+          "qty": 5,
+          "fee": 14,
+          "maker": false,
+          "tick": 8483
+        },
+        {
+          "order_id": 5169377,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5314,
+          "qty": 169,
+          "fee": 450,
+          "maker": false,
+          "tick": 8483
+        },
+        {
+          "order_id": 5169377,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5314,
+          "qty": 10,
+          "fee": 27,
+          "maker": false,
+          "tick": 8483
+        },
+        {
+          "order_id": 5169377,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5313,
+          "qty": 11,
+          "fee": 30,
+          "maker": false,
+          "tick": 8483
+        },
+        {
+          "order_id": 5169377,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5267,
+          "qty": 9,
+          "fee": 24,
+          "maker": false,
+          "tick": 8483
+        },
+        {
+          "order_id": 5169377,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5246,
+          "qty": 3,
+          "fee": 8,
+          "maker": false,
+          "tick": 8483
+        }
+      ],
+      "trade_fees": 769,
+      "bad_debt": 474948018,
+      "pending_orders": 0
+    },
+    {
+      "group": "bench",
+      "arm": "v8",
+      "seed": 27006,
+      "repeat": 2,
+      "account": "tracker#1",
+      "strategy": "tracker",
+      "tick": 8479,
+      "cash_before": -96184355,
+      "gross_before": 12675366,
+      "shares_before": [
+        243,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "marks_before": [
+        52162,
+        15899,
+        6723,
+        11148,
+        8287,
+        7235,
+        107411,
+        6620,
+        7383,
+        10964
+      ],
+      "cash_after": 0,
+      "gross_after": 0,
+      "shares_after": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sale_notional": 1277834,
+      "fills": [
+        {
+          "order_id": 5166936,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5271,
+          "qty": 114,
+          "fee": 301,
+          "maker": false,
+          "tick": 8479
+        },
+        {
+          "order_id": 5166936,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5271,
+          "qty": 32,
+          "fee": 85,
+          "maker": false,
+          "tick": 8479
+        },
+        {
+          "order_id": 5166936,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5270,
+          "qty": 2,
+          "fee": 6,
+          "maker": false,
+          "tick": 8479
+        },
+        {
+          "order_id": 5166936,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5262,
+          "qty": 25,
+          "fee": 66,
+          "maker": false,
+          "tick": 8479
+        },
+        {
+          "order_id": 5166936,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5261,
+          "qty": 15,
+          "fee": 40,
+          "maker": false,
+          "tick": 8479
+        },
+        {
+          "order_id": 5166936,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5254,
+          "qty": 14,
+          "fee": 37,
+          "maker": false,
+          "tick": 8479
+        },
+        {
+          "order_id": 5166936,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5227,
+          "qty": 17,
+          "fee": 45,
+          "maker": false,
+          "tick": 8479
+        },
+        {
+          "order_id": 5166936,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5202,
+          "qty": 24,
+          "fee": 63,
+          "maker": false,
+          "tick": 8479
+        }
+      ],
+      "trade_fees": 643,
+      "bad_debt": 94907164,
+      "pending_orders": 0
+    },
+    {
+      "group": "bench",
+      "arm": "v8",
+      "seed": 27006,
+      "repeat": 2,
+      "account": "tracker#2",
+      "strategy": "tracker",
+      "tick": 8480,
+      "cash_before": -39645050,
+      "gross_before": 5324670,
+      "shares_before": [
+        130,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "marks_before": [
+        40959,
+        15891,
+        6487,
+        11009,
+        8277,
+        7192,
+        106852,
+        6611,
+        7383,
+        10964
+      ],
+      "cash_after": 0,
+      "gross_after": 0,
+      "shares_after": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sale_notional": 691035,
+      "fills": [
+        {
+          "order_id": 5167565,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5316,
+          "qty": 62,
+          "fee": 165,
+          "maker": false,
+          "tick": 8480
+        },
+        {
+          "order_id": 5167565,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5316,
+          "qty": 23,
+          "fee": 62,
+          "maker": false,
+          "tick": 8480
+        },
+        {
+          "order_id": 5167565,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5315,
+          "qty": 45,
+          "fee": 120,
+          "maker": false,
+          "tick": 8480
+        }
+      ],
+      "trade_fees": 347,
+      "bad_debt": 38954362,
+      "pending_orders": 0
+    },
+    {
+      "group": "bench",
+      "arm": "v8",
+      "seed": 27006,
+      "repeat": 2,
+      "account": "tracker#6",
+      "strategy": "tracker",
+      "tick": 8484,
+      "cash_before": -34007536,
+      "gross_before": 372385,
+      "shares_before": [
+        17,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "marks_before": [
+        21905,
+        15869,
+        6075,
+        10969,
+        8263,
+        7162,
+        105644,
+        6576,
+        7383,
+        10939
+      ],
+      "cash_after": 0,
+      "gross_after": 0,
+      "shares_after": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sale_notional": 89454,
+      "fills": [
+        {
+          "order_id": 5169974,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5262,
+          "qty": 17,
+          "fee": 45,
+          "maker": false,
+          "tick": 8484
+        }
+      ],
+      "trade_fees": 45,
+      "bad_debt": 33918127,
+      "pending_orders": 0
+    },
+    {
+      "group": "bench",
+      "arm": "v8",
+      "seed": 27006,
+      "repeat": 2,
+      "account": "tracker#4",
+      "strategy": "tracker",
+      "tick": 8477,
+      "cash_before": -32649313,
+      "gross_before": 23596299,
+      "shares_before": [
+        223,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "marks_before": [
+        105813,
+        15909,
+        6926,
+        11148,
+        8290,
+        7242,
+        108871,
+        6623,
+        7383,
+        10970
+      ],
+      "cash_after": 0,
+      "gross_after": 0,
+      "shares_after": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sale_notional": 1184643,
+      "fills": [
+        {
+          "order_id": 5165582,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5377,
+          "qty": 45,
+          "fee": 121,
+          "maker": false,
+          "tick": 8477
+        },
+        {
+          "order_id": 5165582,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5376,
+          "qty": 18,
+          "fee": 49,
+          "maker": false,
+          "tick": 8477
+        },
+        {
+          "order_id": 5165582,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5337,
+          "qty": 22,
+          "fee": 59,
+          "maker": false,
+          "tick": 8477
+        },
+        {
+          "order_id": 5165582,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5325,
+          "qty": 17,
+          "fee": 46,
+          "maker": false,
+          "tick": 8477
+        },
+        {
+          "order_id": 5165582,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5304,
+          "qty": 13,
+          "fee": 35,
+          "maker": false,
+          "tick": 8477
+        },
+        {
+          "order_id": 5165582,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5286,
+          "qty": 15,
+          "fee": 40,
+          "maker": false,
+          "tick": 8477
+        },
+        {
+          "order_id": 5165582,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5284,
+          "qty": 22,
+          "fee": 59,
+          "maker": false,
+          "tick": 8477
+        },
+        {
+          "order_id": 5165582,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5275,
+          "qty": 18,
+          "fee": 48,
+          "maker": false,
+          "tick": 8477
+        },
+        {
+          "order_id": 5165582,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5271,
+          "qty": 10,
+          "fee": 27,
+          "maker": false,
+          "tick": 8477
+        },
+        {
+          "order_id": 5165582,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5265,
+          "qty": 15,
+          "fee": 40,
+          "maker": false,
+          "tick": 8477
+        },
+        {
+          "order_id": 5165582,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5258,
+          "qty": 14,
+          "fee": 37,
+          "maker": false,
+          "tick": 8477
+        },
+        {
+          "order_id": 5165582,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5231,
+          "qty": 14,
+          "fee": 37,
+          "maker": false,
+          "tick": 8477
+        }
+      ],
+      "trade_fees": 598,
+      "bad_debt": 31465268,
+      "pending_orders": 0
+    },
+    {
+      "group": "bench",
+      "arm": "v8",
+      "seed": 27006,
+      "repeat": 2,
+      "account": "tracker#5",
+      "strategy": "tracker",
+      "tick": 8483,
+      "cash_before": -30153105,
+      "gross_before": 919486,
+      "shares_before": [
+        38,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "marks_before": [
+        24197,
+        15872,
+        6156,
+        10976,
+        8265,
+        7163,
+        105933,
+        6579,
+        7383,
+        10939
+      ],
+      "cash_after": 0,
+      "gross_after": 0,
+      "shares_after": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sale_notional": 198559,
+      "fills": [
+        {
+          "order_id": 5169378,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5246,
+          "qty": 1,
+          "fee": 3,
+          "maker": false,
+          "tick": 8483
+        },
+        {
+          "order_id": 5169378,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5244,
+          "qty": 10,
+          "fee": 27,
+          "maker": false,
+          "tick": 8483
+        },
+        {
+          "order_id": 5169378,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5219,
+          "qty": 17,
+          "fee": 45,
+          "maker": false,
+          "tick": 8483
+        },
+        {
+          "order_id": 5169378,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5215,
+          "qty": 10,
+          "fee": 27,
+          "maker": false,
+          "tick": 8483
+        }
+      ],
+      "trade_fees": 102,
+      "bad_debt": 29954648,
+      "pending_orders": 0
+    },
+    {
+      "group": "bench",
+      "arm": "v8",
+      "seed": 28012,
+      "repeat": 2,
+      "account": "shark#6",
+      "strategy": "shark",
+      "tick": 7380,
+      "cash_before": -28682747,
+      "gross_before": 23348634,
+      "shares_before": [
+        0,
+        23,
+        0,
+        0,
+        603,
+        50,
+        0,
+        2091,
+        687,
+        0
+      ],
+      "marks_before": [
+        6012,
+        6776,
+        7729,
+        3204,
+        14074,
+        23527,
+        11738,
+        3711,
+        8399,
+        3863
+      ],
+      "cash_after": 0,
+      "gross_after": 0,
+      "shares_after": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sale_notional": 15795734,
+      "fills": [
+        {
+          "order_id": 5229349,
+          "stock": 1,
+          "side": "Sell",
+          "price": 6493,
+          "qty": 7,
+          "fee": 23,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229349,
+          "stock": 1,
+          "side": "Sell",
+          "price": 6492,
+          "qty": 1,
+          "fee": 4,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229349,
+          "stock": 1,
+          "side": "Sell",
+          "price": 6490,
+          "qty": 8,
+          "fee": 26,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229349,
+          "stock": 1,
+          "side": "Sell",
+          "price": 6487,
+          "qty": 7,
+          "fee": 23,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13515,
+          "qty": 13,
+          "fee": 88,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13513,
+          "qty": 3,
+          "fee": 21,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13513,
+          "qty": 3,
+          "fee": 21,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13512,
+          "qty": 1,
+          "fee": 7,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13510,
+          "qty": 13,
+          "fee": 88,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13492,
+          "qty": 46,
+          "fee": 311,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13488,
+          "qty": 4,
+          "fee": 27,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13460,
+          "qty": 52,
+          "fee": 350,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13459,
+          "qty": 10,
+          "fee": 68,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13454,
+          "qty": 8,
+          "fee": 54,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13451,
+          "qty": 3,
+          "fee": 21,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13431,
+          "qty": 2,
+          "fee": 14,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13396,
+          "qty": 7,
+          "fee": 47,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13356,
+          "qty": 18,
+          "fee": 121,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13319,
+          "qty": 1,
+          "fee": 7,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13297,
+          "qty": 2,
+          "fee": 14,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13292,
+          "qty": 1,
+          "fee": 7,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13275,
+          "qty": 14,
+          "fee": 93,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13264,
+          "qty": 4,
+          "fee": 27,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13259,
+          "qty": 6,
+          "fee": 40,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13236,
+          "qty": 10,
+          "fee": 67,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13208,
+          "qty": 6,
+          "fee": 40,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13207,
+          "qty": 19,
+          "fee": 126,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13186,
+          "qty": 9,
+          "fee": 60,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13166,
+          "qty": 14,
+          "fee": 93,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13150,
+          "qty": 8,
+          "fee": 53,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13128,
+          "qty": 2,
+          "fee": 14,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13117,
+          "qty": 19,
+          "fee": 125,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13117,
+          "qty": 13,
+          "fee": 86,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13109,
+          "qty": 13,
+          "fee": 86,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13077,
+          "qty": 12,
+          "fee": 79,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13064,
+          "qty": 18,
+          "fee": 118,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13041,
+          "qty": 2,
+          "fee": 14,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12982,
+          "qty": 17,
+          "fee": 111,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12979,
+          "qty": 7,
+          "fee": 46,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12961,
+          "qty": 4,
+          "fee": 26,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12912,
+          "qty": 28,
+          "fee": 181,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12899,
+          "qty": 8,
+          "fee": 52,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12895,
+          "qty": 17,
+          "fee": 110,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12892,
+          "qty": 18,
+          "fee": 117,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12844,
+          "qty": 8,
+          "fee": 52,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12833,
+          "qty": 7,
+          "fee": 45,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12822,
+          "qty": 25,
+          "fee": 161,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12765,
+          "qty": 1,
+          "fee": 7,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12763,
+          "qty": 21,
+          "fee": 135,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12761,
+          "qty": 29,
+          "fee": 186,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12731,
+          "qty": 7,
+          "fee": 45,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12726,
+          "qty": 4,
+          "fee": 26,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12723,
+          "qty": 10,
+          "fee": 64,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12706,
+          "qty": 3,
+          "fee": 20,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12626,
+          "qty": 17,
+          "fee": 108,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12619,
+          "qty": 12,
+          "fee": 76,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229350,
+          "stock": 4,
+          "side": "Sell",
+          "price": 12600,
+          "qty": 4,
+          "fee": 26,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229351,
+          "stock": 5,
+          "side": "Sell",
+          "price": 23472,
+          "qty": 26,
+          "fee": 306,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229351,
+          "stock": 5,
+          "side": "Sell",
+          "price": 23471,
+          "qty": 16,
+          "fee": 188,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229351,
+          "stock": 5,
+          "side": "Sell",
+          "price": 23471,
+          "qty": 8,
+          "fee": 94,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229352,
+          "stock": 7,
+          "side": "Sell",
+          "price": 478,
+          "qty": 43,
+          "fee": 11,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229352,
+          "stock": 7,
+          "side": "Sell",
+          "price": 477,
+          "qty": 34,
+          "fee": 9,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229352,
+          "stock": 7,
+          "side": "Sell",
+          "price": 476,
+          "qty": 250,
+          "fee": 60,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229352,
+          "stock": 7,
+          "side": "Sell",
+          "price": 475,
+          "qty": 208,
+          "fee": 50,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229352,
+          "stock": 7,
+          "side": "Sell",
+          "price": 475,
+          "qty": 257,
+          "fee": 62,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229352,
+          "stock": 7,
+          "side": "Sell",
+          "price": 474,
+          "qty": 174,
+          "fee": 42,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229352,
+          "stock": 7,
+          "side": "Sell",
+          "price": 473,
+          "qty": 34,
+          "fee": 9,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229352,
+          "stock": 7,
+          "side": "Sell",
+          "price": 405,
+          "qty": 54,
+          "fee": 11,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229352,
+          "stock": 7,
+          "side": "Sell",
+          "price": 365,
+          "qty": 194,
+          "fee": 36,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229352,
+          "stock": 7,
+          "side": "Sell",
+          "price": 352,
+          "qty": 78,
+          "fee": 14,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229352,
+          "stock": 7,
+          "side": "Sell",
+          "price": 348,
+          "qty": 2,
+          "fee": 1,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229352,
+          "stock": 7,
+          "side": "Sell",
+          "price": 297,
+          "qty": 440,
+          "fee": 66,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229352,
+          "stock": 7,
+          "side": "Sell",
+          "price": 296,
+          "qty": 213,
+          "fee": 32,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229352,
+          "stock": 7,
+          "side": "Sell",
+          "price": 296,
+          "qty": 68,
+          "fee": 11,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229352,
+          "stock": 7,
+          "side": "Sell",
+          "price": 291,
+          "qty": 42,
+          "fee": 7,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229359,
+          "stock": 8,
+          "side": "Sell",
+          "price": 8375,
+          "qty": 5,
+          "fee": 21,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229359,
+          "stock": 8,
+          "side": "Sell",
+          "price": 8374,
+          "qty": 83,
+          "fee": 348,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229359,
+          "stock": 8,
+          "side": "Sell",
+          "price": 8370,
+          "qty": 6,
+          "fee": 26,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229359,
+          "stock": 8,
+          "side": "Sell",
+          "price": 8370,
+          "qty": 28,
+          "fee": 118,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229359,
+          "stock": 8,
+          "side": "Sell",
+          "price": 8369,
+          "qty": 87,
+          "fee": 365,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229359,
+          "stock": 8,
+          "side": "Sell",
+          "price": 8368,
+          "qty": 128,
+          "fee": 536,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229359,
+          "stock": 8,
+          "side": "Sell",
+          "price": 8367,
+          "qty": 16,
+          "fee": 67,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229359,
+          "stock": 8,
+          "side": "Sell",
+          "price": 8367,
+          "qty": 66,
+          "fee": 277,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229359,
+          "stock": 8,
+          "side": "Sell",
+          "price": 8364,
+          "qty": 29,
+          "fee": 122,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229359,
+          "stock": 8,
+          "side": "Sell",
+          "price": 8363,
+          "qty": 76,
+          "fee": 318,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229359,
+          "stock": 8,
+          "side": "Sell",
+          "price": 8359,
+          "qty": 18,
+          "fee": 76,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229359,
+          "stock": 8,
+          "side": "Sell",
+          "price": 8356,
+          "qty": 7,
+          "fee": 30,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229359,
+          "stock": 8,
+          "side": "Sell",
+          "price": 8355,
+          "qty": 2,
+          "fee": 9,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229359,
+          "stock": 8,
+          "side": "Sell",
+          "price": 8354,
+          "qty": 5,
+          "fee": 21,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229359,
+          "stock": 8,
+          "side": "Sell",
+          "price": 8344,
+          "qty": 2,
+          "fee": 9,
+          "maker": false,
+          "tick": 7380
+        },
+        {
+          "order_id": 5229359,
+          "stock": 8,
+          "side": "Sell",
+          "price": 8337,
+          "qty": 129,
+          "fee": 538,
+          "maker": false,
+          "tick": 7380
+        }
+      ],
+      "trade_fees": 7947,
+      "bad_debt": 12894960,
+      "pending_orders": 0
+    },
+    {
+      "group": "bench",
+      "arm": "v8",
+      "seed": 28012,
+      "repeat": 2,
+      "account": "tracker#1",
+      "strategy": "tracker",
+      "tick": 7379,
+      "cash_before": -19383204,
+      "gross_before": 18883027,
+      "shares_before": [
+        0,
+        0,
+        0,
+        0,
+        553,
+        131,
+        0,
+        1050,
+        0,
+        0
+      ],
+      "marks_before": [
+        6046,
+        6819,
+        7795,
+        3221,
+        14206,
+        23589,
+        11742,
+        7559,
+        8399,
+        3864
+      ],
+      "cash_after": 0,
+      "gross_after": 0,
+      "shares_after": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sale_notional": 11486497,
+      "fills": [
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 14106,
+          "qty": 3,
+          "fee": 22,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 14106,
+          "qty": 17,
+          "fee": 120,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 14106,
+          "qty": 4,
+          "fee": 29,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 14105,
+          "qty": 1,
+          "fee": 8,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 14101,
+          "qty": 8,
+          "fee": 57,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 14065,
+          "qty": 7,
+          "fee": 50,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 14018,
+          "qty": 16,
+          "fee": 113,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13942,
+          "qty": 3,
+          "fee": 21,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13922,
+          "qty": 98,
+          "fee": 683,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13909,
+          "qty": 10,
+          "fee": 70,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13906,
+          "qty": 1,
+          "fee": 7,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13906,
+          "qty": 18,
+          "fee": 126,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13906,
+          "qty": 52,
+          "fee": 362,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13889,
+          "qty": 1,
+          "fee": 7,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13866,
+          "qty": 21,
+          "fee": 146,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13800,
+          "qty": 7,
+          "fee": 49,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13789,
+          "qty": 2,
+          "fee": 14,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13781,
+          "qty": 7,
+          "fee": 49,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13765,
+          "qty": 1,
+          "fee": 7,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13724,
+          "qty": 3,
+          "fee": 21,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13662,
+          "qty": 1,
+          "fee": 7,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13653,
+          "qty": 12,
+          "fee": 82,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13649,
+          "qty": 12,
+          "fee": 82,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13633,
+          "qty": 2,
+          "fee": 14,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13614,
+          "qty": 13,
+          "fee": 89,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13612,
+          "qty": 12,
+          "fee": 82,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13601,
+          "qty": 9,
+          "fee": 62,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13588,
+          "qty": 8,
+          "fee": 55,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13567,
+          "qty": 10,
+          "fee": 68,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13559,
+          "qty": 9,
+          "fee": 62,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13555,
+          "qty": 1,
+          "fee": 7,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13549,
+          "qty": 3,
+          "fee": 21,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13540,
+          "qty": 13,
+          "fee": 89,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13528,
+          "qty": 11,
+          "fee": 75,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13526,
+          "qty": 2,
+          "fee": 14,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13522,
+          "qty": 26,
+          "fee": 176,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13518,
+          "qty": 10,
+          "fee": 68,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13515,
+          "qty": 39,
+          "fee": 264,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13513,
+          "qty": 13,
+          "fee": 88,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13505,
+          "qty": 5,
+          "fee": 34,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13496,
+          "qty": 45,
+          "fee": 304,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13490,
+          "qty": 3,
+          "fee": 21,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13470,
+          "qty": 3,
+          "fee": 21,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228567,
+          "stock": 4,
+          "side": "Sell",
+          "price": 13459,
+          "qty": 11,
+          "fee": 75,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228568,
+          "stock": 5,
+          "side": "Sell",
+          "price": 23545,
+          "qty": 11,
+          "fee": 130,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228568,
+          "stock": 5,
+          "side": "Sell",
+          "price": 23532,
+          "qty": 9,
+          "fee": 106,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228568,
+          "stock": 5,
+          "side": "Sell",
+          "price": 23528,
+          "qty": 8,
+          "fee": 95,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228568,
+          "stock": 5,
+          "side": "Sell",
+          "price": 23522,
+          "qty": 7,
+          "fee": 83,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228568,
+          "stock": 5,
+          "side": "Sell",
+          "price": 23518,
+          "qty": 4,
+          "fee": 48,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228568,
+          "stock": 5,
+          "side": "Sell",
+          "price": 23504,
+          "qty": 10,
+          "fee": 118,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228568,
+          "stock": 5,
+          "side": "Sell",
+          "price": 23487,
+          "qty": 3,
+          "fee": 36,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228568,
+          "stock": 5,
+          "side": "Sell",
+          "price": 23486,
+          "qty": 1,
+          "fee": 12,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228568,
+          "stock": 5,
+          "side": "Sell",
+          "price": 23484,
+          "qty": 15,
+          "fee": 177,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228568,
+          "stock": 5,
+          "side": "Sell",
+          "price": 23481,
+          "qty": 5,
+          "fee": 59,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228568,
+          "stock": 5,
+          "side": "Sell",
+          "price": 23474,
+          "qty": 13,
+          "fee": 153,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228568,
+          "stock": 5,
+          "side": "Sell",
+          "price": 23474,
+          "qty": 2,
+          "fee": 24,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228568,
+          "stock": 5,
+          "side": "Sell",
+          "price": 23473,
+          "qty": 29,
+          "fee": 341,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228568,
+          "stock": 5,
+          "side": "Sell",
+          "price": 23468,
+          "qty": 14,
+          "fee": 165,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228578,
+          "stock": 7,
+          "side": "Sell",
+          "price": 931,
+          "qty": 150,
+          "fee": 70,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228578,
+          "stock": 7,
+          "side": "Sell",
+          "price": 920,
+          "qty": 57,
+          "fee": 27,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228578,
+          "stock": 7,
+          "side": "Sell",
+          "price": 914,
+          "qty": 67,
+          "fee": 31,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228578,
+          "stock": 7,
+          "side": "Sell",
+          "price": 891,
+          "qty": 23,
+          "fee": 11,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228578,
+          "stock": 7,
+          "side": "Sell",
+          "price": 825,
+          "qty": 110,
+          "fee": 46,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228578,
+          "stock": 7,
+          "side": "Sell",
+          "price": 815,
+          "qty": 104,
+          "fee": 43,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228578,
+          "stock": 7,
+          "side": "Sell",
+          "price": 808,
+          "qty": 109,
+          "fee": 45,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228578,
+          "stock": 7,
+          "side": "Sell",
+          "price": 786,
+          "qty": 162,
+          "fee": 64,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228578,
+          "stock": 7,
+          "side": "Sell",
+          "price": 760,
+          "qty": 8,
+          "fee": 4,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228578,
+          "stock": 7,
+          "side": "Sell",
+          "price": 609,
+          "qty": 97,
+          "fee": 30,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228578,
+          "stock": 7,
+          "side": "Sell",
+          "price": 556,
+          "qty": 39,
+          "fee": 11,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228578,
+          "stock": 7,
+          "side": "Sell",
+          "price": 473,
+          "qty": 124,
+          "fee": 30,
+          "maker": false,
+          "tick": 7379
+        }
+      ],
+      "trade_fees": 5780,
+      "bad_debt": 7902487,
+      "pending_orders": 0
+    },
+    {
+      "group": "bench",
+      "arm": "v8",
+      "seed": 27006,
+      "repeat": 2,
+      "account": "shark#2",
+      "strategy": "shark",
+      "tick": 8478,
+      "cash_before": -11451347,
+      "gross_before": 13046842,
+      "shares_before": [
+        145,
+        51,
+        310,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      "marks_before": [
+        68841,
+        15905,
+        6919,
+        11148,
+        8289,
+        7239,
+        108852,
+        6622,
+        7383,
+        10964
+      ],
+      "cash_after": 0,
+      "gross_after": 0,
+      "shares_after": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sale_notional": 3809881,
+      "fills": [
+        {
+          "order_id": 5166192,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5263,
+          "qty": 8,
+          "fee": 22,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166192,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5256,
+          "qty": 14,
+          "fee": 37,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166192,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5229,
+          "qty": 17,
+          "fee": 45,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166192,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5204,
+          "qty": 28,
+          "fee": 73,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166192,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5193,
+          "qty": 15,
+          "fee": 39,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166195,
+          "stock": 1,
+          "side": "Sell",
+          "price": 15970,
+          "qty": 2,
+          "fee": 16,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166195,
+          "stock": 1,
+          "side": "Sell",
+          "price": 15843,
+          "qty": 27,
+          "fee": 214,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166196,
+          "stock": 2,
+          "side": "Sell",
+          "price": 6909,
+          "qty": 75,
+          "fee": 260,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166196,
+          "stock": 2,
+          "side": "Sell",
+          "price": 6909,
+          "qty": 39,
+          "fee": 135,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166196,
+          "stock": 2,
+          "side": "Sell",
+          "price": 6908,
+          "qty": 60,
+          "fee": 208,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166197,
+          "stock": 6,
+          "side": "Sell",
+          "price": 108456,
+          "qty": 1,
+          "fee": 55,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166198,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5193,
+          "qty": 11,
+          "fee": 29,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166198,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5167,
+          "qty": 5,
+          "fee": 13,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166198,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5125,
+          "qty": 16,
+          "fee": 41,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166198,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5118,
+          "qty": 16,
+          "fee": 41,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166198,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5104,
+          "qty": 14,
+          "fee": 36,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166198,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5094,
+          "qty": 1,
+          "fee": 3,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166199,
+          "stock": 1,
+          "side": "Sell",
+          "price": 15843,
+          "qty": 22,
+          "fee": 175,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166200,
+          "stock": 2,
+          "side": "Sell",
+          "price": 6908,
+          "qty": 136,
+          "fee": 470,
+          "maker": false,
+          "tick": 8478
+        }
+      ],
+      "trade_fees": 1912,
+      "bad_debt": 7643378,
+      "pending_orders": 0
+    },
+    {
+      "group": "bench",
+      "arm": "v8",
+      "seed": 27006,
+      "repeat": 2,
+      "account": "shark#1",
+      "strategy": "shark",
+      "tick": 8478,
+      "cash_before": -4859317,
+      "gross_before": 4308153,
+      "shares_before": [
+        61,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      "marks_before": [
+        68841,
+        15905,
+        6919,
+        11148,
+        8289,
+        7239,
+        108852,
+        6622,
+        7383,
+        10964
+      ],
+      "cash_after": 0,
+      "gross_after": 0,
+      "shares_after": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sale_notional": 435480,
+      "fills": [
+        {
+          "order_id": 5166193,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5498,
+          "qty": 4,
+          "fee": 11,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166193,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5468,
+          "qty": 8,
+          "fee": 22,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166193,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5423,
+          "qty": 16,
+          "fee": 44,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166193,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5321,
+          "qty": 13,
+          "fee": 35,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166193,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5272,
+          "qty": 3,
+          "fee": 8,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166193,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5269,
+          "qty": 10,
+          "fee": 27,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166193,
+          "stock": 0,
+          "side": "Sell",
+          "price": 5263,
+          "qty": 7,
+          "fee": 19,
+          "maker": false,
+          "tick": 8478
+        },
+        {
+          "order_id": 5166194,
+          "stock": 6,
+          "side": "Sell",
+          "price": 108456,
+          "qty": 1,
+          "fee": 55,
+          "maker": false,
+          "tick": 8478
+        }
+      ],
+      "trade_fees": 221,
+      "bad_debt": 4424058,
+      "pending_orders": 0
+    },
+    {
+      "group": "bench",
+      "arm": "v8",
+      "seed": 28012,
+      "repeat": 2,
+      "account": "shark#7",
+      "strategy": "shark",
+      "tick": 7379,
+      "cash_before": -9060730,
+      "gross_before": 10559484,
+      "shares_before": [
+        0,
+        501,
+        0,
+        0,
+        0,
+        0,
+        0,
+        625,
+        0,
+        0
+      ],
+      "marks_before": [
+        6046,
+        6859,
+        7795,
+        3221,
+        14206,
+        23589,
+        11742,
+        11397,
+        8399,
+        3864
+      ],
+      "cash_after": 0,
+      "gross_after": 0,
+      "shares_after": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sale_notional": 5097466,
+      "fills": [
+        {
+          "order_id": 5228557,
+          "stock": 1,
+          "side": "Sell",
+          "price": 6509,
+          "qty": 91,
+          "fee": 297,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228557,
+          "stock": 1,
+          "side": "Sell",
+          "price": 6507,
+          "qty": 17,
+          "fee": 56,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228557,
+          "stock": 1,
+          "side": "Sell",
+          "price": 6506,
+          "qty": 9,
+          "fee": 30,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228557,
+          "stock": 1,
+          "side": "Sell",
+          "price": 6506,
+          "qty": 129,
+          "fee": 420,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 6534,
+          "qty": 10,
+          "fee": 33,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 6509,
+          "qty": 17,
+          "fee": 56,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 6507,
+          "qty": 8,
+          "fee": 27,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 6453,
+          "qty": 7,
+          "fee": 23,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 6372,
+          "qty": 8,
+          "fee": 26,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 6119,
+          "qty": 9,
+          "fee": 28,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 6100,
+          "qty": 9,
+          "fee": 28,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 6087,
+          "qty": 25,
+          "fee": 77,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 6081,
+          "qty": 2,
+          "fee": 7,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 6034,
+          "qty": 2,
+          "fee": 7,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 5979,
+          "qty": 17,
+          "fee": 51,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 5947,
+          "qty": 1,
+          "fee": 3,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 5940,
+          "qty": 3,
+          "fee": 9,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 5938,
+          "qty": 8,
+          "fee": 24,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 5757,
+          "qty": 14,
+          "fee": 41,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 5583,
+          "qty": 6,
+          "fee": 17,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 5186,
+          "qty": 4,
+          "fee": 11,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 5022,
+          "qty": 3,
+          "fee": 8,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 4599,
+          "qty": 18,
+          "fee": 42,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 4575,
+          "qty": 18,
+          "fee": 42,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 4042,
+          "qty": 1,
+          "fee": 3,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 4026,
+          "qty": 1,
+          "fee": 3,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 3936,
+          "qty": 5,
+          "fee": 10,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 3703,
+          "qty": 2,
+          "fee": 4,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 3664,
+          "qty": 2,
+          "fee": 4,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 3558,
+          "qty": 1,
+          "fee": 2,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 3374,
+          "qty": 1,
+          "fee": 2,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 3363,
+          "qty": 12,
+          "fee": 21,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 2990,
+          "qty": 13,
+          "fee": 20,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 2866,
+          "qty": 16,
+          "fee": 23,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 2740,
+          "qty": 6,
+          "fee": 9,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 2487,
+          "qty": 13,
+          "fee": 17,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 2479,
+          "qty": 13,
+          "fee": 17,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 2372,
+          "qty": 11,
+          "fee": 14,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 2308,
+          "qty": 1,
+          "fee": 2,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 2294,
+          "qty": 5,
+          "fee": 6,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228558,
+          "stock": 7,
+          "side": "Sell",
+          "price": 2278,
+          "qty": 14,
+          "fee": 16,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228559,
+          "stock": 1,
+          "side": "Sell",
+          "price": 6506,
+          "qty": 24,
+          "fee": 79,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228559,
+          "stock": 1,
+          "side": "Sell",
+          "price": 6506,
+          "qty": 39,
+          "fee": 127,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228559,
+          "stock": 1,
+          "side": "Sell",
+          "price": 6506,
+          "qty": 42,
+          "fee": 137,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228559,
+          "stock": 1,
+          "side": "Sell",
+          "price": 6506,
+          "qty": 23,
+          "fee": 75,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228559,
+          "stock": 1,
+          "side": "Sell",
+          "price": 6505,
+          "qty": 110,
+          "fee": 358,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228559,
+          "stock": 1,
+          "side": "Sell",
+          "price": 6504,
+          "qty": 17,
+          "fee": 56,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228560,
+          "stock": 7,
+          "side": "Sell",
+          "price": 2278,
+          "qty": 5,
+          "fee": 6,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228560,
+          "stock": 7,
+          "side": "Sell",
+          "price": 2172,
+          "qty": 9,
+          "fee": 10,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228560,
+          "stock": 7,
+          "side": "Sell",
+          "price": 2015,
+          "qty": 20,
+          "fee": 21,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228560,
+          "stock": 7,
+          "side": "Sell",
+          "price": 1897,
+          "qty": 3,
+          "fee": 3,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228560,
+          "stock": 7,
+          "side": "Sell",
+          "price": 1746,
+          "qty": 21,
+          "fee": 19,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228560,
+          "stock": 7,
+          "side": "Sell",
+          "price": 1559,
+          "qty": 21,
+          "fee": 17,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228560,
+          "stock": 7,
+          "side": "Sell",
+          "price": 1547,
+          "qty": 21,
+          "fee": 17,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228560,
+          "stock": 7,
+          "side": "Sell",
+          "price": 1528,
+          "qty": 15,
+          "fee": 12,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228560,
+          "stock": 7,
+          "side": "Sell",
+          "price": 1491,
+          "qty": 8,
+          "fee": 6,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228560,
+          "stock": 7,
+          "side": "Sell",
+          "price": 1154,
+          "qty": 8,
+          "fee": 5,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228560,
+          "stock": 7,
+          "side": "Sell",
+          "price": 1149,
+          "qty": 8,
+          "fee": 5,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228560,
+          "stock": 7,
+          "side": "Sell",
+          "price": 1016,
+          "qty": 135,
+          "fee": 69,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228560,
+          "stock": 7,
+          "side": "Sell",
+          "price": 965,
+          "qty": 17,
+          "fee": 9,
+          "maker": false,
+          "tick": 7379
+        },
+        {
+          "order_id": 5228560,
+          "stock": 7,
+          "side": "Sell",
+          "price": 942,
+          "qty": 28,
+          "fee": 14,
+          "maker": false,
+          "tick": 7379
+        }
+      ],
+      "trade_fees": 2581,
+      "bad_debt": 3965845,
+      "pending_orders": 0
+    },
+    {
+      "group": "bench",
+      "arm": "v8",
+      "seed": 28012,
+      "repeat": 0,
+      "account": "shark#3",
+      "strategy": "shark",
+      "tick": 3890,
+      "cash_before": -6088763,
+      "gross_before": 7019368,
+      "shares_before": [
+        0,
+        0,
+        0,
+        737,
+        345,
+        0,
+        0,
+        0,
+        0,
+        74
+      ],
+      "marks_before": [
+        13923,
+        11890,
+        7657,
+        5908,
+        6030,
+        13622,
+        20376,
+        7991,
+        13252,
+        7903
+      ],
+      "cash_after": 0,
+      "gross_after": 0,
+      "shares_after": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "sale_notional": 4510252,
+      "fills": [
+        {
+          "order_id": 2869181,
+          "stock": 3,
+          "side": "Sell",
+          "price": 3686,
+          "qty": 386,
+          "fee": 712,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869182,
+          "stock": 4,
+          "side": "Sell",
+          "price": 3851,
+          "qty": 9,
+          "fee": 18,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869182,
+          "stock": 4,
+          "side": "Sell",
+          "price": 3823,
+          "qty": 9,
+          "fee": 18,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869182,
+          "stock": 4,
+          "side": "Sell",
+          "price": 3783,
+          "qty": 125,
+          "fee": 237,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869182,
+          "stock": 4,
+          "side": "Sell",
+          "price": 3776,
+          "qty": 15,
+          "fee": 29,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869182,
+          "stock": 4,
+          "side": "Sell",
+          "price": 3577,
+          "qty": 23,
+          "fee": 42,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869183,
+          "stock": 9,
+          "side": "Sell",
+          "price": 7383,
+          "qty": 28,
+          "fee": 104,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869183,
+          "stock": 9,
+          "side": "Sell",
+          "price": 7382,
+          "qty": 11,
+          "fee": 41,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869184,
+          "stock": 3,
+          "side": "Sell",
+          "price": 3686,
+          "qty": 261,
+          "fee": 482,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869184,
+          "stock": 3,
+          "side": "Sell",
+          "price": 3684,
+          "qty": 15,
+          "fee": 28,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869184,
+          "stock": 3,
+          "side": "Sell",
+          "price": 3648,
+          "qty": 13,
+          "fee": 24,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869184,
+          "stock": 3,
+          "side": "Sell",
+          "price": 3646,
+          "qty": 4,
+          "fee": 8,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869184,
+          "stock": 3,
+          "side": "Sell",
+          "price": 3571,
+          "qty": 26,
+          "fee": 47,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869184,
+          "stock": 3,
+          "side": "Sell",
+          "price": 3531,
+          "qty": 4,
+          "fee": 8,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869184,
+          "stock": 3,
+          "side": "Sell",
+          "price": 3479,
+          "qty": 28,
+          "fee": 49,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869185,
+          "stock": 4,
+          "side": "Sell",
+          "price": 3577,
+          "qty": 80,
+          "fee": 144,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869185,
+          "stock": 4,
+          "side": "Sell",
+          "price": 3523,
+          "qty": 14,
+          "fee": 25,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869185,
+          "stock": 4,
+          "side": "Sell",
+          "price": 3513,
+          "qty": 7,
+          "fee": 13,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869185,
+          "stock": 4,
+          "side": "Sell",
+          "price": 3470,
+          "qty": 23,
+          "fee": 40,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869185,
+          "stock": 4,
+          "side": "Sell",
+          "price": 3456,
+          "qty": 7,
+          "fee": 13,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869185,
+          "stock": 4,
+          "side": "Sell",
+          "price": 3417,
+          "qty": 12,
+          "fee": 21,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869185,
+          "stock": 4,
+          "side": "Sell",
+          "price": 3409,
+          "qty": 21,
+          "fee": 36,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869186,
+          "stock": 9,
+          "side": "Sell",
+          "price": 7382,
+          "qty": 13,
+          "fee": 48,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869186,
+          "stock": 9,
+          "side": "Sell",
+          "price": 7381,
+          "qty": 5,
+          "fee": 19,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869186,
+          "stock": 9,
+          "side": "Sell",
+          "price": 7379,
+          "qty": 10,
+          "fee": 37,
+          "maker": false,
+          "tick": 3890
+        },
+        {
+          "order_id": 2869186,
+          "stock": 9,
+          "side": "Sell",
+          "price": 7379,
+          "qty": 7,
+          "fee": 26,
+          "maker": false,
+          "tick": 3890
+        }
+      ],
+      "trade_fees": 2269,
+      "bad_debt": 1580780,
+      "pending_orders": 0
+    }
+  ],
+  "performance": {
+    "v8": {
+      "runs": 9,
+      "median": 4.89145070000086,
+      "min": 4.190444600011688,
+      "max": 5.406607199984137,
+      "engine_median": 4.4733839,
+      "bad_debt": 7484250.56,
+      "liquidations": 146
+    },
+    "v9": {
+      "runs": 9,
+      "median": 5.014277399983257,
+      "min": 4.453256500011776,
+      "max": 5.301428800041322,
+      "engine_median": 4.5012205,
+      "bad_debt": 35.01,
+      "liquidations": 112
+    }
+  },
+  "arms": {
+    "h0": {
+      "runs": 40,
+      "mean_return": -0.19565563818240697,
+      "median_return": -0.22496592358651574,
+      "positive": 9,
+      "mean_percentile": 52.53540492980188,
+      "top_quartile": 0,
+      "forecasts": 0,
+      "mean_idle_fee": 571534.8965,
+      "mean_trade_fee": 13350.225,
+      "mean_dividends": 88115.072,
+      "mean_interest": 410.3605,
+      "mean_trades": 13317.85,
+      "mean_trading_terminal": 370777.91375,
+      "liquidation_events": 0,
+      "bad_debt": 0.0,
+      "market_checks_pass": 40,
+      "interval": 91.6871131205497
+    },
+    "h300": {
+      "runs": 40,
+      "mean_return": 1.3454784888692037,
+      "median_return": 1.204391535930314,
+      "positive": 40,
+      "mean_percentile": 82.53051549529046,
+      "top_quartile": 26,
+      "forecasts": 379.35,
+      "mean_idle_fee": 918893.02325,
+      "mean_trade_fee": 28477.8105,
+      "mean_dividends": 359886.7935,
+      "mean_interest": 818.51425,
+      "mean_trades": 21564.25,
+      "mean_trading_terminal": 1441121.02,
+      "liquidation_events": 0,
+      "bad_debt": 0.0,
+      "market_checks_pass": 38,
+      "interval": 91.6871131205497
+    },
+    "h600": {
+      "runs": 40,
+      "mean_return": 0.7923577818882637,
+      "median_return": 0.7415152932132751,
+      "positive": 38,
+      "mean_percentile": 75.00274780624234,
+      "top_quartile": 17,
+      "forecasts": 379.35,
+      "mean_idle_fee": 798987.56075,
+      "mean_trade_fee": 19600.0095,
+      "mean_dividends": 331931.203,
+      "mean_interest": 643.63225,
+      "mean_trades": 16178.9,
+      "mean_trading_terminal": 987779.2835,
+      "liquidation_events": 0,
+      "bad_debt": 0.0,
+      "market_checks_pass": 40,
+      "interval": 91.6871131205497
+    },
+    "h1000": {
+      "runs": 40,
+      "mean_return": 0.28798343976064694,
+      "median_return": 0.3397493327508794,
+      "positive": 30,
+      "mean_percentile": 64.51703783199102,
+      "top_quartile": 7,
+      "forecasts": 379.35,
+      "mean_idle_fee": 710637.7475,
+      "mean_trade_fee": 12935.545,
+      "mean_dividends": 256378.97475,
+      "mean_interest": 477.1725,
+      "mean_trades": 11557.675,
+      "mean_trading_terminal": 647802.88375,
+      "liquidation_events": 0,
+      "bad_debt": 0.0,
+      "market_checks_pass": 40,
+      "interval": 91.6871131205497
+    }
+  },
+  "background": {
+    "coral": {
+      "h0": {
+        "mean_return": 1.6734981429034914,
+        "median_world_mean": 1.436663645513156
+      },
+      "h300": {
+        "mean_return": 1.3172271699747202,
+        "median_world_mean": 1.1309904096395276
+      },
+      "h600": {
+        "mean_return": 1.4091841630859194,
+        "median_world_mean": 1.2640249759722146
+      },
+      "h1000": {
+        "mean_return": 1.5888388355874186,
+        "median_world_mean": 1.3105518275509587
+      }
+    },
+    "grid": {
+      "h0": {
+        "mean_return": -0.9828158296184508,
+        "median_world_mean": -0.9858775451729056
+      },
+      "h300": {
+        "mean_return": -0.9825827333798175,
+        "median_world_mean": -0.9849489959062896
+      },
+      "h600": {
+        "mean_return": -0.9825694820211888,
+        "median_world_mean": -0.985648078369533
+      },
+      "h1000": {
+        "mean_return": -0.9825435818668413,
+        "median_world_mean": -0.9852047768884027
+      }
+    },
+    "hold": {
+      "h0": {
+        "mean_return": -0.5135523133280504,
+        "median_world_mean": -0.5453255888892621
+      },
+      "h300": {
+        "mean_return": -0.5179899787098486,
+        "median_world_mean": -0.5487222329553199
+      },
+      "h600": {
+        "mean_return": -0.5219695980408812,
+        "median_world_mean": -0.5395189857378151
+      },
+      "h1000": {
+        "mean_return": -0.5169608304385134,
+        "median_world_mean": -0.5400791853986462
+      }
+    },
+    "horizon": {
+      "h0": {
+        "mean_return": -0.19565563818240697,
+        "median_world_mean": -0.22496592358651574
+      },
+      "h300": {
+        "mean_return": 1.3454784888692037,
+        "median_world_mean": 1.204391535930314
+      },
+      "h600": {
+        "mean_return": 0.7923577818882637,
+        "median_world_mean": 0.7415152932132751
+      },
+      "h1000": {
+        "mean_return": 0.28798343976064694,
+        "median_world_mean": 0.3397493327508794
+      }
+    },
+    "hunter": {
+      "h0": {
+        "mean_return": 1.3163953487869084,
+        "median_world_mean": 0.9641344118970044
+      },
+      "h300": {
+        "mean_return": 1.2944765119600934,
+        "median_world_mean": 1.0615520724914829
+      },
+      "h600": {
+        "mean_return": 1.3763447320135187,
+        "median_world_mean": 1.0552930797886615
+      },
+      "h1000": {
+        "mean_return": 1.3336451720582592,
+        "median_world_mean": 0.9113427488108583
+      }
+    },
+    "momentum": {
+      "h0": {
+        "mean_return": 0.5481020624272612,
+        "median_world_mean": 0.3943243312871705
+      },
+      "h300": {
+        "mean_return": 0.55867885818372,
+        "median_world_mean": 0.37460925520794125
+      },
+      "h600": {
+        "mean_return": 0.5707598910912137,
+        "median_world_mean": 0.36262033254442816
+      },
+      "h1000": {
+        "mean_return": 0.5596926365862439,
+        "median_world_mean": 0.3856854345991842
+      }
+    },
+    "news_v2": {
+      "h0": {
+        "mean_return": 1.3257054507038812,
+        "median_world_mean": 1.1105546464498233
+      },
+      "h300": {
+        "mean_return": 1.3770745847044819,
+        "median_world_mean": 1.1628976009999359
+      },
+      "h600": {
+        "mean_return": 1.424709955288177,
+        "median_world_mean": 1.1749565916142002
+      },
+      "h1000": {
+        "mean_return": 1.3485398021274906,
+        "median_world_mean": 1.174920952422048
+      }
+    },
+    "noise": {
+      "h0": {
+        "mean_return": -0.7621002390331435,
+        "median_world_mean": -0.7668829834275882
+      },
+      "h300": {
+        "mean_return": -0.7619409519564534,
+        "median_world_mean": -0.7657622905208408
+      },
+      "h600": {
+        "mean_return": -0.7637195379505344,
+        "median_world_mean": -0.765113229468309
+      },
+      "h1000": {
+        "mean_return": -0.7602892809263655,
+        "median_world_mean": -0.7664428086444534
+      }
+    },
+    "shark": {
+      "h0": {
+        "mean_return": 0.3069974602175805,
+        "median_world_mean": 0.17422319351781024
+      },
+      "h300": {
+        "mean_return": -0.09123871852900907,
+        "median_world_mean": -0.24851131932733775
+      },
+      "h600": {
+        "mean_return": 0.04325028777481764,
+        "median_world_mean": 0.06564071876339485
+      },
+      "h1000": {
+        "mean_return": 0.12064412109578139,
+        "median_world_mean": -0.11988517179411509
+      }
+    },
+    "swift-early-single": {
+      "h0": {
+        "mean_return": 3.73311780480293,
+        "median_world_mean": 3.639447089562511
+      },
+      "h300": {
+        "mean_return": 3.9529754309492584,
+        "median_world_mean": 3.8272894552853156
+      },
+      "h600": {
+        "mean_return": 3.960537212446027,
+        "median_world_mean": 3.7726357756185194
+      },
+      "h1000": {
+        "mean_return": 3.843729982896821,
+        "median_world_mean": 3.757048272974174
+      }
+    },
+    "swift-standard": {
+      "h0": {
+        "mean_return": 2.895210221274156,
+        "median_world_mean": 2.575219927166044
+      },
+      "h300": {
+        "mean_return": 2.8571935954095466,
+        "median_world_mean": 2.38503199773802
+      },
+      "h600": {
+        "mean_return": 3.006130470521101,
+        "median_world_mean": 2.277105205437717
+      },
+      "h1000": {
+        "mean_return": 2.8841297245114568,
+        "median_world_mean": 2.6323955518784357
+      }
+    },
+    "titan": {
+      "h0": {
+        "mean_return": 3.3804797940678006,
+        "median_world_mean": 3.278146535588895
+      },
+      "h300": {
+        "mean_return": 3.137624255269687,
+        "median_world_mean": 3.036892740236514
+      },
+      "h600": {
+        "mean_return": 3.2587864824494406,
+        "median_world_mean": 3.0310219660314903
+      },
+      "h1000": {
+        "mean_return": 3.3496949099237674,
+        "median_world_mean": 3.235644819421875
+      }
+    },
+    "tracker": {
+      "h0": {
+        "mean_return": 0.18657525839304318,
+        "median_world_mean": -0.0852917968151184
+      },
+      "h300": {
+        "mean_return": -0.253553055420571,
+        "median_world_mean": -0.5148235760654702
+      },
+      "h600": {
+        "mean_return": -0.24776728704559925,
+        "median_world_mean": -0.43777973944926063
+      },
+      "h1000": {
+        "mean_return": -0.1332136472561311,
+        "median_world_mean": -0.32534885441422867
+      }
+    },
+    "value": {
+      "h0": {
+        "mean_return": 0.9840720040790012,
+        "median_world_mean": 0.6880519763955945
+      },
+      "h300": {
+        "mean_return": 0.9672917975872604,
+        "median_world_mean": 0.7540566559935029
+      },
+      "h600": {
+        "mean_return": 0.9747948024207077,
+        "median_world_mean": 0.7348579206887841
+      },
+      "h1000": {
+        "mean_return": 0.9866794248133753,
+        "median_world_mean": 0.6922696352045922
+      }
+    }
+  },
+  "paired": {
+    "h300": {
+      "mean_delta": 1.5411341270516108,
+      "median_delta": 1.380080311473265,
+      "improved": 40,
+      "worlds": 40
+    },
+    "h600": {
+      "mean_delta": 0.9880134200706707,
+      "median_delta": 0.852563021689891,
+      "improved": 39,
+      "worlds": 40
+    },
+    "h1000": {
+      "mean_delta": 0.4836390779430539,
+      "median_delta": 0.4713968002259532,
+      "improved": 37,
+      "worlds": 40
+    }
+  }
+}

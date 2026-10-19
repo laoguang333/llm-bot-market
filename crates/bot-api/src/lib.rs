@@ -137,6 +137,55 @@ pub struct NewsLayerRules {
     pub change_sd: f64,
 }
 
+/// Public distribution only. Candidate identities and realized paths remain hidden.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum DragonModel {
+    #[default]
+    Pulses,
+    Trend,
+    /// Persistent, phased business growth; market prices are still endogenous.
+    Growth,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(default, deny_unknown_fields)]
+pub struct TrendRules {
+    pub events_per_1000_ticks: f64,
+    /// Trend: hidden drift amplitude over a full game. Growth: latent log growth
+    /// range near the late peak, before business cycles and disclosure lag.
+    /// Neither is a guaranteed realized dividend or market-price target.
+    pub growth_log_bias: (f64, f64),
+    pub step_sd: f64,
+    pub max_step: f64,
+}
+
+impl Default for TrendRules {
+    fn default() -> Self {
+        Self {
+            events_per_1000_ticks: 20.0,
+            growth_log_bias: (1.0, 1.5),
+            step_sd: 0.018,
+            max_step: 0.04,
+        }
+    }
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct DragonRules {
+    #[serde(default)]
+    pub model: DragonModel,
+    #[serde(default)]
+    pub trend: Option<TrendRules>,
+    pub probability: f64,
+    pub candidates: usize,
+    /// No news depending on the selected winner is disclosed before this tick.
+    pub divergence_tick: Tick,
+    /// Legacy Pulses only: peak additional dividend in initial-rate multiples.
+    /// Trend has no fixed peak and ignores this compatibility field.
+    pub peak_extra: (f64, f64),
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Rules {
     pub stocks: Vec<StockInfo>,
@@ -174,10 +223,14 @@ pub struct Rules {
     pub news_lead_ticks: Tick,
     /// [offset from first reveal, cumulative fraction informed]
     pub news_stages: Vec<(Tick, f64)>,
-    /// Range width at each private stage, in standard deviations of that stock's change
-    /// for this layer and season: `max(dividend, initial / 2) * loading * change_sd * size_mult`.
+    /// Range width at each private stage, in units of the event's uncertainty scale.
+    /// Normal news uses `max(dividend, initial / 2) * loading * change_sd * size_mult`;
+    /// legacy pulse news uses `max(abs(delta) / 2, initial * news_stock.change_sd)`.
+    /// Trend updates use the same uncertainty formula as ordinary stock news.
     /// The true change sits at a uniformly random position inside each account's range.
     pub news_range_widths: Vec<f64>,
+    #[serde(default)]
+    pub dragon: Option<DragonRules>,
     pub season_calm_to_turbulent: f64,
     pub season_turbulent_to_calm: f64,
     pub season_turbulent_rate_mult: f64,
@@ -293,6 +346,8 @@ pub struct Start {
     /// Public delivery and the precision/timing of every stage stay unchanged.
     #[serde(default = "default_news_multiplier")]
     pub news_multiplier: f64,
+    #[serde(default)]
+    pub forecast_access: ForecastAccess,
     /// Deterministic bot RNG seed, not a security boundary. Reviewed bots must
     /// not use its relation to the world seed to reconstruct hidden information.
     pub seed: u64,
@@ -310,6 +365,28 @@ impl Start {
 
 fn default_news_multiplier() -> f64 {
     1.0
+}
+
+/// Optional extra private research. Independent of ordinary disclosure stages.
+#[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(default, deny_unknown_fields)]
+pub struct ForecastAccess {
+    /// Maximum ticks before the actual dividend change. Zero disables research.
+    pub horizon: Tick,
+    /// Probability of receiving each eligible event (not all future events).
+    pub coverage: f64,
+    /// Interval width in event standard deviations; zero means exact research.
+    pub range_width: f64,
+}
+
+impl Default for ForecastAccess {
+    fn default() -> Self {
+        Self {
+            horizon: 0,
+            coverage: 0.0,
+            range_width: 3.0,
+        }
+    }
 }
 
 // ---- observation -------------------------------------------------------
@@ -438,6 +515,10 @@ pub struct NewsItem {
     pub changes: Vec<Change>,
     /// Disclosure stage this delivery belongs to (index into `Rules::news_stages`).
     pub stage: usize,
+    /// True for extra research; stage is then not an ordinary stage index.
+    #[serde(default)]
+    pub forecast: bool,
+    /// Earliest ordinary disclosure, possibly AFTER this forecast was received.
     pub first_reveal_tick: Tick,
     pub public_tick: Tick,
     pub effective_tick: Tick,
@@ -511,6 +592,23 @@ pub struct AccountView {
     pub interest_estimate: Money,
 }
 
+/// Optional, opt-in sharing within one named group. Latest settled observations,
+/// without an artificial delay or global synchronization. No identities or news.
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub struct SocialView {
+    /// Exponential profit memory, in personal ticks (not a delivery delay).
+    pub memory_ticks: f64,
+    pub peers: usize,
+    /// Recent stock P&L / initial account equity, including paid dividends and
+    /// actual trade fees, excluding non-trading share burns and cash idle fees.
+    pub own_stock: Vec<f64>,
+    /// Equally weighted mean of OTHER group members, including inactive members.
+    pub peer_stock: Vec<f64>,
+    /// Recent whole-account equity change / initial equity, net of all costs.
+    /// Debt forgiveness is excluded. Only this account's net result is exposed.
+    pub own_net: f64,
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Observation {
     pub tick: Tick,
@@ -532,6 +630,8 @@ pub struct Observation {
     pub income: Vec<Income>,
     /// Private ranges (low, high) for the number of terminal payments received this tick.
     pub terminal_hints: Vec<(i64, i64)>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub social: Option<SocialView>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]

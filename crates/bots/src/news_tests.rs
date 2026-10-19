@@ -14,6 +14,7 @@ fn item(id: u32, public: bool, value: Money) -> NewsItem {
             })
             .collect(),
         stage: usize::from(public),
+        forecast: false,
         first_reveal_tick: 0,
         public_tick: 60,
         effective_tick: 120,

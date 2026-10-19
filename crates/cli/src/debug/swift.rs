@@ -215,6 +215,7 @@ mod tests {
                     account_index: 0,
                     n_accounts: 1,
                     news_multiplier: 1.0,
+                    forecast_access: Default::default(),
                     seed: 1,
                     cash: 2_000_000,
                     shares: vec![20; 10],
@@ -280,6 +281,7 @@ mod tests {
                         season_changes: vec![],
                         income: vec![],
                         terminal_hints: vec![],
+                        social: None,
                     };
                     if tick % 13 == 0 {
                         o.books[0].asks[0].price = 12000;

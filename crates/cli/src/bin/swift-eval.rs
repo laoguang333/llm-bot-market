@@ -226,6 +226,7 @@ mod tests {
             season_changes: vec![],
             income: vec![],
             terminal_hints: vec![],
+            social: None,
         }
     }
     fn probe(every: Tick, cap: usize) -> Probe {

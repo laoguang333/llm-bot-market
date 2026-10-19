@@ -283,6 +283,8 @@ mod tests {
                 cash,
                 shares_each: shares,
                 news_multiplier: 1.0,
+                forecast_access: Default::default(),
+                social_group: None,
                 shares: BTreeMap::new(),
                 params: BTreeMap::new(),
             });
@@ -342,6 +344,8 @@ mod tests {
                 cash: 2_000_000,
                 shares_each: 20,
                 news_multiplier: 1.0,
+                forecast_access: Default::default(),
+                social_group: None,
                 shares: BTreeMap::new(),
                 params: BTreeMap::new(),
             });

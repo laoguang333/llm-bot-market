@@ -34,6 +34,7 @@ dependencies = [
  "bot-api",
  "rand",
  "rand_chacha",
+ "serde",
 ]
 
 [[package]]

@@ -1,8 +1,10 @@
 pub mod account;
 pub mod book;
 pub mod config;
+pub mod diagnostics;
 pub mod engine;
 mod pace;
+mod social;
 pub mod quality;
 pub mod report;
 pub mod world;

@@ -62,6 +62,7 @@ def main():
     run.add_argument("--threads",type=int,default=4)
     run.add_argument("--ticks",type=int)
     run.add_argument("--challenge")
+    run.add_argument("--record",help="Comma-separated exact account or strategy names; other bots still participate")
     run.add_argument("--build",action="store_true",help="Rebuild the release recorder first")
     pack=sub.add_parser("pack");pack.add_argument("--run",required=True)
     serve=sub.add_parser("serve");serve.add_argument("--run",required=True)
@@ -82,6 +83,7 @@ def main():
         command=[str(binary),str((ROOT/args.scenario).resolve()),"--out",str(dest),"--seed",str(args.seed),"--threads",str(args.threads)]
         if args.ticks is not None:command += ["--ticks",str(args.ticks)]
         if args.challenge:command += ["--challenge",args.challenge]
+        if args.record:command += ["--record",args.record]
         started=time.perf_counter()
         subprocess.run([sys.executable,str(ROOT/"tools/arena_gate.py"),"--cwd",str(ROOT),"--",*command],cwd=ROOT,check=True)
         record_seconds=time.perf_counter()-started

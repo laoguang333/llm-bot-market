@@ -1,7 +1,10 @@
 //! Scenario TOML.
 
 use anyhow::{bail, Context, Result};
-use bot_api::{ComboRule, Money, NewsLayerRules, Price, Qty, Rules, StockInfo, Tick};
+use bot_api::{
+    ComboRule, DragonModel, DragonRules, Money, NewsLayerRules, Price, Qty, Rules, StockInfo, Tick,
+    TrendRules,
+};
 use serde::Deserialize;
 use std::collections::BTreeMap;
 use std::path::Path;
@@ -198,6 +201,32 @@ pub struct WorldCfg {
     #[serde(default)]
     pub seasons: SeasonsCfg,
     pub news: NewsCfg,
+    #[serde(default)]
+    pub dragon: DragonCfg,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(deny_unknown_fields, default)]
+pub struct DragonCfg {
+    pub model: DragonModel,
+    pub trend: TrendRules,
+    pub enabled: bool,
+    pub probability: f64,
+    pub candidates: usize,
+    pub peak_extra: (f64, f64),
+}
+
+impl Default for DragonCfg {
+    fn default() -> Self {
+        Self {
+            model: DragonModel::Pulses,
+            trend: TrendRules::default(),
+            enabled: false,
+            probability: 0.5,
+            candidates: 3,
+            peak_extra: (2.0, 4.0),
+        }
+    }
 }
 fn default_dividend_period() -> Tick {
     50
@@ -294,10 +323,16 @@ pub struct ScoringCfg {
     /// Range the number of terminal payments is drawn from. Default: fixed at
     /// `terminal_ratio * ticks / terminal_payment_ticks`.
     pub terminal_payments: Option<(i64, i64)>,
+    /// Random terminal duration as fractions of the game length, rounded to units.
+    /// Mutually exclusive with a fixed terminal_payments range.
+    pub terminal_ratio_range: Option<(f64, f64)>,
     /// Length of each hidden terminal-payment unit. Defaults to the ordinary period.
     pub terminal_payment_ticks: Option<Tick>,
     /// (tick, width) of the private ranges for the number of terminal payments.
     pub terminal_hints: Vec<(Tick, i64)>,
+    /// (game-time fraction, width as fraction of game duration). Resolved once.
+    /// Mutually exclusive with absolute terminal_hints.
+    pub terminal_hint_fractions: Option<Vec<(f64, f64)>>,
     pub objective: String,
     pub series_seeds: u32,
 }
@@ -306,8 +341,10 @@ impl Default for ScoringCfg {
         Self {
             terminal_ratio: 0.5,
             terminal_payments: None,
+            terminal_ratio_range: None,
             terminal_payment_ticks: None,
             terminal_hints: Vec::new(),
+            terminal_hint_fractions: None,
             objective: "rank_percentile".into(),
             series_seeds: 20,
         }
@@ -337,6 +374,11 @@ pub struct BotGroupCfg {
     /// Public disclosure, timing and range precision are unchanged.
     #[serde(default = "one_news_multiplier")]
     pub news_multiplier: f64,
+    #[serde(default)]
+    pub forecast_access: bot_api::ForecastAccess,
+    /// Share recent realized/marked P&L only with accounts in this group.
+    #[serde(default)]
+    pub social_group: Option<String>,
     #[serde(default)]
     pub params: BTreeMap<String, f64>,
 }
@@ -478,6 +520,41 @@ impl Config {
             }
         }
         let st = &self.world.news.disclosure.stages;
+        let dragon = &self.world.dragon;
+        let trend = &dragon.trend;
+        if !trend.events_per_1000_ticks.is_finite()
+            || !(1.0..=100.0).contains(&trend.events_per_1000_ticks)
+            || !trend.growth_log_bias.0.is_finite()
+            || !trend.growth_log_bias.1.is_finite()
+            || !(0.0..=3.0).contains(&trend.growth_log_bias.0)
+            || trend.growth_log_bias.1 < trend.growth_log_bias.0
+            || trend.growth_log_bias.1 > 3.0
+            || !trend.step_sd.is_finite()
+            || !(0.0..=0.1).contains(&trend.step_sd)
+            || !trend.max_step.is_finite()
+            || !(0.005..=if dragon.model == DragonModel::Growth {
+                0.16
+            } else {
+                0.1
+            })
+                .contains(&trend.max_step)
+        {
+            bail!("world.dragon.trend: finite rate in 1..=100, 0 <= growth_log_bias min <= max <= 3, step_sd in 0..=0.1, max_step in 0.005..=0.1 (growth: <=0.16)");
+        }
+        if !dragon.probability.is_finite()
+            || !(0.0..=1.0).contains(&dragon.probability)
+            || !dragon.peak_extra.0.is_finite()
+            || !dragon.peak_extra.1.is_finite()
+            || dragon.peak_extra.0 < 1.0
+            || dragon.peak_extra.1 < dragon.peak_extra.0
+            || dragon.peak_extra.1 > 10.0
+            || (dragon.enabled
+                && (dragon.candidates < 2
+                    || dragon.candidates > self.stocks.len()
+                    || self.ticks as u64 <= self.world.news.disclosure.lead_ticks as u64 * 3 + 30))
+        {
+            bail!("world.dragon: finite probability in 0..=1, 1 <= peak_extra min <= max <= 10; when enabled need 2..=stocks candidates and ticks > 3*news lead + 30");
+        }
         if st.is_empty()
             || st.last().unwrap().1 != 1.0
             || st.last().unwrap().0 > self.world.news.disclosure.lead_ticks
@@ -497,6 +574,31 @@ impl Config {
             || self.scoring.terminal_ratio * self.ticks as f64 > Tick::MAX as f64
         {
             bail!("scoring.terminal_ratio must produce a finite, non-negative tick count");
+        }
+        if let Some((lo, hi)) = self.scoring.terminal_ratio_range {
+            if self.scoring.terminal_payments.is_some()
+                || !lo.is_finite()
+                || !hi.is_finite()
+                || lo < 0.0
+                || hi < lo
+                || hi * self.ticks as f64 > Tick::MAX as f64
+            {
+                bail!("terminal_ratio_range requires finite 0 <= min <= max and cannot coexist with terminal_payments");
+            }
+        }
+        if let Some(hints) = &self.scoring.terminal_hint_fractions {
+            if !self.scoring.terminal_hints.is_empty()
+                || hints.iter().any(|&(at, width)| {
+                    !at.is_finite()
+                        || !(0.0..1.0).contains(&at)
+                        || !width.is_finite()
+                        || width < 0.0
+                        || width * self.ticks as f64 > Tick::MAX as f64
+                })
+                || hints.windows(2).any(|w| w[0].0 > w[1].0)
+            {
+                bail!("terminal_hint_fractions requires ordered times in [0,1), finite nonnegative widths, and no absolute terminal_hints");
+            }
         }
         let (lo, hi) = self.terminal_payments_range();
         if lo < 0
@@ -551,6 +653,21 @@ impl Config {
         }
         let mut owners = std::collections::HashSet::new();
         for g in &self.bots {
+            if g.social_group
+                .as_ref()
+                .is_some_and(|s| s.trim().is_empty() || s.len() > 64)
+            {
+                bail!("social_group must be a nonempty name of at most 64 bytes");
+            }
+            let f = g.forecast_access;
+            if !f.coverage.is_finite()
+                || !(0.0..=1.0).contains(&f.coverage)
+                || !f.range_width.is_finite()
+                || !(0.0..=100.0).contains(&f.range_width)
+                || f.horizon > 100_000
+            {
+                bail!("forecast_access requires horizon <= 100000, coverage in 0..=1, width in 0..=100");
+            }
             if !g.news_multiplier.is_finite() || g.news_multiplier < 0.0 {
                 bail!(
                     "bot group {}: news_multiplier must be finite and non-negative",
@@ -604,10 +721,30 @@ impl Config {
     }
 
     pub fn terminal_payments_range(&self) -> (i64, i64) {
+        if let Some((lo, hi)) = self.scoring.terminal_ratio_range {
+            let units = self.ticks as f64 / self.terminal_payment_ticks() as f64;
+            return ((lo * units).round() as i64, (hi * units).round() as i64);
+        }
         self.scoring.terminal_payments.unwrap_or_else(|| {
             let n = (self.terminal_ticks() / self.terminal_payment_ticks()) as i64;
             (n, n)
         })
+    }
+
+    pub fn terminal_hints(&self) -> Vec<(Tick, i64)> {
+        match &self.scoring.terminal_hint_fractions {
+            Some(hints) => hints
+                .iter()
+                .map(|&(at, width)| {
+                    (
+                        (at * self.ticks as f64).floor() as Tick,
+                        (width * self.ticks as f64 / self.terminal_payment_ticks() as f64).round()
+                            as i64,
+                    )
+                })
+                .collect(),
+            None => self.scoring.terminal_hints.clone(),
+        }
     }
 
     pub fn combo_period(&self) -> Tick {
@@ -689,6 +826,15 @@ impl Config {
             news_lead_ticks: self.world.news.disclosure.lead_ticks,
             news_stages: self.world.news.disclosure.stages.clone(),
             news_range_widths: self.world.news.disclosure.range_widths.clone(),
+            dragon: self.world.dragon.enabled.then_some(DragonRules {
+                model: self.world.dragon.model,
+                trend: (self.world.dragon.model != DragonModel::Pulses)
+                    .then(|| self.world.dragon.trend.clone()),
+                probability: self.world.dragon.probability,
+                candidates: self.world.dragon.candidates,
+                divergence_tick: (self.ticks as u64 * 55 / 100) as Tick,
+                peak_extra: self.world.dragon.peak_extra,
+            }),
             season_calm_to_turbulent: self.world.seasons.calm_to_turbulent,
             season_turbulent_to_calm: self.world.seasons.turbulent_to_calm,
             season_turbulent_rate_mult: self.world.seasons.turbulent_rate_mult,
@@ -699,7 +845,7 @@ impl Config {
             terminal_ticks,
             terminal_payments_min: self.terminal_payments_range().0,
             terminal_payments_max: self.terminal_payments_range().1,
-            terminal_hints: self.scoring.terminal_hints.clone(),
+            terminal_hints: self.terminal_hints(),
             objective: self.scoring.objective.clone(),
         }
     }

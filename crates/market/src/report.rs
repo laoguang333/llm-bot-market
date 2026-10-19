@@ -16,6 +16,8 @@ pub struct AccountResult {
     pub owner: String,
     pub strategy: String,
     pub news_multiplier: f64,
+    pub forecast_access: bot_api::ForecastAccess,
+    pub forecasts_received: usize,
     /// Delivered updates per disclosure stage (including the final public stage).
     pub news_received_by_stage: Vec<usize>,
     pub cash: Money,
@@ -33,6 +35,7 @@ pub struct AccountResult {
     pub percentile: f64,
     pub disabled: String,
     pub stats: crate::account::Stats,
+    pub liquidation_events: Vec<crate::account::LiquidationEvent>,
     /// Traded notional by counterparty owner.
     pub notional_by_counterparty: BTreeMap<String, Money>,
 }
@@ -61,6 +64,8 @@ pub struct MatchResult {
     pub wall_seconds: f64,
     pub audits: u64,
     pub news_events: usize,
+    /// Revealed only after the match. Indexes refer to scenario stocks.
+    pub dragon: Option<crate::world::DragonOutcome>,
     pub season_changes: usize,
     pub final_dividends: Vec<Money>,
     pub final_marks: Vec<Price>,
@@ -68,6 +73,7 @@ pub struct MatchResult {
     pub treasury: Money,
     pub trades: usize,
     pub quality: crate::quality::Quality,
+    pub world_diagnostics: crate::diagnostics::WorldDiagnostics,
     pub by_strategy: BTreeMap<String, GroupResult>,
     pub by_owner: BTreeMap<String, GroupResult>,
     pub accounts: Vec<AccountResult>,
@@ -189,10 +195,18 @@ pub fn run_match_observed(
             owner: a.owner.clone(),
             strategy: a.strategy.clone(),
             news_multiplier: shared.world.news_multipliers[i],
+            forecast_access: shared.world.forecast_access[i],
+            forecasts_received: shared.world.deliveries[i]
+                .iter()
+                .take(a.delivery_cursor)
+                .filter(|d| d.forecast)
+                .count(),
             news_received_by_stage: {
                 let mut counts = vec![0; rules.news_stages.len()];
                 for delivery in shared.world.deliveries[i].iter().take(a.delivery_cursor) {
-                    counts[delivery.stage] += 1;
+                    if !delivery.forecast {
+                        counts[delivery.stage] += 1;
+                    }
                 }
                 counts
             },
@@ -209,6 +223,7 @@ pub fn run_match_observed(
             percentile: 0.0,
             disabled: a.disabled.clone().unwrap_or_default(),
             stats: a.stats.clone(),
+            liquidation_events: a.liquidation_events.clone(),
             notional_by_counterparty: std::mem::take(&mut by_cp[i]),
         });
     }
@@ -253,6 +268,7 @@ pub fn run_match_observed(
         wall_seconds: run.wall_seconds,
         audits: shared.audits.load(Ordering::Relaxed),
         news_events: shared.world.events.len(),
+        dragon: shared.world.dragon.clone(),
         season_changes: shared.world.season_changes.len(),
         final_dividends: final_div,
         final_marks: shared.marks(),
@@ -264,6 +280,7 @@ pub fn run_match_observed(
         treasury: shared.treasury.load(Ordering::Relaxed),
         trades: n_trades,
         quality: crate::quality::measure(&shared),
+        world_diagnostics: crate::diagnostics::world(cfg, &shared.world),
         by_strategy: group(&accounts, |a| a.strategy.clone()),
         by_owner: group(&accounts, |a| a.owner.clone()),
         accounts,

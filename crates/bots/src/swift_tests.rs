@@ -12,6 +12,7 @@ fn start() -> Start {
         account_index: 0,
         n_accounts: 2,
         news_multiplier: 1.0,
+        forecast_access: Default::default(),
         seed: 1,
         params: BTreeMap::new(),
         cash: 2_000_000,
@@ -58,6 +59,7 @@ fn start() -> Start {
             news_lead_ticks: 120,
             news_stages: vec![],
             news_range_widths: vec![],
+            dragon: None,
             season_calm_to_turbulent: 0.002,
             season_turbulent_to_calm: 0.01,
             season_turbulent_rate_mult: 3.0,
@@ -127,6 +129,7 @@ fn observation(tick: Tick, buy: bool) -> Observation {
         season_changes: vec![],
         income: vec![],
         terminal_hints: vec![],
+        social: None,
     }
 }
 
@@ -182,6 +185,7 @@ fn fundamental_channels_cannot_change_orders() {
                 high: 99999,
             }],
             stage: 0,
+            forecast: false,
             first_reveal_tick: t,
             public_tick: t + 10,
             effective_tick: t + 20,

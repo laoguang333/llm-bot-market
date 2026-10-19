@@ -17,12 +17,15 @@ use std::{
 struct AccountTrace {
     writer: BufWriter<File>,
     probe: Option<swift::Probe>,
+    profit_probe: Option<bots::profit_effect::ProfitEffect>,
     rows: usize,
     mismatches: usize,
+    profit_mismatches: usize,
 }
 struct Recorder {
     dir: PathBuf,
     ticks: Tick,
+    record: Vec<String>,
     writers: OnceLock<Vec<Mutex<Option<AccountTrace>>>>,
     starts: Mutex<Vec<Value>>,
     error: Mutex<Option<String>>,
@@ -33,6 +36,14 @@ impl Recorder {
         let writers = self
             .writers
             .get_or_init(|| (0..start.n_accounts).map(|_| Mutex::new(None)).collect());
+        if !self.record.is_empty()
+            && !self
+                .record
+                .iter()
+                .any(|x| x == strategy || x == &start.account)
+        {
+            return Ok(());
+        }
         let file = File::create(
             self.dir
                 .join(format!("account-{}.jsonl", start.account_index)),
@@ -40,8 +51,11 @@ impl Recorder {
         *writers[start.account_index].lock().unwrap() = Some(AccountTrace {
             writer: BufWriter::with_capacity(128 * 1024, file),
             probe: (strategy == "swift").then(|| swift::Probe::new(start)),
+            profit_probe: (strategy == "profit_effect")
+                .then(|| bots::profit_effect::ProfitEffect::new(start)),
             rows: 0,
             mismatches: 0,
+            profit_mismatches: 0,
         });
         self.starts
             .lock()
@@ -62,7 +76,9 @@ impl Recorder {
             return;
         }
         let mut guard = self.writers.get().unwrap()[a.idx].lock().unwrap();
-        let trace = guard.as_mut().unwrap();
+        let Some(trace) = guard.as_mut() else {
+            return;
+        };
         let (signals, verified) = if let (Some(p), Some(o)) = (&mut trace.probe, o) {
             let (s, expected) = p.evaluate(o);
             let matched = expected == actions;
@@ -73,6 +89,17 @@ impl Recorder {
         } else {
             (None, None)
         };
+        let (profit_signals, profit_verified) =
+            if let (Some(p), Some(o)) = (&mut trace.profit_probe, o) {
+                let (s, expected) = p.evaluate(o);
+                let matched = expected == actions;
+                if !matched {
+                    trace.profit_mismatches += 1;
+                }
+                (Some(s), Some(matched))
+            } else {
+                (None, None)
+            };
         let quotes: Option<Vec<[i64; 11]>> = o.map(|o| {
             o.books
                 .iter()
@@ -132,7 +159,8 @@ impl Recorder {
             "post_fills":if o.is_some(){&a.inbox.fills[..]}else{&[]},
             "post_acks":if o.is_some(){&a.inbox.acks[..]}else{&[]},
             "post_rejects":if o.is_some(){&a.inbox.rejects[..]}else{&[]},
-            "stats":a.stats,"swift":signals,"swift_verified":verified});
+            "stats":a.stats,"swift":signals,"swift_verified":verified,
+            "social":o.and_then(|o|o.social.as_ref()),"profit_effect":profit_signals,"profit_effect_verified":profit_verified});
         let result = serde_json::to_writer(&mut trace.writer, &row)
             .map_err(std::io::Error::other)
             .and_then(|_| trace.writer.write_all(b"\n"));
@@ -145,9 +173,11 @@ impl Recorder {
         let mut accounts = Vec::new();
         for (idx, w) in self.writers.get().unwrap().iter().enumerate() {
             let mut w = w.lock().unwrap();
-            let t = w.as_mut().unwrap();
+            let Some(t) = w.as_mut() else {
+                continue;
+            };
             t.writer.flush()?;
-            accounts.push(json!({"index":idx,"rows":t.rows,"swift_mismatches":t.mismatches}));
+            accounts.push(json!({"index":idx,"rows":t.rows,"swift_mismatches":t.mismatches,"profit_effect_mismatches":t.profit_mismatches}));
         }
         if let Some(error) = self.error.lock().unwrap().as_ref() {
             bail!("trace recording failed: {error}");
@@ -183,7 +213,16 @@ fn main() -> Result<()> {
         .map(|p| (p[0].as_str(), p[1].as_str()))
         .collect();
     for k in flags.keys() {
-        if !["--out", "--seed", "--threads", "--ticks", "--challenge"].contains(k) {
+        if ![
+            "--out",
+            "--seed",
+            "--threads",
+            "--ticks",
+            "--challenge",
+            "--record",
+        ]
+        .contains(k)
+        {
             bail!("unknown flag {k}");
         }
     }
@@ -201,6 +240,9 @@ fn main() -> Result<()> {
     if let Some(bot) = flags.get("--challenge") {
         let mut g = cfg.bots[0].clone();
         g.bot = bot.to_string();
+        g.news_multiplier = 1.0;
+        g.forecast_access = Default::default();
+        g.social_group = None;
         g.owner = Some("challenger".into());
         g.count = 1;
         g.count_max = None;
@@ -220,6 +262,10 @@ fn main() -> Result<()> {
     let recorder = Recorder {
         dir: dest.join("trace"),
         ticks: cfg.ticks,
+        record: flags
+            .get("--record")
+            .map(|v| v.split(',').map(str::to_string).collect())
+            .unwrap_or_default(),
         writers: OnceLock::new(),
         starts: Mutex::new(Vec::new()),
         error: Mutex::new(None),
@@ -236,6 +282,9 @@ fn main() -> Result<()> {
         Some(&recorder),
     )?;
     let verification = recorder.close()?;
+    if recorder.starts.lock().unwrap().is_empty() {
+        bail!("--record matched no accounts or strategies");
+    }
     let manifest = json!({"schema":1,"source_scenario":args[0],"starts":*recorder.starts.lock().unwrap(),
         "verification":verification,"result":result,"quote_fields":["bid","ask","bid_qty","ask_qty","mark","last","dividend_rate","bid_depth_qty","ask_depth_qty","observed_buy_qty","observed_sell_qty"],
         "clock_note":"Personal decision ticks; fills.tick is matching tick. Final mailbox flush is a separate end record. Tracing changes concurrent timing."});
@@ -245,7 +294,7 @@ fn main() -> Result<()> {
     )?;
     println!(
         "Recorded {} accounts, {} ticks. Swift mismatches: {}",
-        result.accounts.len(),
+        recorder.starts.lock().unwrap().len(),
         result.ticks,
         verification
             .as_array()

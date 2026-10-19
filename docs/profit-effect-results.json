@@ -1,0 +1,464 @@
+{
+  "worlds": 20,
+  "runs": 80,
+  "ticks": 10000,
+  "threads": 4,
+  "cpu_budget": 10,
+  "replacement_min": 9,
+  "replacement_max": 21,
+  "mean_initial_equity_share": 0.04930099894407187,
+  "audits": 1600,
+  "skips": 0,
+  "errors": 0,
+  "disabled": 0,
+  "paired_world_and_capital_checks": 20,
+  "arms": {
+    "noise": {
+      "mean_return": -0.6983900135227602,
+      "median_return": -0.7102434124577518,
+      "min_return": -0.8130775149476734,
+      "max_return": -0.5181491499832632,
+      "positive_worlds": 0,
+      "mean_percentile": 35.06891629177607,
+      "mean_trades_per_account": 2911.8939227022547,
+      "decision_us": 1.0103719433064056,
+      "cohort_max_leverage": 2.1844529648683304,
+      "cohort_liquidations": 0,
+      "mean_components": {
+        "dividends": 0.18940687056035577,
+        "combo_dividends": 0.0034751869920948246,
+        "idle_fees": 0.33696116926827735,
+        "trade_fees": 0.03238366345462604,
+        "interest": 0.00021096885071377294
+      },
+      "mean_trade_inventory_terminal": -0.5217162695015937,
+      "market_trades_mean": 704246.85,
+      "wall_median": 4.656311800004914,
+      "quality_pass": 11,
+      "quality": {
+        "trade_coverage": {
+          "failures": 3,
+          "median": 0.968
+        },
+        "max_gap_ticks": {
+          "failures": 9,
+          "median": 122.25
+        },
+        "two_sided_share": {
+          "failures": 3,
+          "median": 0.9895
+        },
+        "median_spread": {
+          "failures": 0,
+          "median": 0.004605606945302811
+        },
+        "depth_2pct_in_trades": {
+          "failures": 0,
+          "median": 32.26301256767901
+        },
+        "median_abs_log_dev": {
+          "failures": 0,
+          "median": 0.1412150478333291
+        },
+        "share_beyond_2x": {
+          "failures": 0,
+          "median": 0.0025
+        },
+        "value_crossings": {
+          "failures": 0,
+          "median": 13.75
+        },
+        "abs_return_autocorr": {
+          "failures": 0,
+          "median": 0.23239517552044442
+        }
+      },
+      "no_dragon": {
+        "worlds": 9,
+        "mean_return": -0.7146079370033398
+      },
+      "dragon": {
+        "worlds": 11,
+        "mean_return": -0.6851208034022861
+      }
+    },
+    "full": {
+      "mean_return": -0.5697103931874806,
+      "median_return": -0.5769174889026054,
+      "min_return": -0.8029630069653642,
+      "max_return": -0.35541665514991555,
+      "positive_worlds": 0,
+      "mean_percentile": 40.911120344516014,
+      "mean_trades_per_account": 5873.593203454827,
+      "decision_us": 1.1619894907329877,
+      "cohort_max_leverage": 0.99999870739566,
+      "cohort_liquidations": 0,
+      "mean_components": {
+        "dividends": 0.18725367475494753,
+        "combo_dividends": 0.001946799275769673,
+        "idle_fees": 0.540001798423897,
+        "trade_fees": 0.031388089429893844,
+        "interest": 0.0
+      },
+      "mean_trade_inventory_terminal": -0.187520979364407,
+      "market_trades_mean": 757832,
+      "wall_median": 4.587095549999503,
+      "quality_pass": 9,
+      "quality": {
+        "trade_coverage": {
+          "failures": 4,
+          "median": 0.954
+        },
+        "max_gap_ticks": {
+          "failures": 11,
+          "median": 216.5
+        },
+        "two_sided_share": {
+          "failures": 5,
+          "median": 0.976
+        },
+        "median_spread": {
+          "failures": 0,
+          "median": 0.004767920257569337
+        },
+        "depth_2pct_in_trades": {
+          "failures": 0,
+          "median": 33.97827745419552
+        },
+        "median_abs_log_dev": {
+          "failures": 1,
+          "median": 0.14134934897585405
+        },
+        "share_beyond_2x": {
+          "failures": 2,
+          "median": 0.006
+        },
+        "value_crossings": {
+          "failures": 0,
+          "median": 14.0
+        },
+        "abs_return_autocorr": {
+          "failures": 0,
+          "median": 0.24665318176623605
+        }
+      },
+      "no_dragon": {
+        "worlds": 9,
+        "mean_return": -0.624243946886384
+      },
+      "dragon": {
+        "worlds": 11,
+        "mean_return": -0.525092031070196
+      }
+    },
+    "peer_off": {
+      "mean_return": -0.5957870437015592,
+      "median_return": -0.6470256910237941,
+      "min_return": -0.9124689240158924,
+      "max_return": -0.04641856291263381,
+      "positive_worlds": 0,
+      "mean_percentile": 38.49716346515116,
+      "mean_trades_per_account": 8223.384133730047,
+      "decision_us": 1.2188726967964978,
+      "cohort_max_leverage": 0.9999996778593366,
+      "cohort_liquidations": 0,
+      "mean_components": {
+        "dividends": 0.2479844265561267,
+        "combo_dividends": 0.0038406624748566626,
+        "idle_fees": 0.48166886906957856,
+        "trade_fees": 0.04253824344319166,
+        "interest": 0.0
+      },
+      "mean_trade_inventory_terminal": -0.32340502021977235,
+      "market_trades_mean": 789963.9,
+      "wall_median": 4.6655260500265285,
+      "quality_pass": 7,
+      "quality": {
+        "trade_coverage": {
+          "failures": 5,
+          "median": 0.9550000000000001
+        },
+        "max_gap_ticks": {
+          "failures": 12,
+          "median": 298.0
+        },
+        "two_sided_share": {
+          "failures": 7,
+          "median": 0.9644999999999999
+        },
+        "median_spread": {
+          "failures": 0,
+          "median": 0.004829157836678508
+        },
+        "depth_2pct_in_trades": {
+          "failures": 0,
+          "median": 38.60960751737734
+        },
+        "median_abs_log_dev": {
+          "failures": 1,
+          "median": 0.14098220092030786
+        },
+        "share_beyond_2x": {
+          "failures": 0,
+          "median": 0.008
+        },
+        "value_crossings": {
+          "failures": 0,
+          "median": 14.0
+        },
+        "abs_return_autocorr": {
+          "failures": 0,
+          "median": 0.24475518804457036
+        }
+      },
+      "no_dragon": {
+        "worlds": 9,
+        "mean_return": -0.6991629990643481
+      },
+      "dragon": {
+        "worlds": 11,
+        "mean_return": -0.5112067165865501
+      }
+    },
+    "price_off": {
+      "mean_return": -0.6462693702730127,
+      "median_return": -0.6579641955918866,
+      "min_return": -0.7275155693588119,
+      "max_return": -0.37439385719617096,
+      "positive_worlds": 0,
+      "mean_percentile": 38.22864083292822,
+      "mean_trades_per_account": 510.684311449859,
+      "decision_us": 0.9523116733662365,
+      "cohort_max_leverage": 0.9999755785249429,
+      "cohort_liquidations": 0,
+      "mean_components": {
+        "dividends": 0.029756643053068556,
+        "combo_dividends": 0.0005554215830056836,
+        "idle_fees": 0.7602364960305464,
+        "trade_fees": 0.002335100428853192,
+        "interest": 0.0
+      },
+      "mean_trade_inventory_terminal": 0.0859901615503127,
+      "market_trades_mean": 693974.75,
+      "wall_median": 4.571815699979197,
+      "quality_pass": 13,
+      "quality": {
+        "trade_coverage": {
+          "failures": 3,
+          "median": 0.981
+        },
+        "max_gap_ticks": {
+          "failures": 7,
+          "median": 112.75
+        },
+        "two_sided_share": {
+          "failures": 2,
+          "median": 0.9937499999999999
+        },
+        "median_spread": {
+          "failures": 0,
+          "median": 0.004538912894547843
+        },
+        "depth_2pct_in_trades": {
+          "failures": 0,
+          "median": 28.865170738278422
+        },
+        "median_abs_log_dev": {
+          "failures": 1,
+          "median": 0.12989928841549148
+        },
+        "share_beyond_2x": {
+          "failures": 0,
+          "median": 0.002
+        },
+        "value_crossings": {
+          "failures": 0,
+          "median": 14.75
+        },
+        "abs_return_autocorr": {
+          "failures": 0,
+          "median": 0.21420697995763988
+        }
+      },
+      "no_dragon": {
+        "worlds": 9,
+        "mean_return": -0.6683300771471523
+      },
+      "dragon": {
+        "worlds": 11,
+        "mean_return": -0.628219701012353
+      }
+    }
+  },
+  "paired": {
+    "full_minus_noise": {
+      "mean": 0.12867962033527966,
+      "median": 0.11729983727063292,
+      "positive": 17
+    },
+    "full_minus_peer_off": {
+      "mean": 0.026076650514078654,
+      "median": 0.06861937975875498,
+      "positive": 12
+    },
+    "full_minus_price_off": {
+      "mean": 0.0765589770855321,
+      "median": 0.06143047212839364,
+      "positive": 15
+    }
+  },
+  "performance": {
+    "before": {
+      "runs": 9,
+      "median": 4.837835800019093,
+      "min": 4.530084099969827,
+      "max": 5.207794299989473,
+      "engine_median": 4.466511
+    },
+    "after": {
+      "runs": 9,
+      "median": 4.864296899992041,
+      "min": 4.5805070999776945,
+      "max": 5.133753699949011,
+      "engine_median": 4.4678634
+    }
+  },
+  "background": {
+    "noise": {
+      "horizon-incumbent": 10.09390780380096,
+      "titan-value": 4.296222018647894,
+      "swift-standard": 1.783717545596373,
+      "swift-early-single": 6.7101438116006324
+    },
+    "full": {
+      "horizon-incumbent": 10.634823944726545,
+      "titan-value": 4.464722591651924,
+      "swift-standard": 0.9297296627461151,
+      "swift-early-single": 5.927687960247956
+    },
+    "peer_off": {
+      "horizon-incumbent": 11.214162864128841,
+      "titan-value": 4.565696969556363,
+      "swift-standard": 0.6217883137776772,
+      "swift-early-single": 5.182782647129721
+    },
+    "price_off": {
+      "horizon-incumbent": 9.878548611225181,
+      "titan-value": 4.434558984637243,
+      "swift-standard": 1.384161318347224,
+      "swift-early-single": 6.495323301573185
+    }
+  },
+  "compatibility": {
+    "seeds": [
+      7,
+      27006
+    ],
+    "threads": 1,
+    "identical_trades_news_and_final_state": true
+  },
+  "trace": {
+    "seed": 33001,
+    "accounts": 2,
+    "counters": {
+      "verified_decisions": 20000,
+      "buy_requests": 4862,
+      "sell_requests": 5346,
+      "buy_with_positive_peer": 2709,
+      "sell_with_negative_peer": 3478,
+      "wants_exit_stock_ticks": 2006,
+      "exit_without_immediate_fill_stock_ticks": 259
+    },
+    "examples": [
+      {
+        "account": "effect#0",
+        "kind": "sell",
+        "tick": 1,
+        "stock": "T1",
+        "last_price_yuan": 288.7,
+        "peer_profit_pct": -0.030910645621262167,
+        "own_profit_pct": -0.04310867056469714,
+        "score": -0.3469627400645147,
+        "target_weight_pct": 4.557117322044626,
+        "target_shares": 11,
+        "held_before": 15,
+        "held_after": 11,
+        "buy_requested": 0,
+        "sell_requested": 4,
+        "buy_filled_now": 0,
+        "sell_filled_now": 4,
+        "buy_fill_price_yuan": null,
+        "sell_fill_price_yuan": 288.67,
+        "cash_yuan": 32274.87
+      },
+      {
+        "account": "effect#0",
+        "kind": "buy",
+        "tick": 3,
+        "stock": "C3",
+        "last_price_yuan": 308.5,
+        "peer_profit_pct": 0.03330850775133369,
+        "own_profit_pct": 0.08217627448982204,
+        "score": 0.40702034193991027,
+        "target_weight_pct": 7.050086086146526,
+        "target_shares": 17,
+        "held_before": 16,
+        "held_after": 17,
+        "buy_requested": 1,
+        "sell_requested": 0,
+        "buy_filled_now": 1,
+        "sell_filled_now": 0,
+        "buy_fill_price_yuan": 308.5,
+        "sell_fill_price_yuan": null,
+        "cash_yuan": 45702.46
+      },
+      {
+        "account": "effect#1",
+        "kind": "sell",
+        "tick": 0,
+        "stock": "T1",
+        "last_price_yuan": 291.38,
+        "peer_profit_pct": -0.0025370765548755566,
+        "own_profit_pct": -0.027907842103631123,
+        "score": -0.13054745809568968,
+        "target_weight_pct": 5.979873484747564,
+        "target_shares": 15,
+        "held_before": 20,
+        "held_after": 15,
+        "buy_requested": 0,
+        "sell_requested": 5,
+        "buy_filled_now": 0,
+        "sell_filled_now": 5,
+        "buy_fill_price_yuan": null,
+        "sell_fill_price_yuan": 289.55,
+        "cash_yuan": 20000.0
+      },
+      {
+        "account": "effect#1",
+        "kind": "buy",
+        "tick": 1,
+        "stock": "C3",
+        "last_price_yuan": 309.96,
+        "peer_profit_pct": 0.048650792084697,
+        "own_profit_pct": 0.03498585565762125,
+        "score": 0.5305545736519256,
+        "target_weight_pct": 8.680627877016319,
+        "target_shares": 21,
+        "held_before": 16,
+        "held_after": 20,
+        "buy_requested": 4,
+        "sell_requested": 0,
+        "buy_filled_now": 4,
+        "sell_filled_now": 0,
+        "buy_fill_price_yuan": 309.96,
+        "sell_fill_price_yuan": null,
+        "cash_yuan": 30798.81
+      }
+    ],
+    "csv": [
+      "runs\\profit-effect-study\\decisions-effect-0.csv",
+      "runs\\profit-effect-study\\decisions-effect-1.csv"
+    ],
+    "note": "An additional traced match; correlations are descriptive, not causal proof. Fills-now omit resting fills delivered next tick."
+  }
+}

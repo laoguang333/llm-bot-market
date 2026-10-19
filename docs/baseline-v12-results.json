@@ -1,0 +1,36 @@
+{
+  "runs": 20,
+  "timed_runs": 18,
+  "independent_worlds": 3,
+  "cpu_budget": 10,
+  "threads": 4,
+  "repeats": 3,
+  "audits": 400,
+  "skips": 0,
+  "errors": 0,
+  "disabled": 0,
+  "external_world_pairs_verified": 9,
+  "initial_capital_pairs_verified": 9,
+  "strategies": {
+    "v11": {
+      "wall_median": 5.135550899954978,
+      "wall_min": 4.545588799985126,
+      "wall_max": 5.318959999945946,
+      "engine_median": 4.6231264,
+      "mean_return": 7.348223586234171,
+      "mean_percentile": 94.45979650423118,
+      "quality_pass": 6,
+      "mean_decision_us": 7.930194444444445
+    },
+    "v12": {
+      "wall_median": 5.047726800024975,
+      "wall_min": 4.542793000000529,
+      "wall_max": 5.406925899966154,
+      "engine_median": 4.6313585,
+      "mean_return": 11.220194829342674,
+      "mean_percentile": 99.24414210128496,
+      "quality_pass": 7,
+      "mean_decision_us": 13.90927
+    }
+  }
+}

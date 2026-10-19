@@ -15,6 +15,7 @@ fn fixture(params: &[(&str, f64)], shares: Vec<Qty>) -> (Box<dyn Bot>, Observati
         account_index: 0,
         n_accounts: 10,
         news_multiplier: 1.0,
+        forecast_access: Default::default(),
         seed: 1,
         cash: 2_000_000,
         shares: shares.clone(),
@@ -65,6 +66,7 @@ fn fixture(params: &[(&str, f64)], shares: Vec<Qty>) -> (Box<dyn Bot>, Observati
         season_changes: vec![],
         income: vec![],
         terminal_hints: vec![],
+        social: None,
     };
     (bots::factory("astra_b", &start).unwrap(), obs)
 }

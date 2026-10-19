@@ -149,6 +149,24 @@ pub struct Stats {
     pub decision_nanos_max: u64,
 }
 
+/// Post-game risk evidence. Never used to change matching or bot permissions.
+#[derive(Clone, Debug, serde::Serialize)]
+pub struct LiquidationEvent {
+    pub tick: Tick,
+    pub cash_before: Money,
+    pub gross_before: Money,
+    pub shares_before: Vec<Qty>,
+    pub marks_before: Vec<Price>,
+    pub cash_after: Money,
+    pub gross_after: Money,
+    pub shares_after: Vec<Qty>,
+    pub sale_notional: Money,
+    pub fills: Vec<Fill>,
+    pub trade_fees: Money,
+    pub bad_debt: Money,
+    pub pending_orders: usize,
+}
+
 pub struct Account {
     pub idx: usize,
     pub name: String,
@@ -177,7 +195,9 @@ pub struct Account {
     pub skipped_since: u32,
     pub consecutive_errors: u32,
     pub(crate) decision_pace: crate::pace::DecisionPace,
+    pub(crate) social: Option<crate::social::Tracker>,
     pub stats: Stats,
+    pub liquidation_events: Vec<LiquidationEvent>,
     pub bot: Option<Box<dyn Bot>>,
     pub disabled: Option<String>,
     pub initial_cash: Money,
@@ -221,7 +241,9 @@ impl Account {
             skipped_since: 0,
             consecutive_errors: 0,
             decision_pace: Default::default(),
+            social: None,
             stats: Stats::default(),
+            liquidation_events: Vec::new(),
             bot: None,
             disabled: None,
         }

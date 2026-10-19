@@ -106,6 +106,7 @@ pub struct Shared<'a> {
     pub audits: AtomicU64,
     pub book_samples: Mutex<Vec<BookSample>>,
     pub observer: Option<&'a dyn MatchObserver>,
+    social_groups: Vec<Mutex<crate::social::Group>>,
 }
 
 /// Order book snapshot for market-quality statistics.
@@ -182,23 +183,45 @@ impl<'a> Shared<'a> {
             .zip(&counts)
             .flat_map(|(g, &count)| std::iter::repeat_n(g.news_multiplier, count))
             .collect();
-        let world = World::generate_with_news_access(cfg, seed, &news_multipliers);
+        let forecasts: Vec<_> = cfg
+            .bots
+            .iter()
+            .zip(&counts)
+            .flat_map(|(g, &count)| std::iter::repeat_n(g.forecast_access, count))
+            .collect();
+        let world = World::generate_with_information(cfg, seed, &news_multipliers, &forecasts);
         let mut rules = cfg.rules(&initial_shares);
         for (st, &p) in rules.stocks.iter_mut().zip(&world.opening_prices) {
             st.initial_price = p;
         }
 
+        let mut social_names = std::collections::HashMap::new();
+        let mut social_groups: Vec<Mutex<crate::social::Group>> = Vec::new();
         // create bots
         let mut idx = 0;
         for (g, &count) in cfg.bots.iter().zip(&counts) {
             for _ in 0..count {
                 let a = &mut accounts[idx];
+                if let Some(name) = &g.social_group {
+                    let group = *social_names.entry(name.clone()).or_insert_with(|| {
+                        social_groups.push(Mutex::new(crate::social::Group::new(n_stocks)));
+                        social_groups.len() - 1
+                    });
+                    social_groups[group].get_mut().members += 1;
+                    a.social = Some(crate::social::Tracker::new(
+                        group,
+                        a.cash,
+                        &a.shares,
+                        &world.opening_prices,
+                    ));
+                }
                 let start = Start {
                     account: a.name.clone(),
                     owner: a.owner.clone(),
                     account_index: idx,
                     n_accounts: n,
                     news_multiplier: g.news_multiplier,
+                    forecast_access: g.forecast_access,
                     // Intentionally reversible: every bot is reviewed before it runs.
                     // Review forbids reconstructing hidden world information. Seed
                     // derivability itself is accepted, not an information-isolation bug.
@@ -261,6 +284,7 @@ impl<'a> Shared<'a> {
             audits: AtomicU64::new(0),
             book_samples: Mutex::new(Vec::new()),
             observer: None,
+            social_groups,
         })
     }
 
@@ -561,7 +585,7 @@ impl<'a> Shared<'a> {
         let deliveries = &w.deliveries[a.idx];
         while a.delivery_cursor < deliveries.len() && deliveries[a.delivery_cursor].tick <= tick {
             let d = deliveries[a.delivery_cursor];
-            a.inbox.news.push(w.view(d.event, a.idx, d.stage));
+            a.inbox.news.push(w.delivery_view(d, a.idx));
             a.delivery_cursor += 1;
         }
         while a.hint_cursor < w.hints_due(tick) {
@@ -768,6 +792,28 @@ impl<'a> Shared<'a> {
         if !breach {
             return;
         }
+        let mut event = crate::account::LiquidationEvent {
+            tick,
+            cash_before: a.cash,
+            gross_before: gross,
+            shares_before: a.shares.clone(),
+            marks_before: self
+                .marks
+                .iter()
+                .map(|m| m.load(Ordering::Relaxed))
+                .collect(),
+            cash_after: 0,
+            gross_after: 0,
+            shares_after: Vec::new(),
+            sale_notional: 0,
+            fills: Vec::new(),
+            trade_fees: 0,
+            bad_debt: 0,
+            pending_orders: 0,
+        };
+        let fees_before = a.stats.trade_fees;
+        let fill_start = a.inbox.fills.len();
+        let debt_before = a.stats.bad_debt;
         a.stats.liquidations += 1;
         a.inbox.income.push(Income::Liquidation);
         self.cancel_all(a, None, AckStatus::CancelledByLiquidation);
@@ -810,6 +856,15 @@ impl<'a> Shared<'a> {
                 .income
                 .push(Income::BadDebtWrittenOff { amount: debt });
         }
+        event.cash_after = a.cash;
+        event.gross_after = self.gross_at_marks(a);
+        event.shares_after = a.shares.clone();
+        event.trade_fees = a.stats.trade_fees - fees_before;
+        event.bad_debt = a.stats.bad_debt - debt_before;
+        event.fills = a.inbox.fills[fill_start..].to_vec();
+        event.sale_notional = event.fills.iter().map(|f| f.price * f.qty).sum();
+        event.pending_orders = a.orders.len();
+        a.liquidation_events.push(event);
     }
 
     // ---- observation -------------------------------------------------------
@@ -832,6 +887,7 @@ impl<'a> Shared<'a> {
             season_changes: Vec::new(),
             income: Vec::new(),
             terminal_hints: Vec::new(),
+            social: None,
         }
     }
 
@@ -933,6 +989,14 @@ impl<'a> Shared<'a> {
         receive(&mut obs.season_changes, &mut a.inbox.season_changes);
         receive(&mut obs.income, &mut a.inbox.income);
         receive(&mut obs.terminal_hints, &mut a.inbox.terminal_hints);
+        // No other account lock, no world barrier. Only opted-in members pay
+        // this O(stocks + fills) cost. Reset when a worker switches accounts.
+        obs.social = if let Some(member) = &mut a.social {
+            member.update(obs);
+            Some(self.social_groups[member.group].lock().publish(member))
+        } else {
+            None
+        };
     }
 
     fn buying_power(&self, a: &Account, equity: Money, gross: Money) -> Money {
@@ -1372,7 +1436,10 @@ mod scheduling_tests {
     }
 
     fn config() -> Config {
-        let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../scenarios/baseline.toml");
+        let path = concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../scenarios/baseline-v6.toml"
+        );
         let mut c = Config::load(std::path::Path::new(path)).unwrap();
         c.ticks = 100;
         c.bots.truncate(1);

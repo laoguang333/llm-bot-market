@@ -410,6 +410,7 @@ mod tests {
             season_changes: vec![],
             income: vec![],
             terminal_hints: vec![],
+            social: None,
         }
     }
     #[test]
