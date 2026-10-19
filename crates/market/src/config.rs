@@ -333,11 +333,18 @@ pub struct BotGroupCfg {
     /// Per-stock overrides.
     #[serde(default)]
     pub shares: BTreeMap<String, Qty>,
+    /// Multiply this account's cumulative private-news disclosure probabilities.
+    /// Public disclosure, timing and range precision are unchanged.
+    #[serde(default = "one_news_multiplier")]
+    pub news_multiplier: f64,
     #[serde(default)]
     pub params: BTreeMap<String, f64>,
 }
 fn one_usize() -> usize {
     1
+}
+fn one_news_multiplier() -> f64 {
+    1.0
 }
 
 pub const MAX_CASH: Money = 1_000_000_000_000; // 10 billion in cents per account
@@ -544,6 +551,12 @@ impl Config {
         }
         let mut owners = std::collections::HashSet::new();
         for g in &self.bots {
+            if !g.news_multiplier.is_finite() || g.news_multiplier < 0.0 {
+                bail!(
+                    "bot group {}: news_multiplier must be finite and non-negative",
+                    g.bot
+                );
+            }
             if let Some(o) = &g.owner {
                 if g.count != 1 || g.count_max.is_some() || !owners.insert(o.clone()) {
                     bail!("owner {o}: each owner has exactly one account (count = 1, owner names unique)");

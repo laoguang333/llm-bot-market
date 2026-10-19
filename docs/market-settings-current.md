@@ -1,6 +1,6 @@
 # 当前 v6 市场设定与种子差异（2026-10-19）
 
-本说明核对当前 `scenarios/baseline.toml`、`world.rs`、`engine.rs` 和 `bot-api` 的实际实现。默认配置与 `baseline-v6.toml`、`baseline-per-tick.toml` 一致，已包含 [0.6% 闲置费和逐 tick 组合收益](per-tick-combos.md)，并将原来 6–16 个 `news` 账户等额替换为 `news_v2`。新闻生成、普通股息及终值时间尺度不变；NewsV2 的实际交易会改变行情路径。[当前阵容](baseline-v6-current.md)保留普通与小资金 single 两个 Swift，暂不要求新策略打穿。
+本说明核对当前 `scenarios/baseline.toml`、`world.rs`、`engine.rs` 和 `bot-api` 的实际实现。默认配置与 `baseline-v6.toml`、`baseline-per-tick.toml` 一致，已包含 [0.6% 闲置费和逐 tick 组合收益](per-tick-combos.md)，并将原来 6–16 个 `news` 账户等额替换为 `news_v2`。新闻生成、普通股息及终值时间尺度不变；NewsV2 的实际交易会改变行情路径。[当前阵容](baseline-v6-current.md)保留普通与小资金 single 两个 Swift。[Titan 十倍资金挑战](titan-v6.md)属于额外实验，没有纳入默认阵容。
 
 ## 种子改变什么
 
@@ -81,6 +81,8 @@
 | t+120 | 普通股息实际切换到新的金额 |
 
 5%/25% 是每账户抽签概率与累计覆盖比例，不是严格挑出固定人数。早期区间宽度分别为该股本事件冲击标准差的 3 倍、1.5 倍，包含真实变化，且各账户看到的区间位置不同；第二阶段更窄，但不是强制嵌套在自己的上一阶段区间里。
+
+账户组可以显式配置 `news_multiplier`，默认 1；私有阶段累计概率变为 `min(基础概率 × 倍率, 1)`。当前 v6 所有背景账户均为 1。Titan 实验中额外挑战账户为 10，即首阶段 50%、第二阶段累计 100%，其余时点和精度不变。`Start.news_multiplier` 告知本人这一权限，基础概率继续由 `Rules.news_stages` 提供；赛后账户记录同时保存倍率和各阶段投递次数。旧 Start JSON 省略字段时按 1 读取。
 
 真实例子：seed 7 的能源行业事件 2 在 tick 81 首次披露、141 公开、201 生效；E1/E2/E3 变化分别为 −9/−10/−4 单位，即每股每 tick 少 0.18/0.20/0.08 分。能源股可能在 81 或 141 附近提前交易这一变化；此前不能把未来的新股息当成当前派息额。
 

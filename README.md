@@ -2,7 +2,9 @@
 
 当前默认为[扩容后的 v6](docs/baseline-v6-current.md)：98–222 个账户，seed 7 为 146 个；保留标准 Swift 与较早进退的单次入场 Swift，后者现金 2,000 元、每股初始 2 股，同一股票持仓后不再补仓。普通股息与组合收益逐 tick 派发，闲置费为每 50 ticks 平均权益的 0.6%。`baseline.toml`、`baseline-v6.toml`、`baseline-per-tick.toml` 内容相同；扩容前配置归档到 `baseline-v6-pre-expansion.toml`，五 Swift 的旧配置分别保存在 `baseline-v6-five-swift.toml`（周期派息）、`baseline-per-tick-five-swift.toml`（逐 tick）。[扩容报告](docs/v6-population.md)记录流动性、涨幅和性能变化；历史成绩不代表当前基准。[交易调查台](docs/swift-debugger.md) 支持整轮操作与 FIFO 逐笔进出场连线。
 
-**当前新闻阵容已采用 NewsV2：** 原 6–16 个 `news` 账户等额替换为 `news_v2`，融合 Swift 的订单流、盘口信号与已收到的新闻；原人数和资金不变。普通 Swift、小资金 single 与其他背景策略继续参与，版本仍叫 v6，暂不要求新 bot 打穿。替换前配置为 `baseline-v6-legacy-news.toml`，Astra/Falcon 暂不纳入。
+**当前新闻阵容已采用 NewsV2：** 原 6–16 个 `news` 账户等额替换为 `news_v2`，融合 Swift 的订单流、盘口信号与已收到的新闻；原人数和资金不变。普通 Swift、小资金 single 与其他背景策略继续参与，版本仍叫 v6。替换前配置为 `baseline-v6-legacy-news.toml`，Astra/Falcon 暂不纳入。
+
+**新增 [Titan 十倍资金挑战](docs/titan-v6.md)：** 同等消息权限未通过；将挑战者提前获知新闻的概率提高后，默认 20 局平均百分位 99.50，另外 40 局为 99.32，均全部进入前 25%。信息优势由账户级 `news_multiplier` 显式配置，默认 1.0；Titan 未加入背景阵容，v6 场景内容保持原样。
 
 一个连续限价盘口的股票市场，让多个 LLM 各自写的交易 bot 在里面对抗，只比谁赚得多（按收益率的排名百分位计分）。完整规则见 [PRD.md](PRD.md)，内置策略的对比结果见 [docs/strategies.md](docs/strategies.md)。每个账户是一个独立的 owner；场景里写了 `owner` 的那组只能有一个账户。
 

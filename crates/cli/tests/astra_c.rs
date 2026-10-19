@@ -19,6 +19,7 @@ fn fixture(
         owner: "test".into(),
         account_index: 0,
         n_accounts: 10,
+        news_multiplier: 1.0,
         seed: 1,
         cash: 2_000_000,
         shares: vec![100],

@@ -176,7 +176,13 @@ impl<'a> Shared<'a> {
             .map(|s| accounts.iter().map(|a| a.shares[s]).sum())
             .collect();
         let initial_cash = accounts.iter().map(|a| a.cash).sum();
-        let world = World::generate(cfg, seed, n);
+        let news_multipliers: Vec<_> = cfg
+            .bots
+            .iter()
+            .zip(&counts)
+            .flat_map(|(g, &count)| std::iter::repeat_n(g.news_multiplier, count))
+            .collect();
+        let world = World::generate_with_news_access(cfg, seed, &news_multipliers);
         let mut rules = cfg.rules(&initial_shares);
         for (st, &p) in rules.stocks.iter_mut().zip(&world.opening_prices) {
             st.initial_price = p;
@@ -192,6 +198,7 @@ impl<'a> Shared<'a> {
                     owner: a.owner.clone(),
                     account_index: idx,
                     n_accounts: n,
+                    news_multiplier: g.news_multiplier,
                     // Intentionally reversible: every bot is reviewed before it runs.
                     // Review forbids reconstructing hidden world information. Seed
                     // derivability itself is accepted, not an information-isolation bug.

@@ -282,6 +282,7 @@ mod tests {
                 count_max: None,
                 cash,
                 shares_each: shares,
+                news_multiplier: 1.0,
                 shares: BTreeMap::new(),
                 params: BTreeMap::new(),
             });
@@ -340,6 +341,7 @@ mod tests {
                 count_max: None,
                 cash: 2_000_000,
                 shares_each: 20,
+                news_multiplier: 1.0,
                 shares: BTreeMap::new(),
                 params: BTreeMap::new(),
             });

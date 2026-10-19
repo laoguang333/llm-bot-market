@@ -289,6 +289,10 @@ pub struct Start {
     pub owner: String,
     pub account_index: usize,
     pub n_accounts: usize,
+    /// This account's multiplier of the global private news-stage probabilities.
+    /// Public delivery and the precision/timing of every stage stay unchanged.
+    #[serde(default = "default_news_multiplier")]
+    pub news_multiplier: f64,
     /// Deterministic bot RNG seed, not a security boundary. Reviewed bots must
     /// not use its relation to the world seed to reconstruct hidden information.
     pub seed: u64,
@@ -302,6 +306,10 @@ impl Start {
     pub fn param(&self, key: &str, default: f64) -> f64 {
         self.params.get(key).copied().unwrap_or(default)
     }
+}
+
+fn default_news_multiplier() -> f64 {
+    1.0
 }
 
 // ---- observation -------------------------------------------------------

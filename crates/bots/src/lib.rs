@@ -13,6 +13,7 @@ mod news_test_support;
 pub mod news_v2;
 pub mod strategic;
 pub mod swift;
+pub mod titan;
 
 use bot_api::{Bot, Start};
 
@@ -41,6 +42,7 @@ pub const NAMES: &[&str] = &[
     "astra_c",
     "swift",
     "falcon",
+    "titan",
 ];
 
 /// `start` with extra parameter defaults; parameters set in the scenario win.
@@ -89,6 +91,7 @@ pub fn factory(name: &str, start: &Start) -> Option<Box<dyn Bot>> {
         "coral" => Box::new(coral::Coral::new(start)),
         "swift" => Box::new(swift::Swift::new(start)),
         "falcon" => Box::new(falcon::Falcon::new(start)),
+        "titan" => Box::new(titan::Titan::new(start)),
         _ => return None,
     })
 }

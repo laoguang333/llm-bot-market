@@ -11,6 +11,7 @@ pub fn start() -> Start {
         owner: "test".into(),
         account_index: 0,
         n_accounts: 2,
+        news_multiplier: 1.0,
         seed: 1,
         params: BTreeMap::new(),
         cash: 2_000_000,

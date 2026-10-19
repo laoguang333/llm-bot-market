@@ -15,6 +15,9 @@ pub struct AccountResult {
     pub account: String,
     pub owner: String,
     pub strategy: String,
+    pub news_multiplier: f64,
+    /// Delivered updates per disclosure stage (including the final public stage).
+    pub news_received_by_stage: Vec<usize>,
     pub cash: Money,
     pub deferred_idle_fee: Money,
     pub shares: Vec<Qty>,
@@ -185,6 +188,14 @@ pub fn run_match_observed(
             account: a.name.clone(),
             owner: a.owner.clone(),
             strategy: a.strategy.clone(),
+            news_multiplier: shared.world.news_multipliers[i],
+            news_received_by_stage: {
+                let mut counts = vec![0; rules.news_stages.len()];
+                for delivery in shared.world.deliveries[i].iter().take(a.delivery_cursor) {
+                    counts[delivery.stage] += 1;
+                }
+                counts
+            },
             cash: a.cash,
             deferred_idle_fee: a.idle_fee_carry,
             shares: a.shares.clone(),

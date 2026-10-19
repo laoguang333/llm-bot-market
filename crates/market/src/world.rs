@@ -23,7 +23,7 @@ pub struct Event {
     pub effective: Tick,
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Delivery {
     pub tick: Tick,
     pub event: u32,
@@ -45,6 +45,7 @@ pub struct World {
     dividend_cache: Vec<Vec<Money>>,
     /// Per account, ascending by tick.
     pub deliveries: Vec<Vec<Delivery>>,
+    pub news_multipliers: Vec<f64>,
     /// Opening price of each stock.
     pub opening_prices: Vec<Money>,
     /// Number of terminal payments, drawn from the public range and not announced.
@@ -103,6 +104,12 @@ fn cache_dividends(
 
 impl World {
     pub fn generate(cfg: &Config, seed: u64, n_accounts: usize) -> World {
+        Self::generate_with_news_access(cfg, seed, &vec![1.0; n_accounts])
+    }
+
+    pub fn generate_with_news_access(cfg: &Config, seed: u64, news_multipliers: &[f64]) -> World {
+        assert!(news_multipliers.iter().all(|m| m.is_finite() && *m >= 0.0));
+        let n_accounts = news_multipliers.len();
         let mut rng = ChaCha8Rng::seed_from_u64(seed ^ 0x5eed_0f_3011d);
         let ticks = cfg.ticks;
         let s = &cfg.world.seasons;
@@ -221,7 +228,7 @@ impl World {
                 let u = unit(seed, ev.id as u64, a as u64);
                 let first = stages[..public_stage]
                     .iter()
-                    .position(|(_, frac)| u < *frac);
+                    .position(|(_, frac)| u < (*frac * news_multipliers[a]).min(1.0));
                 if let Some(k) = first {
                     for (j, (off, _)) in stages.iter().enumerate().take(public_stage).skip(k) {
                         let tick = ev.first_reveal + off;
@@ -253,6 +260,7 @@ impl World {
             timelines,
             initial_dividends: initial,
             deliveries,
+            news_multipliers: news_multipliers.to_vec(),
             opening_prices: cfg
                 .stocks
                 .iter()
@@ -380,6 +388,72 @@ impl World {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn news_access_changes_only_selected_accounts_private_delivery_probability() {
+        let cfg = Config::load(std::path::Path::new(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../scenarios/baseline.toml"
+        )))
+        .unwrap();
+        let ordinary = World::generate(&cfg, 7, 3);
+        let advantaged = World::generate_with_news_access(&cfg, 7, &[1.0, 10.0, 1.0]);
+        assert_eq!(
+            format!("{:?}", ordinary.events),
+            format!("{:?}", advantaged.events)
+        );
+        assert_eq!(ordinary.timelines, advantaged.timelines);
+        assert_eq!(ordinary.opening_prices, advantaged.opening_prices);
+        assert_eq!(ordinary.turbulent, advantaged.turbulent);
+        assert_eq!(ordinary.terminal_payments, advantaged.terminal_payments);
+        for a in 0..3 {
+            for k in 0..ordinary.terminal_hints.len() {
+                assert_eq!(ordinary.terminal_hint(a, k), advantaged.terminal_hint(a, k));
+            }
+            if a != 1 {
+                assert_eq!(ordinary.deliveries[a], advantaged.deliveries[a]);
+            }
+        }
+        let before = &ordinary.deliveries[1];
+        let after = &advantaged.deliveries[1];
+        assert!(after.len() > before.len());
+        for d in before {
+            assert!(after.contains(d));
+            assert_eq!(
+                ordinary.view(d.event, 1, d.stage).changes,
+                advantaged.view(d.event, 1, d.stage).changes
+            );
+        }
+        let public = |xs: &[Delivery]| {
+            xs.iter()
+                .filter(|d| d.stage == ordinary.public_stage)
+                .copied()
+                .collect::<Vec<_>>()
+        };
+        assert_eq!(public(before), public(after));
+        let all = World::generate_with_news_access(&cfg, 7, &[20.0, 0.0]);
+        assert_eq!(
+            all.deliveries[0].iter().filter(|d| d.stage == 0).count(),
+            all.events.len()
+        );
+        assert!(all.deliveries[1]
+            .iter()
+            .all(|d| d.stage == all.public_stage));
+    }
+
+    #[test]
+    fn news_access_rejects_invalid_config_and_defaults_to_one() {
+        let mut cfg = Config::load(std::path::Path::new(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../scenarios/baseline.toml"
+        )))
+        .unwrap();
+        assert!(cfg.bots.iter().all(|g| g.news_multiplier == 1.0));
+        for x in [f64::NAN, f64::INFINITY, -1.0] {
+            cfg.bots[0].news_multiplier = x;
+            assert!(cfg.validate().is_err());
+        }
+    }
 
     #[test]
     fn cached_dividends_match_timeline_at_boundaries_and_in_arbitrary_order() {
