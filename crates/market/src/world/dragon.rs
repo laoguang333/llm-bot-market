@@ -42,6 +42,7 @@ pub(super) fn overlay(
         return None;
     }
     let lead = cfg.world.news.disclosure.lead_ticks;
+    let ordinary = events.len();
     let divergence = cfg.dragon_start_tick();
     let last_reveal = cfg.ticks.saturating_sub(lead + 1);
     // Config::validate rejects horizons too short for the regime.
@@ -146,6 +147,7 @@ pub(super) fn overlay(
             }
         }
     }
+    scale_ordinary_sigma(cfg, &mut events[..ordinary], &episodes);
     events.sort_by_key(|e| e.first_reveal);
     for (id, event) in events.iter_mut().enumerate() {
         event.id = id as u32;
@@ -169,4 +171,33 @@ pub(super) fn overlay(
         divergence_tick: divergence,
         episodes,
     })
+}
+
+/// Ordinary news uncertainty was sized from the ordinary path alone. Regime news is
+/// sized from ordinary plus extra, so a private range on ordinary news would reveal how
+/// much of a stock's dividend is regime extra. Size both from the whole cash flow known
+/// at the reveal tick.
+fn scale_ordinary_sigma(cfg: &Config, events: &mut [Event], episodes: &[DragonEpisode]) {
+    let initial: Vec<Money> = cfg.stocks.iter().map(|s| s.dividend).collect();
+    let mut extras = vec![Vec::new(); initial.len()];
+    for e in episodes {
+        extras[e.stock].push((e.first_reveal, e.extra_rate));
+    }
+    for x in &mut extras {
+        x.sort_by_key(|(t, _)| *t);
+    }
+    // Replays the ordinary path in generation order, as the generator sized each change.
+    let mut dividend = initial.clone();
+    for event in events.iter_mut() {
+        for (&(stock, delta), sigma) in event.changes.iter().zip(event.sigma.iter_mut()) {
+            let known = &extras[stock];
+            let pos = known.partition_point(|(t, _)| *t <= event.first_reveal);
+            let extra = if pos == 0 { 0 } else { known[pos - 1].1 };
+            let floor = (initial[stock] / 2).max(1);
+            let base = dividend[stock].max(floor);
+            let total = (dividend[stock] + extra).max(floor);
+            *sigma *= total as f64 / base as f64;
+            dividend[stock] += delta;
+        }
+    }
 }
