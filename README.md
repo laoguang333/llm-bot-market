@@ -4,6 +4,8 @@
 
 `baseline.toml` 与 `baseline-v13.toml` 相同；[v12](docs/baseline-v12.md)、[v11](docs/baseline-v11.md)、[v10](docs/baseline-v10.md)、[v9](docs/baseline-v9.md)、[v8 长局](docs/baseline-v8.md)、3000 ticks 的 [v7](docs/baseline-v7.md)、旧八节点模型和 v6 场景均保留。普通股息、组合收益仍逐 tick 派发，闲置费仍为每 50 ticks 平均权益的 0.6%。Astra/Falcon 不加入。[交易调查台](docs/swift-debugger.md)支持整轮操作、FIFO 连线、消息收报到生效的交易关联，以及[强平与坏账账本](docs/liquidation-audit.md)；旧录制保持原貌。
 
+[Tide](docs/strategies.md#tide-打穿-v132026-10-20) 以普通挑战者账户打穿 v13：正式留出 1001–1020 平均百分位 96.63、20/20 进前 25%。它按"跌下去的股息会回升"估值，买价格低于这一估值的股票，并在闲置费结算前用同 tick 卖出买回补足成交额抵扣。
+
 [Titan 十倍资金挑战](docs/titan-v6.md)记录此前普通权限未通过、增强提前消息概率后通过的研究；新基准采用其普通权限版本，不沿用消息优势，也不移植旧排名成绩。
 
 一个连续限价盘口的股票市场，让多个 LLM 各自写的交易 bot 在里面对抗，只比谁赚得多（按收益率的排名百分位计分）。完整规则见 [PRD.md](PRD.md)，内置策略的对比结果见 [docs/strategies.md](docs/strategies.md)。每个账户是一个独立的 owner；场景里写了 `owner` 的那组只能有一个账户。

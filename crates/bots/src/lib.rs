@@ -17,6 +17,7 @@ pub mod news_v2;
 pub mod profit_effect;
 pub mod strategic;
 pub mod swift;
+pub mod tide;
 pub mod titan;
 
 use bot_api::{Bot, Start};
@@ -51,6 +52,7 @@ pub const NAMES: &[&str] = &[
     "horizon_v1",
     "horizon_v2",
     "profit_effect",
+    "tide",
 ];
 
 /// `start` with extra parameter defaults; parameters set in the scenario win.
@@ -104,6 +106,7 @@ pub fn factory(name: &str, start: &Start) -> Option<Box<dyn Bot>> {
         "horizon" => Box::new(horizon::Horizon::new(start)),
         "horizon_v1" => Box::new(horizon_v1::Horizon::new(start)),
         "horizon_v2" => Box::new(horizon_v2::Horizon::new(start)),
+        "tide" => Box::new(tide::Tide::new(start)),
         _ => return None,
     })
 }
