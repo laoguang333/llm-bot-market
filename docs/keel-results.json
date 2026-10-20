@@ -1,0 +1,1550 @@
+{
+ "bot": "keel",
+ "scenario": "scenarios/baseline.toml (v15)",
+ "date": "2026-10-20",
+ "threads": 4,
+ "challenger": {
+  "cash_cents": 2000000,
+  "shares_per_stock": 20,
+  "news_multiplier": 1,
+  "forecast_horizon": 0
+ },
+ "freeze_sha256": {
+  "crates/bots/src/keel.rs": "c1f118105cbc4d2c86f198b92ac92e3a9ae3ac7b05168a1be6c1c912b3083416",
+  "crates/bots/src/keel_growth.rs": "337736aa9527d5c202f51227ea6ee0f124d22bc371e589331d1338036c20d406",
+  "crates/bots/src/lib.rs": "6d9729520cf1feaf393244622078a88ae1b281b603190c713dfe430a68d5a0eb",
+  "crates/cli/tests/keel.rs": "c692b243a063124f0bed238c20f58beab7ec393d382c1d9f455e693f0fc1b39a",
+  "scenarios/baseline.toml": "c63ca49b8f7de0a4f007cbf098a7a8fe77d735accce462a4ddf22d44911a9761",
+  "target/release/llm-market": "a5febdbb6039464ad17ba8795e5afe5afe231df6f27e93ea649c274d6d255ea9"
+ },
+ "sets": {
+  "dev 1-32": {
+   "summary": {
+    "n": 32,
+    "mean_percentile": 97.11,
+    "sd": 2.28,
+    "top25": 32,
+    "first": 3,
+    "min": 91.67,
+    "mean_return": 6.5,
+    "max_leverage": 5.04,
+    "liquidations": 1,
+    "note": "development seeds, frozen binary"
+   },
+   "worlds": [
+    {
+     "seed": 1,
+     "percentile": 97.63,
+     "return_ratio": 4.413,
+     "max_leverage": 2.21,
+     "liquidations": 0,
+     "dragon": 8
+    },
+    {
+     "seed": 2,
+     "percentile": 98.7,
+     "return_ratio": 11.666,
+     "max_leverage": 3.12,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 3,
+     "percentile": 98.15,
+     "return_ratio": 6.881,
+     "max_leverage": 2.32,
+     "liquidations": 0,
+     "dragon": 7
+    },
+    {
+     "seed": 4,
+     "percentile": 100.0,
+     "return_ratio": 9.044,
+     "max_leverage": 2.32,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 5,
+     "percentile": 100.0,
+     "return_ratio": 6.642,
+     "max_leverage": 2.21,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 6,
+     "percentile": 97.42,
+     "return_ratio": 5.688,
+     "max_leverage": 2.27,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 7,
+     "percentile": 95.06,
+     "return_ratio": 1.728,
+     "max_leverage": 2.22,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 8,
+     "percentile": 99.42,
+     "return_ratio": 21.385,
+     "max_leverage": 2.58,
+     "liquidations": 0,
+     "dragon": 6
+    },
+    {
+     "seed": 9,
+     "percentile": 98.76,
+     "return_ratio": 4.82,
+     "max_leverage": 2.39,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 10,
+     "percentile": 95.98,
+     "return_ratio": 2.582,
+     "max_leverage": 2.33,
+     "liquidations": 0,
+     "dragon": 0
+    },
+    {
+     "seed": 11,
+     "percentile": 98.22,
+     "return_ratio": 4.35,
+     "max_leverage": 2.24,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 12,
+     "percentile": 99.32,
+     "return_ratio": 4.78,
+     "max_leverage": 2.2,
+     "liquidations": 0,
+     "dragon": 1
+    },
+    {
+     "seed": 13,
+     "percentile": 97.63,
+     "return_ratio": 5.618,
+     "max_leverage": 2.11,
+     "liquidations": 0,
+     "dragon": 8
+    },
+    {
+     "seed": 14,
+     "percentile": 97.59,
+     "return_ratio": 4.002,
+     "max_leverage": 2.22,
+     "liquidations": 0,
+     "dragon": 6
+    },
+    {
+     "seed": 15,
+     "percentile": 97.48,
+     "return_ratio": 4.286,
+     "max_leverage": 5.04,
+     "liquidations": 1,
+     "dragon": 3
+    },
+    {
+     "seed": 16,
+     "percentile": 94.41,
+     "return_ratio": 3.733,
+     "max_leverage": 2.31,
+     "liquidations": 0,
+     "dragon": 2
+    },
+    {
+     "seed": 17,
+     "percentile": 98.26,
+     "return_ratio": 5.307,
+     "max_leverage": 2.32,
+     "liquidations": 0,
+     "dragon": 3
+    },
+    {
+     "seed": 18,
+     "percentile": 94.44,
+     "return_ratio": 20.621,
+     "max_leverage": 2.34,
+     "liquidations": 0,
+     "dragon": 7
+    },
+    {
+     "seed": 19,
+     "percentile": 96.97,
+     "return_ratio": 3.641,
+     "max_leverage": 2.11,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 20,
+     "percentile": 97.59,
+     "return_ratio": 6.767,
+     "max_leverage": 2.43,
+     "liquidations": 0,
+     "dragon": 5
+    },
+    {
+     "seed": 21,
+     "percentile": 98.72,
+     "return_ratio": 7.053,
+     "max_leverage": 2.21,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 22,
+     "percentile": 100.0,
+     "return_ratio": 14.978,
+     "max_leverage": 2.22,
+     "liquidations": 0,
+     "dragon": 7
+    },
+    {
+     "seed": 23,
+     "percentile": 91.67,
+     "return_ratio": 2.322,
+     "max_leverage": 2.32,
+     "liquidations": 0,
+     "dragon": 7
+    },
+    {
+     "seed": 24,
+     "percentile": 98.55,
+     "return_ratio": 3.91,
+     "max_leverage": 2.42,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 25,
+     "percentile": 92.53,
+     "return_ratio": 7.193,
+     "max_leverage": 2.65,
+     "liquidations": 0,
+     "dragon": 2
+    },
+    {
+     "seed": 26,
+     "percentile": 96.79,
+     "return_ratio": 2.687,
+     "max_leverage": 2.23,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 27,
+     "percentile": 96.43,
+     "return_ratio": 3.074,
+     "max_leverage": 2.32,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 28,
+     "percentile": 97.73,
+     "return_ratio": 7.699,
+     "max_leverage": 2.2,
+     "liquidations": 0,
+     "dragon": 2
+    },
+    {
+     "seed": 29,
+     "percentile": 92.98,
+     "return_ratio": 2.0,
+     "max_leverage": 2.26,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 30,
+     "percentile": 98.11,
+     "return_ratio": 7.052,
+     "max_leverage": 2.4,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 31,
+     "percentile": 98.24,
+     "return_ratio": 6.125,
+     "max_leverage": 2.13,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 32,
+     "percentile": 92.68,
+     "return_ratio": 5.923,
+     "max_leverage": 3.12,
+     "liquidations": 0,
+     "dragon": 0
+    }
+   ]
+  },
+  "unseen dev 33-112": {
+   "summary": {
+    "n": 80,
+    "mean_percentile": 95.45,
+    "sd": 4.22,
+    "top25": 80,
+    "first": 4,
+    "min": 81.66,
+    "mean_return": 4.88,
+    "max_leverage": 3.83,
+    "liquidations": 0,
+    "note": "used once to choose guard 0.03 vs 0.05 (95.00); same code as frozen, guard passed as a parameter"
+   },
+   "worlds": [
+    {
+     "seed": 33,
+     "percentile": 97.84,
+     "return_ratio": 2.841,
+     "max_leverage": 3.55,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 34,
+     "percentile": 97.16,
+     "return_ratio": 3.031,
+     "max_leverage": 2.1,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 35,
+     "percentile": 93.96,
+     "return_ratio": 2.672,
+     "max_leverage": 2.17,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 36,
+     "percentile": 83.87,
+     "return_ratio": 4.01,
+     "max_leverage": 2.04,
+     "liquidations": 0,
+     "dragon": 4
+    },
+    {
+     "seed": 37,
+     "percentile": 92.82,
+     "return_ratio": 4.43,
+     "max_leverage": 2.21,
+     "liquidations": 0,
+     "dragon": 0
+    },
+    {
+     "seed": 38,
+     "percentile": 95.15,
+     "return_ratio": 6.297,
+     "max_leverage": 2.52,
+     "liquidations": 0,
+     "dragon": 4
+    },
+    {
+     "seed": 39,
+     "percentile": 94.2,
+     "return_ratio": 1.861,
+     "max_leverage": 2.63,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 40,
+     "percentile": 98.09,
+     "return_ratio": 4.005,
+     "max_leverage": 2.3,
+     "liquidations": 0,
+     "dragon": 0
+    },
+    {
+     "seed": 41,
+     "percentile": 91.52,
+     "return_ratio": 2.674,
+     "max_leverage": 2.56,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 42,
+     "percentile": 98.35,
+     "return_ratio": 5.144,
+     "max_leverage": 2.54,
+     "liquidations": 0,
+     "dragon": 9
+    },
+    {
+     "seed": 43,
+     "percentile": 91.57,
+     "return_ratio": 4.043,
+     "max_leverage": 2.5,
+     "liquidations": 0,
+     "dragon": 9
+    },
+    {
+     "seed": 44,
+     "percentile": 89.45,
+     "return_ratio": 2.0,
+     "max_leverage": 2.5,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 45,
+     "percentile": 98.4,
+     "return_ratio": 7.421,
+     "max_leverage": 2.09,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 46,
+     "percentile": 96.89,
+     "return_ratio": 3.83,
+     "max_leverage": 2.37,
+     "liquidations": 0,
+     "dragon": 3
+    },
+    {
+     "seed": 47,
+     "percentile": 82.17,
+     "return_ratio": 1.557,
+     "max_leverage": 2.54,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 48,
+     "percentile": 98.32,
+     "return_ratio": 3.128,
+     "max_leverage": 2.15,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 49,
+     "percentile": 97.21,
+     "return_ratio": 4.99,
+     "max_leverage": 2.48,
+     "liquidations": 0,
+     "dragon": 4
+    },
+    {
+     "seed": 50,
+     "percentile": 95.51,
+     "return_ratio": 4.742,
+     "max_leverage": 2.25,
+     "liquidations": 0,
+     "dragon": 0
+    },
+    {
+     "seed": 51,
+     "percentile": 97.33,
+     "return_ratio": 3.904,
+     "max_leverage": 2.75,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 52,
+     "percentile": 96.88,
+     "return_ratio": 7.499,
+     "max_leverage": 2.21,
+     "liquidations": 0,
+     "dragon": 6
+    },
+    {
+     "seed": 53,
+     "percentile": 98.25,
+     "return_ratio": 7.581,
+     "max_leverage": 2.21,
+     "liquidations": 0,
+     "dragon": 9
+    },
+    {
+     "seed": 54,
+     "percentile": 94.83,
+     "return_ratio": 4.113,
+     "max_leverage": 2.23,
+     "liquidations": 0,
+     "dragon": 7
+    },
+    {
+     "seed": 55,
+     "percentile": 98.77,
+     "return_ratio": 6.81,
+     "max_leverage": 2.28,
+     "liquidations": 0,
+     "dragon": 6
+    },
+    {
+     "seed": 56,
+     "percentile": 97.7,
+     "return_ratio": 4.953,
+     "max_leverage": 2.22,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 57,
+     "percentile": 98.71,
+     "return_ratio": 5.574,
+     "max_leverage": 2.27,
+     "liquidations": 0,
+     "dragon": 5
+    },
+    {
+     "seed": 58,
+     "percentile": 85.54,
+     "return_ratio": 2.291,
+     "max_leverage": 2.28,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 59,
+     "percentile": 98.12,
+     "return_ratio": 5.57,
+     "max_leverage": 2.59,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 60,
+     "percentile": 94.05,
+     "return_ratio": 1.918,
+     "max_leverage": 2.3,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 61,
+     "percentile": 98.84,
+     "return_ratio": 10.761,
+     "max_leverage": 2.24,
+     "liquidations": 0,
+     "dragon": 7
+    },
+    {
+     "seed": 62,
+     "percentile": 98.3,
+     "return_ratio": 3.256,
+     "max_leverage": 2.23,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 63,
+     "percentile": 97.83,
+     "return_ratio": 8.366,
+     "max_leverage": 2.37,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 64,
+     "percentile": 100.0,
+     "return_ratio": 7.166,
+     "max_leverage": 3.83,
+     "liquidations": 0,
+     "dragon": 3
+    },
+    {
+     "seed": 65,
+     "percentile": 96.39,
+     "return_ratio": 3.899,
+     "max_leverage": 2.3,
+     "liquidations": 0,
+     "dragon": 5
+    },
+    {
+     "seed": 66,
+     "percentile": 97.79,
+     "return_ratio": 6.569,
+     "max_leverage": 2.35,
+     "liquidations": 0,
+     "dragon": 5
+    },
+    {
+     "seed": 67,
+     "percentile": 98.68,
+     "return_ratio": 3.979,
+     "max_leverage": 2.25,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 68,
+     "percentile": 81.66,
+     "return_ratio": 2.571,
+     "max_leverage": 2.0,
+     "liquidations": 0,
+     "dragon": 0
+    },
+    {
+     "seed": 69,
+     "percentile": 84.75,
+     "return_ratio": 1.516,
+     "max_leverage": 2.59,
+     "liquidations": 0,
+     "dragon": 7
+    },
+    {
+     "seed": 70,
+     "percentile": 91.36,
+     "return_ratio": 1.163,
+     "max_leverage": 2.42,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 71,
+     "percentile": 97.5,
+     "return_ratio": 5.556,
+     "max_leverage": 2.23,
+     "liquidations": 0,
+     "dragon": 9
+    },
+    {
+     "seed": 72,
+     "percentile": 97.11,
+     "return_ratio": 4.964,
+     "max_leverage": 2.11,
+     "liquidations": 0,
+     "dragon": 0
+    },
+    {
+     "seed": 73,
+     "percentile": 98.89,
+     "return_ratio": 9.613,
+     "max_leverage": 2.31,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 74,
+     "percentile": 100.0,
+     "return_ratio": 13.38,
+     "max_leverage": 2.13,
+     "liquidations": 0,
+     "dragon": 9
+    },
+    {
+     "seed": 75,
+     "percentile": 93.79,
+     "return_ratio": 5.299,
+     "max_leverage": 2.39,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 76,
+     "percentile": 99.46,
+     "return_ratio": 12.367,
+     "max_leverage": 2.28,
+     "liquidations": 0,
+     "dragon": 9
+    },
+    {
+     "seed": 77,
+     "percentile": 97.06,
+     "return_ratio": 3.062,
+     "max_leverage": 2.51,
+     "liquidations": 0,
+     "dragon": 3
+    },
+    {
+     "seed": 78,
+     "percentile": 92.76,
+     "return_ratio": 3.113,
+     "max_leverage": 2.51,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 79,
+     "percentile": 96.45,
+     "return_ratio": 2.744,
+     "max_leverage": 2.27,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 80,
+     "percentile": 97.59,
+     "return_ratio": 6.536,
+     "max_leverage": 2.22,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 81,
+     "percentile": 97.59,
+     "return_ratio": 4.196,
+     "max_leverage": 2.31,
+     "liquidations": 0,
+     "dragon": 4
+    },
+    {
+     "seed": 82,
+     "percentile": 94.01,
+     "return_ratio": 2.809,
+     "max_leverage": 2.17,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 83,
+     "percentile": 89.83,
+     "return_ratio": 2.012,
+     "max_leverage": 2.35,
+     "liquidations": 0,
+     "dragon": 3
+    },
+    {
+     "seed": 84,
+     "percentile": 95.12,
+     "return_ratio": 3.676,
+     "max_leverage": 2.44,
+     "liquidations": 0,
+     "dragon": 3
+    },
+    {
+     "seed": 85,
+     "percentile": 100.0,
+     "return_ratio": 6.586,
+     "max_leverage": 2.15,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 86,
+     "percentile": 95.14,
+     "return_ratio": 4.03,
+     "max_leverage": 2.25,
+     "liquidations": 0,
+     "dragon": 8
+    },
+    {
+     "seed": 87,
+     "percentile": 92.77,
+     "return_ratio": 3.376,
+     "max_leverage": 2.0,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 88,
+     "percentile": 95.62,
+     "return_ratio": 5.503,
+     "max_leverage": 2.14,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 89,
+     "percentile": 100.0,
+     "return_ratio": 11.151,
+     "max_leverage": 2.16,
+     "liquidations": 0,
+     "dragon": 4
+    },
+    {
+     "seed": 90,
+     "percentile": 97.52,
+     "return_ratio": 5.161,
+     "max_leverage": 2.45,
+     "liquidations": 0,
+     "dragon": 7
+    },
+    {
+     "seed": 91,
+     "percentile": 97.27,
+     "return_ratio": 3.991,
+     "max_leverage": 2.23,
+     "liquidations": 0,
+     "dragon": 6
+    },
+    {
+     "seed": 92,
+     "percentile": 93.26,
+     "return_ratio": 1.802,
+     "max_leverage": 2.17,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 93,
+     "percentile": 97.16,
+     "return_ratio": 4.13,
+     "max_leverage": 2.19,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 94,
+     "percentile": 99.4,
+     "return_ratio": 6.663,
+     "max_leverage": 2.45,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 95,
+     "percentile": 98.75,
+     "return_ratio": 5.673,
+     "max_leverage": 2.19,
+     "liquidations": 0,
+     "dragon": 2
+    },
+    {
+     "seed": 96,
+     "percentile": 90.56,
+     "return_ratio": 4.201,
+     "max_leverage": 2.16,
+     "liquidations": 0,
+     "dragon": 2
+    },
+    {
+     "seed": 97,
+     "percentile": 95.06,
+     "return_ratio": 4.488,
+     "max_leverage": 2.25,
+     "liquidations": 0,
+     "dragon": 4
+    },
+    {
+     "seed": 98,
+     "percentile": 99.45,
+     "return_ratio": 14.162,
+     "max_leverage": 2.4,
+     "liquidations": 0,
+     "dragon": 4
+    },
+    {
+     "seed": 99,
+     "percentile": 96.88,
+     "return_ratio": 5.88,
+     "max_leverage": 2.1,
+     "liquidations": 0,
+     "dragon": 5
+    },
+    {
+     "seed": 100,
+     "percentile": 97.85,
+     "return_ratio": 5.011,
+     "max_leverage": 2.28,
+     "liquidations": 0,
+     "dragon": 1
+    },
+    {
+     "seed": 101,
+     "percentile": 95.24,
+     "return_ratio": 6.734,
+     "max_leverage": 2.26,
+     "liquidations": 0,
+     "dragon": 8
+    },
+    {
+     "seed": 102,
+     "percentile": 94.67,
+     "return_ratio": 1.905,
+     "max_leverage": 2.28,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 103,
+     "percentile": 98.83,
+     "return_ratio": 6.493,
+     "max_leverage": 2.21,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 104,
+     "percentile": 84.24,
+     "return_ratio": 2.431,
+     "max_leverage": 2.23,
+     "liquidations": 0,
+     "dragon": 8
+    },
+    {
+     "seed": 105,
+     "percentile": 96.95,
+     "return_ratio": 6.093,
+     "max_leverage": 2.55,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 106,
+     "percentile": 95.62,
+     "return_ratio": 2.328,
+     "max_leverage": 2.42,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 107,
+     "percentile": 92.02,
+     "return_ratio": 2.373,
+     "max_leverage": 2.03,
+     "liquidations": 0,
+     "dragon": 3
+    },
+    {
+     "seed": 108,
+     "percentile": 97.52,
+     "return_ratio": 2.232,
+     "max_leverage": 2.75,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 109,
+     "percentile": 98.24,
+     "return_ratio": 2.73,
+     "max_leverage": 2.12,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 110,
+     "percentile": 97.66,
+     "return_ratio": 3.364,
+     "max_leverage": 2.39,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 111,
+     "percentile": 99.43,
+     "return_ratio": 12.38,
+     "max_leverage": 2.27,
+     "liquidations": 0,
+     "dragon": 7
+    },
+    {
+     "seed": 112,
+     "percentile": 93.12,
+     "return_ratio": 2.077,
+     "max_leverage": 2.16,
+     "liquidations": 0,
+     "dragon": null
+    }
+   ]
+  },
+  "holdout 1001-1020": {
+   "summary": {
+    "n": 20,
+    "mean_percentile": 92.44,
+    "sd": 12.54,
+    "top25": 18,
+    "first": 0,
+    "min": 56.36,
+    "mean_return": 4.65,
+    "max_leverage": 5.04,
+    "liquidations": 1,
+    "note": "official holdout, second attempt; the first attempt (version without the moving-price guard) scored 86.9",
+    "others_mean_percentile": {
+     "horizon": 99.5,
+     "kestrel": 97.7,
+     "tide": 97.5,
+     "titan": 94.8,
+     "keel": 92.4,
+     "swift": 85.5,
+     "hunter": 79.5,
+     "coral": 77.6,
+     "value": 76.9,
+     "momentum": 71.9,
+     "news_v2": 56.9,
+     "hold": 47.9,
+     "profit_effect": 44.6,
+     "noise": 33.5,
+     "shark": 32.2,
+     "tracker": 28.3,
+     "grid": 10.2
+    }
+   },
+   "worlds": [
+    {
+     "seed": 1001,
+     "percentile": 98.2,
+     "return_ratio": 3.967,
+     "max_leverage": 2.33,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1002,
+     "percentile": 99.4,
+     "return_ratio": 8.945,
+     "max_leverage": 2.67,
+     "liquidations": 0,
+     "dragon": 6
+    },
+    {
+     "seed": 1003,
+     "percentile": 62.07,
+     "return_ratio": 0.648,
+     "max_leverage": 3.59,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1004,
+     "percentile": 97.63,
+     "return_ratio": 4.03,
+     "max_leverage": 2.42,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1005,
+     "percentile": 95.78,
+     "return_ratio": 6.764,
+     "max_leverage": 2.42,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1006,
+     "percentile": 99.45,
+     "return_ratio": 8.206,
+     "max_leverage": 2.31,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1007,
+     "percentile": 56.36,
+     "return_ratio": 0.962,
+     "max_leverage": 5.04,
+     "liquidations": 1,
+     "dragon": null
+    },
+    {
+     "seed": 1008,
+     "percentile": 98.81,
+     "return_ratio": 11.298,
+     "max_leverage": 2.34,
+     "liquidations": 0,
+     "dragon": 4
+    },
+    {
+     "seed": 1009,
+     "percentile": 98.88,
+     "return_ratio": 8.115,
+     "max_leverage": 2.23,
+     "liquidations": 0,
+     "dragon": 5
+    },
+    {
+     "seed": 1010,
+     "percentile": 96.27,
+     "return_ratio": 2.08,
+     "max_leverage": 2.18,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1011,
+     "percentile": 97.96,
+     "return_ratio": 3.03,
+     "max_leverage": 2.25,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1012,
+     "percentile": 98.18,
+     "return_ratio": 3.853,
+     "max_leverage": 2.27,
+     "liquidations": 0,
+     "dragon": 4
+    },
+    {
+     "seed": 1013,
+     "percentile": 97.81,
+     "return_ratio": 3.079,
+     "max_leverage": 2.36,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1014,
+     "percentile": 75.74,
+     "return_ratio": 0.782,
+     "max_leverage": 2.35,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1015,
+     "percentile": 91.95,
+     "return_ratio": 2.791,
+     "max_leverage": 2.16,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1016,
+     "percentile": 99.38,
+     "return_ratio": 6.065,
+     "max_leverage": 2.44,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1017,
+     "percentile": 94.32,
+     "return_ratio": 4.484,
+     "max_leverage": 2.26,
+     "liquidations": 0,
+     "dragon": 6
+    },
+    {
+     "seed": 1018,
+     "percentile": 94.0,
+     "return_ratio": 4.718,
+     "max_leverage": 2.19,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1019,
+     "percentile": 99.33,
+     "return_ratio": 4.711,
+     "max_leverage": 2.28,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1020,
+     "percentile": 97.35,
+     "return_ratio": 4.487,
+     "max_leverage": 2.73,
+     "liquidations": 0,
+     "dragon": null
+    }
+   ]
+  },
+  "holdout 1021-1040": {
+   "summary": {
+    "n": 20,
+    "mean_percentile": 95.75,
+    "sd": 6.57,
+    "top25": 20,
+    "first": 3,
+    "min": 75.69,
+    "mean_return": 6.63,
+    "max_leverage": 3.58,
+    "liquidations": 0,
+    "note": "fresh seeds, run once",
+    "others_mean_percentile": {
+     "horizon": 99.0,
+     "kestrel": 97.2,
+     "tide": 96.9,
+     "keel": 95.7,
+     "titan": 94.9,
+     "swift": 85.8,
+     "coral": 82.2,
+     "hunter": 78.7,
+     "value": 74.1,
+     "momentum": 72.8,
+     "news_v2": 59.0,
+     "hold": 47.9,
+     "profit_effect": 41.7,
+     "shark": 36.7,
+     "noise": 33.8,
+     "tracker": 27.9,
+     "grid": 10.5
+    }
+   },
+   "worlds": [
+    {
+     "seed": 1021,
+     "percentile": 95.6,
+     "return_ratio": 1.691,
+     "max_leverage": 3.58,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1022,
+     "percentile": 99.37,
+     "return_ratio": 12.435,
+     "max_leverage": 2.22,
+     "liquidations": 0,
+     "dragon": 1
+    },
+    {
+     "seed": 1023,
+     "percentile": 94.61,
+     "return_ratio": 2.66,
+     "max_leverage": 2.67,
+     "liquidations": 0,
+     "dragon": 1
+    },
+    {
+     "seed": 1024,
+     "percentile": 98.59,
+     "return_ratio": 6.819,
+     "max_leverage": 2.24,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1025,
+     "percentile": 75.69,
+     "return_ratio": 1.172,
+     "max_leverage": 2.91,
+     "liquidations": 0,
+     "dragon": 4
+    },
+    {
+     "seed": 1026,
+     "percentile": 100.0,
+     "return_ratio": 9.461,
+     "max_leverage": 3.29,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1027,
+     "percentile": 91.78,
+     "return_ratio": 1.92,
+     "max_leverage": 2.22,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1028,
+     "percentile": 99.36,
+     "return_ratio": 17.111,
+     "max_leverage": 2.42,
+     "liquidations": 0,
+     "dragon": 5
+    },
+    {
+     "seed": 1029,
+     "percentile": 99.41,
+     "return_ratio": 6.643,
+     "max_leverage": 2.09,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1030,
+     "percentile": 98.17,
+     "return_ratio": 11.192,
+     "max_leverage": 2.13,
+     "liquidations": 0,
+     "dragon": 6
+    },
+    {
+     "seed": 1031,
+     "percentile": 95.15,
+     "return_ratio": 3.328,
+     "max_leverage": 2.33,
+     "liquidations": 0,
+     "dragon": 5
+    },
+    {
+     "seed": 1032,
+     "percentile": 93.79,
+     "return_ratio": 2.944,
+     "max_leverage": 2.38,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1033,
+     "percentile": 99.35,
+     "return_ratio": 9.935,
+     "max_leverage": 2.5,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1034,
+     "percentile": 80.12,
+     "return_ratio": 3.807,
+     "max_leverage": 2.64,
+     "liquidations": 0,
+     "dragon": 0
+    },
+    {
+     "seed": 1035,
+     "percentile": 98.28,
+     "return_ratio": 5.073,
+     "max_leverage": 2.18,
+     "liquidations": 0,
+     "dragon": 0
+    },
+    {
+     "seed": 1036,
+     "percentile": 97.44,
+     "return_ratio": 3.416,
+     "max_leverage": 2.59,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1037,
+     "percentile": 100.0,
+     "return_ratio": 14.566,
+     "max_leverage": 2.01,
+     "liquidations": 0,
+     "dragon": 2
+    },
+    {
+     "seed": 1038,
+     "percentile": 98.82,
+     "return_ratio": 5.367,
+     "max_leverage": 3.12,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1039,
+     "percentile": 100.0,
+     "return_ratio": 7.761,
+     "max_leverage": 2.06,
+     "liquidations": 0,
+     "dragon": 2
+    },
+    {
+     "seed": 1040,
+     "percentile": 99.44,
+     "return_ratio": 5.251,
+     "max_leverage": 2.28,
+     "liquidations": 0,
+     "dragon": null
+    }
+   ]
+  },
+  "holdout 1041-1060": {
+   "summary": {
+    "n": 20,
+    "mean_percentile": 96.55,
+    "sd": 4.58,
+    "top25": 20,
+    "first": 0,
+    "min": 84.31,
+    "mean_return": 5.24,
+    "max_leverage": 4.66,
+    "liquidations": 0,
+    "note": "fresh seeds, run once",
+    "others_mean_percentile": {
+     "horizon": 99.5,
+     "kestrel": 97.7,
+     "tide": 97.1,
+     "titan": 96.8,
+     "keel": 96.5,
+     "swift": 87.7,
+     "coral": 80.0,
+     "hunter": 78.1,
+     "value": 74.2,
+     "momentum": 71.8,
+     "news_v2": 62.8,
+     "hold": 47.2,
+     "profit_effect": 42.0,
+     "noise": 32.5,
+     "shark": 31.7,
+     "tracker": 26.4,
+     "grid": 9.9
+    }
+   },
+   "worlds": [
+    {
+     "seed": 1041,
+     "percentile": 99.43,
+     "return_ratio": 5.171,
+     "max_leverage": 2.21,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1042,
+     "percentile": 98.67,
+     "return_ratio": 3.892,
+     "max_leverage": 2.18,
+     "liquidations": 0,
+     "dragon": 5
+    },
+    {
+     "seed": 1043,
+     "percentile": 98.11,
+     "return_ratio": 2.988,
+     "max_leverage": 2.15,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1044,
+     "percentile": 99.38,
+     "return_ratio": 7.984,
+     "max_leverage": 2.2,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1045,
+     "percentile": 99.37,
+     "return_ratio": 6.798,
+     "max_leverage": 2.19,
+     "liquidations": 0,
+     "dragon": 7
+    },
+    {
+     "seed": 1046,
+     "percentile": 84.31,
+     "return_ratio": 1.157,
+     "max_leverage": 2.23,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1047,
+     "percentile": 99.33,
+     "return_ratio": 6.111,
+     "max_leverage": 2.14,
+     "liquidations": 0,
+     "dragon": 7
+    },
+    {
+     "seed": 1048,
+     "percentile": 96.73,
+     "return_ratio": 4.163,
+     "max_leverage": 2.27,
+     "liquidations": 0,
+     "dragon": 7
+    },
+    {
+     "seed": 1049,
+     "percentile": 99.43,
+     "return_ratio": 4.899,
+     "max_leverage": 2.42,
+     "liquidations": 0,
+     "dragon": 5
+    },
+    {
+     "seed": 1050,
+     "percentile": 86.03,
+     "return_ratio": 2.331,
+     "max_leverage": 2.32,
+     "liquidations": 0,
+     "dragon": 5
+    },
+    {
+     "seed": 1051,
+     "percentile": 88.55,
+     "return_ratio": 1.523,
+     "max_leverage": 4.66,
+     "liquidations": 0,
+     "dragon": 3
+    },
+    {
+     "seed": 1052,
+     "percentile": 98.72,
+     "return_ratio": 6.538,
+     "max_leverage": 2.01,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1053,
+     "percentile": 97.71,
+     "return_ratio": 3.96,
+     "max_leverage": 2.42,
+     "liquidations": 0,
+     "dragon": 7
+    },
+    {
+     "seed": 1054,
+     "percentile": 99.38,
+     "return_ratio": 11.637,
+     "max_leverage": 2.28,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1055,
+     "percentile": 98.08,
+     "return_ratio": 6.251,
+     "max_leverage": 2.47,
+     "liquidations": 0,
+     "dragon": 9
+    },
+    {
+     "seed": 1056,
+     "percentile": 97.25,
+     "return_ratio": 5.527,
+     "max_leverage": 2.57,
+     "liquidations": 0,
+     "dragon": 3
+    },
+    {
+     "seed": 1057,
+     "percentile": 98.9,
+     "return_ratio": 6.323,
+     "max_leverage": 2.13,
+     "liquidations": 0,
+     "dragon": null
+    },
+    {
+     "seed": 1058,
+     "percentile": 97.86,
+     "return_ratio": 8.82,
+     "max_leverage": 2.15,
+     "liquidations": 0,
+     "dragon": 3
+    },
+    {
+     "seed": 1059,
+     "percentile": 95.6,
+     "return_ratio": 2.447,
+     "max_leverage": 2.35,
+     "liquidations": 0,
+     "dragon": 3
+    },
+    {
+     "seed": 1060,
+     "percentile": 98.09,
+     "return_ratio": 6.361,
+     "max_leverage": 2.12,
+     "liquidations": 0,
+     "dragon": null
+    }
+   ]
+  }
+ },
+ "first_holdout_attempt": {
+  "seeds": "1001-1020",
+  "mean_percentile": 86.9,
+  "sd": 11.8,
+  "top25_share": 0.85,
+  "note": "version before the moving-price guard; did not pass"
+ },
+ "ablations_dev_1_32": {
+  "final": 97.11,
+  "notilt": 95.84,
+  "noreversal": 90.52,
+  "flatexp": 94.93,
+  "nowash": 90.45,
+  "noguard": 92.46
+ }
+}
