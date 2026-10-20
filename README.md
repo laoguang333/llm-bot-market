@@ -14,8 +14,6 @@ cargo build --release
 ./target/release/llm-market series scenarios/baseline.toml --out runs/base --seeds 20
 # 打穿测试：一个挑战者账户加入基准市场，在留出种子 1001–1020 上跑
 ./target/release/llm-market challenge scenarios/baseline.toml --bot shark --out runs/ch-shark --seeds 20
-# Ebb 打穿 v5（Coral + 跟单 + 收盘前清仓）
-./target/release/llm-market challenge scenarios/baseline.toml --bot ebb --out runs/ch-ebb --seeds 20
 # 复现 Coral 打穿 v4 的挑战（v5 已将 Coral 纳入对手阵容）
 ./target/release/llm-market challenge scenarios/baseline-v4.toml --bot coral --out runs/ch-coral-v4 --seeds 20
 # 列出内置 bot
@@ -28,7 +26,7 @@ cargo build --release
 |---|---|
 | `crates/bot-api` | bot 与引擎之间的全部类型：`Rules`、`Observation`、`Action`、`Bot` trait |
 | `crates/market` | 撮合、调度、结算、世界生成、计分与报告 |
-| `crates/bots` | 内置 bot：`baseline.rs` 是基础对照策略，`strategic.rs`、`coral.rs` 和 `ebb.rs` 是博弈型策略 |
+| `crates/bots` | 内置 bot：`baseline.rs` 是基础对照策略，`strategic.rs` 和 `coral.rs` 是博弈型策略 |
 | `crates/cli` | 命令行 `llm-market` |
 | `scenarios/` | `baseline.toml`（只有对照组）、`tournament.toml`（对照组 + 博弈型）、`arena.toml`（只有博弈型和两个对照） |
 

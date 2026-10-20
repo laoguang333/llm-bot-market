@@ -938,7 +938,7 @@ impl Bot for Drift {
 /// is holding on a signal. Trigger, hold and size are scaled a little per account (unless set).
 pub struct Tracker {
     rules: Rules,
-    core: Option<Box<dyn Bot>>,
+    core: Option<Shark>,
     flows: Vec<VecDeque<(f64, f64)>>,
     mids: Vec<VecDeque<f64>>,
     until: Vec<Tick>,
@@ -952,16 +952,10 @@ pub struct Tracker {
 
 impl Tracker {
     pub fn new(s: &Start) -> Self {
-        let core = (s.param("core", 1.0) > 0.0).then(|| Box::new(Shark::new(s)) as Box<dyn Bot>);
-        Self::with_core(s, core)
-    }
-
-    /// Follows informed buying on top of `core`, which keeps quoting everything else.
-    pub fn with_core(s: &Start, core: Option<Box<dyn Bot>>) -> Self {
         let n = s.rules.stocks.len();
         Self {
             rules: s.rules.clone(),
-            core,
+            core: (s.param("core", 1.0) > 0.0).then(|| Shark::new(s)),
             flows: vec![VecDeque::new(); n],
             mids: vec![VecDeque::new(); n],
             until: vec![0; n],
