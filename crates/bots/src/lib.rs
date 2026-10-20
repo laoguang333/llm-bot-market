@@ -1,5 +1,6 @@
 //! Built-in bots. `factory` builds one by name.
 
+pub mod almanac;
 pub mod astra_a;
 pub mod astra_b;
 pub mod astra_c;
@@ -59,6 +60,7 @@ pub const NAMES: &[&str] = &[
     "kestrel",
     "osprey",
     "osprey_v1",
+    "almanac",
 ];
 
 /// `start` with extra parameter defaults; parameters set in the scenario win.
@@ -116,6 +118,7 @@ pub fn factory(name: &str, start: &Start) -> Option<Box<dyn Bot>> {
         "horizon_v1" => Box::new(horizon_v1::Horizon::new(start)),
         "horizon_v2" => Box::new(horizon_v2::Horizon::new(start)),
         "tide" => Box::new(tide::Tide::new(start)),
+        "almanac" => Box::new(almanac::Almanac::new(start)),
         _ => return None,
     })
 }
