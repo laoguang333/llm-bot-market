@@ -1,5 +1,5 @@
-# v17: one ordinary Almanac and one ordinary Osprey v2 join the v16 crowd.
-# 105..229 total accounts, 19 strategies. Market rules remain as in v16.
+# v18: normalize Grid endowments and distribute the conserved surplus across five strategies.
+# Same 105..229 accounts and 19 strategies as v17; total cash and each stock are conserved.
 ticks = 10000
 seed = 7
 
@@ -207,7 +207,7 @@ bonus = -20
 bot = "grid"
 count = 24
 count_max = 40
-# grid traders run larger accounts than the rest of the crowd
+# Pre-transfer budget: capital_redistribution below leaves each Grid with 2_000_000 cash and 20 shares.
 cash = 4_000_000
 shares_each = 120
 
@@ -407,3 +407,10 @@ count = 1
 cash = 2_000_000
 shares_each = 20
 news_multiplier = 1.0
+
+# Conserved opening allocation, applied once before Start; named accounts are excluded.
+[capital_redistribution]
+from_bot = "grid"
+cash_each = 2_000_000
+shares_each = 100
+recipients = { coral = 20, value = 20, hunter = 20, momentum = 20, shark = 20 }

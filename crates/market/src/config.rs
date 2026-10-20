@@ -31,6 +31,21 @@ pub struct Config {
     #[serde(default)]
     pub scoring: ScoringCfg,
     pub bots: Vec<BotGroupCfg>,
+    /// Optional, conserved redistribution before bots receive Start.
+    #[serde(default)]
+    pub capital_redistribution: Option<CapitalRedistributionCfg>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct CapitalRedistributionCfg {
+    /// Only anonymous background groups participate, never named challengers.
+    pub from_bot: String,
+    pub cash_each: Money,
+    pub shares_each: Qty,
+    /// Relative pool weights by strategy; each strategy's share is split equally
+    /// among its anonymous accounts after population sampling.
+    pub recipients: BTreeMap<String, u32>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -736,6 +751,7 @@ impl Config {
         if max_accounts == 0 || max_accounts > u32::MAX as usize {
             bail!("total bot population must be in 1..=u32::MAX");
         }
+        crate::capital::validate(self)?;
         Ok(())
     }
 

@@ -173,6 +173,7 @@ impl<'a> Shared<'a> {
         if n == 0 {
             bail!("world {seed} has no accounts; give at least one group a positive minimum count");
         }
+        crate::capital::redistribute(cfg, &counts, &mut accounts)?;
         let initial_shares: Vec<Qty> = (0..n_stocks)
             .map(|s| accounts.iter().map(|a| a.shares[s]).sum())
             .collect();

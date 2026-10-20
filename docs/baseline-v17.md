@@ -1,6 +1,6 @@
 # v17：Almanac 与 Osprey v2 加入普通背景账户
 
-按用户要求，默认 `scenarios/baseline.toml` 与 `scenarios/baseline-v17.toml` 完全相同。相对归档 [v16](baseline-v16.md)，只在原阵容末尾追加：
+本页记录归档 `scenarios/baseline-v17.toml`；当前默认已升级为 [v18](baseline-v18.md)。相对归档 [v16](baseline-v16.md)，只在原阵容末尾追加：
 
 | 策略 | 账户 | 现金 | 每股初始股份 | 普通消息倍率 | 额外研究 |
 |---|---|---:|---:|---:|---|

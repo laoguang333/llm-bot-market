@@ -1,6 +1,6 @@
 # 内置策略对比
 
-**当前默认为 [v17](baseline-v17.md)，在 v16 原阵容与规则上加入普通 [Almanac](almanac.md)、[Osprey v2](osprey-v2.md) 各一个；[Lattice](lattice.md) 继续保留。下文挑战分数仍属于其注明的历史版本。**
+**当前默认为 [v18](baseline-v18.md)：保留 v17 全部策略及人数，将 Grid 超出普通账户规模的开局资产守恒地分配给 Coral、Value、Hunter、Momentum、Shark。Almanac、Osprey v2、Lattice 等命名账户保持原资金与权限。没有改变 Grid 或其他策略逻辑；下文挑战分数仍属于其注明的历史版本。**
 
 2026-10-21 的 [v16 生态调查](ecology-v16.md)另完成 80 局固定参数评估：原样基准中 Horizon、Kestrel、Tide、Lattice 平均百分位分别为 98.90、97.01、95.93、91.83；另加普通 Almanac、Osprey 的挑战分别为 99.83、94.71，均达到本批门槛。两个候选随后已加入 v17；这批分数仍属于 v16。报告逐一评价全部 35 个注册策略，并单列资源差异、亏损群体和市场质量。
 

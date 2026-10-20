@@ -1,6 +1,6 @@
 # v16：Lattice 加入普通背景账户
 
-本页记录归档 `scenarios/baseline-v16.toml`，当前默认已升级为 [v17](baseline-v17.md)。相对 [v15](baseline-v15.md)，只在阵容末尾追加一个 `lattice-incumbent`：现金 20,000 元、每股 20 股、消息倍率 1、无额外研究，使用 Lattice 默认参数。合计 103–227 个账户、17 种策略。
+本页记录归档 `scenarios/baseline-v16.toml`，当前默认已升级为 [v18](baseline-v18.md)。相对 [v15](baseline-v15.md)，只在阵容末尾追加一个 `lattice-incumbent`：现金 20,000 元、每股 20 股、消息倍率 1、无额外研究，使用 Lattice 默认参数。合计 103–227 个账户、17 种策略。
 
 旧账户的资金、参数和权限均保留；成长起点仍为全局约 1/3，撮合、费用、强平、消息、终值规则均未修改。Lattice 每 5 ticks 决策，新增账户带来相应资金、股份和交易竞争，因此成交价格、其他账户收益及市场质量可能变化。没有通过降低原有 bot 的决策频率改善性能。
 

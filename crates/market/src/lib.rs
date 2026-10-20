@@ -1,5 +1,6 @@
 pub mod account;
 pub mod book;
+mod capital;
 pub mod config;
 pub mod diagnostics;
 pub mod engine;
