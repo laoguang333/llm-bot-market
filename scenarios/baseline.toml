@@ -1,5 +1,5 @@
-# v15: earlier growth from one third of the match. Based on v14: one ordinary Tide and one ordinary Kestrel join the unchanged v13 crowd.
-# 102..226 total accounts, 16 strategies. Other settings and the crowd remain as in v14.
+# v16: one ordinary Lattice account joins the unchanged v15 crowd.
+# 103..227 total accounts, 17 strategies. Market rules remain as in v15.
 ticks = 10000
 seed = 7
 
@@ -377,6 +377,15 @@ news_multiplier = 1.0
 [[bots]]
 bot = "kestrel"
 owner = "kestrel-incumbent"
+count = 1
+cash = 2_000_000
+shares_each = 20
+news_multiplier = 1.0
+
+# Reviewed online learner: ordinary capital and news, no extra research.
+[[bots]]
+bot = "lattice"
+owner = "lattice-incumbent"
 count = 1
 cash = 2_000_000
 shares_each = 20
