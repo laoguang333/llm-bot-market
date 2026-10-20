@@ -443,6 +443,8 @@ params = { required_yield = 0.01 }
 | profit_effect | 组内／自身近期实际盈亏和简单价格变化驱动仓位；少数成员额外追近期领涨股，不读估值与新闻 |
 | hold | 买入后持有，用于对比闲置费的影响 |
 
+[v19 五类支付群体实验](docs/payer-v19.md)另注册 `news_reactor`（公开新闻过度反应）、`latecomer`（价格意图延迟执行）、`grid_v2`（现金与库存受限的价格网格）。实验场景保留 ProfitEffect、Noise，替换原 Hold、Momentum、Grid 的位置，资本守恒；当前尚未满足市场质量与深度保护条件，默认仍为 v18。
+
 另附一份 `bots/template`：最小可编译的 WASM bot 工程，和一份给 LLM 看的接口文档（BOT_API.md）。
 
 ## 13. 验收

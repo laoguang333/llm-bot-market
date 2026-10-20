@@ -6,6 +6,8 @@
 
 [Coral 与 Grid 逐笔分析](docs/grid-coral-v16.md)进一步区分主动/被动成交、同类互成交、含息成交后表现及库存损失，避免把成交量直接当作流动性贡献或把 Grid 的亏损全归于抄底。
 
+[五类支付群体改造](docs/payer-v19.md)新增公开新闻过度反应者 `news_reactor`、价格反应迟到者 `latecomer` 和库存受限网格 `grid_v2`。候选为 `scenarios/payer-v19-balanced.toml` / `payer-v19-social.toml`；第五轮五类亏损份额达到 67%–70%，但质量与盘口深度未通过保护条件，暂未晋级默认。300 局开发及完整失败记录见报告，独立留出尚未使用。
+
 `baseline.toml` 与 `baseline-v18.toml` 相同；[v17](docs/baseline-v17.md)、[v16](docs/baseline-v16.md)、[v15](docs/baseline-v15.md)、[v14](docs/baseline-v14.md)、[v13](docs/baseline-v13.md)、[v12](docs/baseline-v12.md)、[v11](docs/baseline-v11.md)、[v10](docs/baseline-v10.md)、[v9](docs/baseline-v9.md)、[v8 长局](docs/baseline-v8.md)、3000 ticks 的 [v7](docs/baseline-v7.md)、旧八节点模型和 v6 场景均保留。普通股息、组合收益仍逐 tick 派发，闲置费仍为每 50 ticks 平均权益的 0.6%。Astra/Falcon 不加入。[交易调查台](docs/swift-debugger.md)支持整轮操作、FIFO 连线、消息收报到生效的交易关联，以及[强平与坏账账本](docs/liquidation-audit.md)；旧录制保持原貌。
 
 新挑战者 [Almanac](docs/almanac.md) 以普通账户打穿 v15：正式留出 1001–1020 平均百分位 99.57、20/20 进前 25%。它按实测的消息消化曲线买入价格尚未消化的部分，并按比赛阶段调整基础仓位；现已作为普通账户加入 v17。

@@ -7,13 +7,17 @@ pub mod astra_c;
 pub mod baseline;
 pub mod common;
 pub mod coral;
+mod crowd_execution;
 pub mod falcon;
+pub mod grid_v2;
 pub mod horizon;
 pub mod horizon_v1;
 pub mod horizon_v2;
 pub mod kestrel;
+pub mod latecomer;
 pub mod lattice;
 pub mod news;
+pub mod news_reactor;
 #[cfg(test)]
 mod news_test_support;
 pub mod news_v2;
@@ -63,6 +67,9 @@ pub const NAMES: &[&str] = &[
     "osprey_v1",
     "almanac",
     "lattice",
+    "news_reactor",
+    "latecomer",
+    "grid_v2",
 ];
 
 /// `start` with extra parameter defaults; parameters set in the scenario win.
@@ -78,7 +85,10 @@ pub fn factory(name: &str, start: &Start) -> Option<Box<dyn Bot>> {
     Some(match name {
         "noise" => Box::new(baseline::Noise::new(start)),
         "profit_effect" => Box::new(profit_effect::ProfitEffect::new(start)),
+        "news_reactor" => Box::new(news_reactor::NewsReactor::new(start)),
+        "latecomer" => Box::new(latecomer::Latecomer::new(start)),
         "grid" => Box::new(baseline::Grid::new(start)),
+        "grid_v2" => Box::new(grid_v2::GridV2::new(start)),
         "value" => Box::new(baseline::Value::new(start)),
         "momentum" => Box::new(baseline::Momentum::new(start)),
         "news" => Box::new(baseline::News::new(start)),

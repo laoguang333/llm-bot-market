@@ -2,6 +2,8 @@
 
 **当前默认为 [v18](baseline-v18.md)：保留 v17 全部策略及人数，将 Grid 超出普通账户规模的开局资产守恒地分配给 Coral、Value、Hunter、Momentum、Shark。Almanac、Osprey v2、Lattice 等命名账户保持原资金与权限。没有改变 Grid 或其他策略逻辑；下文挑战分数仍属于其注明的历史版本。**
 
+[五类支付群体](payer-crowds.md)实验另注册三个独立策略：`news_reactor` 只对公开新闻过度反应，`latecomer` 根据历史价格形成延迟执行的意图，`grid_v2` 采用现金与库存约束的简单网格。旧策略和历史场景保留；当前共 38 个注册名，默认仍为 v18。实验条件见[协议](payer-v19-protocol.md)，300 局开发及未晋级原因见[结果](payer-v19.md)。
+
 2026-10-21 的 [v16 生态调查](ecology-v16.md)另完成 80 局固定参数评估：原样基准中 Horizon、Kestrel、Tide、Lattice 平均百分位分别为 98.90、97.01、95.93、91.83；另加普通 Almanac、Osprey 的挑战分别为 99.83、94.71，均达到本批门槛。两个候选随后已加入 v17；这批分数仍属于 v16。报告逐一评价全部 35 个注册策略，并单列资源差异、亏损群体和市场质量。
 
 **v13：[Tide](#tide-打穿-v132026-10-20) 已打穿：10000 ticks，保留两个 Swift、NewsV2、普通权限 Titan、Horizon v3，加入带少数领涨成员的 ProfitEffect 群体。** 完整阵容见 [v13](baseline-v13.md)，群体策略见[研究记录](profit-effect-leaders.md)。以下历史 v5/v6 和新闻研究使用此前的规则，不能当作当前默认成绩。
