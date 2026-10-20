@@ -2,6 +2,8 @@
 
 当前默认为 [v16：加入普通账户 Lattice](docs/baseline-v16.md)，共 103–227 个账户、17 种策略。Lattice 现金 20,000 元、每股 20 股、普通消息权限、无额外研究，使用每局在线学习和交易成本约束。沿用 v15 的全部市场规则：10000 ticks，大龙从 tick 3333 起允许与其他候选分化，成长高点仍在后段，分红约十倍不保证股价十倍；指定成长者概率 50%，期末兑现期限约为整局 1/6–5/6。保留 Tide、Kestrel、两个 Swift、NewsV2、ProfitEffect 群体及普通权限十倍资金 Titan；Horizon v3 资金与 Titan 相同，额外研究最大提前 1000 ticks。[Horizon v3 研究](docs/horizon-v3.md)保留其在旧 v11 背景中的历史对照。
 
+[v16 生态调查](docs/ecology-v16.md)提供 80 局新评估、当前各策略表现与全部 35 个注册策略的评价。基准 20 个世界各重复两次；Almanac、Osprey 各另做 20 局普通挑战，未加入默认阵容。
+
 `baseline.toml` 与 `baseline-v16.toml` 相同；[v15](docs/baseline-v15.md)、[v14](docs/baseline-v14.md)、[v13](docs/baseline-v13.md)、[v12](docs/baseline-v12.md)、[v11](docs/baseline-v11.md)、[v10](docs/baseline-v10.md)、[v9](docs/baseline-v9.md)、[v8 长局](docs/baseline-v8.md)、3000 ticks 的 [v7](docs/baseline-v7.md)、旧八节点模型和 v6 场景均保留。普通股息、组合收益仍逐 tick 派发，闲置费仍为每 50 ticks 平均权益的 0.6%。Astra/Falcon 不加入。[交易调查台](docs/swift-debugger.md)支持整轮操作、FIFO 连线、消息收报到生效的交易关联，以及[强平与坏账账本](docs/liquidation-audit.md)；旧录制保持原貌。
 
 新挑战者 [Almanac](docs/almanac.md) 以普通账户打穿 v15：正式留出 1001–1020 平均百分位 99.57、20/20 进前 25%。它按实测的消息消化曲线买入价格尚未消化的部分，并按比赛阶段调整基础仓位；尚未加入基准。
