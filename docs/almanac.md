@@ -1,6 +1,8 @@
 # Almanac：按"消息消化曲线"和比赛日历交易，打穿 v15
 
-`almanac` 是新的内置策略。它以一个普通挑战者账户（现金 20,000 元、每股 20 股、新闻倍率 1、无额外研究）挑战当前默认 `scenarios/baseline.toml`（v15，阵容内已有 Tide、Kestrel、Titan、Horizon v3 等），不改背景阵容、引擎和门槛。开发时没有阅读任何已有 bot 的源码，只读了文档和规则，市场规律由下文的赛后数据研究得出。
+后续已作为一个普通账户加入 [v17](baseline-v17.md)。下文保留 v15 的开发与冻结验收，复现命令绑定归档场景。
+
+`almanac` 是新的内置策略。它以一个普通挑战者账户（现金 20,000 元、每股 20 股、新闻倍率 1、无额外研究）挑战当时的 v15（现归档为 `scenarios/baseline-v15.toml`，阵容内已有 Tide、Kestrel、Titan、Horizon v3 等），不改背景阵容、引擎和门槛。开发时没有阅读任何已有 bot 的源码，只读了文档和规则，市场规律由下文的赛后数据研究得出。
 
 ## 结果
 
@@ -76,10 +78,10 @@
 
 ```sh
 cargo build --release
-./target/release/llm-market challenge scenarios/baseline.toml --bot almanac --out runs/almanac-holdout --seeds 20 --first-seed 1001
-./target/release/llm-market challenge scenarios/baseline.toml --bot almanac --out runs/almanac-holdout2 --seeds 20 --first-seed 1021
+./target/release/llm-market challenge scenarios/baseline-v15.toml --bot almanac --out runs/almanac-holdout --seeds 20 --first-seed 1001
+./target/release/llm-market challenge scenarios/baseline-v15.toml --bot almanac --out runs/almanac-holdout2 --seeds 20 --first-seed 1021
 # 市场研究（任何完赛目录）
-./target/release/llm-market series scenarios/baseline.toml --out runs/study --seeds 14 --first-seed 1
+./target/release/llm-market series scenarios/baseline-v15.toml --out runs/study --seeds 14 --first-seed 1
 python tools/research_almanac.py runs/study/seed-*
 ```
 

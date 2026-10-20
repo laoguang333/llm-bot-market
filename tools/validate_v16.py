@@ -35,7 +35,7 @@ def main():
     assert {k: v for k, v in old.items() if k != "bots"} == {
         k: v for k, v in new.items() if k != "bots"
     }
-    assert paths["v16"].read_bytes() == (ROOT / "scenarios/baseline.toml").read_bytes()
+    # The current default has advanced to v17; reproduce archived v15/v16 here.
     assert sum(g["count"] for g in new["bots"]) == 103
     assert sum(g.get("count_max", g["count"]) for g in new["bots"]) == 227
     assert len({g["bot"] for g in new["bots"]}) == 17

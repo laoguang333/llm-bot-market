@@ -1,6 +1,6 @@
 # Lattice：在本局中学习收益预测的普通账户
 
-`lattice` 独立实现于 [lattice.rs](../crates/bots/src/lattice.rs)，没有复用旧策略模块。开发基于 2026-10-21 拉取的主线 `ea8c9f4`，只阅读公共接口、注册表、场景和规则/研究文档，没有查看已有 bot 的策略实现。下文挑战使用原样 v15 市场规则和背景阵容。验收后已按用户要求作为一个普通账户加入默认 [v16](baseline-v16.md)，此前分数仍属于 v15。
+`lattice` 独立实现于 [lattice.rs](../crates/bots/src/lattice.rs)，没有复用旧策略模块。开发基于 2026-10-21 拉取的主线 `ea8c9f4`，只阅读公共接口、注册表、场景和规则/研究文档，没有查看已有 bot 的策略实现。下文挑战使用原样 v15 市场规则和背景阵容。验收后已按用户要求作为一个普通账户加入 [v16](baseline-v16.md)，当前默认 [v17](baseline-v17.md)继续保留，此前分数仍属于 v15。
 
 账户为一个普通挑战者：现金 20,000 元、每股 20 股、普通消息倍率 1、无额外研究。按 CLI 的“平均百分位 ≥90，至少 80% 世界进入前 25%”门槛，冻结后的传统验收集和本轮新预留集均通过。新预留集平均仅高于门槛 0.13，结论是本次固定样本通过，优势余量有限。实验边界见 [预先记录的协议](lattice-protocol.md)。
 
@@ -98,4 +98,4 @@ python tools/arena_gate.py --cwd . -- python tools/bench_lattice.py reproduce --
 
 脚本在运行前保存新 bot 源码及源码/场景/二进制哈希，保留逐局报告、完整命令、墙钟、账户权限和诊断。它不读取其他 bot 的源码。
 
-`bench_lattice.py` 已绑定 `scenarios/baseline-v15.toml`。结果文件中的旧 `scenarios/baseline.toml` 路径指当时冻结的 v15，其内容保存在该归档文件中；不会随当前默认升级而改写历史证据。当前 v16 已有一个 Lattice，使用 `challenge scenarios/baseline.toml --bot lattice` 会额外再加入一个同策略挑战者。
+`bench_lattice.py` 已绑定 `scenarios/baseline-v15.toml`。结果文件中的旧 `scenarios/baseline.toml` 路径指当时冻结的 v15，其内容保存在该归档文件中；不会随当前默认升级而改写历史证据。v16 及之后的默认基准已有一个 Lattice，使用 `challenge scenarios/baseline.toml --bot lattice` 会额外再加入一个同策略挑战者。

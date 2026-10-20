@@ -1,5 +1,5 @@
-# v16: one ordinary Lattice account joins the unchanged v15 crowd.
-# 103..227 total accounts, 17 strategies. Market rules remain as in v15.
+# v17: one ordinary Almanac and one ordinary Osprey v2 join the v16 crowd.
+# 105..229 total accounts, 19 strategies. Market rules remain as in v16.
 ticks = 10000
 seed = 7
 
@@ -386,6 +386,23 @@ news_multiplier = 1.0
 [[bots]]
 bot = "lattice"
 owner = "lattice-incumbent"
+count = 1
+cash = 2_000_000
+shares_each = 20
+news_multiplier = 1.0
+
+# Reviewed challengers: ordinary capital/news, default parameters, no extra research.
+[[bots]]
+bot = "almanac"
+owner = "almanac-incumbent"
+count = 1
+cash = 2_000_000
+shares_each = 20
+news_multiplier = 1.0
+
+[[bots]]
+bot = "osprey"
+owner = "osprey-incumbent"
 count = 1
 cash = 2_000_000
 shares_each = 20
