@@ -213,6 +213,9 @@ pub struct DragonCfg {
     pub enabled: bool,
     pub probability: f64,
     pub candidates: usize,
+    /// Fraction of match duration at which the selected path may diverge.
+    /// Defaults to the archived scenarios' 55% boundary.
+    pub start_fraction: f64,
     pub peak_extra: (f64, f64),
 }
 
@@ -224,6 +227,7 @@ impl Default for DragonCfg {
             enabled: false,
             probability: 0.5,
             candidates: 3,
+            start_fraction: 0.55,
             peak_extra: (2.0, 4.0),
         }
     }
@@ -394,6 +398,15 @@ pub const MAX_PRICE: Price = 100_000_000; // 1 million per share
 pub const MAX_SHARES: Qty = 100_000_000;
 
 impl Config {
+    pub fn dragon_start_tick(&self) -> Tick {
+        if self.world.dragon.start_fraction == 0.55 {
+            // Keep historical integer rounding byte-for-byte reproducible.
+            (self.ticks as u64 * 55 / 100) as Tick
+        } else {
+            (self.ticks as f64 * self.world.dragon.start_fraction).floor() as Tick
+        }
+    }
+
     pub fn load(path: &Path) -> Result<Config> {
         let text =
             std::fs::read_to_string(path).with_context(|| format!("reading {}", path.display()))?;
@@ -522,6 +535,12 @@ impl Config {
         let st = &self.world.news.disclosure.stages;
         let dragon = &self.world.dragon;
         let trend = &dragon.trend;
+        if !dragon.start_fraction.is_finite()
+            || !(0.2..=0.65).contains(&dragon.start_fraction)
+            || (dragon.model == DragonModel::Pulses && dragon.start_fraction != 0.55)
+        {
+            bail!("world.dragon.start_fraction must be finite in 0.2..=0.65; legacy pulses require 0.55");
+        }
         if !trend.events_per_1000_ticks.is_finite()
             || !(1.0..=100.0).contains(&trend.events_per_1000_ticks)
             || !trend.growth_log_bias.0.is_finite()
@@ -832,7 +851,7 @@ impl Config {
                     .then(|| self.world.dragon.trend.clone()),
                 probability: self.world.dragon.probability,
                 candidates: self.world.dragon.candidates,
-                divergence_tick: (self.ticks as u64 * 55 / 100) as Tick,
+                divergence_tick: self.dragon_start_tick(),
                 peak_extra: self.world.dragon.peak_extra,
             }),
             season_calm_to_turbulent: self.world.seasons.calm_to_turbulent,

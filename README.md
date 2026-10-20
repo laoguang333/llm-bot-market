@@ -1,8 +1,8 @@
 # llm-bot-market
 
-当前默认为 [v13：赚钱／亏钱效应群体进入基准](docs/baseline-v13.md)，10000 ticks，单股消息平均间隔约 92 ticks。期末兑现期限随机为整局的约 1/6–5/6，平均半局，私人提示也随时长缩放。共 100–224 个账户、14 种策略；Noise 调整为 9–21 人，另有 9–21 个 ProfitEffect 成员，少数成员额外追逐市场领涨股。保留两个 Swift、NewsV2 和普通权限正常缴费的十倍资金 Titan；Horizon v3 接替原 v2 的位置，资金与 Titan 相同，额外研究最大提前 1000 ticks，保留分批建仓和终值风控。50% 概率指定一个后期成长者，tick 5500 前保护身份，途中可回落或急挫；分红成长约十倍的机会不等于保证股价十倍。[Horizon v3 研究](docs/horizon-v3.md)保留其在旧 v11 背景中另加账户的历史对照，不针对大龙调参。
+当前默认为 [v15：大龙成长提前至约 1/3](docs/baseline-v15.md)，10000 ticks，指定成长者从 tick 3333 起允许与其他候选分化，身份保护和远期研究限制同步提前；此前为 tick 5500。成长高点仍在后段，途中可回落或急挫，分红约十倍不保证股价十倍。共 102–226 个账户、16 种策略，沿用 v14 的 Tide、Kestrel、两个 Swift、NewsV2、ProfitEffect 群体和普通权限十倍资金 Titan；Horizon v3 资金与 Titan 相同，额外研究最大提前 1000 ticks。指定成长者概率仍为 50%，期末兑现期限仍为整局约 1/6–5/6。[Horizon v3 研究](docs/horizon-v3.md)保留其在旧 v11 背景中的历史对照。
 
-`baseline.toml` 与 `baseline-v13.toml` 相同；[v12](docs/baseline-v12.md)、[v11](docs/baseline-v11.md)、[v10](docs/baseline-v10.md)、[v9](docs/baseline-v9.md)、[v8 长局](docs/baseline-v8.md)、3000 ticks 的 [v7](docs/baseline-v7.md)、旧八节点模型和 v6 场景均保留。普通股息、组合收益仍逐 tick 派发，闲置费仍为每 50 ticks 平均权益的 0.6%。Astra/Falcon 不加入。[交易调查台](docs/swift-debugger.md)支持整轮操作、FIFO 连线、消息收报到生效的交易关联，以及[强平与坏账账本](docs/liquidation-audit.md)；旧录制保持原貌。
+`baseline.toml` 与 `baseline-v15.toml` 相同；[v14](docs/baseline-v14.md)、[v13](docs/baseline-v13.md)、[v12](docs/baseline-v12.md)、[v11](docs/baseline-v11.md)、[v10](docs/baseline-v10.md)、[v9](docs/baseline-v9.md)、[v8 长局](docs/baseline-v8.md)、3000 ticks 的 [v7](docs/baseline-v7.md)、旧八节点模型和 v6 场景均保留。普通股息、组合收益仍逐 tick 派发，闲置费仍为每 50 ticks 平均权益的 0.6%。Astra/Falcon 不加入。[交易调查台](docs/swift-debugger.md)支持整轮操作、FIFO 连线、消息收报到生效的交易关联，以及[强平与坏账账本](docs/liquidation-audit.md)；旧录制保持原貌。
 
 [Tide](docs/strategies.md#tide-打穿-v132026-10-20) 以普通挑战者账户打穿 v13：正式留出 1001–1020 平均百分位 96.63、20/20 进前 25%。它按"跌下去的股息会回升"估值，买价格低于这一估值的股票，并在闲置费结算前用同 tick 卖出买回补足成交额抵扣。
 
@@ -12,7 +12,13 @@
 
 [当前市场设定](docs/market-settings-current.md)按实际代码说明种子差异、三层新闻、平静/动荡切换、普通股息、固定组合奖励和随机期末兑现；其中初始股息与组合奖金不随种子改变，未来股息路径与隐藏终值倍数会改变。
 
+[大龙价格与局长调查](docs/dragon-duration.md)比较 1 万、2 万、4 万 ticks，并用相同世界的有龙／仅候选成长对照研究分红、价格倍数、流动性和全市场收益；实验配置独立保存，默认局长保持 1 万 ticks。
+
 ## 快速开始
+
+强势股候选 [Osprey](docs/osprey-v2.md) 已实现为 `osprey`：在 Kestrel 执行与风控上加入股息和价格趋势确认、持仓容忍及回撤退出。仍为研究候选，未加入默认阵容；原版保留为 `osprey_v1`，[旧报告](docs/osprey.md)的结论仍只属于旧版和 v14。
+
+新增普通账户挑战者 [Kestrel](docs/kestrel.md)：把已收到的新闻估值与成交方向结合，按价差和费用调整仓位，并控制期末负债。默认现金 2 万元、每股 20 股，普通消息权限、无额外研究；冻结后的 v13 留出验收与复现命令见报告。
 
 新研究：[赚钱／亏钱效应群体](docs/profit-effect-bots.md)。`profit_effect` 参考组内和自身近期实际盈亏、简单价格变化；部分成员另有[追市场领涨股的权重](docs/profit-effect-leaders.md)，不读估值或新闻。该策略已纳入 v13，独立场景 `scenarios/profit-effect-v12.toml` 和 80 局研究结果继续保留；活跃度提高不代表更赚钱。
 
@@ -22,7 +28,7 @@ cargo build --release
 ./target/release/llm-market run scenarios/tournament.toml --out runs/t1
 # 在 20 个随机世界里各跑一局，输出每个策略的平均排名百分位 ± 标准差
 ./target/release/llm-market series scenarios/tournament.toml --out runs/series --seeds 20
-# 当前默认：v13，10000 ticks、收益效应群体、十倍 Titan 和 Horizon v3
+# 当前默认：v15，成长起点 1/3、Tide、Kestrel、10000 ticks、十倍 Titan 和 Horizon v3
 ./target/release/llm-market series scenarios/baseline.toml --out runs/base --seeds 20
 # 打穿测试：一个挑战者账户加入基准市场，在留出种子 1001–1020 上跑
 ./target/release/llm-market challenge scenarios/baseline.toml --bot shark --out runs/ch-shark --seeds 20
@@ -47,7 +53,7 @@ python tools/swift_debugger.py serve --run runs/swift-debug --open
 | `crates/market` | 撮合、调度、结算、世界生成、计分与报告 |
 | `crates/bots` | 内置 bot：基础对照、估值策略，以及 `swift.rs` 中只读价格和成交的策略 |
 | `crates/cli` | 命令行 `llm-market` |
-| `scenarios/` | `baseline.toml` / `baseline-v13.toml`（当前）；v12、v11、v10、v9、v8、v7、v6 及更早版本（归档）；`horizon-v11.toml` 保留上轮研究阵容 |
+| `scenarios/` | `baseline.toml` / `baseline-v15.toml`（当前）；v14、v13、v12、v11、v10、v9、v8、v7、v6 及更早版本（归档）；`horizon-v11.toml` 保留上轮研究阵容 |
 | `tools/debugger/` | 离线交互交易调查台；[使用方法、数据口径与验证](docs/swift-debugger.md) |
 
 ## 写一个 bot
@@ -99,7 +105,7 @@ Windows 上可用 `python tools/bench_bot.py coral-train --first-seed 1` 跑当�
 
 [猎手研究的重要发现](docs/swift-hunter-findings.md) 已归档。多 Swift 实验按用户要求中止，500 局成组结果见[中止报告](docs/swift-crowding-hunt-results.md)；另有 8 个未完成配置的原始摘要，不纳入统计。实验不会自动续跑。
 
-[周期派息 v6](docs/baseline-v6.md) 加入五个不同参数的小资金 Swift，现保存在 `baseline-v6-five-swift.toml`；当前默认已改为两个 Swift、逐 tick 普通股息。旧研究脚本已绑定归档。在当时引擎的 80 局固定验收中，默认 Swift 挑战 v5/v6 的平均百分位分别为 **96.51 / 60.21**，v6 未打穿。该历史结果不能当作当前基准的成绩；派息改造见[改造报告](docs/per-tick-dividends.md)，历史阵容见[两个 Swift 的 v6](docs/baseline-v6-current.md)，当前见 [v13](docs/baseline-v13.md)。
+[周期派息 v6](docs/baseline-v6.md) 加入五个不同参数的小资金 Swift，现保存在 `baseline-v6-five-swift.toml`；当前默认已改为两个 Swift、逐 tick 普通股息。旧研究脚本已绑定归档。在当时引擎的 80 局固定验收中，默认 Swift 挑战 v5/v6 的平均百分位分别为 **96.51 / 60.21**，v6 未打穿。该历史结果不能当作当前基准的成绩；派息改造见[改造报告](docs/per-tick-dividends.md)，历史阵容见[两个 Swift 的 v6](docs/baseline-v6-current.md)，当前见 [v15](docs/baseline-v15.md)。
 
 ## 开发
 

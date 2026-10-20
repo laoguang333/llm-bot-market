@@ -14,7 +14,7 @@ pub(super) fn schedule(
     if access.horizon <= lead || access.coverage <= 0.0 {
         return;
     }
-    let cutoff = (cfg.ticks as u64 * 55 / 100) as u32;
+    let cutoff = cfg.dragon_start_tick();
     for e in events {
         if e.effective >= cfg.ticks
             || unit(seed ^ 0xf0ca_57, e.sampling_key, account as u64) >= access.coverage
@@ -139,23 +139,26 @@ mod tests {
         }];
         for model in [bot_api::DragonModel::Trend, bot_api::DragonModel::Growth] {
             cfg.world.dragon.model = model;
-            cfg.world.dragon.probability = 0.;
-            let a = World::generate_with_information(&cfg, 7, &[1.], &access);
-            cfg.world.dragon.probability = 1.;
-            let b = World::generate_with_information(&cfg, 7, &[1.], &access);
-            let views = |w: &World| {
-                w.deliveries[0]
-                    .iter()
-                    .filter(|d| d.tick < 5500)
-                    .map(|d| {
-                        (
-                            d.tick,
-                            serde_json::to_string(&w.delivery_view(*d, 0)).unwrap(),
-                        )
-                    })
-                    .collect::<Vec<_>>()
-            };
-            assert_eq!(views(&a), views(&b));
+            for start in [0.55, 1.0 / 3.0] {
+                cfg.world.dragon.start_fraction = start;
+                cfg.world.dragon.probability = 0.;
+                let a = World::generate_with_information(&cfg, 7, &[1.], &access);
+                cfg.world.dragon.probability = 1.;
+                let b = World::generate_with_information(&cfg, 7, &[1.], &access);
+                let views = |w: &World| {
+                    w.deliveries[0]
+                        .iter()
+                        .filter(|d| d.tick < cfg.dragon_start_tick())
+                        .map(|d| {
+                            (
+                                d.tick,
+                                serde_json::to_string(&w.delivery_view(*d, 0)).unwrap(),
+                            )
+                        })
+                        .collect::<Vec<_>>()
+                };
+                assert_eq!(views(&a), views(&b));
+            }
         }
     }
 }

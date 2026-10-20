@@ -42,7 +42,7 @@ pub(super) fn overlay(
         return None;
     }
     let lead = cfg.world.news.disclosure.lead_ticks;
-    let divergence = (cfg.ticks as u64 * 55 / 100) as Tick;
+    let divergence = cfg.dragon_start_tick();
     let last_reveal = cfg.ticks.saturating_sub(lead + 1);
     // Config::validate rejects horizons too short for the regime.
     let span = last_reveal.saturating_sub(divergence);

@@ -1,0 +1,460 @@
+{
+  "source": "runs/osprey-holdout; selected stock labels used offline only",
+  "definition": "Price multiple uses first recorded bar open, not initial theoretical value. Late starts at public divergence boundary. Trough/peak and drawdown use strictly earlier bars; retrospective opportunity, not achievable bot return.",
+  "rows": [
+    {
+      "seed": 62005,
+      "arm": "osprey",
+      "stock": "C2",
+      "peak_dividend_over_initial": 6.188888888888889,
+      "peak_price_over_first_bar_open": 2.6605627855195975,
+      "final_close_over_first_bar_open": 2.566432492610081,
+      "late_peak_over_late_first_open": 2.0152660657167782,
+      "late_previous_trough_to_future_peak": 2.01902348074346,
+      "late_price_drawdown": 0.3750551667612383
+    },
+    {
+      "seed": 62005,
+      "arm": "control",
+      "stock": "C2",
+      "peak_dividend_over_initial": 6.188888888888889,
+      "peak_price_over_first_bar_open": 2.6630964720334753,
+      "final_close_over_first_bar_open": 2.610695228223732,
+      "late_peak_over_late_first_open": 2.028510439206971,
+      "late_previous_trough_to_future_peak": 2.0345788362271233,
+      "late_price_drawdown": 0.33405877759872415
+    },
+    {
+      "seed": 62006,
+      "arm": "osprey",
+      "stock": "T2",
+      "peak_dividend_over_initial": 10.6875,
+      "peak_price_over_first_bar_open": 2.772544267677755,
+      "final_close_over_first_bar_open": 1.8410272446546534,
+      "late_peak_over_late_first_open": 1.9202447344198386,
+      "late_previous_trough_to_future_peak": 2.7869238929708064,
+      "late_price_drawdown": 0.6013876489843224
+    },
+    {
+      "seed": 62006,
+      "arm": "control",
+      "stock": "T2",
+      "peak_dividend_over_initial": 10.6875,
+      "peak_price_over_first_bar_open": 3.3651483133755966,
+      "final_close_over_first_bar_open": 1.8539954605932536,
+      "late_peak_over_late_first_open": 2.000069775555297,
+      "late_previous_trough_to_future_peak": 2.1877830356688546,
+      "late_price_drawdown": 0.4543044201272196
+    },
+    {
+      "seed": 62010,
+      "arm": "osprey",
+      "stock": "E3",
+      "peak_dividend_over_initial": 6.814285714285714,
+      "peak_price_over_first_bar_open": 1.968758055369387,
+      "final_close_over_first_bar_open": 1.4535752951487344,
+      "late_peak_over_late_first_open": 1.5434754879033972,
+      "late_previous_trough_to_future_peak": 1.7507113576079094,
+      "late_price_drawdown": 0.3724843385891111
+    },
+    {
+      "seed": 62010,
+      "arm": "control",
+      "stock": "E3",
+      "peak_dividend_over_initial": 6.814285714285714,
+      "peak_price_over_first_bar_open": 2.0187657885239987,
+      "final_close_over_first_bar_open": 1.4124864669794297,
+      "late_peak_over_late_first_open": 1.524561693681773,
+      "late_previous_trough_to_future_peak": 1.8216403162055337,
+      "late_price_drawdown": 0.37675134719014625
+    },
+    {
+      "seed": 62013,
+      "arm": "osprey",
+      "stock": "C2",
+      "peak_dividend_over_initial": 15.277777777777779,
+      "peak_price_over_first_bar_open": 7.007644222182533,
+      "final_close_over_first_bar_open": 4.6320771566351135,
+      "late_peak_over_late_first_open": 2.0085284571990214,
+      "late_previous_trough_to_future_peak": 2.977823315118397,
+      "late_price_drawdown": 0.468323783391171
+    },
+    {
+      "seed": 62013,
+      "arm": "control",
+      "stock": "C2",
+      "peak_dividend_over_initial": 15.277777777777779,
+      "peak_price_over_first_bar_open": 7.092374479592926,
+      "final_close_over_first_bar_open": 4.661174963527025,
+      "late_peak_over_late_first_open": 2.0664890308132544,
+      "late_previous_trough_to_future_peak": 3.0419858978663656,
+      "late_price_drawdown": 0.4817814405593299
+    },
+    {
+      "seed": 62014,
+      "arm": "osprey",
+      "stock": "T2",
+      "peak_dividend_over_initial": 40.0,
+      "peak_price_over_first_bar_open": 7.867969400293314,
+      "final_close_over_first_bar_open": 2.4420706330017046,
+      "late_peak_over_late_first_open": 2.954807305854508,
+      "late_previous_trough_to_future_peak": 3.533995620359985,
+      "late_price_drawdown": 0.6920569669674208
+    },
+    {
+      "seed": 62014,
+      "arm": "control",
+      "stock": "T2",
+      "peak_dividend_over_initial": 40.0,
+      "peak_price_over_first_bar_open": 7.872606920607238,
+      "final_close_over_first_bar_open": 2.4652185976455665,
+      "late_peak_over_late_first_open": 2.9823418120664282,
+      "late_previous_trough_to_future_peak": 3.5943754750443375,
+      "late_price_drawdown": 0.6896504848503157
+    },
+    {
+      "seed": 62016,
+      "arm": "osprey",
+      "stock": "E3",
+      "peak_dividend_over_initial": 16.014285714285716,
+      "peak_price_over_first_bar_open": 5.185699949824385,
+      "final_close_over_first_bar_open": 3.329954841946814,
+      "late_peak_over_late_first_open": 3.9601118859682733,
+      "late_previous_trough_to_future_peak": 3.9950135291843836,
+      "late_price_drawdown": 0.3761647202252518
+    },
+    {
+      "seed": 62016,
+      "arm": "control",
+      "stock": "E3",
+      "peak_dividend_over_initial": 16.014285714285716,
+      "peak_price_over_first_bar_open": 4.7381470003237895,
+      "final_close_over_first_bar_open": 2.905962347934687,
+      "late_peak_over_late_first_open": 3.693578047813075,
+      "late_previous_trough_to_future_peak": 3.7418812785388127,
+      "late_price_drawdown": 0.40194646345541263
+    },
+    {
+      "seed": 62018,
+      "arm": "osprey",
+      "stock": "C3",
+      "peak_dividend_over_initial": 9.290909090909091,
+      "peak_price_over_first_bar_open": 4.299392415671486,
+      "final_close_over_first_bar_open": 3.534813883651093,
+      "late_peak_over_late_first_open": 2.6325849903784477,
+      "late_previous_trough_to_future_peak": 2.8444762740839993,
+      "late_price_drawdown": 0.37093804299904043
+    },
+    {
+      "seed": 62018,
+      "arm": "control",
+      "stock": "C3",
+      "peak_dividend_over_initial": 9.290909090909091,
+      "peak_price_over_first_bar_open": 4.298763880159229,
+      "final_close_over_first_bar_open": 3.533033033033033,
+      "late_peak_over_late_first_open": 2.5774223264383216,
+      "late_previous_trough_to_future_peak": 2.8083126126331637,
+      "late_price_drawdown": 0.3694284897471216
+    },
+    {
+      "seed": 62019,
+      "arm": "osprey",
+      "stock": "E3",
+      "peak_dividend_over_initial": 17.942857142857143,
+      "peak_price_over_first_bar_open": 9.278585149920655,
+      "final_close_over_first_bar_open": 6.41301261170968,
+      "late_peak_over_late_first_open": 4.788882662298474,
+      "late_previous_trough_to_future_peak": 10.721144566685968,
+      "late_price_drawdown": 0.5762309831506625
+    },
+    {
+      "seed": 62019,
+      "arm": "control",
+      "stock": "E3",
+      "peak_dividend_over_initial": 17.942857142857143,
+      "peak_price_over_first_bar_open": 10.716871519108892,
+      "final_close_over_first_bar_open": 7.326003456884963,
+      "late_peak_over_late_first_open": 4.811826334396827,
+      "late_previous_trough_to_future_peak": 10.779494856811706,
+      "late_price_drawdown": 0.5680552368635141
+    },
+    {
+      "seed": 62021,
+      "arm": "osprey",
+      "stock": "C3",
+      "peak_dividend_over_initial": 9.927272727272728,
+      "peak_price_over_first_bar_open": 4.687972043738022,
+      "final_close_over_first_bar_open": 4.450118363205952,
+      "late_peak_over_late_first_open": 2.4233789315735037,
+      "late_previous_trough_to_future_peak": 4.511743965283428,
+      "late_price_drawdown": 0.5092375678841443
+    },
+    {
+      "seed": 62021,
+      "arm": "control",
+      "stock": "C3",
+      "peak_dividend_over_initial": 9.927272727272728,
+      "peak_price_over_first_bar_open": 4.692875662270319,
+      "final_close_over_first_bar_open": 4.4664073948822,
+      "late_peak_over_late_first_open": 2.4253484612359633,
+      "late_previous_trough_to_future_peak": 4.6368167515941305,
+      "late_price_drawdown": 0.5439503225478742
+    },
+    {
+      "seed": 62023,
+      "arm": "osprey",
+      "stock": "C3",
+      "peak_dividend_over_initial": 7.1454545454545455,
+      "peak_price_over_first_bar_open": 2.8223911541119557,
+      "final_close_over_first_bar_open": 2.48341395991707,
+      "late_peak_over_late_first_open": 2.4886574522892833,
+      "late_previous_trough_to_future_peak": 2.7794345109200025,
+      "late_price_drawdown": 0.4177052519276466
+    },
+    {
+      "seed": 62023,
+      "arm": "control",
+      "stock": "C3",
+      "peak_dividend_over_initial": 7.1454545454545455,
+      "peak_price_over_first_bar_open": 2.78042344662939,
+      "final_close_over_first_bar_open": 2.4434566815354652,
+      "late_peak_over_late_first_open": 2.5179074332204934,
+      "late_previous_trough_to_future_peak": 2.8141930560854638,
+      "late_price_drawdown": 0.4161740966853176
+    },
+    {
+      "seed": 62024,
+      "arm": "osprey",
+      "stock": "T2",
+      "peak_dividend_over_initial": 13.3375,
+      "peak_price_over_first_bar_open": 3.3576400397746107,
+      "final_close_over_first_bar_open": 2.5944410246697287,
+      "late_peak_over_late_first_open": 2.313011710213002,
+      "late_previous_trough_to_future_peak": 2.3487909903941704,
+      "late_price_drawdown": 0.3127506607278171
+    },
+    {
+      "seed": 62024,
+      "arm": "control",
+      "stock": "T2",
+      "peak_dividend_over_initial": 13.3375,
+      "peak_price_over_first_bar_open": 3.3213693830200293,
+      "final_close_over_first_bar_open": 2.62877030162413,
+      "late_peak_over_late_first_open": 2.331062443920109,
+      "late_previous_trough_to_future_peak": 2.331062443920109,
+      "late_price_drawdown": 0.2964485769789329
+    },
+    {
+      "seed": 62027,
+      "arm": "osprey",
+      "stock": "T1",
+      "peak_dividend_over_initial": 14.09,
+      "peak_price_over_first_bar_open": 3.018264284192262,
+      "final_close_over_first_bar_open": 2.3436120666037565,
+      "late_peak_over_late_first_open": 2.9045610334827314,
+      "late_previous_trough_to_future_peak": 4.596588011682352,
+      "late_price_drawdown": 0.36889994148624927
+    },
+    {
+      "seed": 62027,
+      "arm": "control",
+      "stock": "T1",
+      "peak_dividend_over_initial": 14.09,
+      "peak_price_over_first_bar_open": 3.001095857051536,
+      "final_close_over_first_bar_open": 2.3315576390368635,
+      "late_peak_over_late_first_open": 2.9378687645270873,
+      "late_previous_trough_to_future_peak": 4.506101741395859,
+      "late_price_drawdown": 0.3794599807135969
+    },
+    {
+      "seed": 62032,
+      "arm": "osprey",
+      "stock": "E3",
+      "peak_dividend_over_initial": 20.84285714285714,
+      "peak_price_over_first_bar_open": 4.830429910350448,
+      "final_close_over_first_bar_open": 4.073044009779951,
+      "late_peak_over_late_first_open": 1.7871398149369617,
+      "late_previous_trough_to_future_peak": 2.157996541052248,
+      "late_price_drawdown": 0.2766181602686508
+    },
+    {
+      "seed": 62032,
+      "arm": "control",
+      "stock": "E3",
+      "peak_dividend_over_initial": 20.84285714285714,
+      "peak_price_over_first_bar_open": 4.78198859005705,
+      "final_close_over_first_bar_open": 4.178229421352893,
+      "late_peak_over_late_first_open": 1.6887018149767057,
+      "late_previous_trough_to_future_peak": 2.20199840502885,
+      "late_price_drawdown": 0.3084284972748508
+    },
+    {
+      "seed": 62033,
+      "arm": "osprey",
+      "stock": "E1",
+      "peak_dividend_over_initial": 10.09,
+      "peak_price_over_first_bar_open": 3.7006818559787127,
+      "final_close_over_first_bar_open": 3.443904872775653,
+      "late_peak_over_late_first_open": 2.035026429864833,
+      "late_previous_trough_to_future_peak": 2.9386703996196615,
+      "late_price_drawdown": 0.3816997093118202
+    },
+    {
+      "seed": 62033,
+      "arm": "control",
+      "stock": "E1",
+      "peak_dividend_over_initial": 10.09,
+      "peak_price_over_first_bar_open": 3.7707185986331364,
+      "final_close_over_first_bar_open": 3.508360427310729,
+      "late_peak_over_late_first_open": 2.0535720738626098,
+      "late_previous_trough_to_future_peak": 2.95443202495451,
+      "late_price_drawdown": 0.3877226209991883
+    },
+    {
+      "seed": 62037,
+      "arm": "osprey",
+      "stock": "T1",
+      "peak_dividend_over_initial": 10.59,
+      "peak_price_over_first_bar_open": 3.455205135361429,
+      "final_close_over_first_bar_open": 1.276862963996651,
+      "late_peak_over_late_first_open": 1.3672381899003285,
+      "late_previous_trough_to_future_peak": 2.1374309392265194,
+      "late_price_drawdown": 0.6337641357027464
+    },
+    {
+      "seed": 62037,
+      "arm": "control",
+      "stock": "T1",
+      "peak_dividend_over_initial": 10.59,
+      "peak_price_over_first_bar_open": 3.5581565727044375,
+      "final_close_over_first_bar_open": 1.2635361428970138,
+      "late_peak_over_late_first_open": 1.415263997779782,
+      "late_previous_trough_to_future_peak": 2.2448660665155282,
+      "late_price_drawdown": 0.6465374395780019
+    },
+    {
+      "seed": 62039,
+      "arm": "osprey",
+      "stock": "T3",
+      "peak_dividend_over_initial": 7.075,
+      "peak_price_over_first_bar_open": 2.2728387317518246,
+      "final_close_over_first_bar_open": 2.190180200729927,
+      "late_peak_over_late_first_open": 2.4257630625969995,
+      "late_previous_trough_to_future_peak": 2.5293669681104234,
+      "late_price_drawdown": 0.28886203604248717
+    },
+    {
+      "seed": 62039,
+      "arm": "control",
+      "stock": "T3",
+      "peak_dividend_over_initial": 7.075,
+      "peak_price_over_first_bar_open": 2.2858975821167884,
+      "final_close_over_first_bar_open": 2.161011633211679,
+      "late_peak_over_late_first_open": 2.2812144320509904,
+      "late_previous_trough_to_future_peak": 2.50174748798602,
+      "late_price_drawdown": 0.2960023515579071
+    },
+    {
+      "seed": 62040,
+      "arm": "osprey",
+      "stock": "T4",
+      "peak_dividend_over_initial": 11.316666666666666,
+      "peak_price_over_first_bar_open": 4.350039507845129,
+      "final_close_over_first_bar_open": 4.150750649057455,
+      "late_peak_over_late_first_open": 3.7913325790742287,
+      "late_previous_trough_to_future_peak": 4.161438367258787,
+      "late_price_drawdown": 0.3169106430807932
+    },
+    {
+      "seed": 62040,
+      "arm": "control",
+      "stock": "T4",
+      "peak_dividend_over_initial": 11.316666666666666,
+      "peak_price_over_first_bar_open": 4.2983406705045715,
+      "final_close_over_first_bar_open": 4.091940399593634,
+      "late_peak_over_late_first_open": 3.9721483335941166,
+      "late_previous_trough_to_future_peak": 4.2925262089956036,
+      "late_price_drawdown": 0.2878792202973829
+    }
+  ],
+  "summary": {
+    "osprey": {
+      "worlds": 17,
+      "peak_dividend_over_initial": {
+        "min": 6.188888888888889,
+        "median": 10.6875,
+        "max": 40.0,
+        "at_least_10": 11
+      },
+      "peak_price_over_first_bar_open": {
+        "min": 1.968758055369387,
+        "median": 3.7006818559787127,
+        "max": 9.278585149920655,
+        "at_least_10": 0
+      },
+      "final_close_over_first_bar_open": {
+        "min": 1.276862963996651,
+        "median": 2.5944410246697287,
+        "max": 6.41301261170968,
+        "at_least_10": 0
+      },
+      "late_peak_over_late_first_open": {
+        "min": 1.3672381899003285,
+        "median": 2.4233789315735037,
+        "max": 4.788882662298474,
+        "at_least_10": 0
+      },
+      "late_previous_trough_to_future_peak": {
+        "min": 1.7507113576079094,
+        "median": 2.8444762740839993,
+        "max": 10.721144566685968,
+        "at_least_10": 1
+      },
+      "late_price_drawdown": {
+        "min": 0.2766181602686508,
+        "median": 0.3761647202252518,
+        "max": 0.6920569669674208,
+        "at_least_10": 0
+      }
+    },
+    "control": {
+      "worlds": 17,
+      "peak_dividend_over_initial": {
+        "min": 6.188888888888889,
+        "median": 10.6875,
+        "max": 40.0,
+        "at_least_10": 11
+      },
+      "peak_price_over_first_bar_open": {
+        "min": 2.0187657885239987,
+        "median": 3.7707185986331364,
+        "max": 10.716871519108892,
+        "at_least_10": 1
+      },
+      "final_close_over_first_bar_open": {
+        "min": 1.2635361428970138,
+        "median": 2.62877030162413,
+        "max": 7.326003456884963,
+        "at_least_10": 0
+      },
+      "late_peak_over_late_first_open": {
+        "min": 1.415263997779782,
+        "median": 2.331062443920109,
+        "max": 4.811826334396827,
+        "at_least_10": 0
+      },
+      "late_previous_trough_to_future_peak": {
+        "min": 1.8216403162055337,
+        "median": 2.8141930560854638,
+        "max": 10.779494856811706,
+        "at_least_10": 1
+      },
+      "late_price_drawdown": {
+        "min": 0.2878792202973829,
+        "median": 0.3877226209991883,
+        "max": 0.6896504848503157,
+        "at_least_10": 0
+      }
+    }
+  }
+}

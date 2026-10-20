@@ -1,6 +1,8 @@
 # 内置策略对比
 
-**当前默认为 v13，[Tide](#tide-打穿-v132026-10-20) 已打穿：10000 ticks，保留两个 Swift、NewsV2、普通权限 Titan、Horizon v3，加入带少数领涨成员的 ProfitEffect 群体。** 完整阵容见 [v13](baseline-v13.md)，群体策略见[研究记录](profit-effect-leaders.md)。以下历史 v5/v6 和新闻研究使用此前的规则，不能当作当前默认成绩。
+**当前默认为 [v15](baseline-v15.md)，大龙成长起点提前至约 1/3；保留 v14 的 Tide 与 Kestrel 普通账户。[Osprey](osprey-v2.md) 仍为独立研究候选。以下为历史 v13 挑战结果。**
+
+**v13：[Tide](#tide-打穿-v132026-10-20) 已打穿：10000 ticks，保留两个 Swift、NewsV2、普通权限 Titan、Horizon v3，加入带少数领涨成员的 ProfitEffect 群体。** 完整阵容见 [v13](baseline-v13.md)，群体策略见[研究记录](profit-effect-leaders.md)。以下历史 v5/v6 和新闻研究使用此前的规则，不能当作当前默认成绩。
 
 **2026-10-19 追加审计限制：** 160 局已有轨迹中有 15 局普通派息超过合法总额上限，存在派息权一致性问题。以下运行成绩不撤销，但尚未排除该机制对收益与排名的影响；[机制与分红核验](swift-mechanism.md)记录了代码路径、逐局证据及未解决的问题。
 
@@ -55,8 +57,8 @@
 复现（输出目录必须不存在）：
 
 ```sh
-./target/release/llm-market challenge scenarios/baseline.toml --bot tide --out runs/tide-train --seeds 20 --first-seed 1
-./target/release/llm-market challenge scenarios/baseline.toml --bot tide --out runs/tide-holdout --seeds 20 --first-seed 1001
+./target/release/llm-market challenge scenarios/baseline-v13.toml --bot tide --out runs/tide-train --seeds 20 --first-seed 1
+./target/release/llm-market challenge scenarios/baseline-v13.toml --bot tide --out runs/tide-holdout --seeds 20 --first-seed 1001
 ```
 
 ## Titan：十倍资金与提前消息优势（2026-10-19）

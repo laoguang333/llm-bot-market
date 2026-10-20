@@ -10,6 +10,35 @@ fn config() -> Config {
 }
 
 #[test]
+fn configurable_growth_start_preserves_legacy_and_advances_disclosure() {
+    let mut cfg = Config::load(Path::new(concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../scenarios/baseline-v14.toml"
+    )))
+    .unwrap();
+    assert_eq!(cfg.dragon_start_tick(), 5500);
+    cfg.world.dragon.probability = 1.0;
+    let old = World::generate(&cfg, 7, 0);
+    cfg.world.dragon.start_fraction = 1.0 / 3.0;
+    cfg.validate().unwrap();
+    assert_eq!(cfg.rules(&[1000; 10]).dragon.unwrap().divergence_tick, 3333);
+    let early = World::generate(&cfg, 7, 0);
+    let (a, b) = (old.dragon.as_ref().unwrap(), early.dragon.as_ref().unwrap());
+    assert_eq!(a.selected_stock, b.selected_stock);
+    assert_eq!(a.candidates, b.candidates);
+    assert_eq!(b.divergence_tick, 3333);
+    assert_eq!(old.opening_prices, early.opening_prices);
+    assert_eq!(old.terminal_payments, early.terminal_payments);
+    let selected = b.selected_stock.unwrap();
+    let sum = |w: &World| (3333..5500).map(|t| w.dividend(selected, t)).sum::<i64>();
+    assert!(sum(&early) > sum(&old));
+    for bad in [f64::NAN, 0.0, 0.9] {
+        cfg.world.dragon.start_fraction = bad;
+        assert!(cfg.validate().is_err());
+    }
+}
+
+#[test]
 fn winner_is_hidden_through_midgame_and_normal_news_lottery_is_preserved() {
     for seed in [7, 11, 19] {
         let mut cfg = config();

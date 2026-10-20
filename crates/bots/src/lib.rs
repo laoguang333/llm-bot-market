@@ -10,10 +10,13 @@ pub mod falcon;
 pub mod horizon;
 pub mod horizon_v1;
 pub mod horizon_v2;
+pub mod kestrel;
 pub mod news;
 #[cfg(test)]
 mod news_test_support;
 pub mod news_v2;
+pub mod osprey;
+pub mod osprey_v1;
 pub mod profit_effect;
 pub mod strategic;
 pub mod swift;
@@ -53,6 +56,9 @@ pub const NAMES: &[&str] = &[
     "horizon_v2",
     "profit_effect",
     "tide",
+    "kestrel",
+    "osprey",
+    "osprey_v1",
 ];
 
 /// `start` with extra parameter defaults; parameters set in the scenario win.
@@ -103,6 +109,9 @@ pub fn factory(name: &str, start: &Start) -> Option<Box<dyn Bot>> {
         "swift" => Box::new(swift::Swift::new(start)),
         "falcon" => Box::new(falcon::Falcon::new(start)),
         "titan" => Box::new(titan::Titan::new(start)),
+        "kestrel" => Box::new(kestrel::Kestrel::new(start)),
+        "osprey" => Box::new(osprey::Osprey::new(start)),
+        "osprey_v1" => Box::new(osprey_v1::Osprey::new(start)),
         "horizon" => Box::new(horizon::Horizon::new(start)),
         "horizon_v1" => Box::new(horizon_v1::Horizon::new(start)),
         "horizon_v2" => Box::new(horizon_v2::Horizon::new(start)),

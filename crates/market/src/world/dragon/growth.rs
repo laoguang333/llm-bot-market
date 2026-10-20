@@ -1,5 +1,5 @@
 //! Phased log cash-flow growth. A stochastic business path, never a price path.
-//! The selected business differs only after the common 55% disclosure boundary.
+//! The selected business differs only after the configured disclosure boundary.
 use super::{mix, Config, DragonEpisode, Event};
 use bot_api::{Money, NewsLayer, Tick};
 use rand::{Rng, SeedableRng};
@@ -22,6 +22,7 @@ pub(super) fn events(
     let lead = cfg.world.news.disclosure.lead_ticks;
     let end = cfg.ticks.saturating_sub(lead + 1);
     let duration = cfg.ticks as f64;
+    let start = cfg.world.dragon.start_fraction;
     let mut episodes = Vec::new();
     for stock in 0..cfg.stocks.len() {
         let mut rng = ChaCha8Rng::seed_from_u64(seed ^ mix(stock as u64) ^ 0xd2a8_b051);
@@ -54,12 +55,12 @@ pub(super) fn events(
             business = from + (to - from) * w;
             let x = tick as f64 / duration;
             let early_path = if candidates.contains(&stock) {
-                early * (x / 0.55).min(1.0)
+                early * (x / start).min(1.0)
             } else {
                 0.25
             };
             let growth = if tick >= divergence && selected == Some(stock) {
-                let progress = ((x - 0.55) / (peak_at - 0.55)).clamp(0.0, 1.0);
+                let progress = ((x - start) / (peak_at - start)).clamp(0.0, 1.0);
                 early + (peak_log - early) * progress
                     - dip_depth * (1.0 - ((x - dip_at) / dip_width).abs()).max(0.0)
             } else {

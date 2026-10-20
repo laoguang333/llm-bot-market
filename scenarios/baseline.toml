@@ -1,6 +1,5 @@
-# v13: profit/loss-effect crowd with minority market-leader followers.
-# Rebalance the Noise population range; retain 100..224 total accounts.
-# Horizon v3, capital, news access, market rules and fees remain as in v12.
+# v15: earlier growth from one third of the match. Based on v14: one ordinary Tide and one ordinary Kestrel join the unchanged v13 crowd.
+# 102..226 total accounts, 16 strategies. Other settings and the crowd remain as in v14.
 ticks = 10000
 seed = 7
 
@@ -51,6 +50,7 @@ sectors = ["tech", "consumer", "energy"]
 
 [world.dragon]
 model = "growth"
+start_fraction = 0.3333333333333333
 enabled = true
 probability = 0.5
 candidates = 3
@@ -364,3 +364,20 @@ shares_each = 20
 news_multiplier = 1.0
 social_group = "profit-circle"
 params = { leader_weight = 1.1, leader_min_return = 0.005, confidence = 0.25, cap = 0.30, clip = 0.02, chase = 0.03 }
+
+# Reviewed challengers, default parameters, ordinary news and no extra research.
+[[bots]]
+bot = "tide"
+owner = "tide-incumbent"
+count = 1
+cash = 2_000_000
+shares_each = 20
+news_multiplier = 1.0
+
+[[bots]]
+bot = "kestrel"
+owner = "kestrel-incumbent"
+count = 1
+cash = 2_000_000
+shares_each = 20
+news_multiplier = 1.0
