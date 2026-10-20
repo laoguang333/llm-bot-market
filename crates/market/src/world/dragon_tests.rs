@@ -67,7 +67,8 @@ fn winner_is_hidden_through_midgame_and_normal_news_lottery_is_preserved() {
                     .find(|other| other.sampling_key == e.sampling_key)
                     .unwrap();
                 assert_eq!(e.changes, added.changes);
-                assert_eq!(e.sigma, added.sigma);
+                // Ordinary widths grow with the regime's extra cash flow, never shrink.
+                assert!(e.sigma.iter().zip(&added.sigma).all(|(a, b)| b >= a));
                 assert_eq!(e.first_reveal, added.first_reveal);
                 for account in 0..3 {
                     let a: Vec<_> = base.deliveries[account]
@@ -82,10 +83,14 @@ fn winner_is_hidden_through_midgame_and_normal_news_lottery_is_preserved() {
                         .collect();
                     assert_eq!(a, b);
                     for stage in 0..cfg.world.news.disclosure.stages.len() {
-                        assert_eq!(
-                            base.view(e.id, account, stage).changes,
-                            w.view(added.id, account, stage).changes
-                        );
+                        for (c, &(_, delta)) in w
+                            .view(added.id, account, stage)
+                            .changes
+                            .iter()
+                            .zip(&added.changes)
+                        {
+                            assert!(c.low <= delta && delta <= c.high);
+                        }
                     }
                 }
             }
@@ -103,6 +108,43 @@ fn winner_is_hidden_through_midgame_and_normal_news_lottery_is_preserved() {
         for tick in 0..cutoff {
             assert_eq!(none.dividends(tick), winner.dividends(tick));
         }
+    }
+}
+
+#[test]
+fn ordinary_news_width_tracks_the_whole_cash_flow_not_the_ordinary_part() {
+    // A width sized from the ordinary path alone told informed accounts how much of a
+    // dividend was hidden regime extra: total dividend minus width / (stage x sd).
+    let mut cfg = Config::load(Path::new(concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../scenarios/baseline.toml"
+    )))
+    .unwrap();
+    cfg.world.dragon.probability = 1.0;
+    for seed in [3, 8] {
+        cfg.world.dragon.enabled = false;
+        let plain = World::generate(&cfg, seed, 0);
+        cfg.world.dragon.enabled = true;
+        let grown = World::generate(&cfg, seed, 0);
+        let selected = grown.dragon.as_ref().unwrap().selected_stock.unwrap();
+        let late = cfg.ticks * 4 / 5;
+        let mut ratios = Vec::new();
+        for e in plain.events.iter().filter(|e| e.first_reveal >= late) {
+            let g = grown
+                .events
+                .iter()
+                .find(|x| x.sampling_key == e.sampling_key)
+                .unwrap();
+            for ((&(stock, _), a), b) in e.changes.iter().zip(&e.sigma).zip(&g.sigma) {
+                if stock == selected {
+                    ratios.push(b / a);
+                }
+            }
+        }
+        // Late in the game the selected business pays several times its ordinary part,
+        // and so its ordinary news is several times as uncertain.
+        assert!(!ratios.is_empty());
+        assert!(ratios.iter().all(|r| *r > 2.0), "{ratios:?}");
     }
 }
 

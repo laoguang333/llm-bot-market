@@ -4,6 +4,8 @@
 
 `baseline.toml` 与 `baseline-v15.toml` 相同；[v14](docs/baseline-v14.md)、[v13](docs/baseline-v13.md)、[v12](docs/baseline-v12.md)、[v11](docs/baseline-v11.md)、[v10](docs/baseline-v10.md)、[v9](docs/baseline-v9.md)、[v8 长局](docs/baseline-v8.md)、3000 ticks 的 [v7](docs/baseline-v7.md)、旧八节点模型和 v6 场景均保留。普通股息、组合收益仍逐 tick 派发，闲置费仍为每 50 ticks 平均权益的 0.6%。Astra/Falcon 不加入。[交易调查台](docs/swift-debugger.md)支持整轮操作、FIFO 连线、消息收报到生效的交易关联，以及[强平与坏账账本](docs/liquidation-audit.md)；旧录制保持原貌。
 
+新挑战者 [Keel](docs/keel.md) 以普通账户打穿 v15：正式留出 1001–1020 平均百分位 92.44、18/20 进前 25%（第二次跑，第一次 86.9 未过），全新种子 1021–1040 为 95.75、1041–1060 为 96.55。它是按长期价格反转加权的定比再平衡组合，价格偏离 50 tick 均线超过 3% 时暂停调仓；尚未加入基准。
+
 新挑战者 [Almanac](docs/almanac.md) 以普通账户打穿 v15：正式留出 1001–1020 平均百分位 99.57、20/20 进前 25%。它按实测的消息消化曲线买入价格尚未消化的部分，并按比赛阶段调整基础仓位；尚未加入基准。
 
 [Tide](docs/strategies.md#tide-打穿-v132026-10-20) 以普通挑战者账户打穿 v13：正式留出 1001–1020 平均百分位 96.63、20/20 进前 25%。它按"跌下去的股息会回升"估值，买价格低于这一估值的股票，并在闲置费结算前用同 tick 卖出买回补足成交额抵扣。
