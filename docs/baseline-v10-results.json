@@ -1,0 +1,1137 @@
+{
+  "runs": 322,
+  "audits": 6440,
+  "skips": 0,
+  "errors": 0,
+  "disabled": 0,
+  "liquidation_events": 1013,
+  "risk_reconciliation_errors": 0,
+  "frozen_source_verified": true,
+  "paired_news_files_identical": 9,
+  "arms": {
+    "new0": {
+      "runs": 40,
+      "mean_return": 2.4295080371153266,
+      "median_return": 1.9240006757317938,
+      "min_return": -0.1273327165879966,
+      "positive": 38,
+      "worst_decile_mean": 0.2717712316369247,
+      "negative_final_equity": 0,
+      "mean_decision_us": 5.8698685,
+      "mean_percentile": 87.72790971375868,
+      "top_quartile": 38,
+      "beat_titan": 1,
+      "titan_mean_return": 4.852475184509606,
+      "forecasts": 0,
+      "mean_fees": {
+        "idle_fees": 656997.45325,
+        "trade_fees": 137962.0405,
+        "interest": 74600.365,
+        "dividends": 1304138.68825,
+        "combo_dividends": 18979.068
+      },
+      "mean_trades": 55628.8,
+      "max_leverage": 3.284927880727741,
+      "liquidations": 0,
+      "bad_debt": 0.0,
+      "quality_pass": 37,
+      "halves": {
+        "first20": {
+          "runs": 20,
+          "mean_return": 2.796225983885991,
+          "median_return": 2.10588092228331,
+          "min_return": 0.49093214662426954,
+          "positive": 20,
+          "worst_decile_mean": 0.6512408798400829,
+          "negative_final_equity": 0,
+          "mean_decision_us": 5.815722,
+          "mean_percentile": 88.68277629963966,
+          "top_quartile": 19,
+          "beat_titan": 1,
+          "titan_mean_return": 4.831053821955611,
+          "forecasts": 0,
+          "mean_fees": {
+            "idle_fees": 681540.595,
+            "trade_fees": 149457.3585,
+            "interest": 75540.6495,
+            "dividends": 1316709.844,
+            "combo_dividends": 16403.0415
+          },
+          "mean_trades": 55231.6,
+          "max_leverage": 2.1730537989260745,
+          "liquidations": 0,
+          "bad_debt": 0.0,
+          "rank_gate_pass": false
+        },
+        "second20": {
+          "runs": 20,
+          "mean_return": 2.062790090344662,
+          "median_return": 1.7762964092745326,
+          "min_return": -0.1273327165879966,
+          "positive": 18,
+          "worst_decile_mean": -0.10769841656623358,
+          "negative_final_equity": 0,
+          "mean_decision_us": 5.924015,
+          "mean_percentile": 86.77304312787768,
+          "top_quartile": 19,
+          "beat_titan": 0,
+          "titan_mean_return": 4.873896547063601,
+          "forecasts": 0,
+          "mean_fees": {
+            "idle_fees": 632454.3115,
+            "trade_fees": 126466.7225,
+            "interest": 73660.0805,
+            "dividends": 1291567.5325,
+            "combo_dividends": 21555.0945
+          },
+          "mean_trades": 56026,
+          "max_leverage": 3.284927880727741,
+          "liquidations": 0,
+          "bad_debt": 0.0,
+          "rank_gate_pass": false
+        }
+      },
+      "dragon_strata": {
+        "absent": {
+          "runs": 25,
+          "mean_return": 2.4239423731748637,
+          "median_return": 1.5333035572184261,
+          "min_return": -0.1273327165879966,
+          "positive": 23,
+          "worst_decile_mean": -0.10769841656623358,
+          "negative_final_equity": 0,
+          "mean_decision_us": 5.8370504,
+          "mean_percentile": 89.37385120498021,
+          "top_quartile": 24,
+          "beat_titan": 1,
+          "titan_mean_return": 4.7754398810289835,
+          "forecasts": 0,
+          "mean_fees": {
+            "idle_fees": 642973.7188,
+            "trade_fees": 139506.0856,
+            "interest": 72956.266,
+            "dividends": 1304499.0596,
+            "combo_dividends": 18650.0456
+          },
+          "mean_trades": 56381.24,
+          "max_leverage": 3.284927880727741,
+          "liquidations": 0,
+          "bad_debt": 0.0
+        },
+        "present": {
+          "runs": 15,
+          "mean_return": 2.4387841436827644,
+          "median_return": 2.2858553606559915,
+          "min_return": 1.4789683271401977,
+          "positive": 15,
+          "worst_decile_mean": 1.4789683271401977,
+          "negative_final_equity": 0,
+          "mean_decision_us": 5.924565333333334,
+          "mean_percentile": 84.98467389505612,
+          "top_quartile": 14,
+          "beat_titan": 0,
+          "titan_mean_return": 4.980867356977312,
+          "forecasts": 0,
+          "mean_fees": {
+            "idle_fees": 680370.344,
+            "trade_fees": 135388.632,
+            "interest": 77340.53,
+            "dividends": 1303538.0693333333,
+            "combo_dividends": 19527.438666666665
+          },
+          "mean_trades": 54374.73333333333,
+          "max_leverage": 2.083057051297922,
+          "liquidations": 0,
+          "bad_debt": 0.0
+        }
+      }
+    },
+    "new1000": {
+      "runs": 40,
+      "mean_return": 2.192813323581448,
+      "median_return": 1.6758814289787483,
+      "min_return": -0.4825328007045492,
+      "positive": 37,
+      "worst_decile_mean": -0.2297259347636887,
+      "negative_final_equity": 0,
+      "mean_decision_us": 8.46351875,
+      "mean_percentile": 82.11602825255572,
+      "top_quartile": 30,
+      "beat_titan": 5,
+      "titan_mean_return": 4.920592711456811,
+      "forecasts": 383.525,
+      "mean_fees": {
+        "idle_fees": 628664.57575,
+        "trade_fees": 115320.3745,
+        "interest": 419020.53775,
+        "dividends": 2254962.34575,
+        "combo_dividends": 36159.485
+      },
+      "mean_trades": 49067.725,
+      "max_leverage": 2.311544183252656,
+      "liquidations": 0,
+      "bad_debt": 0.0,
+      "quality_pass": 32,
+      "halves": {
+        "first20": {
+          "runs": 20,
+          "mean_return": 2.3943900635046855,
+          "median_return": 1.7032537344197285,
+          "min_return": -0.42191147673932183,
+          "positive": 18,
+          "worst_decile_mean": -0.22388742511939558,
+          "negative_final_equity": 0,
+          "mean_decision_us": 8.4769995,
+          "mean_percentile": 81.73164109671971,
+          "top_quartile": 15,
+          "beat_titan": 2,
+          "titan_mean_return": 5.436606919660465,
+          "forecasts": 384.85,
+          "mean_fees": {
+            "idle_fees": 695915.4655,
+            "trade_fees": 129549.546,
+            "interest": 435065.287,
+            "dividends": 2368078.062,
+            "combo_dividends": 35187.4475
+          },
+          "mean_trades": 49620.45,
+          "max_leverage": 2.311544183252656,
+          "liquidations": 0,
+          "bad_debt": 0.0,
+          "rank_gate_pass": false
+        },
+        "second20": {
+          "runs": 20,
+          "mean_return": 1.9912365836582104,
+          "median_return": 1.6641136895254156,
+          "min_return": -0.4825328007045492,
+          "positive": 19,
+          "worst_decile_mean": -0.2355644444079818,
+          "negative_final_equity": 0,
+          "mean_decision_us": 8.450038,
+          "mean_percentile": 82.50041540839173,
+          "top_quartile": 15,
+          "beat_titan": 3,
+          "titan_mean_return": 4.404578503253156,
+          "forecasts": 382.2,
+          "mean_fees": {
+            "idle_fees": 561413.686,
+            "trade_fees": 101091.20300000001,
+            "interest": 402975.7885,
+            "dividends": 2141846.6295,
+            "combo_dividends": 37131.5225
+          },
+          "mean_trades": 48515,
+          "max_leverage": 2.3019038417222566,
+          "liquidations": 0,
+          "bad_debt": 0.0,
+          "rank_gate_pass": false
+        }
+      },
+      "dragon_strata": {
+        "absent": {
+          "runs": 25,
+          "mean_return": 2.005024846039216,
+          "median_return": 1.1953217693201248,
+          "min_return": -0.4825328007045492,
+          "positive": 22,
+          "worst_decile_mean": -0.4522221387219355,
+          "negative_final_equity": 0,
+          "mean_decision_us": 8.505408,
+          "mean_percentile": 81.64308599384967,
+          "top_quartile": 17,
+          "beat_titan": 3,
+          "titan_mean_return": 4.9976942809533735,
+          "forecasts": 379.96,
+          "mean_fees": {
+            "idle_fees": 605928.7868,
+            "trade_fees": 118236.8792,
+            "interest": 407331.4872,
+            "dividends": 2299684.4336,
+            "combo_dividends": 35839.51
+          },
+          "mean_trades": 49778.48,
+          "max_leverage": 2.311544183252656,
+          "liquidations": 0,
+          "bad_debt": 0.0
+        },
+        "present": {
+          "runs": 15,
+          "mean_return": 2.505794119485168,
+          "median_return": 2.2103144004545734,
+          "min_return": 0.531382924263764,
+          "positive": 15,
+          "worst_decile_mean": 0.531382924263764,
+          "negative_final_equity": 0,
+          "mean_decision_us": 8.393703333333333,
+          "mean_percentile": 82.90426535039914,
+          "top_quartile": 13,
+          "beat_titan": 2,
+          "titan_mean_return": 4.792090095629208,
+          "forecasts": 389.46666666666664,
+          "mean_fees": {
+            "idle_fees": 666557.5573333333,
+            "trade_fees": 110459.53333333334,
+            "interest": 438502.28866666666,
+            "dividends": 2180425.5326666664,
+            "combo_dividends": 36692.776666666665
+          },
+          "mean_trades": 47883.13333333333,
+          "max_leverage": 2.3078667955481698,
+          "liquidations": 0,
+          "bad_debt": 0.0
+        }
+      }
+    },
+    "new300": {
+      "runs": 40,
+      "mean_return": 4.62675803621566,
+      "median_return": 3.5699301607576484,
+      "min_return": -0.046855596616412365,
+      "positive": 39,
+      "worst_decile_mean": 0.4805184502013815,
+      "negative_final_equity": 0,
+      "mean_decision_us": 7.4329385,
+      "mean_percentile": 93.58823335426072,
+      "top_quartile": 39,
+      "beat_titan": 18,
+      "titan_mean_return": 4.278182536453577,
+      "forecasts": 383.525,
+      "mean_fees": {
+        "idle_fees": 988683.68525,
+        "trade_fees": 166425.6815,
+        "interest": 474665.56575,
+        "dividends": 3052426.795,
+        "combo_dividends": 56011.767
+      },
+      "mean_trades": 63929.975,
+      "max_leverage": 2.3112825798483816,
+      "liquidations": 0,
+      "bad_debt": 0.0,
+      "quality_pass": 30,
+      "halves": {
+        "first20": {
+          "runs": 20,
+          "mean_return": 5.7917361332450445,
+          "median_return": 3.843494956850216,
+          "min_return": 0.14798546897335818,
+          "positive": 20,
+          "worst_decile_mean": 0.5465420840445708,
+          "negative_final_equity": 0,
+          "mean_decision_us": 7.400899,
+          "mean_percentile": 95.28550366585306,
+          "top_quartile": 20,
+          "beat_titan": 10,
+          "titan_mean_return": 4.501256540022984,
+          "forecasts": 384.85,
+          "mean_fees": {
+            "idle_fees": 1154737.7555,
+            "trade_fees": 191584.24,
+            "interest": 519993.9025,
+            "dividends": 3411437.4385,
+            "combo_dividends": 56946.358
+          },
+          "mean_trades": 65858.65,
+          "max_leverage": 2.3008977668957042,
+          "liquidations": 0,
+          "bad_debt": 0.0,
+          "rank_gate_pass": true
+        },
+        "second20": {
+          "runs": 20,
+          "mean_return": 3.4617799391862767,
+          "median_return": 3.332996481408535,
+          "min_return": -0.046855596616412365,
+          "positive": 19,
+          "worst_decile_mean": 0.4144948163581922,
+          "negative_final_equity": 0,
+          "mean_decision_us": 7.464978,
+          "mean_percentile": 91.89096304266839,
+          "top_quartile": 19,
+          "beat_titan": 8,
+          "titan_mean_return": 4.055108532884169,
+          "forecasts": 382.2,
+          "mean_fees": {
+            "idle_fees": 822629.615,
+            "trade_fees": 141267.123,
+            "interest": 429337.229,
+            "dividends": 2693416.1515,
+            "combo_dividends": 55077.176
+          },
+          "mean_trades": 62001.3,
+          "max_leverage": 2.3112825798483816,
+          "liquidations": 0,
+          "bad_debt": 0.0,
+          "rank_gate_pass": true
+        }
+      },
+      "dragon_strata": {
+        "absent": {
+          "runs": 25,
+          "mean_return": 4.677520094030204,
+          "median_return": 3.3061930997930444,
+          "min_return": -0.046855596616412365,
+          "positive": 24,
+          "worst_decile_mean": 0.05056493617847291,
+          "negative_final_equity": 0,
+          "mean_decision_us": 7.4539364,
+          "mean_percentile": 94.40825327898501,
+          "top_quartile": 24,
+          "beat_titan": 10,
+          "titan_mean_return": 4.283632074514821,
+          "forecasts": 379.96,
+          "mean_fees": {
+            "idle_fees": 1013662.5852,
+            "trade_fees": 173046.1468,
+            "interest": 483295.7264,
+            "dividends": 3208589.5244,
+            "combo_dividends": 55406.7816
+          },
+          "mean_trades": 65840.24,
+          "max_leverage": 2.3112825798483816,
+          "liquidations": 0,
+          "bad_debt": 0.0
+        },
+        "present": {
+          "runs": 15,
+          "mean_return": 4.542154606524754,
+          "median_return": 4.437019869105642,
+          "min_return": 0.8758452293327967,
+          "positive": 15,
+          "worst_decile_mean": 0.8758452293327967,
+          "negative_final_equity": 0,
+          "mean_decision_us": 7.3979420000000005,
+          "mean_percentile": 92.22153347972026,
+          "top_quartile": 15,
+          "beat_titan": 8,
+          "titan_mean_return": 4.26909997301817,
+          "forecasts": 389.46666666666664,
+          "mean_fees": {
+            "idle_fees": 947052.1853333333,
+            "trade_fees": 155391.57266666667,
+            "interest": 460281.9646666667,
+            "dividends": 2792155.5793333333,
+            "combo_dividends": 57020.076
+          },
+          "mean_trades": 60746.2,
+          "max_leverage": 2.3008977668957042,
+          "liquidations": 0,
+          "bad_debt": 0.0
+        }
+      }
+    },
+    "new600": {
+      "runs": 40,
+      "mean_return": 2.6871884177200593,
+      "median_return": 1.819860957264044,
+      "min_return": -1.2033274947452708,
+      "positive": 38,
+      "worst_decile_mean": -0.26665677520161546,
+      "negative_final_equity": 1,
+      "mean_decision_us": 8.104755,
+      "mean_percentile": 84.66624890944189,
+      "top_quartile": 37,
+      "beat_titan": 7,
+      "titan_mean_return": 4.757484599833731,
+      "forecasts": 383.525,
+      "mean_fees": {
+        "idle_fees": 666091.736,
+        "trade_fees": 124848.248,
+        "interest": 420541.45725,
+        "dividends": 2384975.4255,
+        "combo_dividends": 39321.59875
+      },
+      "mean_trades": 51447.875,
+      "max_leverage": 2.32005806974944,
+      "liquidations": 0,
+      "bad_debt": 0.0,
+      "quality_pass": 33,
+      "halves": {
+        "first20": {
+          "runs": 20,
+          "mean_return": 3.2353370363799114,
+          "median_return": 2.4075346284874324,
+          "min_return": -1.2033274947452708,
+          "positive": 19,
+          "worst_decile_mean": -0.44334242320612083,
+          "negative_final_equity": 1,
+          "mean_decision_us": 8.183186000000001,
+          "mean_percentile": 83.85324520918245,
+          "top_quartile": 18,
+          "beat_titan": 4,
+          "titan_mean_return": 4.882994097691521,
+          "forecasts": 384.85,
+          "mean_fees": {
+            "idle_fees": 767131.8095,
+            "trade_fees": 143276.6645,
+            "interest": 433154.655,
+            "dividends": 2558222.0175,
+            "combo_dividends": 39934.5005
+          },
+          "mean_trades": 52482.25,
+          "max_leverage": 2.32005806974944,
+          "liquidations": 0,
+          "bad_debt": 0.0,
+          "rank_gate_pass": false
+        },
+        "second20": {
+          "runs": 20,
+          "mean_return": 2.139039799060207,
+          "median_return": 1.7266804163223934,
+          "min_return": -0.5095689745355109,
+          "positive": 19,
+          "worst_decile_mean": -0.08997112719711003,
+          "negative_final_equity": 0,
+          "mean_decision_us": 8.026324,
+          "mean_percentile": 85.47925260970132,
+          "top_quartile": 19,
+          "beat_titan": 3,
+          "titan_mean_return": 4.631975101975941,
+          "forecasts": 382.2,
+          "mean_fees": {
+            "idle_fees": 565051.6625,
+            "trade_fees": 106419.8315,
+            "interest": 407928.2595,
+            "dividends": 2211728.8335,
+            "combo_dividends": 38708.697
+          },
+          "mean_trades": 50413.5,
+          "max_leverage": 2.3091988220530077,
+          "liquidations": 0,
+          "bad_debt": 0.0,
+          "rank_gate_pass": false
+        }
+      },
+      "dragon_strata": {
+        "absent": {
+          "runs": 25,
+          "mean_return": 2.4398777825686144,
+          "median_return": 1.0958332771350188,
+          "min_return": -1.2033274947452708,
+          "positive": 23,
+          "worst_decile_mean": -0.8564482346403908,
+          "negative_final_equity": 1,
+          "mean_decision_us": 8.1064044,
+          "mean_percentile": 83.37085156204232,
+          "top_quartile": 22,
+          "beat_titan": 4,
+          "titan_mean_return": 4.808169858061272,
+          "forecasts": 379.96,
+          "mean_fees": {
+            "idle_fees": 666317.6692,
+            "trade_fees": 131148.1488,
+            "interest": 427521.6176,
+            "dividends": 2498792.4388,
+            "combo_dividends": 37050.6948
+          },
+          "mean_trades": 52560.64,
+          "max_leverage": 2.3091988220530077,
+          "liquidations": 0,
+          "bad_debt": 0.0
+        },
+        "present": {
+          "runs": 15,
+          "mean_return": 3.0993728096391338,
+          "median_return": 2.625974308916909,
+          "min_return": 0.6351092606694699,
+          "positive": 15,
+          "worst_decile_mean": 0.6351092606694699,
+          "negative_final_equity": 0,
+          "mean_decision_us": 8.102006,
+          "mean_percentile": 86.82524448844116,
+          "top_quartile": 15,
+          "beat_titan": 3,
+          "titan_mean_return": 4.673009169454496,
+          "forecasts": 389.46666666666664,
+          "mean_fees": {
+            "idle_fees": 665715.1806666667,
+            "trade_fees": 114348.41333333333,
+            "interest": 408907.8566666667,
+            "dividends": 2195280.4033333333,
+            "combo_dividends": 43106.43866666667
+          },
+          "mean_trades": 49593.26666666667,
+          "max_leverage": 2.32005806974944,
+          "liquidations": 0,
+          "bad_debt": 0.0
+        }
+      }
+    },
+    "old1000": {
+      "runs": 40,
+      "mean_return": 0.6695414837193079,
+      "median_return": 0.396649430860041,
+      "min_return": -0.357137866354615,
+      "positive": 32,
+      "worst_decile_mean": -0.29785286022166013,
+      "negative_final_equity": 0,
+      "mean_decision_us": 5.92609425,
+      "mean_percentile": 68.36142915522353,
+      "top_quartile": 9,
+      "beat_titan": 2,
+      "titan_mean_return": 5.188993314071805,
+      "forecasts": 383.525,
+      "mean_fees": {
+        "idle_fees": 878214.105,
+        "trade_fees": 20452.655749999998,
+        "interest": 2281.35775,
+        "dividends": 245301.96825,
+        "combo_dividends": 2110.2585
+      },
+      "mean_trades": 13048.35,
+      "max_leverage": 1.2032609965158823,
+      "liquidations": 0,
+      "bad_debt": 0.0,
+      "quality_pass": 38,
+      "halves": {
+        "first20": {
+          "runs": 20,
+          "mean_return": 0.7089724409353274,
+          "median_return": 0.3639004013652031,
+          "min_return": -0.2778090780302309,
+          "positive": 16,
+          "worst_decile_mean": -0.1720294325428745,
+          "negative_final_equity": 0,
+          "mean_decision_us": 5.8975645,
+          "mean_percentile": 66.70222772667505,
+          "top_quartile": 3,
+          "beat_titan": 0,
+          "titan_mean_return": 5.4790058359339815,
+          "forecasts": 384.85,
+          "mean_fees": {
+            "idle_fees": 901020.999,
+            "trade_fees": 22245.093,
+            "interest": 3119.584,
+            "dividends": 251626.0535,
+            "combo_dividends": 2979.6975
+          },
+          "mean_trades": 13427.85,
+          "max_leverage": 1.203208732724874,
+          "liquidations": 0,
+          "bad_debt": 0.0,
+          "rank_gate_pass": false
+        },
+        "second20": {
+          "runs": 20,
+          "mean_return": 0.6301105265032884,
+          "median_return": 0.4704135998007959,
+          "min_return": -0.357137866354615,
+          "positive": 16,
+          "worst_decile_mean": -0.3289963280383569,
+          "negative_final_equity": 0,
+          "mean_decision_us": 5.954624,
+          "mean_percentile": 70.02063058377202,
+          "top_quartile": 6,
+          "beat_titan": 2,
+          "titan_mean_return": 4.8989807922096285,
+          "forecasts": 382.2,
+          "mean_fees": {
+            "idle_fees": 855407.211,
+            "trade_fees": 18660.2185,
+            "interest": 1443.1315,
+            "dividends": 238977.883,
+            "combo_dividends": 1240.8195
+          },
+          "mean_trades": 12668.85,
+          "max_leverage": 1.2032609965158823,
+          "liquidations": 0,
+          "bad_debt": 0.0,
+          "rank_gate_pass": false
+        }
+      },
+      "dragon_strata": {
+        "absent": {
+          "runs": 25,
+          "mean_return": 0.5585568984001327,
+          "median_return": 0.34784922501322657,
+          "min_return": -0.357137866354615,
+          "positive": 19,
+          "worst_decile_mean": -0.3289963280383569,
+          "negative_final_equity": 0,
+          "mean_decision_us": 5.876736,
+          "mean_percentile": 68.91454729756114,
+          "top_quartile": 5,
+          "beat_titan": 1,
+          "titan_mean_return": 5.116892223699885,
+          "forecasts": 379.96,
+          "mean_fees": {
+            "idle_fees": 894723.1836,
+            "trade_fees": 20320.290399999998,
+            "interest": 2773.9948,
+            "dividends": 239722.7116,
+            "combo_dividends": 2527.0404
+          },
+          "mean_trades": 13227.08,
+          "max_leverage": 1.2032609965158823,
+          "liquidations": 0,
+          "bad_debt": 0.0
+        },
+        "present": {
+          "runs": 15,
+          "mean_return": 0.8545157925846,
+          "median_return": 0.8073013922292775,
+          "min_return": -0.25560970677969574,
+          "positive": 13,
+          "worst_decile_mean": -0.25560970677969574,
+          "negative_final_equity": 0,
+          "mean_decision_us": 6.008358,
+          "mean_percentile": 67.43956558466085,
+          "top_quartile": 4,
+          "beat_titan": 1,
+          "titan_mean_return": 5.309161798025006,
+          "forecasts": 389.46666666666664,
+          "mean_fees": {
+            "idle_fees": 850698.974,
+            "trade_fees": 20673.264666666666,
+            "interest": 1460.296,
+            "dividends": 254600.72933333332,
+            "combo_dividends": 1415.622
+          },
+          "mean_trades": 12750.466666666667,
+          "max_leverage": 1.2011488164164859,
+          "liquidations": 0,
+          "bad_debt": 0.0
+        }
+      }
+    },
+    "titan1000": {
+      "runs": 40,
+      "mean_return": 1.2418312615224865,
+      "median_return": 0.6412627225833952,
+      "min_return": -3.531148360852524,
+      "positive": 27,
+      "worst_decile_mean": -1.887964257556797,
+      "negative_final_equity": 4,
+      "mean_decision_us": 5.0213195,
+      "mean_percentile": 63.37365660359828,
+      "top_quartile": 18,
+      "beat_titan": 2,
+      "titan_mean_return": 4.860401403951808,
+      "forecasts": 383.525,
+      "mean_fees": {
+        "idle_fees": 900924.4415,
+        "trade_fees": 102984.897,
+        "interest": 674230.7395,
+        "dividends": 2482371.703,
+        "combo_dividends": 42029.8535
+      },
+      "mean_trades": 42396.65,
+      "max_leverage": 4.984848268805296,
+      "liquidations": 2,
+      "bad_debt": 5489.21,
+      "quality_pass": 34,
+      "halves": {
+        "first20": {
+          "runs": 20,
+          "mean_return": 1.222758713949467,
+          "median_return": 0.836727168824121,
+          "min_return": -3.531148360852524,
+          "positive": 15,
+          "worst_decile_mean": -2.140700826149849,
+          "negative_final_equity": 1,
+          "mean_decision_us": 5.04159,
+          "mean_percentile": 70.34108978206122,
+          "top_quartile": 11,
+          "beat_titan": 0,
+          "titan_mean_return": 5.20229276040178,
+          "forecasts": 384.85,
+          "mean_fees": {
+            "idle_fees": 983307.292,
+            "trade_fees": 120434.4585,
+            "interest": 747325.327,
+            "dividends": 2702100.4565,
+            "combo_dividends": 43287.776
+          },
+          "mean_trades": 44885.35,
+          "max_leverage": 3.1097790420914397,
+          "liquidations": 0,
+          "bad_debt": 0.0,
+          "rank_gate_pass": false
+        },
+        "second20": {
+          "runs": 20,
+          "mean_return": 1.260903809095506,
+          "median_return": 0.30761272745850643,
+          "min_return": -1.479622521244736,
+          "positive": 12,
+          "worst_decile_mean": -1.4578704520868593,
+          "negative_final_equity": 3,
+          "mean_decision_us": 5.001049,
+          "mean_percentile": 56.40622342513534,
+          "top_quartile": 7,
+          "beat_titan": 2,
+          "titan_mean_return": 4.518510047501837,
+          "forecasts": 382.2,
+          "mean_fees": {
+            "idle_fees": 818541.591,
+            "trade_fees": 85535.3355,
+            "interest": 601136.152,
+            "dividends": 2262642.9495,
+            "combo_dividends": 40771.931
+          },
+          "mean_trades": 39907.95,
+          "max_leverage": 4.984848268805296,
+          "liquidations": 2,
+          "bad_debt": 5489.21,
+          "rank_gate_pass": false
+        }
+      },
+      "dragon_strata": {
+        "absent": {
+          "runs": 25,
+          "mean_return": 0.9331800820369389,
+          "median_return": 0.40458427807842035,
+          "min_return": -3.531148360852524,
+          "positive": 15,
+          "worst_decile_mean": -2.50538544104863,
+          "negative_final_equity": 3,
+          "mean_decision_us": 4.9995828,
+          "mean_percentile": 59.99460109076316,
+          "top_quartile": 10,
+          "beat_titan": 1,
+          "titan_mean_return": 4.710070997533415,
+          "forecasts": 379.96,
+          "mean_fees": {
+            "idle_fees": 937446.3504,
+            "trade_fees": 105495.3732,
+            "interest": 702320.4228,
+            "dividends": 2593842.7204,
+            "combo_dividends": 44813.376
+          },
+          "mean_trades": 42641.32,
+          "max_leverage": 4.984848268805296,
+          "liquidations": 2,
+          "bad_debt": 5489.21
+        },
+        "present": {
+          "runs": 15,
+          "mean_return": 1.7562498939983988,
+          "median_return": 1.3108821391498187,
+          "min_return": -1.1049677652009453,
+          "positive": 12,
+          "worst_decile_mean": -1.1049677652009453,
+          "negative_final_equity": 1,
+          "mean_decision_us": 5.057547333333333,
+          "mean_percentile": 69.00541579165679,
+          "top_quartile": 8,
+          "beat_titan": 1,
+          "titan_mean_return": 5.110952081315797,
+          "forecasts": 389.46666666666664,
+          "mean_fees": {
+            "idle_fees": 840054.5933333334,
+            "trade_fees": 98800.77,
+            "interest": 627414.6006666666,
+            "dividends": 2296586.674,
+            "combo_dividends": 37390.649333333335
+          },
+          "mean_trades": 41988.86666666667,
+          "max_leverage": 2.7642522947600607,
+          "liquidations": 0,
+          "bad_debt": 0.0
+        }
+      }
+    }
+  },
+  "paired": {
+    "new0": {
+      "worlds": 40,
+      "improved": 35,
+      "mean_delta": 1.7599665533960187
+    },
+    "new300": {
+      "worlds": 40,
+      "improved": 38,
+      "mean_delta": 3.957216552496353
+    },
+    "new600": {
+      "worlds": 40,
+      "improved": 35,
+      "mean_delta": 2.0176469340007515
+    },
+    "new1000": {
+      "worlds": 40,
+      "improved": 31,
+      "mean_delta": 1.5232718398621403
+    },
+    "titan1000": {
+      "worlds": 40,
+      "improved": 21,
+      "mean_delta": 0.5722897778031785
+    }
+  },
+  "ablation": {
+    "new1000_full": {
+      "runs": 20,
+      "mean_return": 0.3550996356955095,
+      "median_return": 0.008688320151132078,
+      "min_return": -0.6963611761501498,
+      "positive": 10,
+      "worst_decile_mean": -0.6575366696199958,
+      "negative_final_equity": 0,
+      "mean_decision_us": 10.168877,
+      "mean_percentile": 57.236948568443765,
+      "top_quartile": 2,
+      "beat_titan": 0,
+      "titan_mean_return": 5.42480894716181,
+      "forecasts": 384.85,
+      "mean_fees": {
+        "idle_fees": 501416.64400000003,
+        "trade_fees": 70888.883,
+        "interest": 254043.191,
+        "dividends": 1346614.873,
+        "combo_dividends": 20150.6665
+      },
+      "mean_trades": 31926.25,
+      "max_leverage": 2.31858475984677,
+      "liquidations": 0,
+      "bad_debt": 0.0
+    },
+    "staged_same_worlds": {
+      "runs": 20,
+      "mean_return": 2.3943900635046855,
+      "median_return": 1.7032537344197285,
+      "min_return": -0.42191147673932183,
+      "positive": 18,
+      "worst_decile_mean": -0.22388742511939558,
+      "negative_final_equity": 0,
+      "mean_decision_us": 8.4769995,
+      "mean_percentile": 81.73164109671971,
+      "top_quartile": 15,
+      "beat_titan": 2,
+      "titan_mean_return": 5.436606919660465,
+      "forecasts": 384.85,
+      "mean_fees": {
+        "idle_fees": 695915.4655,
+        "trade_fees": 129549.546,
+        "interest": 435065.287,
+        "dividends": 2368078.062,
+        "combo_dividends": 35187.4475
+      },
+      "mean_trades": 49620.45,
+      "max_leverage": 2.311544183252656,
+      "liquidations": 0,
+      "bad_debt": 0.0
+    },
+    "new1000_l12": {
+      "runs": 20,
+      "mean_return": 2.306638164106789,
+      "median_return": 1.762462821294925,
+      "min_return": -0.263587074520915,
+      "positive": 19,
+      "worst_decile_mean": 0.11955333307765947,
+      "negative_final_equity": 0,
+      "mean_decision_us": 8.5287915,
+      "mean_percentile": 85.2877914645997,
+      "top_quartile": 18,
+      "beat_titan": 1,
+      "titan_mean_return": 5.38141232485184,
+      "forecasts": 384.85,
+      "mean_fees": {
+        "idle_fees": 733408.7880000001,
+        "trade_fees": 97679.598,
+        "interest": 104552.236,
+        "dividends": 1690568.1935,
+        "combo_dividends": 23072.018
+      },
+      "mean_trades": 41023.05,
+      "max_leverage": 1.2622434166142162,
+      "liquidations": 0,
+      "bad_debt": 0.0
+    }
+  },
+  "performance": {
+    "v9": {
+      "runs": 9,
+      "median": 5.2293965999851935,
+      "min": 4.9592470999923535,
+      "max": 5.700709299999289,
+      "engine_median": 4.6406874
+    },
+    "v10": {
+      "runs": 9,
+      "median": 5.093499400012661,
+      "min": 4.731757799978368,
+      "max": 5.675415900012013,
+      "engine_median": 4.5561903
+    }
+  },
+  "terminal_insolvencies": [
+    {
+      "arm": "new600",
+      "seed": 31005,
+      "net_return": -1.2033274947452708,
+      "cash": -394589.67,
+      "terminal_value": 236136.96,
+      "final_equity": -158452.71,
+      "marked_equity": 778781.5,
+      "liquidations": 0,
+      "bad_debt": 0.0
+    },
+    {
+      "arm": "titan1000",
+      "seed": 31015,
+      "net_return": -3.531148360852524,
+      "cash": -3525370.45,
+      "terminal_value": 1648721.37,
+      "final_equity": -1876649.08,
+      "marked_equity": 4349011.22,
+      "liquidations": 0,
+      "bad_debt": 0.0
+    },
+    {
+      "arm": "titan1000",
+      "seed": 31029,
+      "net_return": -1.1049677652009453,
+      "cash": -363592.28,
+      "terminal_value": 282672.0,
+      "final_equity": -80920.28,
+      "marked_equity": 1501762.12,
+      "liquidations": 0,
+      "bad_debt": 0.0
+    },
+    {
+      "arm": "titan1000",
+      "seed": 31036,
+      "net_return": -1.4361183829289828,
+      "cash": -384152.28,
+      "terminal_value": 33438.96,
+      "final_equity": -350713.32,
+      "marked_equity": 1884327.24,
+      "liquidations": 0,
+      "bad_debt": 0.0
+    },
+    {
+      "arm": "titan1000",
+      "seed": 31040,
+      "net_return": -1.479622521244736,
+      "cash": -708467.19,
+      "terminal_value": 314176.23,
+      "final_equity": -394290.96,
+      "marked_equity": 1104948.03,
+      "liquidations": 0,
+      "bad_debt": 0.0
+    }
+  ],
+  "background": {
+    "new0": {
+      "titan-value": {
+        "mean_return": 4.852475184509606,
+        "median_return": 4.510605760116144,
+        "mean_percentile": 96.16440668411892,
+        "negative_final_equity": 0
+      },
+      "swift-standard": {
+        "mean_return": 2.4876510860597474,
+        "median_return": 1.8650638395334567,
+        "mean_percentile": 85.86493193866488,
+        "negative_final_equity": 0
+      },
+      "swift-early-single": {
+        "mean_return": 8.163557847716742,
+        "median_return": 7.575915772005679,
+        "mean_percentile": 99.18631195332786,
+        "negative_final_equity": 0
+      }
+    },
+    "new1000": {
+      "titan-value": {
+        "mean_return": 4.920592711456811,
+        "median_return": 4.783767186590083,
+        "mean_percentile": 95.21845850256858,
+        "negative_final_equity": 0
+      },
+      "swift-standard": {
+        "mean_return": 2.2246976774901595,
+        "median_return": 1.8148292091377283,
+        "mean_percentile": 86.1102515686621,
+        "negative_final_equity": 0
+      },
+      "swift-early-single": {
+        "mean_return": 6.6508848908987686,
+        "median_return": 6.687119446654137,
+        "mean_percentile": 98.54665131122836,
+        "negative_final_equity": 0
+      }
+    },
+    "new300": {
+      "titan-value": {
+        "mean_return": 4.278182536453577,
+        "median_return": 4.039434292715466,
+        "mean_percentile": 93.74245458224172,
+        "negative_final_equity": 0
+      },
+      "swift-standard": {
+        "mean_return": 1.9294342117853038,
+        "median_return": 1.7664476924551926,
+        "mean_percentile": 85.68244150216606,
+        "negative_final_equity": 0
+      },
+      "swift-early-single": {
+        "mean_return": 6.786191208551864,
+        "median_return": 6.395021695675814,
+        "mean_percentile": 98.71924015012101,
+        "negative_final_equity": 0
+      }
+    },
+    "new600": {
+      "titan-value": {
+        "mean_return": 4.757484599833731,
+        "median_return": 4.3713834641169305,
+        "mean_percentile": 95.13927908800773,
+        "negative_final_equity": 0
+      },
+      "swift-standard": {
+        "mean_return": 2.4309813195555203,
+        "median_return": 1.8773776856135223,
+        "mean_percentile": 87.36622646131886,
+        "negative_final_equity": 0
+      },
+      "swift-early-single": {
+        "mean_return": 6.765763426781854,
+        "median_return": 6.6586220143184605,
+        "mean_percentile": 98.66224148994347,
+        "negative_final_equity": 0
+      }
+    },
+    "old1000": {
+      "titan-value": {
+        "mean_return": 5.188993314071805,
+        "median_return": 5.0515090382742205,
+        "mean_percentile": 96.0074214540929,
+        "negative_final_equity": 0
+      },
+      "swift-standard": {
+        "mean_return": 2.81906975827132,
+        "median_return": 2.3039158027921776,
+        "mean_percentile": 87.02140525580256,
+        "negative_final_equity": 0
+      },
+      "swift-early-single": {
+        "mean_return": 7.771495321450033,
+        "median_return": 7.386998610859251,
+        "mean_percentile": 98.92644231339044,
+        "negative_final_equity": 0
+      }
+    },
+    "titan1000": {
+      "titan-value": {
+        "mean_return": 4.860401403951808,
+        "median_return": 5.1114578058025,
+        "mean_percentile": 94.93719427636128,
+        "negative_final_equity": 0
+      },
+      "swift-standard": {
+        "mean_return": 2.198472094511335,
+        "median_return": 1.8733270170900795,
+        "mean_percentile": 85.95684460371659,
+        "negative_final_equity": 0
+      },
+      "swift-early-single": {
+        "mean_return": 6.437201630413702,
+        "median_return": 6.236162918527284,
+        "mean_percentile": 98.60510389479101,
+        "negative_final_equity": 0
+      }
+    }
+  }
+}

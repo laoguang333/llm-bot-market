@@ -12,7 +12,7 @@ fn usage() -> ! {
     eprintln!(
         "usage:\n  llm-market run <scenario.toml> --out <dir> [--seed N] [--ticks N] [--threads N]\n  \
          llm-market series <scenario.toml> --out <dir> [--seeds N] [--first-seed N] [--threads N]\n  \
-         llm-market challenge <scenario.toml> --bot <name> --out <dir> [--seeds N] [--first-seed N] [--cash C] [--shares S] [--params k=v,...]\n  \
+         llm-market challenge <scenario.toml> --bot <name> --out <dir> [--seeds N] [--first-seed N] [--cash C] [--shares S] [--news-multiplier M] [--forecast-horizon T] [--forecast-coverage P] [--forecast-width W] [--params k=v,...]\n  \
          llm-market bots"
     );
     std::process::exit(2);
@@ -138,6 +138,34 @@ fn main() -> Result<()> {
             g.count = 1;
             g.count_max = None;
             g.params = Default::default();
+            // Never inherit a background group's information advantage.
+            g.social_group = None;
+            g.news_multiplier = a
+                .flags
+                .get("news-multiplier")
+                .map(|s| s.parse())
+                .transpose()?
+                .unwrap_or(1.0);
+            g.forecast_access = bot_api::ForecastAccess {
+                horizon: a
+                    .flags
+                    .get("forecast-horizon")
+                    .map(|v| v.parse())
+                    .transpose()?
+                    .unwrap_or(0),
+                coverage: a
+                    .flags
+                    .get("forecast-coverage")
+                    .map(|v| v.parse())
+                    .transpose()?
+                    .unwrap_or(0.5),
+                range_width: a
+                    .flags
+                    .get("forecast-width")
+                    .map(|v| v.parse())
+                    .transpose()?
+                    .unwrap_or(3.0),
+            };
             // --params "k=v,k=v" sets the challenger's parameters
             if let Some(ps) = a.flags.get("params") {
                 for kv in ps.split(',').filter(|x| !x.is_empty()) {

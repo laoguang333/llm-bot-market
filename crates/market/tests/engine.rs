@@ -72,6 +72,319 @@ fn idle() -> Script {
     Box::new(|_| vec![])
 }
 
+#[test]
+fn social_group_is_opt_in_and_reused_worker_does_not_leak_it() {
+    let groups=[group("member",100000,10),group("peer",100000,20),group("outsider",100000,1000),group("alone",100000,1)].join("\n");
+    let mut cfg=config(20,"[fees]\nidle_rate=0",&groups);
+    cfg.world.dividend_period=1;
+    cfg.stocks[0].dividend=2;
+    cfg.schedule.threads=1;
+    cfg.bots[0].social_group=Some("circle".into());
+    cfg.bots[1].social_group=Some("circle".into());
+    cfg.bots[3].social_group=Some("other".into());
+    let h=Harness::new(vec![("member",idle()),("peer",idle()),("outsider",idle()),("alone",idle())]);
+    let shared=Shared::new(&cfg,7,&|n,s|h.factory(n,s)).unwrap();
+    shared.run().unwrap();shared.audit().unwrap();
+    assert!(h.log("outsider").iter().all(|o|o.social.is_none()));
+    assert!(h.log("alone").iter().all(|o|o.social.as_ref().unwrap().peers==0));
+    let member=h.log("member");let peer=h.log("peer");
+    assert!(member.last().unwrap().social.as_ref().unwrap().peer_stock[0]>0.0);
+    for o in member {
+        let v=o.social.as_ref().unwrap();assert_eq!(v.peers,1);
+        // Only a snapshot published by the one other member can be received.
+        assert!(peer.iter().any(|p| (p.social.as_ref().unwrap().own_stock[0]-v.peer_stock[0]).abs()<1e-10));
+    }
+}
+
+#[test]
+fn observer_preserves_execution_and_sees_final_maker_delivery() {
+    use market::account::Account;
+    use market::engine::MatchObserver;
+    #[derive(Default)]
+    struct Observer {
+        actions: Mutex<usize>,
+        final_fills: Mutex<Vec<(usize, Fill)>>,
+    }
+    impl MatchObserver for Observer {
+        fn step(
+            &self,
+            _: &Account,
+            _: Tick,
+            o: Option<&Observation>,
+            actions: &[Action],
+            _: Money,
+        ) {
+            assert!(o.is_some());
+            *self.actions.lock() += actions.len();
+        }
+        fn finish(&self, a: &Account) {
+            self.final_fills
+                .lock()
+                .extend(a.inbox.fills.iter().cloned().map(|f| (a.idx, f)));
+        }
+    }
+    let cfg = config(
+        3,
+        "[fees]\nidle_rate=0\ntrade_fee_bps=0",
+        &(group("seller", 0, 10) + &group("buyer", 100000, 0)),
+    );
+    let execute = |observer: Option<&dyn MatchObserver>| {
+        let h = Harness::new(vec![
+            ("seller", at(0, vec![Action::limit(0, Side::Sell, 1000, 3)])),
+            ("buyer", at(2, vec![Action::limit(0, Side::Buy, 1000, 3)])),
+        ]);
+        market::report::run_match_observed(&cfg, 1, &|n, s| h.factory(n, s), None, observer)
+            .unwrap()
+    };
+    let observer = Observer::default();
+    let plain = execute(None);
+    let traced = execute(Some(&observer));
+    assert_eq!(*observer.actions.lock(), 2);
+    assert!(observer
+        .final_fills
+        .lock()
+        .iter()
+        .any(|(idx, f)| *idx == 0 && f.maker && f.qty == 3));
+    for (a, b) in plain.accounts.iter().zip(&traced.accounts) {
+        assert_eq!(
+            (a.cash, &a.shares, a.terminal_value),
+            (b.cash, &b.shares, b.terminal_value)
+        );
+        assert_eq!(a.stats.trades, b.stats.trades);
+    }
+}
+
+#[test]
+fn idle_fee_reports_cash_and_destroyed_stock_components() {
+    let cfg = config(
+        11,
+        "[fees]\nidle_period=10\nidle_rate=0.01\ntrade_fee_bps=0",
+        &group("lazy", 100000, 100),
+    );
+    let h = Harness::new(vec![("lazy", idle())]);
+    let r = market::report::run_match(&cfg, 1, &|n, s| h.factory(n, s), None).unwrap();
+    let st = &r.accounts[0].stats;
+    assert_eq!(st.idle_cash_fees, 1000);
+    assert_eq!(st.idle_stock_fees, 2000);
+    assert_eq!(st.idle_fees, st.idle_cash_fees + st.idle_stock_fees);
+}
+
+#[test]
+fn per_tick_rounds_each_whole_position_without_carry_and_keeps_tick_zero_unpaid() {
+    let mut cfg = config(6, "[fees]\nidle_rate=0", &group("passive", 100000, 10));
+    cfg.world.dividend_period = 1;
+    cfg.world.dividend_scale = 5; // rate 3 is 0.6 cent per share/tick
+    cfg.stocks[0].dividend = 3;
+    let mut large = cfg.bots[0].clone();
+    large.bot = "large".into();
+    large.shares_each = 10;
+    let mut small = large.clone();
+    small.bot = "small".into();
+    small.shares_each = 1;
+    cfg.bots = vec![large, small];
+    let h = Harness::new(vec![("large", idle()), ("small", idle())]);
+    let shared = Shared::new(&cfg, 7, &|n, s| h.factory(n, s)).unwrap();
+    shared.run().unwrap();
+    for (name, per_tick) in [("large", 6), ("small", 1)] {
+        let log = h.log(name);
+        assert!(log[0].income.is_empty());
+        for o in &log[1..] {
+            let paid: Money = o
+                .income
+                .iter()
+                .filter_map(|i| match i {
+                    Income::Dividend { stock: 0, amount } => Some(*amount),
+                    _ => None,
+                })
+                .sum();
+            assert_eq!(paid, per_tick);
+            assert_eq!(
+                o.account.cash - log[0].account.cash,
+                per_tick * o.tick as i64
+            );
+        }
+    }
+    let rules = &shared.rules;
+    assert_eq!(rules.dividend_payment(1, 2), 0); // 0.4 cent, no minimum payout
+    assert_eq!(rules.dividend_payment(10, 3), 6); // never round each share first
+    let mut halves = rules.clone();
+    halves.dividend_scale = 10;
+    assert_eq!(halves.dividend_payment(1, 5), 1);
+    shared.audit().unwrap();
+}
+
+#[test]
+fn per_tick_ordinary_preserves_combo_frequency_and_terminal_time_scale() {
+    let mut old = config(101, "[fees]\nidle_rate=0", &group("passive", 100000, 10));
+    old.stocks[0].dividend = 100;
+    old.bots[0].shares_each = 10;
+    old.scoring.terminal_payments = Some((2, 2));
+    old.combos = vec![market::config::ComboCfg {
+        a: "A".into(),
+        a_units: 1,
+        b: "B".into(),
+        b_units: 1,
+        bonus: 10,
+        start_tick: 0,
+        end_tick: None,
+    }];
+    let mut new = old.clone();
+    new.world.dividend_period = 1;
+    new.world.dividend_scale = 50;
+    new.world.combo_period = Some(50);
+    new.scoring.terminal_payment_ticks = Some(50);
+    let passive = |_: &str, _: &Start| -> Option<Box<dyn Bot>> {
+        Some(Box::new(Scripted {
+            script: idle(),
+            log: Arc::new(Mutex::new(Vec::new())),
+        }))
+    };
+    let a = market::report::run_match(&old, 7, &passive, None).unwrap();
+    let b = market::report::run_match(&new, 7, &passive, None).unwrap();
+    assert_eq!(a.accounts[0].stats.dividends, 2000);
+    assert_eq!(b.accounts[0].stats.dividends, 2000);
+    assert_eq!(a.accounts[0].stats.combo_dividends, 200);
+    assert_eq!(b.accounts[0].stats.combo_dividends, 200);
+    assert_eq!(a.accounts[0].terminal_value, 2200);
+    assert_eq!(b.accounts[0].terminal_value, 2200);
+    assert_eq!(a.accounts[0].equity, b.accounts[0].equity);
+}
+
+#[test]
+fn per_tick_news_disclosure_does_not_change_rate_before_effective_tick() {
+    let mut cfg = config(90, "[fees]\nidle_rate=0", &group("passive", 100000, 10));
+    cfg.world.dividend_period = 1;
+    cfg.world.dividend_scale = 50;
+    cfg.stocks[0].dividend = 3000;
+    cfg.bots[0].shares_each = 10;
+    cfg.world.news.stock.events_per_1000_ticks = 200.0;
+    cfg.world.news.stock.change_sd = 0.2;
+    cfg.world.news.disclosure.stages = vec![(0, 0.5), (3, 1.0)];
+    cfg.world.news.disclosure.range_widths = vec![1.5];
+    let name = cfg.bots[0].bot.clone();
+    let h = Harness::new(vec![(&name, idle())]);
+    let shared = Shared::new(&cfg, 7, &|n, s| h.factory(n, s)).unwrap();
+    shared.run().unwrap();
+    let log = h.log(&name);
+    assert!(log.iter().any(|o| o
+        .news
+        .iter()
+        .any(|n| n.public && n.public_tick < n.effective_tick && o.tick < n.effective_tick)));
+    assert!(shared.world.events.iter().any(|e| e.effective < cfg.ticks));
+    for o in &log {
+        for s in 0..cfg.stocks.len() {
+            let rate = cfg.stocks[s].dividend
+                + shared
+                    .world
+                    .events
+                    .iter()
+                    .filter(|e| e.effective <= o.tick)
+                    .flat_map(|e| &e.changes)
+                    .filter(|(stock, _)| *stock == s)
+                    .map(|(_, delta)| delta)
+                    .sum::<i64>();
+            assert_eq!(o.books[s].dividend, rate);
+            let paid: Money = o
+                .income
+                .iter()
+                .filter_map(|i| match i {
+                    Income::Dividend { stock, amount } if *stock == s => Some(*amount),
+                    _ => None,
+                })
+                .sum();
+            let expected = if o.tick == 0 {
+                0
+            } else {
+                (10 * rate + 25) / 50
+            };
+            assert_eq!(paid, expected, "stock {s}, tick {}", o.tick);
+        }
+    }
+}
+
+#[test]
+fn per_tick_combos_round_each_rule_symmetrically_without_carry() {
+    for (bonus, large_payment, small_payment) in
+        [(20, 4, 0), (-20, -4, 0), (25, 5, 1), (-25, -5, -1)]
+    {
+        let mut cfg = config(6, "[fees]\nidle_rate=0", &group("large", 100000, 10));
+        cfg.world.combo_period = Some(1);
+        cfg.world.combo_scale = 50;
+        cfg.combos = vec![market::config::ComboCfg {
+            a: "A".into(),
+            a_units: 1,
+            b: "B".into(),
+            b_units: 1,
+            bonus,
+            start_tick: 2,
+            end_tick: Some(4),
+        }];
+        let mut small = cfg.bots[0].clone();
+        small.bot = "small".into();
+        small.shares_each = 1;
+        cfg.bots.push(small);
+        let h = Harness::new(vec![("large", idle()), ("small", idle())]);
+        let shared = Shared::new(&cfg, 7, &|n, s| h.factory(n, s)).unwrap();
+        shared.run().unwrap();
+        for (name, per_tick) in [("large", large_payment), ("small", small_payment)] {
+            let log = h.log(name);
+            for o in &log {
+                let paid: Money = o
+                    .income
+                    .iter()
+                    .filter_map(|i| match i {
+                        Income::Combo { rule: 0, amount } => Some(*amount),
+                        _ => None,
+                    })
+                    .sum();
+                assert_eq!(
+                    paid,
+                    if (2..=4).contains(&o.tick) {
+                        per_tick
+                    } else {
+                        0
+                    }
+                );
+            }
+            assert_eq!(
+                log.last().unwrap().account.cash - log[0].account.cash,
+                3 * per_tick
+            );
+        }
+        shared.audit().unwrap();
+    }
+}
+
+#[test]
+fn higher_idle_fee_keeps_turnover_credit_and_period_timing() {
+    let mut cfg = config(
+        51,
+        "[fees]\nidle_period=50\nidle_rate=0.006\ncredit_ratio=0.01\ntrade_fee_bps=0",
+        &group("idle", 100000, 0),
+    );
+    cfg.bots[0].shares_each = 0;
+    let h = Harness::new(vec![("idle", idle())]);
+    let shared = Shared::new(&cfg, 7, &|n, s| h.factory(n, s)).unwrap();
+    {
+        let mut account = shared.accounts[0].lock();
+        account.samples = 50;
+        account.equity_sum = 50 * 100000;
+        account.credit_notional = 20000;
+        assert_eq!(shared.idle_estimate(&account), (600, 200, 400));
+        account.credit_notional = 60000;
+        assert_eq!(shared.idle_estimate(&account), (600, 600, 0));
+        account.samples = 0;
+        account.equity_sum = 0;
+        account.credit_notional = 0;
+    }
+    shared.run().unwrap();
+    let log = h.log("idle");
+    assert_eq!(log[49].account.cash, 100000);
+    assert_eq!(log[50].account.cash, 99400);
+    assert_eq!(shared.accounts[0].lock().stats.idle_fees, 600);
+    shared.audit().unwrap();
+}
+
 /// Two stocks, no news, no dividends, no idle fee unless overridden.
 fn config(ticks: Tick, extra: &str, bots: &str) -> Config {
     let text = format!(
@@ -139,6 +452,270 @@ fn run(cfg: &Config, h: &Harness) -> Vec<(Money, Vec<Qty>)> {
 
 fn fee(rules_bps: i64, notional: Money) -> Money {
     (notional * rules_bps + 9_999) / 10_000
+}
+
+#[test]
+fn idle_fee_cancels_unfunded_buys_newest_first_without_borrowing() {
+    let mut cfg = config(
+        4,
+        "[fees]\nidle_period=2\nidle_rate=0.1\ntrade_fee_bps=0\ncredit_ratio=0.0",
+        &(group("buyer", 1000, 0) + &group("seller", 0, 10)),
+    );
+    cfg.margin.max_leverage = 1.0;
+    let h = Harness::new(vec![
+        (
+            "buyer",
+            Box::new(|o| match o.tick {
+                0 => vec![Action::limit(0, Side::Buy, 400, 1)],
+                1 => vec![Action::limit(0, Side::Buy, 600, 1)],
+                _ => vec![],
+            }),
+        ),
+        ("seller", at(2, vec![Action::market(0, Side::Sell, 2)])),
+    ]);
+    let result = run(&cfg, &h);
+    let log = h.log("buyer");
+    assert_eq!(log[2].account.cash, 900);
+    assert_eq!(log[2].open_orders.len(), 1);
+    assert_eq!(
+        log[2].open_orders[0].price, 400,
+        "oldest quote retains priority"
+    );
+    assert_eq!(result[0].0, 500);
+    assert_eq!(result[0].1[0], 1);
+    assert!(log.iter().all(|o| o.account.cash >= 0));
+}
+
+#[test]
+fn idle_fee_cancels_fully_reserved_cash_buy() {
+    let mut cfg = config(
+        2,
+        "[fees]\nidle_period=1\nidle_rate=0.1\ntrade_fee_bps=0\ncredit_ratio=0.0",
+        &(group("buyer", 1000, 0) + &group("seller", 0, 10)),
+    );
+    cfg.margin.max_leverage = 1.0;
+    let h = Harness::new(vec![
+        ("buyer", at(0, vec![Action::limit(0, Side::Buy, 1000, 1)])),
+        ("seller", at(1, vec![Action::market(0, Side::Sell, 1)])),
+    ]);
+    let result = run(&cfg, &h);
+    assert_eq!(result[0], (900, vec![0, 0]));
+}
+
+#[test]
+fn liquidation_rechecks_slippage_and_stops_when_no_liquidity_remains() {
+    for bid in [0, 100, 900] {
+        let mut cfg = config(
+            3,
+            "[fees]\nidle_rate=0.0\ntrade_fee_bps=0",
+            &(group("lender", 100000, 0)
+                + &group("buyer", 1000, 0)
+                + &group("seller", 0, 10)
+                + &group("printer", 100000, 0)),
+        );
+        cfg.margin.mark_window = 1;
+        let h = Harness::new(vec![
+            (
+                "lender",
+                at(
+                    0,
+                    if bid > 0 {
+                        vec![Action::limit(0, Side::Buy, bid, 100)]
+                    } else {
+                        vec![]
+                    },
+                ),
+            ),
+            ("buyer", at(0, vec![Action::limit(0, Side::Buy, 1000, 4)])),
+            (
+                "seller",
+                Box::new(|o| match o.tick {
+                    0 => vec![Action::market(0, Side::Sell, 4)],
+                    1 => vec![Action::limit(0, Side::Sell, 900, 1)],
+                    _ => vec![],
+                }),
+            ),
+            ("printer", at(1, vec![Action::market(0, Side::Buy, 1)])),
+        ]);
+        let result = market::report::run_match(&cfg, 1, &|n, s| h.factory(n, s), None).unwrap();
+        let buyer = &result.accounts[1];
+        assert_eq!(buyer.stats.liquidations, 1);
+        let event = &buyer.liquidation_events[0];
+        assert_eq!(
+            event.cash_before + event.sale_notional - event.trade_fees + event.bad_debt,
+            event.cash_after
+        );
+        assert_eq!(event.bad_debt, buyer.stats.bad_debt);
+        assert_eq!(event.shares_after, buyer.shares);
+        assert_eq!(
+            event.sale_notional,
+            (event.shares_before[0] - event.shares_after[0]) * bid
+        );
+        if bid == 100 {
+            assert_eq!(buyer.cash, 0);
+            assert_eq!(buyer.shares, [0, 0]);
+            assert_eq!(buyer.stats.bad_debt, 2600);
+        } else if bid == 0 {
+            assert_eq!(buyer.cash, -3000);
+            assert_eq!(buyer.shares, [4, 0]);
+            assert_eq!(buyer.stats.bad_debt, 0);
+        } else {
+            assert_eq!(buyer.cash, -1200);
+            assert_eq!(buyer.shares, [2, 0]);
+            assert_eq!(buyer.stats.bad_debt, 0);
+            assert_eq!(result.final_marks[0], 900);
+            assert!(1800.0 / 600.0 <= cfg.margin.max_leverage);
+        }
+    }
+}
+
+#[test]
+fn marks_expire_before_observation_and_settlement_without_trades() {
+    let mut cfg = config(
+        30,
+        "[fees]\nidle_rate=0.0\ntrade_fee_bps=0",
+        &(group("seller", 0, 10) + &group("buyer", 100000, 0)),
+    );
+    cfg.margin.mark_window = 2;
+    let h = Harness::new(vec![
+        (
+            "seller",
+            Box::new(|o| match o.tick {
+                0 => vec![Action::limit(0, Side::Sell, 1000, 1)],
+                1 => vec![Action::limit(0, Side::Sell, 2000, 1)],
+                _ => vec![],
+            }),
+        ),
+        (
+            "buyer",
+            Box::new(|o| {
+                if o.tick <= 1 {
+                    vec![Action::market(0, Side::Buy, 1)]
+                } else {
+                    vec![]
+                }
+            }),
+        ),
+    ]);
+    let result = market::report::run_match(&cfg, 1, &|n, s| h.factory(n, s), None).unwrap();
+    let log = h.log("buyer");
+    for o in &log[2..] {
+        assert_eq!(o.books[0].mark, 2000, "tick {}", o.tick);
+        assert_eq!(o.account.gross, 4000);
+    }
+    assert_eq!(result.final_marks[0], 2000);
+}
+
+#[test]
+fn terminal_news_and_combos_use_the_final_executed_tick() {
+    let mut cfg = config(10,
+        "[[combos]]\na=\"A\"\nb=\"B\"\nbonus=10\nend_tick=9\n[[combos]]\na=\"A\"\nb=\"B\"\nbonus=9999\nstart_tick=10",
+        &group("x", 1000, 1));
+    cfg.stocks[0].dividend = 100;
+    cfg.world.news.market.events_per_1000_ticks = 1000.0;
+    cfg.world.news.market.change_sd = 0.2;
+    cfg.scoring.terminal_payments = Some((1, 1));
+    let h = Harness::new(vec![("x", idle())]);
+    let result = market::report::run_match(&cfg, 1, &|n, s| h.factory(n, s), None).unwrap();
+    let log = h.log("x");
+    assert_eq!(log.last().unwrap().tick, 9);
+    assert_eq!(result.final_dividends, [100, 0]);
+    assert_eq!(result.accounts[0].terminal_value, 110);
+}
+
+#[test]
+fn repeated_bot_groups_have_unique_stable_owners() {
+    let mut cfg = config(2, "", &(group("x", 1000, 0) + &group("x", 2000, 0)));
+    cfg.bots[0].count_max = Some(3);
+    for seed in 1..10 {
+        let factory = |_: &str, _: &Start| -> Option<Box<dyn Bot>> {
+            Some(Box::new(Scripted {
+                script: idle(),
+                log: Arc::new(Mutex::new(vec![])),
+            }))
+        };
+        let result = market::report::run_match(&cfg, seed, &factory, None).unwrap();
+        assert_eq!(result.accounts.last().unwrap().account, "x#3");
+        assert_eq!(result.by_owner.len(), result.accounts.len());
+    }
+    for reverse in [false, true] {
+        let mut explicit = cfg.bots[1].clone();
+        explicit.owner = Some("x#1".into());
+        if reverse {
+            cfg.bots.insert(0, explicit);
+        } else {
+            cfg.bots.push(explicit);
+        }
+        assert!(
+            cfg.validate().is_err(),
+            "collisions must be rejected before seed-specific counts are drawn"
+        );
+        if reverse {
+            cfg.bots.remove(0);
+        } else {
+            cfg.bots.pop();
+        }
+    }
+}
+
+#[test]
+fn invalid_numeric_configuration_is_rejected_before_bot_initialization() {
+    let base = config(10, "", &group("x", 1000, 0));
+    let cases: &[fn(&mut Config)] = &[
+        |c| c.market.tick_size = 0,
+        |c| c.market.tick_size = -1,
+        |c| c.market.opening_spread = Some(f64::INFINITY),
+        |c| c.fees.trade_fee_bps = -1,
+        |c| c.fees.idle_rate = f64::NAN,
+        |c| c.margin.max_leverage = f64::NAN,
+        |c| c.margin.mark_window = 0,
+        |c| c.world.news.market.change_sd = -1.0,
+        |c| c.world.news.disclosure.stages[0].1 = f64::NAN,
+        |c| c.scoring.terminal_ratio = f64::INFINITY,
+        |c| c.scoring.terminal_hints = vec![(5, 2), (0, 1)],
+        |c| c.bots[0].count = 0,
+        |c| c.stocks[1].name = c.stocks[0].name.clone(),
+    ];
+    for mutate in cases {
+        let mut cfg = base.clone();
+        mutate(&mut cfg);
+        assert!(cfg.validate().is_err(), "accepted {cfg:?}");
+        assert!(Shared::new(&cfg, 1, &|_, _| panic!(
+            "invalid config reached bot factory"
+        ))
+        .is_err());
+    }
+    // Zero-count groups are useful for ablation, provided another group runs.
+    let mut cfg = base.clone();
+    cfg.bots.push(cfg.bots[0].clone());
+    cfg.bots[0].count = 0;
+    cfg.validate().unwrap();
+}
+
+#[test]
+fn checked_in_scenarios_pass_validation() {
+    let root = std::path::PathBuf::from(concat!(env!("CARGO_MANIFEST_DIR"), "/../../scenarios"));
+    let mut dirs = vec![root];
+    while let Some(dir) = dirs.pop() {
+        for entry in std::fs::read_dir(dir).unwrap() {
+            let path = entry.unwrap().path();
+            if path.is_dir() {
+                dirs.push(path);
+            } else if path.extension().is_some_and(|ext| ext == "toml") {
+                Config::load(&path).unwrap_or_else(|e| panic!("{}: {e}", path.display()));
+            }
+        }
+    }
+}
+
+#[test]
+fn fees_do_not_overflow_at_the_valid_order_and_fee_limits() {
+    let mut cfg = config(2, "", &group("x", 1000, 0));
+    cfg.fees.trade_fee_bps = 10_000;
+    cfg.validate().unwrap();
+    let rules = cfg.rules(&[1, 1]);
+    let notional = market::config::MAX_PRICE * market::config::MAX_SHARES;
+    assert_eq!(rules.trade_fee(notional), notional);
 }
 
 #[test]
@@ -317,7 +894,10 @@ fn rank_ties_are_averaged() {
 
 #[test]
 fn baseline_conserves_money_and_shares_multithreaded() {
-    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../scenarios/baseline.toml");
+    let path = concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../scenarios/baseline-v6.toml"
+    );
     let mut cfg = Config::load(std::path::Path::new(path)).unwrap();
     cfg.ticks = 600;
     cfg.schedule.threads = 4;
@@ -358,7 +938,10 @@ fn baseline_conserves_money_and_shares_multithreaded() {
 
 #[test]
 fn news_arrives_before_it_takes_effect() {
-    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../scenarios/baseline.toml");
+    let path = concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../scenarios/baseline-v6.toml"
+    );
     let mut cfg = Config::load(std::path::Path::new(path)).unwrap();
     cfg.ticks = 1500;
     cfg.schedule.threads = 1; // no skipped decisions, so each delivery is observed on its tick
@@ -431,7 +1014,10 @@ fn news_arrives_before_it_takes_effect() {
 
 #[test]
 fn terminal_hints_contain_the_hidden_payment_count() {
-    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../scenarios/baseline.toml");
+    let path = concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../scenarios/baseline-v6.toml"
+    );
     let mut cfg = Config::load(std::path::Path::new(path)).unwrap();
     cfg.ticks = 2100;
     cfg.schedule.threads = 1;

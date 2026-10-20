@@ -1,0 +1,3794 @@
+{
+  "created_utc": "2026-10-18T00:08:03.598558+00:00",
+  "manifest": {
+    "protocol": {
+      "bots": [
+        "astra_a",
+        "astra_b",
+        "astra_c"
+      ],
+      "seeds_per_batch": 20,
+      "single_first": 1001,
+      "validation_first": 2001,
+      "arena_first": 3001,
+      "arena_orders": [
+        [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ]
+      ],
+      "ranking": "mean within-trio rank ascending; tie-break mean return ratio descending",
+      "cash": 2000000,
+      "shares_each": 20
+    },
+    "binary_sha256": "2f874108fcbe635a65bd2d73a8791465efc932c1196441480befd8e4439c1af8",
+    "sources": {
+      "Cargo.toml": "926b56d255e5d00bccccfb964cb94b2aa2877bec98efab2ded635d4c1ab7f5ff",
+      "Cargo.lock": "af4b085c4c3f1623cbb066390627548fb92a64d9968c61d2e8b5e51ca28cf54d",
+      "scenarios\\baseline.toml": "f5a48af650c92dd48d6fcc89dc556e85f3e27aff51398ce316d47fc1de7bb4f1",
+      "tools\\astra_tournament.py": "0f6278cb0d1fa30750502f27983e66667b903dd8582f62ba638b60ab0b77d88d",
+      "crates\\bot-api\\src\\lib.rs": "42596d2dade57bf52b34e7dacc45f41b77b3578a1e29935b2df0146c3777073c",
+      "crates\\bots\\src\\astra_a.rs": "7f6e2e2b679cc90a4dcab180f2ba75b64fd64fdbe28f245963d3391563b6d9ca",
+      "crates\\bots\\src\\astra_b.rs": "c0ec4e810c5b7e5c1027fd9c59edd743435a18ef60a7f22b5e9dec97d5f1f1a8",
+      "crates\\bots\\src\\astra_c.rs": "edd6939eb267ff2236e431387c142ed88030e7282491e27f75ec953d6e068b5f",
+      "crates\\bots\\src\\baseline.rs": "56fc23273b39f282219e2c9514b91df5901d5bcb739aed509799d6842ddaad43",
+      "crates\\bots\\src\\common.rs": "393445421b81f620ec11912590495ffa069397f3348276028bd3da1e6cd1e381",
+      "crates\\bots\\src\\coral.rs": "cf16eac59c3eebb936794ab65b8d88c745fe40a131d644f12988b9d422904a11",
+      "crates\\bots\\src\\lib.rs": "00276b04507e20e9e9fc1b312b42d0e31fa03bacfbe19c43ff9175260769ddd6",
+      "crates\\bots\\src\\strategic.rs": "10eed5bc501a0679ed28f5018fdac3ed879a7fe37b36eb0fb9a236373e8bba3e",
+      "crates\\cli\\src\\main.rs": "204f7a4c457f714b574c71daa97320d35dec403abfd3f9944a0328dfd8e8cb35",
+      "crates\\cli\\tests\\astra_a.rs": "739bd629488d8c9a99a1f2936f7d633c6d0ae597c8de7007eb45a8aafb692709",
+      "crates\\cli\\tests\\astra_b.rs": "0258edf1c1f080a22b1fd0bf79ab198bb63f76ce04c5a188d21ef88e691fe7a9",
+      "crates\\cli\\tests\\astra_c.rs": "c02ebdde6790f7782360054ec578db02fff0512b8b5e7f6989efe71610f02a5d",
+      "crates\\cli\\tests\\coral.rs": "5cb51baf219c20838e02dd9a2d1ccbc6302e59e0f03424268b1bb4cb4e41a2e6",
+      "crates\\market\\src\\account.rs": "9514704a4c5f8810dd739d498bd68ad604aa377982c87a00a3aed615a5eb14b9",
+      "crates\\market\\src\\book.rs": "0715638e00cfc8d3018a164b564b2b877d66bc3b8e6bbaded73d1dc457769ff7",
+      "crates\\market\\src\\config.rs": "4df1b2cf5bd5c611eaf020e7c3ba3f631aaa354fac40563e76132fcbb87a7487",
+      "crates\\market\\src\\engine.rs": "658ee32314bd67487f989c1d27e4e065c545f381d97d556a2b6f2180d5a8059a",
+      "crates\\market\\src\\lib.rs": "07e43130a0cee3ca4f85842b2ed7ea2a7d3080b0d885f33bda5fd808c72db5f8",
+      "crates\\market\\src\\pace.rs": "217daf1c524224a1180c262ade480019a96086c99463e699f50b31eaf66f7567",
+      "crates\\market\\src\\quality.rs": "64d8dbaff1d952b52ea6a63e89f73460f35be391fb139b4222deedda8c460230",
+      "crates\\market\\src\\report.rs": "b048510f81f21410159bca9217a1cdb04bb0f3992e38b1d13bcc709a0f870b44",
+      "crates\\market\\src\\world.rs": "7c053b3e8b45a7860098900128d9957d98863887bacf0ddc6984cdabf055cd17",
+      "crates\\market\\tests\\engine.rs": "877f5d60a4753445a7b0763dd283ad2e535dfd4cb6f60e747aaa904ba7b8aa41",
+      "crates\\bot-api\\Cargo.toml": "0379b14b07bcec3d49406d7ed8bc4476f1ab4c65ca228322dea686c59989ca1a",
+      "crates\\bots\\Cargo.toml": "e10e5cf4569960d45d5597705addbd1e39e21c16fc363d0034310feb0a7efe99",
+      "crates\\cli\\Cargo.toml": "61e88f854ceac38b67dd54b4d308c31468de4d32e5121a5a84ed6d4538f74e56",
+      "crates\\market\\Cargo.toml": "685d8e7f22b25ea326a51a2358067318ef921a0a109b07b8b190954c77c80896"
+    }
+  },
+  "single": {
+    "official": {
+      "astra_a": {
+        "mean_percentile": 88.09791917379235,
+        "sd_percentile": 15.538444193050365,
+        "top25_share": 0.85,
+        "mean_return_ratio": 1.861404147923683,
+        "worst_percentile": 49.056603773584904,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "liquidations": 0,
+        "decision_us": 9.648075,
+        "pass": false,
+        "per_world": [
+          {
+            "seed": 1001,
+            "percentile": 85.41666666666667,
+            "return_ratio": 1.22105134161676
+          },
+          {
+            "seed": 1002,
+            "percentile": 91.07142857142857,
+            "return_ratio": 1.6021709220011222
+          },
+          {
+            "seed": 1003,
+            "percentile": 81.35593220338983,
+            "return_ratio": 1.143260213044886
+          },
+          {
+            "seed": 1004,
+            "percentile": 68.62745098039215,
+            "return_ratio": 2.3417169281322874
+          },
+          {
+            "seed": 1005,
+            "percentile": 88.0,
+            "return_ratio": 1.788022425275892
+          },
+          {
+            "seed": 1006,
+            "percentile": 97.67441860465117,
+            "return_ratio": 2.9384082470969273
+          },
+          {
+            "seed": 1007,
+            "percentile": 98.30508474576271,
+            "return_ratio": 1.7832553675059026
+          },
+          {
+            "seed": 1008,
+            "percentile": 94.82758620689656,
+            "return_ratio": 1.5757328990228012
+          },
+          {
+            "seed": 1009,
+            "percentile": 100.0,
+            "return_ratio": 2.1709741382139613
+          },
+          {
+            "seed": 1010,
+            "percentile": 100.0,
+            "return_ratio": 2.020684112149533
+          },
+          {
+            "seed": 1011,
+            "percentile": 92.0,
+            "return_ratio": 1.642602480566367
+          },
+          {
+            "seed": 1012,
+            "percentile": 91.48936170212765,
+            "return_ratio": 2.129237192625636
+          },
+          {
+            "seed": 1013,
+            "percentile": 98.18181818181819,
+            "return_ratio": 2.4033289237977127
+          },
+          {
+            "seed": 1014,
+            "percentile": 49.056603773584904,
+            "return_ratio": 0.905126606167025
+          },
+          {
+            "seed": 1015,
+            "percentile": 98.38709677419355,
+            "return_ratio": 2.2114716849531884
+          },
+          {
+            "seed": 1016,
+            "percentile": 94.54545454545455,
+            "return_ratio": 2.564422608545047
+          },
+          {
+            "seed": 1017,
+            "percentile": 83.92857142857143,
+            "return_ratio": 1.2288359535019817
+          },
+          {
+            "seed": 1018,
+            "percentile": 49.09090909090909,
+            "return_ratio": 0.8823012106223043
+          },
+          {
+            "seed": 1019,
+            "percentile": 100.0,
+            "return_ratio": 2.084967688401895
+          },
+          {
+            "seed": 1020,
+            "percentile": 100.0,
+            "return_ratio": 2.590512015232426
+          }
+        ],
+        "diagnostics": {
+          "worlds": 20,
+          "quality_pass_share": 0.7,
+          "failed_quality_checks": {
+            "value_crossings": 6
+          },
+          "all_accounts_skipped": 0,
+          "all_accounts_bot_errors": 0,
+          "all_accounts_disabled": 0,
+          "audits": 120,
+          "wall_seconds": 26.3530898
+        }
+      },
+      "astra_b": {
+        "mean_percentile": 90.197776447392,
+        "sd_percentile": 11.42552891436744,
+        "top25_share": 0.9,
+        "mean_return_ratio": 1.9800841871831245,
+        "worst_percentile": 60.37735849056604,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "liquidations": 0,
+        "decision_us": 8.987683333333333,
+        "pass": true,
+        "per_world": [
+          {
+            "seed": 1001,
+            "percentile": 95.83333333333333,
+            "return_ratio": 1.4609140896400332
+          },
+          {
+            "seed": 1002,
+            "percentile": 94.64285714285714,
+            "return_ratio": 1.8730764665256614
+          },
+          {
+            "seed": 1003,
+            "percentile": 91.52542372881356,
+            "return_ratio": 1.3678901444183196
+          },
+          {
+            "seed": 1004,
+            "percentile": 76.47058823529412,
+            "return_ratio": 2.593382446470214
+          },
+          {
+            "seed": 1005,
+            "percentile": 92.0,
+            "return_ratio": 1.9225451240307583
+          },
+          {
+            "seed": 1006,
+            "percentile": 97.67441860465117,
+            "return_ratio": 3.015970982436738
+          },
+          {
+            "seed": 1007,
+            "percentile": 84.7457627118644,
+            "return_ratio": 1.5149923321344247
+          },
+          {
+            "seed": 1008,
+            "percentile": 75.86206896551724,
+            "return_ratio": 1.2956050246718482
+          },
+          {
+            "seed": 1009,
+            "percentile": 100.0,
+            "return_ratio": 2.1859710203590454
+          },
+          {
+            "seed": 1010,
+            "percentile": 100.0,
+            "return_ratio": 2.4879423230974633
+          },
+          {
+            "seed": 1011,
+            "percentile": 94.0,
+            "return_ratio": 1.6993061352819367
+          },
+          {
+            "seed": 1012,
+            "percentile": 78.72340425531915,
+            "return_ratio": 1.6554825469546939
+          },
+          {
+            "seed": 1013,
+            "percentile": 98.18181818181819,
+            "return_ratio": 2.340807220614579
+          },
+          {
+            "seed": 1014,
+            "percentile": 60.37735849056604,
+            "return_ratio": 0.9980009408624207
+          },
+          {
+            "seed": 1015,
+            "percentile": 100.0,
+            "return_ratio": 2.8186535933685652
+          },
+          {
+            "seed": 1016,
+            "percentile": 96.36363636363636,
+            "return_ratio": 3.412275792641344
+          },
+          {
+            "seed": 1017,
+            "percentile": 100.0,
+            "return_ratio": 1.6245606894900646
+          },
+          {
+            "seed": 1018,
+            "percentile": 72.72727272727273,
+            "return_ratio": 1.0133915283497763
+          },
+          {
+            "seed": 1019,
+            "percentile": 100.0,
+            "return_ratio": 2.210196562221807
+          },
+          {
+            "seed": 1020,
+            "percentile": 94.82758620689656,
+            "return_ratio": 2.110718780092795
+          }
+        ],
+        "diagnostics": {
+          "worlds": 20,
+          "quality_pass_share": 0.7,
+          "failed_quality_checks": {
+            "value_crossings": 6
+          },
+          "all_accounts_skipped": 0,
+          "all_accounts_bot_errors": 0,
+          "all_accounts_disabled": 0,
+          "audits": 120,
+          "wall_seconds": 27.5570757
+        }
+      },
+      "astra_c": {
+        "mean_percentile": 89.68639508194319,
+        "sd_percentile": 13.665615417609871,
+        "top25_share": 0.85,
+        "mean_return_ratio": 2.0059996351867446,
+        "worst_percentile": 54.54545454545455,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "liquidations": 0,
+        "decision_us": 9.86927,
+        "pass": false,
+        "per_world": [
+          {
+            "seed": 1001,
+            "percentile": 87.5,
+            "return_ratio": 1.2570128513885042
+          },
+          {
+            "seed": 1002,
+            "percentile": 92.85714285714286,
+            "return_ratio": 1.8636479151379117
+          },
+          {
+            "seed": 1003,
+            "percentile": 74.57627118644068,
+            "return_ratio": 1.087045076985951
+          },
+          {
+            "seed": 1004,
+            "percentile": 94.11764705882354,
+            "return_ratio": 3.5302867288530844
+          },
+          {
+            "seed": 1005,
+            "percentile": 100.0,
+            "return_ratio": 2.146949905086709
+          },
+          {
+            "seed": 1006,
+            "percentile": 100.0,
+            "return_ratio": 3.431903520551913
+          },
+          {
+            "seed": 1007,
+            "percentile": 89.83050847457628,
+            "return_ratio": 1.5974955316754562
+          },
+          {
+            "seed": 1008,
+            "percentile": 79.3103448275862,
+            "return_ratio": 1.370811698433687
+          },
+          {
+            "seed": 1009,
+            "percentile": 100.0,
+            "return_ratio": 2.322286645735103
+          },
+          {
+            "seed": 1010,
+            "percentile": 100.0,
+            "return_ratio": 2.106720427236315
+          },
+          {
+            "seed": 1011,
+            "percentile": 94.0,
+            "return_ratio": 1.7421254485726987
+          },
+          {
+            "seed": 1012,
+            "percentile": 80.85106382978724,
+            "return_ratio": 1.6173442750132359
+          },
+          {
+            "seed": 1013,
+            "percentile": 98.18181818181819,
+            "return_ratio": 2.5418748794267603
+          },
+          {
+            "seed": 1014,
+            "percentile": 58.490566037735846,
+            "return_ratio": 0.9872436560163229
+          },
+          {
+            "seed": 1015,
+            "percentile": 100.0,
+            "return_ratio": 2.664216541030662
+          },
+          {
+            "seed": 1016,
+            "percentile": 96.36363636363636,
+            "return_ratio": 3.1209163680843464
+          },
+          {
+            "seed": 1017,
+            "percentile": 100.0,
+            "return_ratio": 1.659147713670098
+          },
+          {
+            "seed": 1018,
+            "percentile": 54.54545454545455,
+            "return_ratio": 0.9057543795087157
+          },
+          {
+            "seed": 1019,
+            "percentile": 100.0,
+            "return_ratio": 2.1371270153535042
+          },
+          {
+            "seed": 1020,
+            "percentile": 93.10344827586206,
+            "return_ratio": 2.0300821259739124
+          }
+        ],
+        "diagnostics": {
+          "worlds": 20,
+          "quality_pass_share": 0.65,
+          "failed_quality_checks": {
+            "value_crossings": 7
+          },
+          "all_accounts_skipped": 0,
+          "all_accounts_bot_errors": 0,
+          "all_accounts_disabled": 0,
+          "audits": 120,
+          "wall_seconds": 25.9707892
+        }
+      }
+    },
+    "validation": {
+      "astra_a": {
+        "mean_percentile": 81.65578072925862,
+        "sd_percentile": 20.020154736642738,
+        "top25_share": 0.8,
+        "mean_return_ratio": 1.5236932856405683,
+        "worst_percentile": 17.24137931034483,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "liquidations": 0,
+        "decision_us": 9.666346666666666,
+        "pass": false,
+        "per_world": [
+          {
+            "seed": 2001,
+            "percentile": 17.24137931034483,
+            "return_ratio": 0.8170356874933019
+          },
+          {
+            "seed": 2002,
+            "percentile": 88.33333333333333,
+            "return_ratio": 1.597693050245693
+          },
+          {
+            "seed": 2003,
+            "percentile": 57.6271186440678,
+            "return_ratio": 0.930902533427164
+          },
+          {
+            "seed": 2004,
+            "percentile": 91.37931034482759,
+            "return_ratio": 2.3807218888374146
+          },
+          {
+            "seed": 2005,
+            "percentile": 82.6923076923077,
+            "return_ratio": 1.3884801619433198
+          },
+          {
+            "seed": 2006,
+            "percentile": 89.0909090909091,
+            "return_ratio": 2.3179934690512223
+          },
+          {
+            "seed": 2007,
+            "percentile": 69.04761904761905,
+            "return_ratio": 0.8434509181835291
+          },
+          {
+            "seed": 2008,
+            "percentile": 93.33333333333333,
+            "return_ratio": 1.5475014141456465
+          },
+          {
+            "seed": 2009,
+            "percentile": 88.46153846153847,
+            "return_ratio": 1.5735855132102452
+          },
+          {
+            "seed": 2010,
+            "percentile": 98.14814814814815,
+            "return_ratio": 1.6764311098815743
+          },
+          {
+            "seed": 2011,
+            "percentile": 91.2280701754386,
+            "return_ratio": 1.5612749107468527
+          },
+          {
+            "seed": 2012,
+            "percentile": 50.0,
+            "return_ratio": 0.9495453272889769
+          },
+          {
+            "seed": 2013,
+            "percentile": 86.53846153846153,
+            "return_ratio": 1.648059805953882
+          },
+          {
+            "seed": 2014,
+            "percentile": 94.91525423728814,
+            "return_ratio": 1.4932841643029495
+          },
+          {
+            "seed": 2015,
+            "percentile": 81.81818181818181,
+            "return_ratio": 0.971325896715644
+          },
+          {
+            "seed": 2016,
+            "percentile": 77.35849056603773,
+            "return_ratio": 1.9457034795763994
+          },
+          {
+            "seed": 2017,
+            "percentile": 100.0,
+            "return_ratio": 1.4048679143665006
+          },
+          {
+            "seed": 2018,
+            "percentile": 83.63636363636364,
+            "return_ratio": 1.9392544944746826
+          },
+          {
+            "seed": 2019,
+            "percentile": 94.11764705882354,
+            "return_ratio": 1.4520473370866498
+          },
+          {
+            "seed": 2020,
+            "percentile": 98.14814814814815,
+            "return_ratio": 2.0347066358797155
+          }
+        ],
+        "diagnostics": {
+          "worlds": 20,
+          "quality_pass_share": 0.9,
+          "failed_quality_checks": {
+            "value_crossings": 2
+          },
+          "all_accounts_skipped": 0,
+          "all_accounts_bot_errors": 0,
+          "all_accounts_disabled": 0,
+          "audits": 120,
+          "wall_seconds": 27.3992327
+        }
+      },
+      "astra_b": {
+        "mean_percentile": 84.65457511390464,
+        "sd_percentile": 16.00115730481185,
+        "top25_share": 0.7,
+        "mean_return_ratio": 1.6284485374296107,
+        "worst_percentile": 44.827586206896555,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "liquidations": 0,
+        "decision_us": 8.834898333333333,
+        "pass": false,
+        "per_world": [
+          {
+            "seed": 2001,
+            "percentile": 44.827586206896555,
+            "return_ratio": 1.1740043939556317
+          },
+          {
+            "seed": 2002,
+            "percentile": 96.66666666666667,
+            "return_ratio": 2.295179947534618
+          },
+          {
+            "seed": 2003,
+            "percentile": 74.57627118644068,
+            "return_ratio": 1.0461502782931353
+          },
+          {
+            "seed": 2004,
+            "percentile": 91.37931034482759,
+            "return_ratio": 2.374627500834958
+          },
+          {
+            "seed": 2005,
+            "percentile": 100.0,
+            "return_ratio": 1.7324016194331984
+          },
+          {
+            "seed": 2006,
+            "percentile": 89.0909090909091,
+            "return_ratio": 2.1462072762580484
+          },
+          {
+            "seed": 2007,
+            "percentile": 71.42857142857143,
+            "return_ratio": 0.8620390933777862
+          },
+          {
+            "seed": 2008,
+            "percentile": 98.33333333333333,
+            "return_ratio": 1.7122554051789156
+          },
+          {
+            "seed": 2009,
+            "percentile": 88.46153846153847,
+            "return_ratio": 1.6355432273275519
+          },
+          {
+            "seed": 2010,
+            "percentile": 98.14814814814815,
+            "return_ratio": 1.801085834672228
+          },
+          {
+            "seed": 2011,
+            "percentile": 92.98245614035088,
+            "return_ratio": 1.6095149934234523
+          },
+          {
+            "seed": 2012,
+            "percentile": 60.416666666666664,
+            "return_ratio": 1.0415738836425503
+          },
+          {
+            "seed": 2013,
+            "percentile": 88.46153846153847,
+            "return_ratio": 1.9094458572863462
+          },
+          {
+            "seed": 2014,
+            "percentile": 94.91525423728814,
+            "return_ratio": 1.5510529454051012
+          },
+          {
+            "seed": 2015,
+            "percentile": 59.09090909090909,
+            "return_ratio": 0.895573952031115
+          },
+          {
+            "seed": 2016,
+            "percentile": 77.35849056603773,
+            "return_ratio": 2.0390333909660687
+          },
+          {
+            "seed": 2017,
+            "percentile": 100.0,
+            "return_ratio": 1.3576052241820384
+          },
+          {
+            "seed": 2018,
+            "percentile": 72.72727272727273,
+            "return_ratio": 1.719193743471329
+          },
+          {
+            "seed": 2019,
+            "percentile": 96.07843137254902,
+            "return_ratio": 1.5077700662223086
+          },
+          {
+            "seed": 2020,
+            "percentile": 98.14814814814815,
+            "return_ratio": 2.1587121150958324
+          }
+        ],
+        "diagnostics": {
+          "worlds": 20,
+          "quality_pass_share": 0.8,
+          "failed_quality_checks": {
+            "value_crossings": 4
+          },
+          "all_accounts_skipped": 0,
+          "all_accounts_bot_errors": 0,
+          "all_accounts_disabled": 0,
+          "audits": 120,
+          "wall_seconds": 26.2377385
+        }
+      },
+      "astra_c": {
+        "mean_percentile": 82.48164450391269,
+        "sd_percentile": 17.59636157796262,
+        "top25_share": 0.7,
+        "mean_return_ratio": 1.6032388226379846,
+        "worst_percentile": 36.206896551724135,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "liquidations": 0,
+        "decision_us": 9.557455,
+        "pass": false,
+        "per_world": [
+          {
+            "seed": 2001,
+            "percentile": 36.206896551724135,
+            "return_ratio": 1.0643304576144037
+          },
+          {
+            "seed": 2002,
+            "percentile": 93.33333333333333,
+            "return_ratio": 1.7924437851428072
+          },
+          {
+            "seed": 2003,
+            "percentile": 67.79661016949153,
+            "return_ratio": 1.0308268291642675
+          },
+          {
+            "seed": 2004,
+            "percentile": 94.82758620689656,
+            "return_ratio": 2.5640248763722946
+          },
+          {
+            "seed": 2005,
+            "percentile": 78.84615384615384,
+            "return_ratio": 1.3203665317139002
+          },
+          {
+            "seed": 2006,
+            "percentile": 94.54545454545455,
+            "return_ratio": 2.644643971077227
+          },
+          {
+            "seed": 2007,
+            "percentile": 45.23809523809524,
+            "return_ratio": 0.7460839405264431
+          },
+          {
+            "seed": 2008,
+            "percentile": 100.0,
+            "return_ratio": 1.766705773904299
+          },
+          {
+            "seed": 2009,
+            "percentile": 90.38461538461539,
+            "return_ratio": 1.5433285669844838
+          },
+          {
+            "seed": 2010,
+            "percentile": 96.29629629629629,
+            "return_ratio": 1.6980815679431387
+          },
+          {
+            "seed": 2011,
+            "percentile": 94.73684210526316,
+            "return_ratio": 1.7961698517789837
+          },
+          {
+            "seed": 2012,
+            "percentile": 68.75,
+            "return_ratio": 1.1245434429142125
+          },
+          {
+            "seed": 2013,
+            "percentile": 98.07692307692308,
+            "return_ratio": 2.3916696941850275
+          },
+          {
+            "seed": 2014,
+            "percentile": 94.91525423728814,
+            "return_ratio": 1.5210611371476017
+          },
+          {
+            "seed": 2015,
+            "percentile": 74.24242424242425,
+            "return_ratio": 0.9470321953327572
+          },
+          {
+            "seed": 2016,
+            "percentile": 84.90566037735849,
+            "return_ratio": 2.185935541387508
+          },
+          {
+            "seed": 2017,
+            "percentile": 83.05084745762711,
+            "return_ratio": 1.1151506664871416
+          },
+          {
+            "seed": 2018,
+            "percentile": 70.9090909090909,
+            "return_ratio": 1.704587937764583
+          },
+          {
+            "seed": 2019,
+            "percentile": 86.27450980392157,
+            "return_ratio": 1.1283445501412885
+          },
+          {
+            "seed": 2020,
+            "percentile": 96.29629629629629,
+            "return_ratio": 1.979445135177321
+          }
+        ],
+        "diagnostics": {
+          "worlds": 20,
+          "quality_pass_share": 0.85,
+          "failed_quality_checks": {
+            "value_crossings": 3
+          },
+          "all_accounts_skipped": 0,
+          "all_accounts_bot_errors": 0,
+          "all_accounts_disabled": 0,
+          "audits": 120,
+          "wall_seconds": 26.659026400000002
+        }
+      }
+    }
+  },
+  "arena": {
+    "ranking": [
+      "astra_b",
+      "astra_c",
+      "astra_a"
+    ],
+    "bots": {
+      "astra_a": {
+        "mean_percentile": 81.1387882465605,
+        "sd_percentile": 16.466623079115124,
+        "top25_share": 0.7416666666666667,
+        "mean_return_ratio": 1.674940493960751,
+        "worst_percentile": 27.083333333333332,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "liquidations": 0,
+        "decision_us": 9.837546111111111,
+        "mean_trio_rank": 2.1333333333333333,
+        "outright_firsts": 35,
+        "per_seed_mean_rank": {
+          "3001": 2.1666666666666665,
+          "3002": 2.0,
+          "3003": 1.6666666666666667,
+          "3004": 2.0,
+          "3005": 2.3333333333333335,
+          "3006": 2.0,
+          "3007": 2.5,
+          "3008": 2.3333333333333335,
+          "3009": 2.6666666666666665,
+          "3010": 2.1666666666666665,
+          "3011": 2.5,
+          "3012": 1.6666666666666667,
+          "3013": 2.0,
+          "3014": 2.1666666666666665,
+          "3015": 2.0,
+          "3016": 2.3333333333333335,
+          "3017": 2.0,
+          "3018": 2.3333333333333335,
+          "3019": 1.8333333333333333,
+          "3020": 2.0
+        }
+      },
+      "astra_b": {
+        "mean_percentile": 86.01079011070223,
+        "sd_percentile": 11.57644923426401,
+        "top25_share": 0.8833333333333333,
+        "mean_return_ratio": 1.802778391472996,
+        "worst_percentile": 29.166666666666668,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "liquidations": 0,
+        "decision_us": 9.108286388888889,
+        "mean_trio_rank": 1.8583333333333334,
+        "outright_firsts": 48,
+        "per_seed_mean_rank": {
+          "3001": 1.8333333333333333,
+          "3002": 1.8333333333333333,
+          "3003": 1.8333333333333333,
+          "3004": 2.0,
+          "3005": 1.6666666666666667,
+          "3006": 2.0,
+          "3007": 1.5,
+          "3008": 1.8333333333333333,
+          "3009": 1.6666666666666667,
+          "3010": 1.8333333333333333,
+          "3011": 1.1666666666666667,
+          "3012": 2.1666666666666665,
+          "3013": 2.1666666666666665,
+          "3014": 2.0,
+          "3015": 2.0,
+          "3016": 1.8333333333333333,
+          "3017": 2.0,
+          "3018": 1.8333333333333333,
+          "3019": 1.8333333333333333,
+          "3020": 2.1666666666666665
+        }
+      },
+      "astra_c": {
+        "mean_percentile": 84.83465504817099,
+        "sd_percentile": 12.026554247780403,
+        "top25_share": 0.8,
+        "mean_return_ratio": 1.7568063082335237,
+        "worst_percentile": 39.583333333333336,
+        "skipped": 0,
+        "bot_errors": 0,
+        "disabled": 0,
+        "liquidations": 0,
+        "decision_us": 9.843192222222221,
+        "mean_trio_rank": 2.0083333333333333,
+        "outright_firsts": 37,
+        "per_seed_mean_rank": {
+          "3001": 2.0,
+          "3002": 2.1666666666666665,
+          "3003": 2.5,
+          "3004": 2.0,
+          "3005": 2.0,
+          "3006": 2.0,
+          "3007": 2.0,
+          "3008": 1.8333333333333333,
+          "3009": 1.6666666666666667,
+          "3010": 2.0,
+          "3011": 2.3333333333333335,
+          "3012": 2.1666666666666665,
+          "3013": 1.8333333333333333,
+          "3014": 1.8333333333333333,
+          "3015": 2.0,
+          "3016": 1.8333333333333333,
+          "3017": 2.0,
+          "3018": 1.8333333333333333,
+          "3019": 2.3333333333333335,
+          "3020": 1.8333333333333333
+        }
+      }
+    },
+    "pairwise": {
+      "astra_a": {
+        "astra_b": {
+          "wins": 52,
+          "ties": 0,
+          "losses": 68
+        },
+        "astra_c": {
+          "wins": 52,
+          "ties": 0,
+          "losses": 68
+        }
+      },
+      "astra_b": {
+        "astra_a": {
+          "wins": 68,
+          "ties": 0,
+          "losses": 52
+        },
+        "astra_c": {
+          "wins": 69,
+          "ties": 0,
+          "losses": 51
+        }
+      },
+      "astra_c": {
+        "astra_a": {
+          "wins": 68,
+          "ties": 0,
+          "losses": 52
+        },
+        "astra_b": {
+          "wins": 51,
+          "ties": 0,
+          "losses": 69
+        }
+      }
+    },
+    "matches": [
+      {
+        "seed": 3001,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 84.48275862068965,
+          "astra_b": 96.55172413793103,
+          "astra_c": 100.0
+        },
+        "return_ratio": {
+          "astra_a": 1.0321526228875353,
+          "astra_b": 1.1966165715878871,
+          "astra_c": 1.4932985545165995
+        }
+      },
+      {
+        "seed": 3002,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 3.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 98.18181818181819,
+          "astra_b": 94.54545454545455,
+          "astra_c": 100.0
+        },
+        "return_ratio": {
+          "astra_a": 3.062572050758146,
+          "astra_b": 2.4035853317561027,
+          "astra_c": 3.135561350682869
+        }
+      },
+      {
+        "seed": 3003,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 1.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 76.78571428571429,
+          "astra_b": 83.92857142857143,
+          "astra_c": 75.0
+        },
+        "return_ratio": {
+          "astra_a": 1.2848198121445762,
+          "astra_b": 1.343651892398458,
+          "astra_c": 1.2754084045068264
+        }
+      },
+      {
+        "seed": 3004,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 1.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 88.88888888888889,
+          "astra_b": 94.44444444444444,
+          "astra_c": 64.81481481481481
+        },
+        "return_ratio": {
+          "astra_a": 1.5874537007640697,
+          "astra_b": 1.9654496581793552,
+          "astra_c": 1.066401041335958
+        }
+      },
+      {
+        "seed": 3005,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 88.52459016393442,
+          "astra_b": 93.44262295081967,
+          "astra_c": 95.08196721311475
+        },
+        "return_ratio": {
+          "astra_a": 1.2696829120430164,
+          "astra_b": 1.4390661324758165,
+          "astra_c": 1.465131658715306
+        }
+      },
+      {
+        "seed": 3006,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 1.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 83.87096774193549,
+          "astra_b": 95.16129032258064,
+          "astra_c": 69.35483870967742
+        },
+        "return_ratio": {
+          "astra_a": 2.0944436216299134,
+          "astra_b": 3.30999243598356,
+          "astra_c": 1.625231813301032
+        }
+      },
+      {
+        "seed": 3007,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 80.3921568627451,
+          "astra_b": 92.15686274509804,
+          "astra_c": 82.3529411764706
+        },
+        "return_ratio": {
+          "astra_a": 1.3576975867353125,
+          "astra_b": 1.5340841941636258,
+          "astra_c": 1.41176838612235
+        }
+      },
+      {
+        "seed": 3008,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 3.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 100.0,
+          "astra_b": 78.43137254901961,
+          "astra_c": 98.03921568627452
+        },
+        "return_ratio": {
+          "astra_a": 3.055320226327029,
+          "astra_b": 2.0324786442394487,
+          "astra_c": 2.8599397855617448
+        }
+      },
+      {
+        "seed": 3009,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 27.083333333333332,
+          "astra_b": 50.0,
+          "astra_c": 68.75
+        },
+        "return_ratio": {
+          "astra_a": 0.6998696120239141,
+          "astra_b": 0.8029578995777416,
+          "astra_c": 0.8459062356285798
+        }
+      },
+      {
+        "seed": 3010,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 65.0,
+          "astra_b": 91.66666666666667,
+          "astra_c": 90.0
+        },
+        "return_ratio": {
+          "astra_a": 1.2181353520710854,
+          "astra_b": 2.973195082011221,
+          "astra_c": 2.951890419049153
+        }
+      },
+      {
+        "seed": 3011,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 68.75,
+          "astra_b": 84.375,
+          "astra_c": 81.25
+        },
+        "return_ratio": {
+          "astra_a": 1.6760908712369065,
+          "astra_b": 2.116687396239475,
+          "astra_c": 1.9665462548872221
+        }
+      },
+      {
+        "seed": 3012,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 1.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 78.125,
+          "astra_b": 100.0,
+          "astra_c": 64.0625
+        },
+        "return_ratio": {
+          "astra_a": 1.039882996208361,
+          "astra_b": 1.4504787011873959,
+          "astra_c": 0.9379060823528773
+        }
+      },
+      {
+        "seed": 3013,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 75.86206896551724,
+          "astra_b": 82.75862068965517,
+          "astra_c": 86.20689655172414
+        },
+        "return_ratio": {
+          "astra_a": 1.3342880541543551,
+          "astra_b": 1.4754049877292936,
+          "astra_c": 1.4966580690098001
+        }
+      },
+      {
+        "seed": 3014,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 94.33962264150944,
+          "astra_b": 88.67924528301887,
+          "astra_c": 83.01886792452831
+        },
+        "return_ratio": {
+          "astra_a": 1.8015336865200406,
+          "astra_b": 1.733450527104404,
+          "astra_c": 1.5531465724835447
+        }
+      },
+      {
+        "seed": 3015,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 1.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 91.66666666666667,
+          "astra_b": 98.33333333333333,
+          "astra_c": 68.33333333333333
+        },
+        "return_ratio": {
+          "astra_a": 2.655068324129234,
+          "astra_b": 3.8919003022133323,
+          "astra_c": 1.6589370352654693
+        }
+      },
+      {
+        "seed": 3016,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 100.0,
+          "astra_b": 75.80645161290323,
+          "astra_c": 61.29032258064516
+        },
+        "return_ratio": {
+          "astra_a": 2.3653252346095575,
+          "astra_b": 1.4393175650552463,
+          "astra_c": 1.2603436315506151
+        }
+      },
+      {
+        "seed": 3017,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 96.82539682539682,
+          "astra_b": 88.88888888888889,
+          "astra_c": 63.492063492063494
+        },
+        "return_ratio": {
+          "astra_a": 1.2433304533816603,
+          "astra_b": 1.0608285304870981,
+          "astra_c": 0.8631323162186937
+        }
+      },
+      {
+        "seed": 3018,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 78.94736842105263,
+          "astra_b": 87.71929824561404,
+          "astra_c": 84.21052631578948
+        },
+        "return_ratio": {
+          "astra_a": 2.121778872947013,
+          "astra_b": 2.467223509228197,
+          "astra_c": 2.35578606318228
+        }
+      },
+      {
+        "seed": 3019,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 3.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 100.0,
+          "astra_b": 92.45283018867924,
+          "astra_c": 98.11320754716981
+        },
+        "return_ratio": {
+          "astra_a": 2.083117571413967,
+          "astra_b": 1.6741314372111293,
+          "astra_c": 1.8696808768220046
+        }
+      },
+      {
+        "seed": 3020,
+        "order": [
+          "astra_a",
+          "astra_b",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 86.53846153846153,
+          "astra_b": 88.46153846153847,
+          "astra_c": 96.15384615384616
+        },
+        "return_ratio": {
+          "astra_a": 1.427626443433555,
+          "astra_b": 1.4558520632015288,
+          "astra_c": 1.6488719011601303
+        }
+      },
+      {
+        "seed": 3001,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 1.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 87.93103448275862,
+          "astra_b": 100.0,
+          "astra_c": 82.75862068965517
+        },
+        "return_ratio": {
+          "astra_a": 1.0696212576134512,
+          "astra_b": 1.5010162884961826,
+          "astra_c": 1.0212069464699323
+        }
+      },
+      {
+        "seed": 3002,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 1.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 96.36363636363636,
+          "astra_b": 98.18181818181819,
+          "astra_c": 85.45454545454545
+        },
+        "return_ratio": {
+          "astra_a": 3.1075362942251856,
+          "astra_b": 3.1916418432089473,
+          "astra_c": 2.0793133670287127
+        }
+      },
+      {
+        "seed": 3003,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 89.28571428571429,
+          "astra_b": 80.35714285714286,
+          "astra_c": 78.57142857142857
+        },
+        "return_ratio": {
+          "astra_a": 1.310943057655854,
+          "astra_b": 1.2468967647121467,
+          "astra_c": 1.1944889352729442
+        }
+      },
+      {
+        "seed": 3004,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 3.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 85.18518518518519,
+          "astra_b": 66.66666666666667,
+          "astra_c": 96.29629629629629
+        },
+        "return_ratio": {
+          "astra_a": 1.4764760196414588,
+          "astra_b": 1.0284126505386586,
+          "astra_c": 2.141888902999132
+        }
+      },
+      {
+        "seed": 3005,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 83.60655737704919,
+          "astra_b": 95.08196721311475,
+          "astra_c": 91.80327868852459
+        },
+        "return_ratio": {
+          "astra_a": 1.2127773531194812,
+          "astra_b": 1.5406737130657107,
+          "astra_c": 1.3491293919186063
+        }
+      },
+      {
+        "seed": 3006,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 3.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 82.25806451612904,
+          "astra_b": 77.41935483870968,
+          "astra_c": 96.7741935483871
+        },
+        "return_ratio": {
+          "astra_a": 2.045124118633399,
+          "astra_b": 1.8779678185482378,
+          "astra_c": 3.367719105224461
+        }
+      },
+      {
+        "seed": 3007,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 3.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 100.0,
+          "astra_b": 78.43137254901961,
+          "astra_c": 90.19607843137256
+        },
+        "return_ratio": {
+          "astra_a": 2.6279664193502157,
+          "astra_b": 1.2773688910447927,
+          "astra_c": 1.3732324958382485
+        }
+      },
+      {
+        "seed": 3008,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 92.15686274509804,
+          "astra_b": 90.19607843137256,
+          "astra_c": 86.27450980392157
+        },
+        "return_ratio": {
+          "astra_a": 2.523172101010546,
+          "astra_b": 2.4384395433830166,
+          "astra_c": 2.1844422183571477
+        }
+      },
+      {
+        "seed": 3009,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 29.166666666666668,
+          "astra_b": 83.33333333333333,
+          "astra_c": 45.833333333333336
+        },
+        "return_ratio": {
+          "astra_a": 0.6965487687612358,
+          "astra_b": 0.9875587921735859,
+          "astra_c": 0.7633722145574647
+        }
+      },
+      {
+        "seed": 3010,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 61.666666666666664,
+          "astra_b": 91.66666666666667,
+          "astra_c": 86.66666666666667
+        },
+        "return_ratio": {
+          "astra_a": 1.2144162572816837,
+          "astra_b": 3.1528930766959276,
+          "astra_c": 2.5998749026871764
+        }
+      },
+      {
+        "seed": 3011,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 70.3125,
+          "astra_b": 84.375,
+          "astra_c": 79.6875
+        },
+        "return_ratio": {
+          "astra_a": 1.667957398024021,
+          "astra_b": 2.037749904013065,
+          "astra_c": 1.983613813466291
+        }
+      },
+      {
+        "seed": 3012,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 3.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 78.125,
+          "astra_b": 71.875,
+          "astra_c": 95.3125
+        },
+        "return_ratio": {
+          "astra_a": 1.0594313626575103,
+          "astra_b": 1.0046120757459873,
+          "astra_c": 1.3260134090576232
+        }
+      },
+      {
+        "seed": 3013,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 72.41379310344827,
+          "astra_b": 75.86206896551724,
+          "astra_c": 91.37931034482759
+        },
+        "return_ratio": {
+          "astra_a": 1.3101762519657618,
+          "astra_b": 1.359273770072536,
+          "astra_c": 1.721675073869109
+        }
+      },
+      {
+        "seed": 3014,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 3.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 88.67924528301887,
+          "astra_b": 67.9245283018868,
+          "astra_c": 92.45283018867924
+        },
+        "return_ratio": {
+          "astra_a": 1.6578648258147375,
+          "astra_b": 1.3010571520308236,
+          "astra_c": 1.7851773960507304
+        }
+      },
+      {
+        "seed": 3015,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 3.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 83.33333333333333,
+          "astra_b": 75.0,
+          "astra_c": 95.0
+        },
+        "return_ratio": {
+          "astra_a": 2.23980247423577,
+          "astra_b": 1.8976404531025786,
+          "astra_c": 3.394994184024003
+        }
+      },
+      {
+        "seed": 3016,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 3.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 100.0,
+          "astra_b": 77.41935483870968,
+          "astra_c": 87.09677419354838
+        },
+        "return_ratio": {
+          "astra_a": 2.2888802561697736,
+          "astra_b": 1.460552851664604,
+          "astra_c": 1.5388128284672546
+        }
+      },
+      {
+        "seed": 3017,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 3.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 96.82539682539682,
+          "astra_b": 88.88888888888889,
+          "astra_c": 92.06349206349206
+        },
+        "return_ratio": {
+          "astra_a": 1.24153215185072,
+          "astra_b": 1.0056264421709216,
+          "astra_c": 1.055419138332508
+        }
+      },
+      {
+        "seed": 3018,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 3.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 87.71929824561404,
+          "astra_b": 80.70175438596492,
+          "astra_c": 82.45614035087719
+        },
+        "return_ratio": {
+          "astra_a": 2.431973326194093,
+          "astra_b": 2.3223987302350486,
+          "astra_c": 2.3316515139925476
+        }
+      },
+      {
+        "seed": 3019,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 100.0,
+          "astra_b": 94.33962264150944,
+          "astra_c": 90.56603773584905
+        },
+        "return_ratio": {
+          "astra_a": 2.1220526437560867,
+          "astra_b": 1.700119449242143,
+          "astra_c": 1.5450189127966727
+        }
+      },
+      {
+        "seed": 3020,
+        "order": [
+          "astra_a",
+          "astra_c",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 90.38461538461539,
+          "astra_b": 94.23076923076923,
+          "astra_c": 92.3076923076923
+        },
+        "return_ratio": {
+          "astra_a": 1.4204909692875023,
+          "astra_b": 1.4570146160264865,
+          "astra_c": 1.4549586821350704
+        }
+      },
+      {
+        "seed": 3001,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 87.93103448275862,
+          "astra_b": 94.82758620689656,
+          "astra_c": 100.0
+        },
+        "return_ratio": {
+          "astra_a": 0.9910155914900918,
+          "astra_b": 1.1410244381058592,
+          "astra_c": 1.5349586085613793
+        }
+      },
+      {
+        "seed": 3002,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 92.72727272727273,
+          "astra_b": 100.0,
+          "astra_c": 94.54545454545455
+        },
+        "return_ratio": {
+          "astra_a": 2.3522166361974404,
+          "astra_b": 2.715379073018604,
+          "astra_c": 2.571260081729218
+        }
+      },
+      {
+        "seed": 3003,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 87.5,
+          "astra_b": 78.57142857142857,
+          "astra_c": 67.85714285714286
+        },
+        "return_ratio": {
+          "astra_a": 1.3566167387276096,
+          "astra_b": 1.2309335796894634,
+          "astra_c": 1.1803619731209134
+        }
+      },
+      {
+        "seed": 3004,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 90.74074074074075,
+          "astra_b": 79.62962962962963,
+          "astra_c": 70.37037037037037
+        },
+        "return_ratio": {
+          "astra_a": 1.647893781615764,
+          "astra_b": 1.2771474908459797,
+          "astra_c": 1.0730255360128687
+        }
+      },
+      {
+        "seed": 3005,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 85.24590163934427,
+          "astra_b": 90.1639344262295,
+          "astra_c": 91.80327868852459
+        },
+        "return_ratio": {
+          "astra_a": 1.2997240306808298,
+          "astra_b": 1.3675336724742349,
+          "astra_c": 1.3910872716729488
+        }
+      },
+      {
+        "seed": 3006,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 93.54838709677419,
+          "astra_b": 87.09677419354838,
+          "astra_c": 70.96774193548387
+        },
+        "return_ratio": {
+          "astra_a": 3.3110582746637185,
+          "astra_b": 2.384426853845218,
+          "astra_c": 1.6799162139717434
+        }
+      },
+      {
+        "seed": 3007,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 1.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 88.23529411764706,
+          "astra_b": 94.11764705882354,
+          "astra_c": 82.3529411764706
+        },
+        "return_ratio": {
+          "astra_a": 1.4964197911958284,
+          "astra_b": 1.7441509475564179,
+          "astra_c": 1.3609156404687621
+        }
+      },
+      {
+        "seed": 3008,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 74.50980392156863,
+          "astra_b": 98.03921568627452,
+          "astra_c": 94.11764705882354
+        },
+        "return_ratio": {
+          "astra_a": 1.8239013892252482,
+          "astra_b": 2.9571508773474826,
+          "astra_c": 2.6866853988243324
+        }
+      },
+      {
+        "seed": 3009,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 31.25,
+          "astra_b": 75.0,
+          "astra_c": 66.66666666666667
+        },
+        "return_ratio": {
+          "astra_a": 0.712538672185292,
+          "astra_b": 0.8741220368744512,
+          "astra_c": 0.8485427379907187
+        }
+      },
+      {
+        "seed": 3010,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 3.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 80.0,
+          "astra_b": 70.0,
+          "astra_c": 95.0
+        },
+        "return_ratio": {
+          "astra_a": 1.9916410297710128,
+          "astra_b": 1.5840079460954068,
+          "astra_c": 3.318042737107729
+        }
+      },
+      {
+        "seed": 3011,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 85.9375,
+          "astra_b": 79.6875,
+          "astra_c": 76.5625
+        },
+        "return_ratio": {
+          "astra_a": 2.0677400078952632,
+          "astra_b": 1.8715370347337512,
+          "astra_c": 1.8393213858891093
+        }
+      },
+      {
+        "seed": 3012,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 100.0,
+          "astra_b": 75.0,
+          "astra_c": 56.25
+        },
+        "return_ratio": {
+          "astra_a": 1.4047929786876265,
+          "astra_b": 1.0360137887639473,
+          "astra_c": 0.8703715155164278
+        }
+      },
+      {
+        "seed": 3013,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 3.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 79.3103448275862,
+          "astra_b": 70.6896551724138,
+          "astra_c": 75.86206896551724
+        },
+        "return_ratio": {
+          "astra_a": 1.424340347497701,
+          "astra_b": 1.325603332408269,
+          "astra_c": 1.4173370662400488
+        }
+      },
+      {
+        "seed": 3014,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 1.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 86.79245283018868,
+          "astra_b": 92.45283018867924,
+          "astra_c": 84.90566037735849
+        },
+        "return_ratio": {
+          "astra_a": 1.5941919516241236,
+          "astra_b": 1.8881928613474608,
+          "astra_c": 1.5822785893936961
+        }
+      },
+      {
+        "seed": 3015,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 95.0,
+          "astra_b": 91.66666666666667,
+          "astra_c": 65.0
+        },
+        "return_ratio": {
+          "astra_a": 3.343764675827282,
+          "astra_b": 2.551564062703831,
+          "astra_c": 1.7367447384441448
+        }
+      },
+      {
+        "seed": 3016,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 61.29032258064516,
+          "astra_b": 98.38709677419355,
+          "astra_c": 67.74193548387096
+        },
+        "return_ratio": {
+          "astra_a": 1.2237270593197294,
+          "astra_b": 2.389352805047921,
+          "astra_c": 1.264929825242934
+        }
+      },
+      {
+        "seed": 3017,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 1.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 90.47619047619048,
+          "astra_b": 95.23809523809524,
+          "astra_c": 58.73015873015873
+        },
+        "return_ratio": {
+          "astra_a": 1.1329478763868548,
+          "astra_b": 1.1739845536250513,
+          "astra_c": 0.856610279320191
+        }
+      },
+      {
+        "seed": 3018,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 71.9298245614035,
+          "astra_b": 91.2280701754386,
+          "astra_c": 87.71929824561404
+        },
+        "return_ratio": {
+          "astra_a": 1.8255059390469113,
+          "astra_b": 2.7499235081354563,
+          "astra_c": 2.64623496115306
+        }
+      },
+      {
+        "seed": 3019,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 90.56603773584905,
+          "astra_b": 100.0,
+          "astra_c": 98.11320754716981
+        },
+        "return_ratio": {
+          "astra_a": 1.7520349415936252,
+          "astra_b": 2.1272551425050983,
+          "astra_c": 1.9839938015528402
+        }
+      },
+      {
+        "seed": 3020,
+        "order": [
+          "astra_b",
+          "astra_a",
+          "astra_c"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 3.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 94.23076923076923,
+          "astra_b": 90.38461538461539,
+          "astra_c": 98.07692307692308
+        },
+        "return_ratio": {
+          "astra_a": 1.7006968856827542,
+          "astra_b": 1.3995774003391563,
+          "astra_c": 1.8773779979004603
+        }
+      },
+      {
+        "seed": 3001,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 96.55172413793103,
+          "astra_b": 94.82758620689656,
+          "astra_c": 87.93103448275862
+        },
+        "return_ratio": {
+          "astra_a": 1.2364105258642875,
+          "astra_b": 1.1688028116153384,
+          "astra_c": 1.0588586793343056
+        }
+      },
+      {
+        "seed": 3002,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 100.0,
+          "astra_b": 98.18181818181819,
+          "astra_c": 90.9090909090909
+        },
+        "return_ratio": {
+          "astra_a": 3.1327330895795247,
+          "astra_b": 2.8368198193354126,
+          "astra_c": 2.2883756317883646
+        }
+      },
+      {
+        "seed": 3003,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 3.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 78.57142857142857,
+          "astra_b": 75.0,
+          "astra_c": 80.35714285714286
+        },
+        "return_ratio": {
+          "astra_a": 1.2322080466869716,
+          "astra_b": 1.2302807714425679,
+          "astra_c": 1.2383016336180273
+        }
+      },
+      {
+        "seed": 3004,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 40.74074074074074,
+          "astra_b": 79.62962962962963,
+          "astra_c": 94.44444444444444
+        },
+        "return_ratio": {
+          "astra_a": 0.9028171100810634,
+          "astra_b": 1.2806241666137532,
+          "astra_c": 2.0059395305522045
+        }
+      },
+      {
+        "seed": 3005,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 98.36065573770492,
+          "astra_b": 91.80327868852459,
+          "astra_c": 86.88524590163935
+        },
+        "return_ratio": {
+          "astra_a": 1.6524771343472415,
+          "astra_b": 1.3650167373942381,
+          "astra_c": 1.3318938295685179
+        }
+      },
+      {
+        "seed": 3006,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 62.903225806451616,
+          "astra_b": 79.03225806451613,
+          "astra_c": 90.3225806451613
+        },
+        "return_ratio": {
+          "astra_a": 1.4787964221673287,
+          "astra_b": 2.017983581323756,
+          "astra_c": 2.936053646331981
+        }
+      },
+      {
+        "seed": 3007,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 52.94117647058823,
+          "astra_b": 98.03921568627452,
+          "astra_c": 86.27450980392157
+        },
+        "return_ratio": {
+          "astra_a": 1.0386968480933114,
+          "astra_b": 2.2198760845359233,
+          "astra_c": 1.3081771528106982
+        }
+      },
+      {
+        "seed": 3008,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 70.58823529411765,
+          "astra_b": 100.0,
+          "astra_c": 86.27450980392157
+        },
+        "return_ratio": {
+          "astra_a": 1.751139616036635,
+          "astra_b": 3.394727934215451,
+          "astra_c": 2.099654069703441
+        }
+      },
+      {
+        "seed": 3009,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 1.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 50.0,
+          "astra_b": 77.08333333333333,
+          "astra_c": 39.583333333333336
+        },
+        "return_ratio": {
+          "astra_a": 0.7887981311927756,
+          "astra_b": 0.898671558175509,
+          "astra_c": 0.7515926146578035
+        }
+      },
+      {
+        "seed": 3010,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 3.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 85.0,
+          "astra_b": 66.66666666666667,
+          "astra_c": 86.66666666666667
+        },
+        "return_ratio": {
+          "astra_a": 2.4308826608681646,
+          "astra_b": 1.250266838474135,
+          "astra_c": 2.6096475262409062
+        }
+      },
+      {
+        "seed": 3011,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 76.5625,
+          "astra_b": 84.375,
+          "astra_c": 79.6875
+        },
+        "return_ratio": {
+          "astra_a": 1.8000927423061739,
+          "astra_b": 2.0600423964828223,
+          "astra_c": 1.927113470076411
+        }
+      },
+      {
+        "seed": 3012,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 3.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 89.0625,
+          "astra_b": 75.0,
+          "astra_c": 98.4375
+        },
+        "return_ratio": {
+          "astra_a": 1.2603326227400693,
+          "astra_b": 1.046033696224092,
+          "astra_c": 1.4490764999755903
+        }
+      },
+      {
+        "seed": 3013,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 3.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 79.3103448275862,
+          "astra_b": 63.793103448275865,
+          "astra_c": 81.03448275862068
+        },
+        "return_ratio": {
+          "astra_a": 1.453319348537038,
+          "astra_b": 1.2215270635736868,
+          "astra_c": 1.4798379504927328
+        }
+      },
+      {
+        "seed": 3014,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 67.9245283018868,
+          "astra_b": 94.33962264150944,
+          "astra_c": 90.56603773584905
+        },
+        "return_ratio": {
+          "astra_a": 1.2155659014288007,
+          "astra_b": 1.8731230267030556,
+          "astra_c": 1.7125983303901107
+        }
+      },
+      {
+        "seed": 3015,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 60.0,
+          "astra_b": 90.0,
+          "astra_c": 98.33333333333333
+        },
+        "return_ratio": {
+          "astra_a": 1.5155639866069488,
+          "astra_b": 2.478986661303648,
+          "astra_c": 3.862246977866678
+        }
+      },
+      {
+        "seed": 3016,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 54.83870967741935,
+          "astra_b": 100.0,
+          "astra_c": 83.87096774193549
+        },
+        "return_ratio": {
+          "astra_a": 1.1128639847274866,
+          "astra_b": 3.197991875378067,
+          "astra_c": 1.4114163702252585
+        }
+      },
+      {
+        "seed": 3017,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 77.77777777777777,
+          "astra_b": 95.23809523809524,
+          "astra_c": 80.95238095238095
+        },
+        "return_ratio": {
+          "astra_a": 0.952089369817404,
+          "astra_b": 1.1450207567248627,
+          "astra_c": 0.966350925623492
+        }
+      },
+      {
+        "seed": 3018,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 1.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 75.43859649122807,
+          "astra_b": 87.71929824561404,
+          "astra_c": 73.6842105263158
+        },
+        "return_ratio": {
+          "astra_a": 2.031120168719198,
+          "astra_b": 2.489061936555462,
+          "astra_c": 2.002126200649088
+        }
+      },
+      {
+        "seed": 3019,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 1.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 94.33962264150944,
+          "astra_b": 100.0,
+          "astra_c": 90.56603773584905
+        },
+        "return_ratio": {
+          "astra_a": 1.8684718567900438,
+          "astra_b": 2.2794827094531698,
+          "astra_c": 1.595124372487934
+        }
+      },
+      {
+        "seed": 3020,
+        "order": [
+          "astra_b",
+          "astra_c",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 3.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 92.3076923076923,
+          "astra_b": 86.53846153846153,
+          "astra_c": 94.23076923076923
+        },
+        "return_ratio": {
+          "astra_a": 1.4154862587817285,
+          "astra_b": 1.3617127398993298,
+          "astra_c": 1.4529923824392346
+        }
+      },
+      {
+        "seed": 3001,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 79.3103448275862,
+          "astra_b": 100.0,
+          "astra_c": 96.55172413793103
+        },
+        "return_ratio": {
+          "astra_a": 0.9779770202453462,
+          "astra_b": 1.6421452775156558,
+          "astra_c": 1.1599049927082439
+        }
+      },
+      {
+        "seed": 3002,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 89.0909090909091,
+          "astra_b": 100.0,
+          "astra_c": 98.18181818181819
+        },
+        "return_ratio": {
+          "astra_a": 2.194783310033337,
+          "astra_b": 3.1946265727497583,
+          "astra_c": 2.661908807398645
+        }
+      },
+      {
+        "seed": 3003,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 89.28571428571429,
+          "astra_b": 82.14285714285714,
+          "astra_c": 71.42857142857143
+        },
+        "return_ratio": {
+          "astra_a": 1.367932791633831,
+          "astra_b": 1.3062669059231966,
+          "astra_c": 1.135995505953015
+        }
+      },
+      {
+        "seed": 3004,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 3.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 90.74074074074075,
+          "astra_b": 68.51851851851852,
+          "astra_c": 81.48148148148148
+        },
+        "return_ratio": {
+          "astra_a": 1.6858215865557602,
+          "astra_b": 1.069739083963003,
+          "astra_c": 1.4694374775117998
+        }
+      },
+      {
+        "seed": 3005,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 88.52459016393442,
+          "astra_b": 96.72131147540983,
+          "astra_c": 90.1639344262295
+        },
+        "return_ratio": {
+          "astra_a": 1.324467434566014,
+          "astra_b": 1.5167329133609215,
+          "astra_c": 1.335100819736946
+        }
+      },
+      {
+        "seed": 3006,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 3.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 100.0,
+          "astra_b": 62.903225806451616,
+          "astra_c": 85.48387096774194
+        },
+        "return_ratio": {
+          "astra_a": 3.6123145361353695,
+          "astra_b": 1.4996471888835405,
+          "astra_c": 2.252125594410033
+        }
+      },
+      {
+        "seed": 3007,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 86.27450980392157,
+          "astra_b": 88.23529411764706,
+          "astra_c": 94.11764705882354
+        },
+        "return_ratio": {
+          "astra_a": 1.4839430804678801,
+          "astra_b": 1.4839499707850552,
+          "astra_c": 1.5993713274609458
+        }
+      },
+      {
+        "seed": 3008,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 72.54901960784314,
+          "astra_b": 94.11764705882354,
+          "astra_c": 100.0
+        },
+        "return_ratio": {
+          "astra_a": 1.686424506285639,
+          "astra_b": 2.7091942603641486,
+          "astra_c": 3.6613906563043526
+        }
+      },
+      {
+        "seed": 3009,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 29.166666666666668,
+          "astra_b": 77.08333333333333,
+          "astra_c": 79.16666666666667
+        },
+        "return_ratio": {
+          "astra_a": 0.7108930139219867,
+          "astra_b": 0.8949616413729671,
+          "astra_c": 0.9032265144863916
+        }
+      },
+      {
+        "seed": 3010,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 1.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 85.0,
+          "astra_b": 98.33333333333333,
+          "astra_c": 70.0
+        },
+        "return_ratio": {
+          "astra_a": 2.2695927626103996,
+          "astra_b": 3.9767713618426352,
+          "astra_c": 1.3824270489382835
+        }
+      },
+      {
+        "seed": 3011,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 1.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 84.375,
+          "astra_b": 87.5,
+          "astra_c": 82.8125
+        },
+        "return_ratio": {
+          "astra_a": 2.0474010523412702,
+          "astra_b": 2.1661728521909356,
+          "astra_c": 2.0452152540814725
+        }
+      },
+      {
+        "seed": 3012,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 3.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 93.75,
+          "astra_b": 70.3125,
+          "astra_c": 89.0625
+        },
+        "return_ratio": {
+          "astra_a": 1.3476639924492686,
+          "astra_b": 0.987828513775203,
+          "astra_c": 1.152603700509349
+        }
+      },
+      {
+        "seed": 3013,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 1.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 74.13793103448276,
+          "astra_b": 77.58620689655173,
+          "astra_c": 72.41379310344827
+        },
+        "return_ratio": {
+          "astra_a": 1.3113712174390955,
+          "astra_b": 1.333274292461814,
+          "astra_c": 1.3108096489652883
+        }
+      },
+      {
+        "seed": 3014,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 3.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 81.13207547169812,
+          "astra_b": 73.58490566037736,
+          "astra_c": 94.33962264150944
+        },
+        "return_ratio": {
+          "astra_a": 1.5306812222400599,
+          "astra_b": 1.3731123240755605,
+          "astra_c": 1.861829079038904
+        }
+      },
+      {
+        "seed": 3015,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 3.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 95.0,
+          "astra_b": 78.33333333333333,
+          "astra_c": 91.66666666666667
+        },
+        "return_ratio": {
+          "astra_a": 3.5634050093490455,
+          "astra_b": 1.942578379788668,
+          "astra_c": 2.6585261121015784
+        }
+      },
+      {
+        "seed": 3016,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 59.67741935483871,
+          "astra_b": 75.80645161290323,
+          "astra_c": 93.54838709677419
+        },
+        "return_ratio": {
+          "astra_a": 1.187251724539799,
+          "astra_b": 1.3402831963505797,
+          "astra_c": 1.8628664820498022
+        }
+      },
+      {
+        "seed": 3017,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 3.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 93.65079365079364,
+          "astra_b": 79.36507936507937,
+          "astra_c": 98.41269841269842
+        },
+        "return_ratio": {
+          "astra_a": 1.1588184471441065,
+          "astra_b": 0.9555495263884353,
+          "astra_c": 1.2671061227070142
+        }
+      },
+      {
+        "seed": 3018,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 73.6842105263158,
+          "astra_b": 77.19298245614036,
+          "astra_c": 92.98245614035088
+        },
+        "return_ratio": {
+          "astra_a": 2.0620073104367687,
+          "astra_b": 2.0972200670942924,
+          "astra_c": 3.077502649896736
+        }
+      },
+      {
+        "seed": 3019,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 92.45283018867924,
+          "astra_b": 98.11320754716981,
+          "astra_c": 96.22641509433963
+        },
+        "return_ratio": {
+          "astra_a": 1.836496047951876,
+          "astra_b": 2.053912769769657,
+          "astra_c": 1.9481165221976509
+        }
+      },
+      {
+        "seed": 3020,
+        "order": [
+          "astra_c",
+          "astra_a",
+          "astra_b"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 98.07692307692308,
+          "astra_b": 88.46153846153847,
+          "astra_c": 84.61538461538461
+        },
+        "return_ratio": {
+          "astra_a": 1.958866786896719,
+          "astra_b": 1.431602917821862,
+          "astra_c": 1.391087723076095
+        }
+      },
+      {
+        "seed": 3001,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 3.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 96.55172413793103,
+          "astra_b": 93.10344827586206,
+          "astra_c": 94.82758620689656
+        },
+        "return_ratio": {
+          "astra_a": 1.2062148816161962,
+          "astra_b": 1.1611971347688084,
+          "astra_c": 1.196194614823711
+        }
+      },
+      {
+        "seed": 3002,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 3.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 100.0,
+          "astra_b": 96.36363636363636,
+          "astra_c": 98.18181818181819
+        },
+        "return_ratio": {
+          "astra_a": 2.8746445854392944,
+          "astra_b": 2.46245456500699,
+          "astra_c": 2.7132156683514355
+        }
+      },
+      {
+        "seed": 3003,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 67.85714285714286,
+          "astra_b": 89.28571428571429,
+          "astra_c": 82.14285714285714
+        },
+        "return_ratio": {
+          "astra_a": 1.1195046431385913,
+          "astra_b": 1.4445712018913335,
+          "astra_c": 1.2779914165832464
+        }
+      },
+      {
+        "seed": 3004,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 64.81481481481481,
+          "astra_b": 98.14814814814815,
+          "astra_c": 81.48148148148148
+        },
+        "return_ratio": {
+          "astra_a": 1.0315313670709252,
+          "astra_b": 2.2737737316655027,
+          "astra_c": 1.3610932969289056
+        }
+      },
+      {
+        "seed": 3005,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 96.72131147540983,
+          "astra_b": 93.44262295081967,
+          "astra_c": 90.1639344262295
+        },
+        "return_ratio": {
+          "astra_a": 1.6197314109491552,
+          "astra_b": 1.4297058435910277,
+          "astra_c": 1.377190226416089
+        }
+      },
+      {
+        "seed": 3006,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 58.064516129032256,
+          "astra_b": 100.0,
+          "astra_c": 85.48387096774194
+        },
+        "return_ratio": {
+          "astra_a": 1.4113272468567015,
+          "astra_b": 3.63110662089467,
+          "astra_c": 2.315899774137411
+        }
+      },
+      {
+        "seed": 3007,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 88.23529411764706,
+          "astra_b": 94.11764705882354,
+          "astra_c": 92.15686274509804
+        },
+        "return_ratio": {
+          "astra_a": 1.429809165775519,
+          "astra_b": 1.501551975040515,
+          "astra_c": 1.4769058617306272
+        }
+      },
+      {
+        "seed": 3008,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 78.43137254901961,
+          "astra_b": 86.27450980392157,
+          "astra_c": 98.03921568627452
+        },
+        "return_ratio": {
+          "astra_a": 2.048556284537989,
+          "astra_b": 2.273538946742696,
+          "astra_c": 2.923168523370247
+        }
+      },
+      {
+        "seed": 3009,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 3.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 45.833333333333336,
+          "astra_b": 29.166666666666668,
+          "astra_c": 72.91666666666667
+        },
+        "return_ratio": {
+          "astra_a": 0.7678004410719512,
+          "astra_b": 0.7177594171997157,
+          "astra_c": 0.8856907688448514
+        }
+      },
+      {
+        "seed": 3010,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 88.33333333333333,
+          "astra_b": 83.33333333333333,
+          "astra_c": 73.33333333333333
+        },
+        "return_ratio": {
+          "astra_a": 2.9734664841212317,
+          "astra_b": 2.2675104024053048,
+          "astra_c": 1.6368927008670908
+        }
+      },
+      {
+        "seed": 3011,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 75.0,
+          "astra_b": 85.9375,
+          "astra_c": 82.8125
+        },
+        "return_ratio": {
+          "astra_a": 1.7516428637093677,
+          "astra_b": 2.10222392264805,
+          "astra_c": 2.016651975708546
+        }
+      },
+      {
+        "seed": 3012,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 1.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 90.625,
+          "astra_b": 100.0,
+          "astra_c": 84.375
+        },
+        "return_ratio": {
+          "astra_a": 1.2390180794454118,
+          "astra_b": 1.4779000070516888,
+          "astra_c": 1.1366885811459537
+        }
+      },
+      {
+        "seed": 3013,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 86.20689655172414,
+          "astra_b": 77.58620689655173,
+          "astra_c": 65.51724137931035
+        },
+        "return_ratio": {
+          "astra_a": 1.5477711390807036,
+          "astra_b": 1.3767700017957132,
+          "astra_c": 1.2101033351290464
+        }
+      },
+      {
+        "seed": 3014,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 66.0377358490566,
+          "astra_b": 83.01886792452831,
+          "astra_c": 90.56603773584905
+        },
+        "return_ratio": {
+          "astra_a": 1.169990635200942,
+          "astra_b": 1.5468245304222186,
+          "astra_c": 1.8183121956440307
+        }
+      },
+      {
+        "seed": 3015,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 1.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 63.333333333333336,
+          "astra_b": 98.33333333333333,
+          "astra_c": 90.0
+        },
+        "return_ratio": {
+          "astra_a": 1.583585087185285,
+          "astra_b": 4.02746390833587,
+          "astra_c": 2.7756470952732966
+        }
+      },
+      {
+        "seed": 3016,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 48.38709677419355,
+          "astra_b": 83.87096774193549,
+          "astra_c": 96.7741935483871
+        },
+        "return_ratio": {
+          "astra_a": 1.0667645247040674,
+          "astra_b": 1.4292786068271242,
+          "astra_c": 1.869322892676186
+        }
+      },
+      {
+        "seed": 3017,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 3.0,
+          "astra_b": 2.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 80.95238095238095,
+          "astra_b": 90.47619047619048,
+          "astra_c": 96.82539682539682
+        },
+        "return_ratio": {
+          "astra_a": 0.9846634671106007,
+          "astra_b": 1.059846010388899,
+          "astra_c": 1.2429039922452032
+        }
+      },
+      {
+        "seed": 3018,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 2.0,
+          "astra_b": 3.0,
+          "astra_c": 1.0
+        },
+        "percentile": {
+          "astra_a": 77.19298245614036,
+          "astra_b": 70.17543859649123,
+          "astra_c": 94.73684210526316
+        },
+        "return_ratio": {
+          "astra_a": 2.1328554413034215,
+          "astra_b": 1.9697193294941702,
+          "astra_c": 2.9080802727481343
+        }
+      },
+      {
+        "seed": 3019,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 3.0,
+          "astra_c": 2.0
+        },
+        "percentile": {
+          "astra_a": 100.0,
+          "astra_b": 92.45283018867924,
+          "astra_c": 98.11320754716981
+        },
+        "return_ratio": {
+          "astra_a": 2.0781588136860853,
+          "astra_b": 1.7108986672262487,
+          "astra_c": 2.061123576159653
+        }
+      },
+      {
+        "seed": 3020,
+        "order": [
+          "astra_c",
+          "astra_b",
+          "astra_a"
+        ],
+        "rank": {
+          "astra_a": 1.0,
+          "astra_b": 2.0,
+          "astra_c": 3.0
+        },
+        "percentile": {
+          "astra_a": 98.07692307692308,
+          "astra_b": 82.6923076923077,
+          "astra_c": 76.92307692307692
+        },
+        "return_ratio": {
+          "astra_a": 1.7801421226884875,
+          "astra_b": 1.3335398777960217,
+          "astra_c": 1.3162041398616457
+        }
+      }
+    ],
+    "diagnostics": {
+      "worlds": 120,
+      "quality_pass_share": 0.7583333333333333,
+      "failed_quality_checks": {
+        "median_abs_log_dev": 12,
+        "value_crossings": 17
+      },
+      "all_accounts_skipped": 0,
+      "all_accounts_bot_errors": 0,
+      "all_accounts_disabled": 0,
+      "audits": 720,
+      "wall_seconds": 168.124205
+    },
+    "independent_world_seeds": 20,
+    "note": "Six seat orders per seed are correlated, not independent worlds."
+  },
+  "submission_commits": {
+    "astra_a": "59dffa82f13c7dcacfaa6872b0007c9577a53a1e",
+    "astra_b": "28887a11c2ea57c660beb9cd17c6e3a0455cf134",
+    "astra_c": "d70bab66bd55fe31d505097a502da2fb7f2ff705"
+  },
+  "integration_commit": "6f92e43e30f70bd50e14f2f09c89a38b06e95dd1",
+  "engine_fix_commit": "c006ce5",
+  "raw_reports": "runs/astra-v5-tournament-20261018"
+}

@@ -1,7 +1,10 @@
 //! Scenario TOML.
 
 use anyhow::{bail, Context, Result};
-use bot_api::{ComboRule, Money, NewsLayerRules, Price, Qty, Rules, StockInfo, Tick};
+use bot_api::{
+    ComboRule, DragonModel, DragonRules, Money, NewsLayerRules, Price, Qty, Rules, StockInfo, Tick,
+    TrendRules,
+};
 use serde::Deserialize;
 use std::collections::BTreeMap;
 use std::path::Path;
@@ -112,7 +115,8 @@ impl Default for RulesCfg {
 #[derive(Debug, Clone, Deserialize)]
 #[serde(deny_unknown_fields, default)]
 pub struct ScheduleCfg {
-    /// 0 = number of CPUs.
+    /// 0 = available logical CPUs (half on Windows). Explicit values are also
+    /// capped to half the available CPUs on Windows; Linux has no such cap.
     pub threads: usize,
     pub max_tick_skew: Tick,
     pub skip_decision_lag: Tick,
@@ -136,17 +140,93 @@ impl Default for ScheduleCfg {
     }
 }
 
+impl ScheduleCfg {
+    pub fn worker_threads(&self, accounts: usize) -> usize {
+        let cpus = std::thread::available_parallelism()
+            .map(|n| n.get())
+            .unwrap_or(1);
+        worker_threads(self.threads, accounts, cpus, cfg!(windows))
+    }
+}
+
+fn worker_threads(requested: usize, accounts: usize, cpus: usize, windows: bool) -> usize {
+    let budget = if windows {
+        (cpus / 2).max(1)
+    } else {
+        cpus.max(1)
+    };
+    let requested = if requested == 0 { budget } else { requested };
+    let requested = if windows {
+        requested.min(budget)
+    } else {
+        requested
+    };
+    requested.min(accounts.max(1))
+}
+
+#[cfg(test)]
+mod thread_tests {
+    use super::worker_threads;
+
+    #[test]
+    fn platform_cpu_budgets_apply_to_auto_and_explicit_threads() {
+        assert_eq!(worker_threads(0, 100, 20, true), 10);
+        assert_eq!(worker_threads(40, 100, 20, true), 10);
+        assert_eq!(worker_threads(4, 100, 20, true), 4);
+        assert_eq!(worker_threads(0, 100, 7, true), 3);
+        assert_eq!(worker_threads(0, 100, 1, true), 1);
+        assert_eq!(worker_threads(0, 100, 20, false), 20);
+        assert_eq!(worker_threads(40, 100, 20, false), 40);
+        assert_eq!(worker_threads(0, 2, 20, false), 2);
+    }
+}
+
 #[derive(Debug, Clone, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct WorldCfg {
     #[serde(default = "default_dividend_period")]
     pub dividend_period: Tick,
+    /// Dividend/news rate units per cent. Integer rates retain sub-cent precision;
+    /// payments round the account/stock total, without carrying a remainder.
+    #[serde(default = "one_qty")]
+    pub dividend_scale: i64,
+    /// Defaults to the ordinary period for legacy scenarios.
+    pub combo_period: Option<Tick>,
+    /// Combination reward rate units per cent; legacy scenarios use integer cents.
+    #[serde(default = "one_qty")]
+    pub combo_scale: i64,
     #[serde(default)]
     pub min_dividend: Money,
     pub sectors: Vec<String>,
     #[serde(default)]
     pub seasons: SeasonsCfg,
     pub news: NewsCfg,
+    #[serde(default)]
+    pub dragon: DragonCfg,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(deny_unknown_fields, default)]
+pub struct DragonCfg {
+    pub model: DragonModel,
+    pub trend: TrendRules,
+    pub enabled: bool,
+    pub probability: f64,
+    pub candidates: usize,
+    pub peak_extra: (f64, f64),
+}
+
+impl Default for DragonCfg {
+    fn default() -> Self {
+        Self {
+            model: DragonModel::Pulses,
+            trend: TrendRules::default(),
+            enabled: false,
+            probability: 0.5,
+            candidates: 3,
+            peak_extra: (2.0, 4.0),
+        }
+    }
 }
 fn default_dividend_period() -> Tick {
     50
@@ -241,10 +321,18 @@ fn one_qty() -> Qty {
 pub struct ScoringCfg {
     pub terminal_ratio: f64,
     /// Range the number of terminal payments is drawn from. Default: fixed at
-    /// `terminal_ratio * ticks / dividend_period`.
+    /// `terminal_ratio * ticks / terminal_payment_ticks`.
     pub terminal_payments: Option<(i64, i64)>,
+    /// Random terminal duration as fractions of the game length, rounded to units.
+    /// Mutually exclusive with a fixed terminal_payments range.
+    pub terminal_ratio_range: Option<(f64, f64)>,
+    /// Length of each hidden terminal-payment unit. Defaults to the ordinary period.
+    pub terminal_payment_ticks: Option<Tick>,
     /// (tick, width) of the private ranges for the number of terminal payments.
     pub terminal_hints: Vec<(Tick, i64)>,
+    /// (game-time fraction, width as fraction of game duration). Resolved once.
+    /// Mutually exclusive with absolute terminal_hints.
+    pub terminal_hint_fractions: Option<Vec<(f64, f64)>>,
     pub objective: String,
     pub series_seeds: u32,
 }
@@ -253,7 +341,10 @@ impl Default for ScoringCfg {
         Self {
             terminal_ratio: 0.5,
             terminal_payments: None,
+            terminal_ratio_range: None,
+            terminal_payment_ticks: None,
             terminal_hints: Vec::new(),
+            terminal_hint_fractions: None,
             objective: "rank_percentile".into(),
             series_seeds: 20,
         }
@@ -279,11 +370,23 @@ pub struct BotGroupCfg {
     /// Per-stock overrides.
     #[serde(default)]
     pub shares: BTreeMap<String, Qty>,
+    /// Multiply this account's cumulative private-news disclosure probabilities.
+    /// Public disclosure, timing and range precision are unchanged.
+    #[serde(default = "one_news_multiplier")]
+    pub news_multiplier: f64,
+    #[serde(default)]
+    pub forecast_access: bot_api::ForecastAccess,
+    /// Share recent realized/marked P&L only with accounts in this group.
+    #[serde(default)]
+    pub social_group: Option<String>,
     #[serde(default)]
     pub params: BTreeMap<String, f64>,
 }
 fn one_usize() -> usize {
     1
+}
+fn one_news_multiplier() -> f64 {
+    1.0
 }
 
 pub const MAX_CASH: Money = 1_000_000_000_000; // 10 billion in cents per account
@@ -307,40 +410,230 @@ impl Config {
             .with_context(|| format!("unknown stock {name}"))
     }
 
+    /// Reserve each anonymous group's maximum population so its names stay
+    /// stable across worlds even when an earlier group's actual count varies.
+    pub(crate) fn auto_owner_offsets(&self) -> Result<Vec<usize>> {
+        let mut next = BTreeMap::<&str, usize>::new();
+        self.bots
+            .iter()
+            .map(|g| {
+                if g.owner.is_some() {
+                    return Ok(0);
+                }
+                let slot = next.entry(&g.bot).or_default();
+                let base = *slot;
+                *slot = slot
+                    .checked_add(g.count_max.unwrap_or(g.count))
+                    .context("bot population overflow")?;
+                Ok(base)
+            })
+            .collect()
+    }
+
     pub fn validate(&self) -> Result<()> {
-        if self.ticks == 0 || self.stocks.is_empty() || self.bots.is_empty() {
+        if self.ticks == 0
+            || self.ticks == Tick::MAX
+            || self.stocks.is_empty()
+            || self.bots.is_empty()
+        {
             bail!("ticks, stocks and bots must be non-empty");
+        }
+        if !(1..=MAX_PRICE).contains(&self.market.tick_size) {
+            bail!("market.tick_size must be in 1..={MAX_PRICE}");
+        }
+        if self
+            .market
+            .opening_spread
+            .is_some_and(|x| !x.is_finite() || !(0.0..=1.0).contains(&x))
+        {
+            bail!("market.opening_spread must be finite and in 0..=1");
+        }
+        if !(0..=10_000).contains(&self.fees.trade_fee_bps) {
+            bail!("fees.trade_fee_bps must be in 0..=10000");
+        }
+        for (name, value) in [
+            ("fees.idle_rate", self.fees.idle_rate),
+            ("fees.credit_ratio", self.fees.credit_ratio),
+            ("margin.loan_rate", self.margin.loan_rate),
+            (
+                "world.seasons.turbulent_rate_mult",
+                self.world.seasons.turbulent_rate_mult,
+            ),
+            (
+                "world.seasons.turbulent_size_mult",
+                self.world.seasons.turbulent_size_mult,
+            ),
+        ] {
+            if !value.is_finite() || value < 0.0 {
+                bail!("{name} must be finite and non-negative");
+            }
         }
         if !matches!(self.fees.credit_side.as_str(), "both" | "maker" | "taker") {
             bail!("fees.credit_side must be both, maker or taker");
         }
-        if self.margin.max_leverage < 1.0
+        if !self.margin.max_leverage.is_finite()
+            || !self.margin.maintenance_leverage.is_finite()
+            || self.margin.max_leverage < 1.0
             || self.margin.maintenance_leverage < self.margin.max_leverage
         {
             bail!("margin: need 1 <= max_leverage <= maintenance_leverage");
         }
         if self.world.dividend_period == 0
+            || self.combo_period() == 0
+            || self.terminal_payment_ticks() == 0
             || self.fees.idle_period == 0
             || self.margin.interest_period == 0
+            || self.margin.mark_window == 0
+            || self.schedule.max_tick_skew == 0
         {
             bail!("periods must be positive");
         }
+        if self.world.dividend_scale <= 0
+            || self.world.combo_scale <= 0
+            || !self
+                .terminal_payment_ticks()
+                .is_multiple_of(self.world.dividend_period)
+            || !self
+                .terminal_payment_ticks()
+                .is_multiple_of(self.combo_period())
+        {
+            bail!("dividend_scale and combo_scale must be positive; terminal_payment_ticks must be a multiple of ordinary and combo periods");
+        }
+        for p in [
+            self.world.seasons.calm_to_turbulent,
+            self.world.seasons.turbulent_to_calm,
+        ] {
+            if !p.is_finite() || !(0.0..=1.0).contains(&p) {
+                bail!("season transition probabilities must be finite and in 0..=1");
+            }
+        }
+        for layer in [
+            &self.world.news.market,
+            &self.world.news.sector,
+            &self.world.news.stock,
+        ] {
+            if [layer.events_per_1000_ticks, layer.change_sd]
+                .iter()
+                .any(|x| !x.is_finite() || *x < 0.0)
+            {
+                bail!("news frequency and change_sd must be finite and non-negative");
+            }
+        }
         let st = &self.world.news.disclosure.stages;
+        let dragon = &self.world.dragon;
+        let trend = &dragon.trend;
+        if !trend.events_per_1000_ticks.is_finite()
+            || !(1.0..=100.0).contains(&trend.events_per_1000_ticks)
+            || !trend.growth_log_bias.0.is_finite()
+            || !trend.growth_log_bias.1.is_finite()
+            || !(0.0..=3.0).contains(&trend.growth_log_bias.0)
+            || trend.growth_log_bias.1 < trend.growth_log_bias.0
+            || trend.growth_log_bias.1 > 3.0
+            || !trend.step_sd.is_finite()
+            || !(0.0..=0.1).contains(&trend.step_sd)
+            || !trend.max_step.is_finite()
+            || !(0.005..=if dragon.model == DragonModel::Growth {
+                0.16
+            } else {
+                0.1
+            })
+                .contains(&trend.max_step)
+        {
+            bail!("world.dragon.trend: finite rate in 1..=100, 0 <= growth_log_bias min <= max <= 3, step_sd in 0..=0.1, max_step in 0.005..=0.1 (growth: <=0.16)");
+        }
+        if !dragon.probability.is_finite()
+            || !(0.0..=1.0).contains(&dragon.probability)
+            || !dragon.peak_extra.0.is_finite()
+            || !dragon.peak_extra.1.is_finite()
+            || dragon.peak_extra.0 < 1.0
+            || dragon.peak_extra.1 < dragon.peak_extra.0
+            || dragon.peak_extra.1 > 10.0
+            || (dragon.enabled
+                && (dragon.candidates < 2
+                    || dragon.candidates > self.stocks.len()
+                    || self.ticks as u64 <= self.world.news.disclosure.lead_ticks as u64 * 3 + 30))
+        {
+            bail!("world.dragon: finite probability in 0..=1, 1 <= peak_extra min <= max <= 10; when enabled need 2..=stocks candidates and ticks > 3*news lead + 30");
+        }
         if st.is_empty()
-            || st.last().unwrap().1 < 1.0
+            || st.last().unwrap().1 != 1.0
             || st.last().unwrap().0 > self.world.news.disclosure.lead_ticks
+            || st
+                .iter()
+                .any(|(_, f)| !f.is_finite() || !(0.0..=1.0).contains(f))
+            || st.windows(2).any(|w| w[0].0 > w[1].0 || w[0].1 > w[1].1)
+            || self
+                .ticks
+                .checked_add(self.world.news.disclosure.lead_ticks)
+                .is_none()
         {
             bail!("news.disclosure.stages must end with fraction 1.0 no later than lead_ticks");
         }
+        if !self.scoring.terminal_ratio.is_finite()
+            || self.scoring.terminal_ratio < 0.0
+            || self.scoring.terminal_ratio * self.ticks as f64 > Tick::MAX as f64
+        {
+            bail!("scoring.terminal_ratio must produce a finite, non-negative tick count");
+        }
+        if let Some((lo, hi)) = self.scoring.terminal_ratio_range {
+            if self.scoring.terminal_payments.is_some()
+                || !lo.is_finite()
+                || !hi.is_finite()
+                || lo < 0.0
+                || hi < lo
+                || hi * self.ticks as f64 > Tick::MAX as f64
+            {
+                bail!("terminal_ratio_range requires finite 0 <= min <= max and cannot coexist with terminal_payments");
+            }
+        }
+        if let Some(hints) = &self.scoring.terminal_hint_fractions {
+            if !self.scoring.terminal_hints.is_empty()
+                || hints.iter().any(|&(at, width)| {
+                    !at.is_finite()
+                        || !(0.0..1.0).contains(&at)
+                        || !width.is_finite()
+                        || width < 0.0
+                        || width * self.ticks as f64 > Tick::MAX as f64
+                })
+                || hints.windows(2).any(|w| w[0].0 > w[1].0)
+            {
+                bail!("terminal_hint_fractions requires ordered times in [0,1), finite nonnegative widths, and no absolute terminal_hints");
+            }
+        }
         let (lo, hi) = self.terminal_payments_range();
-        if lo < 0 || hi < lo || self.scoring.terminal_hints.iter().any(|h| h.1 < 0) {
+        if lo < 0
+            || hi < lo
+            || hi > i64::MAX / 2
+            || self
+                .scoring
+                .terminal_hints
+                .iter()
+                .any(|h| h.1 < 0 || h.1 > i64::MAX / 2)
+            || self
+                .scoring
+                .terminal_hints
+                .windows(2)
+                .any(|w| w[0].0 > w[1].0)
+        {
             bail!("scoring.terminal_payments must be 0 <= min <= max; hint widths >= 0");
         }
         let d = &self.world.news.disclosure;
-        if d.range_widths.len() != d.stages.len() - 1 || d.range_widths.iter().any(|w| *w < 0.0) {
+        if d.range_widths.len() != d.stages.len() - 1
+            || d.range_widths.iter().any(|w| !w.is_finite() || *w < 0.0)
+        {
             bail!("news.disclosure.range_widths needs one non-negative width per private stage");
         }
+        let mut names = std::collections::HashSet::new();
+        if self.world.min_dividend < 0 {
+            bail!("world.min_dividend must be non-negative");
+        }
         for s in &self.stocks {
+            if s.name.is_empty() || !names.insert(&s.name) {
+                bail!("stock names must be non-empty and unique");
+            }
+            if !s.market_loading.is_finite() || !s.sector_loading.is_finite() {
+                bail!("stock loadings must be finite");
+            }
             if !self.world.sectors.contains(&s.sector) {
                 bail!("stock {} has unknown sector {}", s.name, s.sector);
             }
@@ -360,6 +653,27 @@ impl Config {
         }
         let mut owners = std::collections::HashSet::new();
         for g in &self.bots {
+            if g.social_group
+                .as_ref()
+                .is_some_and(|s| s.trim().is_empty() || s.len() > 64)
+            {
+                bail!("social_group must be a nonempty name of at most 64 bytes");
+            }
+            let f = g.forecast_access;
+            if !f.coverage.is_finite()
+                || !(0.0..=1.0).contains(&f.coverage)
+                || !f.range_width.is_finite()
+                || !(0.0..=100.0).contains(&f.range_width)
+                || f.horizon > 100_000
+            {
+                bail!("forecast_access requires horizon <= 100000, coverage in 0..=1, width in 0..=100");
+            }
+            if !g.news_multiplier.is_finite() || g.news_multiplier < 0.0 {
+                bail!(
+                    "bot group {}: news_multiplier must be finite and non-negative",
+                    g.bot
+                );
+            }
             if let Some(o) = &g.owner {
                 if g.count != 1 || g.count_max.is_some() || !owners.insert(o.clone()) {
                     bail!("owner {o}: each owner has exactly one account (count = 1, owner names unique)");
@@ -378,14 +692,71 @@ impl Config {
                 }
             }
         }
+        let offsets = self.auto_owner_offsets()?;
+        let mut max_accounts = 0usize;
+        for (g, base) in self.bots.iter().zip(offsets) {
+            let count = g.count_max.unwrap_or(g.count);
+            max_accounts = max_accounts
+                .checked_add(count)
+                .context("bot population overflow")?;
+            if g.owner.is_none() {
+                for owner in &owners {
+                    if let Some((bot, suffix)) = owner.rsplit_once('#') {
+                        if let Ok(i) = suffix.parse::<usize>() {
+                            if bot == g.bot
+                                && suffix == i.to_string()
+                                && (base..base + count).contains(&i)
+                            {
+                                bail!("owner {owner} conflicts with an automatically generated account");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if max_accounts == 0 || max_accounts > u32::MAX as usize {
+            bail!("total bot population must be in 1..=u32::MAX");
+        }
         Ok(())
     }
 
     pub fn terminal_payments_range(&self) -> (i64, i64) {
+        if let Some((lo, hi)) = self.scoring.terminal_ratio_range {
+            let units = self.ticks as f64 / self.terminal_payment_ticks() as f64;
+            return ((lo * units).round() as i64, (hi * units).round() as i64);
+        }
         self.scoring.terminal_payments.unwrap_or_else(|| {
-            let n = (self.terminal_ticks() / self.world.dividend_period) as i64;
+            let n = (self.terminal_ticks() / self.terminal_payment_ticks()) as i64;
             (n, n)
         })
+    }
+
+    pub fn terminal_hints(&self) -> Vec<(Tick, i64)> {
+        match &self.scoring.terminal_hint_fractions {
+            Some(hints) => hints
+                .iter()
+                .map(|&(at, width)| {
+                    (
+                        (at * self.ticks as f64).floor() as Tick,
+                        (width * self.ticks as f64 / self.terminal_payment_ticks() as f64).round()
+                            as i64,
+                    )
+                })
+                .collect(),
+            None => self.scoring.terminal_hints.clone(),
+        }
+    }
+
+    pub fn combo_period(&self) -> Tick {
+        self.world
+            .combo_period
+            .unwrap_or(self.world.dividend_period)
+    }
+
+    pub fn terminal_payment_ticks(&self) -> Tick {
+        self.scoring
+            .terminal_payment_ticks
+            .unwrap_or(self.world.dividend_period)
     }
 
     pub fn terminal_ticks(&self) -> Tick {
@@ -431,6 +802,10 @@ impl Config {
             ticks_total: self.ticks,
             tick_size: self.market.tick_size,
             dividend_period: self.world.dividend_period,
+            dividend_scale: self.world.dividend_scale,
+            combo_period: self.combo_period(),
+            combo_scale: self.world.combo_scale,
+            terminal_payment_ticks: self.terminal_payment_ticks(),
             min_dividend: self.world.min_dividend,
             trade_fee_bps: self.fees.trade_fee_bps,
             idle_period: self.fees.idle_period,
@@ -451,6 +826,15 @@ impl Config {
             news_lead_ticks: self.world.news.disclosure.lead_ticks,
             news_stages: self.world.news.disclosure.stages.clone(),
             news_range_widths: self.world.news.disclosure.range_widths.clone(),
+            dragon: self.world.dragon.enabled.then_some(DragonRules {
+                model: self.world.dragon.model,
+                trend: (self.world.dragon.model != DragonModel::Pulses)
+                    .then(|| self.world.dragon.trend.clone()),
+                probability: self.world.dragon.probability,
+                candidates: self.world.dragon.candidates,
+                divergence_tick: (self.ticks as u64 * 55 / 100) as Tick,
+                peak_extra: self.world.dragon.peak_extra,
+            }),
             season_calm_to_turbulent: self.world.seasons.calm_to_turbulent,
             season_turbulent_to_calm: self.world.seasons.turbulent_to_calm,
             season_turbulent_rate_mult: self.world.seasons.turbulent_rate_mult,
@@ -461,7 +845,7 @@ impl Config {
             terminal_ticks,
             terminal_payments_min: self.terminal_payments_range().0,
             terminal_payments_max: self.terminal_payments_range().1,
-            terminal_hints: self.scoring.terminal_hints.clone(),
+            terminal_hints: self.terminal_hints(),
             objective: self.scoring.objective.clone(),
         }
     }

@@ -3,8 +3,8 @@
 //! What they lean on:
 //! - A share is worth its remaining dividends plus the terminal payments, nothing else,
 //!   so prices far above that are a gift to whoever sells.
-//! - The idle fee is offset by 1% of traded notional, so trading about 20% of equity per
-//!   idle period makes it free, and crossing a spread under ~1.8% to get there still pays.
+//! - The idle fee can be offset by eligible traded notional. The turnover needed
+//!   depends on the scenario fee/credit rates (60% of equity at 0.6% / 1%).
 //! - Private news arrives before the price moves.
 //! - Combo bonuses make a share worth more to the account that completes a set with it.
 
@@ -14,7 +14,8 @@ use std::collections::VecDeque;
 
 /// Dividend payments still to come, in-game and terminal.
 fn payments_left(rules: &Rules, tick: Tick, terminal: f64) -> f64 {
-    payments_after(rules, tick, rules.ticks_total) as f64 + terminal
+    combo_payments_after(rules, tick, rules.ticks_total) as f64
+        + rules.terminal_combo_payments(terminal)
 }
 
 /// Marginal combo value of buying (`buy`) or giving up (`!buy`) one share of `stock`.
@@ -44,7 +45,7 @@ fn combo_adjust(
             have <= partner && have > 0
         };
         if binding {
-            adj += c.bonus as f64 * p / my_units as f64;
+            adj += rules.combo_cents(c.bonus) * p / my_units as f64;
         }
     }
     adj
@@ -727,6 +728,7 @@ pub struct Shark {
     rules: Rules,
     know: Knowledge,
     history: Vec<VecDeque<f64>>,
+    quantile_scratch: Vec<f64>,
     window: usize,
     quantile: f64,
     margin: f64,
@@ -741,6 +743,7 @@ impl Shark {
             rules: s.rules.clone(),
             know: Knowledge::default(),
             history: vec![VecDeque::new(); s.rules.stocks.len()],
+            quantile_scratch: Vec::new(),
             window: jittered(s, "window", 600.0, 0.3).max(2.0) as usize,
             quantile: jittered(s, "quantile", 0.35, 0.15),
             margin: jittered(s, "margin", 0.01, 0.3),
@@ -781,11 +784,10 @@ impl Bot for Shark {
                 h.pop_front();
             }
             let (lo, hi) = if h.len() * 2 >= self.window {
-                let mut xs: Vec<f64> = h.iter().copied().collect();
-                xs.sort_by(f64::total_cmp);
-                let at = |q: f64| xs[((xs.len() - 1) as f64 * q) as usize];
-                let lo = at(self.quantile);
-                (lo, at(1.0 - self.quantile).max(lo + 2.0 * self.margin))
+                self.quantile_scratch.clear();
+                self.quantile_scratch.extend(h.iter().copied());
+                let (lo, hi) = quantile_pair(&mut self.quantile_scratch, self.quantile);
+                (lo, hi.max(lo + 2.0 * self.margin))
             } else {
                 (1.0 - self.margin, 1.0 + self.margin)
             };
@@ -892,7 +894,8 @@ impl Bot for Drift {
                 continue;
             }
             // a holder gets the dividend while the price slides by about as much each period
-            let slide = b.dividend as f64 / now / r.dividend_period as f64 * self.lookback as f64;
+            let slide = r.dividend_cents(b.dividend) / now / r.dividend_period as f64
+                * self.lookback as f64;
             let moved = (now / m[0]).ln() + slide;
             let v = value(r, obs, s, &pending, t_mid);
             if moved > self.trigger && now < v * self.cap {

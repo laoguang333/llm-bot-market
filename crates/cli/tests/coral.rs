@@ -2,7 +2,10 @@ use bot_api::*;
 use market::config::Config;
 
 fn fixture(dividend: Money, history_price: Price) -> (Box<dyn Bot>, Observation) {
-    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../scenarios/baseline.toml");
+    let path = concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../scenarios/baseline-v6-five-swift.toml"
+    );
     let mut cfg = Config::load(std::path::Path::new(path)).unwrap();
     cfg.stocks.truncate(1);
     cfg.combos.clear();
@@ -12,6 +15,8 @@ fn fixture(dividend: Money, history_price: Price) -> (Box<dyn Bot>, Observation)
         owner: "test".into(),
         account_index: 0,
         n_accounts: 10,
+        news_multiplier: 1.0,
+        forecast_access: Default::default(),
         seed: 1,
         cash: 2_000_000,
         shares: vec![100],
@@ -61,6 +66,7 @@ fn fixture(dividend: Money, history_price: Price) -> (Box<dyn Bot>, Observation)
         season_changes: vec![],
         income: vec![],
         terminal_hints: vec![],
+        social: None,
     };
     for tick in (2400..2990).step_by(5) {
         obs.tick = tick;
@@ -129,7 +135,10 @@ fn assert_take_after_cancels(actions: &[Action], side: Side) {
 
 #[test]
 fn pair_quotes_value_only_the_sets_the_order_can_complete() {
-    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../scenarios/baseline.toml");
+    let path = concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../scenarios/baseline-v6-five-swift.toml"
+    );
     let mut cfg = Config::load(std::path::Path::new(path)).unwrap();
     cfg.stocks.truncate(2);
     cfg.combos.truncate(1);
@@ -142,6 +151,8 @@ fn pair_quotes_value_only_the_sets_the_order_can_complete() {
             owner: "pair-test".into(),
             account_index: 0,
             n_accounts: 10,
+            news_multiplier: 1.0,
+            forecast_access: Default::default(),
             seed: 1,
             cash: 4_000_000,
             shares: vec![20, 22],
@@ -200,6 +211,7 @@ fn pair_quotes_value_only_the_sets_the_order_can_complete() {
             season_changes: vec![],
             income: vec![],
             terminal_hints: vec![],
+            social: None,
         };
         bot.on_tick(&obs)
             .into_iter()

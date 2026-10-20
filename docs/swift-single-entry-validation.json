@@ -1,0 +1,130 @@
+{
+  "accounts": 54,
+  "seed": 7,
+  "threads": 4,
+  "ticks": 3000,
+  "swift": [
+    {
+      "name": "swift-standard",
+      "episodes": 70,
+      "closed": 70,
+      "max_buy_orders": 73,
+      "buys_while_held": 1283,
+      "validation": {
+        "cash_error": 0,
+        "fill_count_error": 0,
+        "trade_fee_error": 0,
+        "dividend_error": 0,
+        "frame_count": 3001,
+        "expected_frame_count": 3001,
+        "unknown_inventory": 0,
+        "swift_mismatches": 0
+      },
+      "skipped": 0,
+      "return_pct": 44.55028803974419
+    },
+    {
+      "name": "swift-early-single",
+      "episodes": 89,
+      "closed": 89,
+      "max_buy_orders": 1,
+      "buys_while_held": 0,
+      "validation": {
+        "cash_error": 0,
+        "fill_count_error": 0,
+        "trade_fee_error": 0,
+        "dividend_error": 0,
+        "frame_count": 3001,
+        "expected_frame_count": 3001,
+        "unknown_inventory": 0,
+        "swift_mismatches": 0
+      },
+      "skipped": 0,
+      "return_pct": -3.6266846361185934
+    }
+  ],
+  "timing": {
+    "cpu_budget": 10,
+    "record_including_gate_seconds": 2.5165078999707475,
+    "pack_seconds": 81.09156989998883
+  },
+  "swift_sha256": "c2b75a59419e810cf9cb9bc81fbe29c9fb73c8f693e93bcbb1c196f40e64ab05",
+  "old_T1_round": {
+    "id": 16,
+    "stock": 0,
+    "entry_tick": 50,
+    "entry_receipt_tick": 51,
+    "exit_tick": 89,
+    "exit_receipt_tick": 90,
+    "initial": false,
+    "initial_qty": 0,
+    "buy_qty": 7,
+    "sell_qty": 7,
+    "entry_value": 64388,
+    "exit_value": 64148,
+    "fees": 67,
+    "remaining": 0,
+    "peak_qty": 7,
+    "fill_ids": [
+      76,
+      96,
+      113,
+      135,
+      158,
+      161,
+      164
+    ],
+    "adjustments": [],
+    "closed": true,
+    "adjusted": false,
+    "entry_price": 9198.285714285714,
+    "exit_price": 9164.0,
+    "price_pnl": -307,
+    "holding_ticks": 39,
+    "buy_orders": 4,
+    "sell_orders": 3
+  },
+  "all_account_episode_audit": {
+    "swift-debug-seed7-final": {
+      "accounts": 54,
+      "episodes": 7288,
+      "fifo_profit_errors": 0,
+      "fill_membership_errors": 0,
+      "inventory_errors": 0
+    },
+    "swift-single-entry-seed7": {
+      "accounts": 54,
+      "episodes": 7087,
+      "fifo_profit_errors": 0,
+      "fill_membership_errors": 0,
+      "inventory_errors": 0
+    }
+  },
+  "single_entry_loss_breakdown": {
+    "components": {
+      "trade_pnl_after_fees_cents": 86679,
+      "new_round_price_pnl_after_fees_cents": 167125,
+      "initial_stock_price_pnl_after_fees_cents": -80446,
+      "ordinary_dividends_cents": 79034,
+      "combo_dividends_cents": 1785,
+      "idle_fees_cents": 304739,
+      "interest_cents": 0,
+      "net_profit_cents": -137241
+    },
+    "average_position_value_yuan": 1089.64303,
+    "average_position_equity_ratio": 0.028862513613392603,
+    "median_first_order_qty": 124,
+    "median_first_filled_qty": 8,
+    "median_first_fill_ratio": 0.06962025316455696,
+    "suppressed_rebalance_trims": 0,
+    "rebound_exit_observations": [
+      {
+        "tick": 1450,
+        "stock": 0,
+        "shares": 2,
+        "score": 0.1185685607170257
+      }
+    ],
+    "caveat": "Exact accounting of this recorded path, not a same-parameter controlled return comparison or a rerun with fees removed."
+  }
+}

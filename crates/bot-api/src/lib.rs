@@ -1,6 +1,7 @@
 //! Types shared by the market engine and bots.
 //!
-//! Money and prices are integer cents, quantities integer shares. Stocks are
+//! Money and prices are integer cents, quantities integer shares. Dividend
+//! rates and news changes use `Rules::dividend_scale` units per cent. Stocks are
 //! referred to by index into `Rules::stocks`.
 
 use serde::{Deserialize, Serialize};
@@ -99,6 +100,7 @@ pub struct StockInfo {
     pub name: String,
     pub sector: usize,
     pub shares_outstanding: Qty,
+    /// Rate units per ordinary payment (one tick in per-tick scenarios).
     pub initial_dividend: Money,
     pub initial_price: Price,
     pub market_loading: f64,
@@ -111,7 +113,8 @@ pub struct ComboRule {
     pub a_units: Qty,
     pub b: usize,
     pub b_units: Qty,
-    /// Paid per complete set per dividend period; negative values are charged.
+    /// Rate units per complete set per combo period; divide by Rules::combo_scale
+    /// for cents. Negative values are charged.
     pub bonus: Money,
     pub start_tick: Tick,
     pub end_tick: Tick,
@@ -134,6 +137,55 @@ pub struct NewsLayerRules {
     pub change_sd: f64,
 }
 
+/// Public distribution only. Candidate identities and realized paths remain hidden.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum DragonModel {
+    #[default]
+    Pulses,
+    Trend,
+    /// Persistent, phased business growth; market prices are still endogenous.
+    Growth,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(default, deny_unknown_fields)]
+pub struct TrendRules {
+    pub events_per_1000_ticks: f64,
+    /// Trend: hidden drift amplitude over a full game. Growth: latent log growth
+    /// range near the late peak, before business cycles and disclosure lag.
+    /// Neither is a guaranteed realized dividend or market-price target.
+    pub growth_log_bias: (f64, f64),
+    pub step_sd: f64,
+    pub max_step: f64,
+}
+
+impl Default for TrendRules {
+    fn default() -> Self {
+        Self {
+            events_per_1000_ticks: 20.0,
+            growth_log_bias: (1.0, 1.5),
+            step_sd: 0.018,
+            max_step: 0.04,
+        }
+    }
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct DragonRules {
+    #[serde(default)]
+    pub model: DragonModel,
+    #[serde(default)]
+    pub trend: Option<TrendRules>,
+    pub probability: f64,
+    pub candidates: usize,
+    /// No news depending on the selected winner is disclosed before this tick.
+    pub divergence_tick: Tick,
+    /// Legacy Pulses only: peak additional dividend in initial-rate multiples.
+    /// Trend has no fixed peak and ignores this compatibility field.
+    pub peak_extra: (f64, f64),
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Rules {
     pub stocks: Vec<StockInfo>,
@@ -142,6 +194,14 @@ pub struct Rules {
     pub ticks_total: Tick,
     pub tick_size: Price,
     pub dividend_period: Tick,
+    /// Ordinary dividend/news rate units per cent. No per-account remainder is kept.
+    pub dividend_scale: i64,
+    pub combo_period: Tick,
+    /// Combo rate units per cent. Round each account/rule total, without carry.
+    #[serde(default = "default_combo_scale")]
+    pub combo_scale: i64,
+    /// Duration of one terminal-payment unit used by the hidden range and hints.
+    pub terminal_payment_ticks: Tick,
     pub min_dividend: Money,
     pub trade_fee_bps: i64,
     pub idle_period: Tick,
@@ -163,10 +223,14 @@ pub struct Rules {
     pub news_lead_ticks: Tick,
     /// [offset from first reveal, cumulative fraction informed]
     pub news_stages: Vec<(Tick, f64)>,
-    /// Range width at each private stage, in standard deviations of that stock's change
-    /// for this layer and season: `max(dividend, initial / 2) * loading * change_sd * size_mult`.
+    /// Range width at each private stage, in units of the event's uncertainty scale.
+    /// Normal news uses `max(dividend, initial / 2) * loading * change_sd * size_mult`;
+    /// legacy pulse news uses `max(abs(delta) / 2, initial * news_stock.change_sd)`.
+    /// Trend updates use the same uncertainty formula as ordinary stock news.
     /// The true change sits at a uniformly random position inside each account's range.
     pub news_range_widths: Vec<f64>,
+    #[serde(default)]
+    pub dragon: Option<DragonRules>,
     pub season_calm_to_turbulent: f64,
     pub season_turbulent_to_calm: f64,
     pub season_turbulent_rate_mult: f64,
@@ -178,7 +242,7 @@ pub struct Rules {
     pub decision_budget_us: u64,
     /// Liquidation period length in ticks after trading ends.
     pub terminal_ticks: Tick,
-    /// The number of dividend payments counted in the terminal value is drawn uniformly from
+    /// The number of terminal-payment units (each `terminal_payment_ticks` long) is drawn uniformly from
     /// `terminal_payments_min..=terminal_payments_max` at the start and not announced.
     pub terminal_payments_min: i64,
     pub terminal_payments_max: i64,
@@ -190,21 +254,82 @@ pub struct Rules {
     pub objective: String,
 }
 
+fn default_combo_scale() -> i64 {
+    1
+}
+
+/// Round positive payouts and negative charges symmetrically, halves away from zero.
+fn rounded_combo(amount: i128, scale: i64) -> Money {
+    let magnitude = (amount.abs() + i128::from(scale / 2)) / i128::from(scale);
+    (amount.signum() * magnitude) as Money
+}
+
 impl Rules {
+    /// Cents per share per ordinary payment, before rounding an account's total.
+    pub fn dividend_cents(&self, rate: Money) -> f64 {
+        rate as f64 / self.dividend_scale as f64
+    }
+
+    /// Round the account's whole position once, half up. Ordinary rates are nonnegative.
+    pub fn dividend_payment(&self, shares: Qty, rate: Money) -> Money {
+        ((shares as i128 * rate as i128 + (self.dividend_scale / 2) as i128)
+            / self.dividend_scale as i128) as Money
+    }
+
+    pub fn terminal_dividend_payments(&self, units: f64) -> f64 {
+        units * (self.terminal_payment_ticks / self.dividend_period) as f64
+    }
+
+    pub fn combo_cents(&self, rate: Money) -> f64 {
+        rate as f64 / self.combo_scale as f64
+    }
+
+    /// Round the entire position in this combo, not each individual set.
+    pub fn combo_payment(&self, sets: Qty, rate: Money) -> Money {
+        if sets == 0 || rate == 0 {
+            return 0;
+        }
+        rounded_combo(i128::from(sets) * i128::from(rate), self.combo_scale)
+    }
+
+    pub fn terminal_combo_payments(&self, units: f64) -> f64 {
+        units * (self.terminal_payment_ticks / self.combo_period) as f64
+    }
+
+    /// The final executed tick. Trading and world settlement use 0..ticks_total.
+    pub fn last_tick(&self) -> Tick {
+        self.ticks_total.saturating_sub(1)
+    }
+
     pub fn trade_fee(&self, notional: Money) -> Money {
-        (notional * self.trade_fee_bps + 9_999) / 10_000
+        ((notional as i128 * self.trade_fee_bps as i128 + 9_999) / 10_000) as Money
     }
     /// Cash reserved per share by a buy order at `price` (price plus worst-case fee).
     pub fn buy_reserve_per_share(&self, price: Price) -> Money {
         price + (price * self.trade_fee_bps + 9_999) / 10_000
     }
     /// Value at the end of the game of holding these shares with the given dividends and
-    /// `n` terminal payments.
+    /// `n` terminal-payment units. Ordinary and combo cash flows use their own periods.
     pub fn terminal_value(&self, shares: &[Qty], dividends: &[Money], n: i64) -> Money {
-        let mut v: Money = shares.iter().zip(dividends).map(|(s, d)| s * d * n).sum();
+        let payments = n as i128 * (self.terminal_payment_ticks / self.dividend_period) as i128;
+        let mut v: Money = shares
+            .iter()
+            .zip(dividends)
+            .map(|(s, d)| {
+                ((i128::from(*s) * i128::from(*d) * payments + (self.dividend_scale / 2) as i128)
+                    / self.dividend_scale as i128) as Money
+            })
+            .sum();
         for c in &self.combos {
-            if c.active(self.ticks_total) {
-                v += c.sets(shares) * c.bonus * n;
+            if c.active(self.last_tick()) {
+                // Round terminal cash flow once after aggregating future periods.
+                v += rounded_combo(
+                    i128::from(c.sets(shares))
+                        * i128::from(c.bonus)
+                        * i128::from(n)
+                        * i128::from(self.terminal_payment_ticks / self.combo_period),
+                    self.combo_scale,
+                );
             }
         }
         v
@@ -217,6 +342,14 @@ pub struct Start {
     pub owner: String,
     pub account_index: usize,
     pub n_accounts: usize,
+    /// This account's multiplier of the global private news-stage probabilities.
+    /// Public delivery and the precision/timing of every stage stay unchanged.
+    #[serde(default = "default_news_multiplier")]
+    pub news_multiplier: f64,
+    #[serde(default)]
+    pub forecast_access: ForecastAccess,
+    /// Deterministic bot RNG seed, not a security boundary. Reviewed bots must
+    /// not use its relation to the world seed to reconstruct hidden information.
     pub seed: u64,
     pub params: BTreeMap<String, f64>,
     pub cash: Money,
@@ -227,6 +360,32 @@ pub struct Start {
 impl Start {
     pub fn param(&self, key: &str, default: f64) -> f64 {
         self.params.get(key).copied().unwrap_or(default)
+    }
+}
+
+fn default_news_multiplier() -> f64 {
+    1.0
+}
+
+/// Optional extra private research. Independent of ordinary disclosure stages.
+#[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(default, deny_unknown_fields)]
+pub struct ForecastAccess {
+    /// Maximum ticks before the actual dividend change. Zero disables research.
+    pub horizon: Tick,
+    /// Probability of receiving each eligible event (not all future events).
+    pub coverage: f64,
+    /// Interval width in event standard deviations; zero means exact research.
+    pub range_width: f64,
+}
+
+impl Default for ForecastAccess {
+    fn default() -> Self {
+        Self {
+            horizon: 0,
+            coverage: 0.0,
+            range_width: 3.0,
+        }
     }
 }
 
@@ -248,7 +407,7 @@ pub struct BookView {
     pub last: Price,
     /// Mark price used for equity, leverage and the idle fee.
     pub mark: Price,
-    /// Current dividend per share per period.
+    /// Current dividend rate per share per ordinary payment, in dividend_scale units/cent.
     pub dividend: Money,
 }
 
@@ -331,7 +490,8 @@ pub enum NewsLayer {
 }
 
 /// What one account knows about a news item's effect on one stock: the change in dividend
-/// per share is somewhere in `low..=high`. Exact (`low == high`) once the news is public.
+/// rate per share is somewhere in `low..=high`, in dividend_scale units/cent.
+/// Exact (`low == high`) once public; the rate changes only at effective_tick.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Change {
     pub stock: usize,
@@ -355,6 +515,10 @@ pub struct NewsItem {
     pub changes: Vec<Change>,
     /// Disclosure stage this delivery belongs to (index into `Rules::news_stages`).
     pub stage: usize,
+    /// True for extra research; stage is then not an ordinary stage index.
+    #[serde(default)]
+    pub forecast: bool,
+    /// Earliest ordinary disclosure, possibly AFTER this forecast was received.
     pub first_reveal_tick: Tick,
     pub public_tick: Tick,
     pub effective_tick: Tick,
@@ -428,6 +592,23 @@ pub struct AccountView {
     pub interest_estimate: Money,
 }
 
+/// Optional, opt-in sharing within one named group. Latest settled observations,
+/// without an artificial delay or global synchronization. No identities or news.
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub struct SocialView {
+    /// Exponential profit memory, in personal ticks (not a delivery delay).
+    pub memory_ticks: f64,
+    pub peers: usize,
+    /// Recent stock P&L / initial account equity, including paid dividends and
+    /// actual trade fees, excluding non-trading share burns and cash idle fees.
+    pub own_stock: Vec<f64>,
+    /// Equally weighted mean of OTHER group members, including inactive members.
+    pub peer_stock: Vec<f64>,
+    /// Recent whole-account equity change / initial equity, net of all costs.
+    /// Debt forgiveness is excluded. Only this account's net result is exposed.
+    pub own_net: f64,
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Observation {
     pub tick: Tick,
@@ -449,6 +630,8 @@ pub struct Observation {
     pub income: Vec<Income>,
     /// Private ranges (low, high) for the number of terminal payments received this tick.
     pub terminal_hints: Vec<(i64, i64)>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub social: Option<SocialView>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]

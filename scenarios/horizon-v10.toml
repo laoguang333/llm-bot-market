@@ -1,0 +1,314 @@
+# v10: 10000 ticks, roughly 100 ticks per affected-stock news event.
+# Same reviewed v7 bots; 10x Titan has ordinary information and normal fees.
+# Historical v7/v6 remain unchanged; no challenger pass requirement.
+ticks = 10000
+seed = 7
+
+[market]
+tick_size = 1
+# Each stock opens at its expected hold value times a random factor in [0.85, 1.15];
+# the initial_price values below are then unused.
+opening_spread = 0.15
+book_depth = 10
+trade_tape_limit = 200
+
+[fees]
+trade_fee_bps = 5
+idle_period = 50
+idle_rate = 0.006
+credit_ratio = 0.01
+credit_side = "both"
+
+[margin]
+max_leverage = 4.0
+maintenance_leverage = 5.0
+loan_rate = 0.003
+interest_period = 50
+mark_window = 20
+
+[rules]
+max_actions_per_tick = 20
+max_open_orders = 40
+
+[schedule]
+threads = 4
+max_tick_skew = 16
+skip_decision_lag = 2
+# Normal strategies keep every decision. Only sustained calls over 2 ms can be skipped.
+decision_budget_us = 2000
+check_interval = 500
+
+[world]
+dividend_period = 1
+# Rate/news units: 50 units = 1 cent per share per tick (100 = 2 cents/tick).
+dividend_scale = 50
+# Combo rates: 50 units = 1 cent per complete set per tick.
+# Round the account/rule total; negative bonuses round symmetrically.
+combo_period = 1
+combo_scale = 50
+min_dividend = 0
+sectors = ["tech", "consumer", "energy"]
+
+[world.dragon]
+model = "growth"
+enabled = true
+probability = 0.5
+candidates = 3
+# All stocks have irregular business updates; candidates share early growth bias.
+[world.dragon.trend]
+# This is the opportunity rate; total effective news also includes ordinary events.
+events_per_1000_ticks = 3.5
+growth_log_bias = [2.3, 2.65]
+step_sd = 0.018
+max_step = 0.16
+
+[world.seasons]
+calm_to_turbulent = 0.002
+turbulent_to_calm = 0.01
+turbulent_rate_mult = 3.0
+turbulent_size_mult = 2.0
+
+[world.news.market]
+events_per_1000_ticks = 1.5
+change_sd = 0.08
+
+[world.news.sector]
+events_per_1000_ticks = 2.0
+change_sd = 0.10
+
+[world.news.stock]
+events_per_1000_ticks = 2.0
+change_sd = 0.12
+
+[world.news.disclosure]
+lead_ticks = 120
+stages = [[0, 0.05], [30, 0.25], [60, 1.0]]
+# Private stages give each informed account its own range around the true change, this
+# many standard deviations of the change wide; the public stage is exact.
+range_widths = [3.0, 1.5]
+
+[scoring]
+# Random terminal duration scales with game length. Rounded to 50-tick units.
+# At 3000 ticks: 10..50 units; at 10000 ticks: 33..167 (mean 5000 ticks).
+terminal_payment_ticks = 50
+terminal_ratio_range = [0.16666666666666666, 0.8333333333333334]
+# (time / total ticks, uncertainty width / total ticks), also scales with length.
+terminal_hint_fractions = [[0.0, 0.5], [0.3333333333333333, 0.26666666666666666], [0.6666666666666666, 0.1]]
+objective = "rank_percentile"
+series_seeds = 20
+
+
+[[stocks]]
+name = "T1"
+sector = "tech"
+dividend = 100
+initial_price = 10000
+market_loading = 1.4
+sector_loading = 1.2
+
+[[stocks]]
+name = "T2"
+sector = "tech"
+dividend = 80
+initial_price = 8000
+market_loading = 1.3
+sector_loading = 1.0
+
+[[stocks]]
+name = "T3"
+sector = "tech"
+dividend = 120
+initial_price = 12000
+market_loading = 1.2
+sector_loading = 0.9
+
+[[stocks]]
+name = "T4"
+sector = "tech"
+dividend = 60
+initial_price = 6000
+market_loading = 1.5
+sector_loading = 1.1
+
+[[stocks]]
+name = "C1"
+sector = "consumer"
+dividend = 100
+initial_price = 10000
+market_loading = 0.8
+sector_loading = 1.0
+
+[[stocks]]
+name = "C2"
+sector = "consumer"
+dividend = 90
+initial_price = 9000
+market_loading = 0.7
+sector_loading = 1.1
+
+[[stocks]]
+name = "C3"
+sector = "consumer"
+dividend = 110
+initial_price = 11000
+market_loading = 0.9
+sector_loading = 0.9
+
+[[stocks]]
+name = "E1"
+sector = "energy"
+dividend = 100
+initial_price = 10000
+market_loading = 0.6
+sector_loading = 1.2
+
+[[stocks]]
+name = "E2"
+sector = "energy"
+dividend = 130
+initial_price = 13000
+market_loading = 0.5
+sector_loading = 1.0
+
+[[stocks]]
+name = "E3"
+sector = "energy"
+dividend = 70
+initial_price = 7000
+market_loading = 0.7
+sector_loading = 0.8
+
+[[combos]]
+a = "T1"
+b = "T2"
+bonus = 20
+
+[[combos]]
+a = "C1"
+b = "C3"
+bonus = 20
+
+[[combos]]
+a = "T3"
+b = "E2"
+bonus = 25
+
+[[combos]]
+a = "E1"
+b = "C2"
+bonus = 15
+
+[[combos]]
+a = "T4"
+b = "E3"
+bonus = -20
+
+[[bots]]
+bot = "grid"
+count = 24
+count_max = 40
+# grid traders run larger accounts than the rest of the crowd
+cash = 4_000_000
+shares_each = 120
+
+[[bots]]
+bot = "value"
+count = 16
+count_max = 40
+cash = 2_000_000
+shares_each = 20
+
+[[bots]]
+bot = "momentum"
+count = 6
+count_max = 16
+cash = 2_000_000
+shares_each = 20
+
+[[bots]]
+bot = "news_v2"
+count = 6
+count_max = 16
+cash = 2_000_000
+shares_each = 20
+
+[[bots]]
+bot = "noise"
+count = 18
+count_max = 42
+cash = 2_000_000
+shares_each = 20
+
+[[bots]]
+bot = "hold"
+count = 6
+count_max = 16
+cash = 2_000_000
+shares_each = 20
+
+[[bots]]
+bot = "hunter"
+count = 4
+count_max = 10
+cash = 2_000_000
+shares_each = 20
+
+[[bots]]
+bot = "shark"
+count = 4
+count_max = 10
+cash = 2_000_000
+shares_each = 20
+
+[[bots]]
+bot = "tracker"
+count = 4
+count_max = 10
+cash = 2_000_000
+shares_each = 20
+
+[[bots]]
+bot = "coral"
+count = 8
+count_max = 20
+cash = 2_000_000
+shares_each = 20
+# Diversify the crowd; the standalone challenger's default parameters stay fixed.
+params = { jitter = 1.0 }
+
+# Swift profiles use public trade/book signals only; each keeps a small account.
+
+[[bots]]
+bot = "swift"
+owner = "swift-standard"
+count = 1
+cash = 2_000_000
+shares_each = 20
+params = { entry = 0.15, exit = -0.3, depth = 0.3, momentum = 5.0, cap = 0.35, leverage = 1.5, spread = 0.012 }
+
+[[bots]]
+bot = "swift"
+owner = "swift-early-single"
+count = 1
+# One tenth of standard Swift capital and starting inventory.
+cash = 200_000
+shares_each = 2
+params = { entry = 0.05, exit = -0.1, depth = 0.2, momentum = 3.0, cap = 0.25, leverage = 1.0, spread = 0.01, single_entry = 1.0 }
+
+
+[[bots]]
+bot = "titan"
+owner = "titan-value"
+count = 1
+cash = 20_000_000
+shares_each = 200
+news_multiplier = 1.0
+
+[[bots]]
+bot = "horizon_v2"
+owner = "researcher"
+count = 1
+cash = 20000000
+shares_each = 200
+news_multiplier = 1.0
+forecast_access = { horizon = 1000, coverage = 0.5, range_width = 3.0 }

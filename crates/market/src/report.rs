@@ -15,7 +15,13 @@ pub struct AccountResult {
     pub account: String,
     pub owner: String,
     pub strategy: String,
+    pub news_multiplier: f64,
+    pub forecast_access: bot_api::ForecastAccess,
+    pub forecasts_received: usize,
+    /// Delivered updates per disclosure stage (including the final public stage).
+    pub news_received_by_stage: Vec<usize>,
     pub cash: Money,
+    pub deferred_idle_fee: Money,
     pub shares: Vec<Qty>,
     pub terminal_value: Money,
     pub equity: Money,
@@ -29,6 +35,7 @@ pub struct AccountResult {
     pub percentile: f64,
     pub disabled: String,
     pub stats: crate::account::Stats,
+    pub liquidation_events: Vec<crate::account::LiquidationEvent>,
     /// Traded notional by counterparty owner.
     pub notional_by_counterparty: BTreeMap<String, Money>,
 }
@@ -44,6 +51,11 @@ pub struct GroupResult {
 pub struct MatchResult {
     pub seed: u64,
     pub ticks: Tick,
+    pub dividend_period: Tick,
+    pub dividend_scale: i64,
+    pub combo_period: Tick,
+    pub combo_scale: i64,
+    pub terminal_payment_ticks: Tick,
     pub terminal_payments: i64,
     pub threads: usize,
     pub decision_budget_us: u64,
@@ -52,6 +64,8 @@ pub struct MatchResult {
     pub wall_seconds: f64,
     pub audits: u64,
     pub news_events: usize,
+    /// Revealed only after the match. Indexes refer to scenario stocks.
+    pub dragon: Option<crate::world::DragonOutcome>,
     pub season_changes: usize,
     pub final_dividends: Vec<Money>,
     pub final_marks: Vec<Price>,
@@ -59,6 +73,7 @@ pub struct MatchResult {
     pub treasury: Money,
     pub trades: usize,
     pub quality: crate::quality::Quality,
+    pub world_diagnostics: crate::diagnostics::WorldDiagnostics,
     pub by_strategy: BTreeMap<String, GroupResult>,
     pub by_owner: BTreeMap<String, GroupResult>,
     pub accounts: Vec<AccountResult>,
@@ -131,15 +146,26 @@ pub fn run_match(
     factory: &BotFactory<'_>,
     out: Option<&Path>,
 ) -> Result<MatchResult> {
+    run_match_observed(cfg, seed, factory, out, None)
+}
+
+pub fn run_match_observed(
+    cfg: &Config,
+    seed: u64,
+    factory: &BotFactory<'_>,
+    out: Option<&Path>,
+    observer: Option<&dyn crate::engine::MatchObserver>,
+) -> Result<MatchResult> {
     if let Some(dir) = out {
         if dir.exists() {
             bail!("output directory {} already exists", dir.display());
         }
     }
-    let shared = Shared::new(cfg, seed, factory)?;
+    let mut shared = Shared::new(cfg, seed, factory)?;
+    shared.observer = observer;
     let run = shared.run()?;
     let rules = &shared.rules;
-    let final_div = shared.world.dividends(cfg.ticks);
+    let final_div = shared.world.dividends(rules.last_tick());
     let mut accounts: Vec<AccountResult> = Vec::new();
     let owners: Vec<String> = shared
         .accounts
@@ -149,7 +175,7 @@ pub fn run_match(
     let mut by_cp: Vec<BTreeMap<String, Money>> = vec![BTreeMap::new(); owners.len()];
     let mut n_trades = 0;
     for m in &shared.markets {
-        let m = m.lock();
+        let m = m.read();
         n_trades += m.tape.len();
         for e in &m.tape {
             let v = e.price * e.qty;
@@ -168,7 +194,24 @@ pub fn run_match(
             account: a.name.clone(),
             owner: a.owner.clone(),
             strategy: a.strategy.clone(),
+            news_multiplier: shared.world.news_multipliers[i],
+            forecast_access: shared.world.forecast_access[i],
+            forecasts_received: shared.world.deliveries[i]
+                .iter()
+                .take(a.delivery_cursor)
+                .filter(|d| d.forecast)
+                .count(),
+            news_received_by_stage: {
+                let mut counts = vec![0; rules.news_stages.len()];
+                for delivery in shared.world.deliveries[i].iter().take(a.delivery_cursor) {
+                    if !delivery.forecast {
+                        counts[delivery.stage] += 1;
+                    }
+                }
+                counts
+            },
             cash: a.cash,
+            deferred_idle_fee: a.idle_fee_carry,
             shares: a.shares.clone(),
             terminal_value: tv,
             equity: a.cash + tv,
@@ -180,6 +223,7 @@ pub fn run_match(
             percentile: 0.0,
             disabled: a.disabled.clone().unwrap_or_default(),
             stats: a.stats.clone(),
+            liquidation_events: a.liquidation_events.clone(),
             notional_by_counterparty: std::mem::take(&mut by_cp[i]),
         });
     }
@@ -212,6 +256,11 @@ pub fn run_match(
         seed,
         ticks: cfg.ticks,
         terminal_payments: shared.world.terminal_payments,
+        dividend_period: rules.dividend_period,
+        dividend_scale: rules.dividend_scale,
+        combo_period: rules.combo_period,
+        combo_scale: rules.combo_scale,
+        terminal_payment_ticks: rules.terminal_payment_ticks,
         threads: run.threads,
         decision_budget_us: cfg.schedule.decision_budget_us,
         skip_decision_lag: cfg.schedule.skip_decision_lag,
@@ -219,6 +268,7 @@ pub fn run_match(
         wall_seconds: run.wall_seconds,
         audits: shared.audits.load(Ordering::Relaxed),
         news_events: shared.world.events.len(),
+        dragon: shared.world.dragon.clone(),
         season_changes: shared.world.season_changes.len(),
         final_dividends: final_div,
         final_marks: shared.marks(),
@@ -230,6 +280,7 @@ pub fn run_match(
         treasury: shared.treasury.load(Ordering::Relaxed),
         trades: n_trades,
         quality: crate::quality::measure(&shared),
+        world_diagnostics: crate::diagnostics::world(cfg, &shared.world),
         by_strategy: group(&accounts, |a| a.strategy.clone()),
         by_owner: group(&accounts, |a| a.owner.clone()),
         accounts,
@@ -250,7 +301,7 @@ struct Bar {
 }
 
 fn bars(shared: &Shared, stock: usize, ticks: Tick, width: Tick) -> Vec<Option<Bar>> {
-    let m = shared.markets[stock].lock();
+    let m = shared.markets[stock].read();
     let n = ticks.div_ceil(width) as usize;
     let mut out: Vec<Option<Bar>> = (0..n).map(|_| None).collect();
     for e in &m.tape {
@@ -286,20 +337,23 @@ fn write_outputs(cfg: &Config, shared: &Shared, result: &MatchResult, dir: &Path
     )?;
     let names: Vec<&str> = cfg.stocks.iter().map(|s| s.name.as_str()).collect();
 
-    let mut csv = String::from("tick,stock,open,high,low,close,volume,notional,dividend\n");
+    let mut csv = String::from(
+        "tick,stock,open,high,low,close,volume,notional,dividend,dividend_cents_per_payment\n",
+    );
     let per_stock: Vec<Vec<Option<Bar>>> = (0..names.len())
         .map(|s| bars(shared, s, cfg.ticks, 1))
         .collect();
     for t in 0..cfg.ticks as usize {
         for (s, b) in per_stock.iter().enumerate() {
             let d = shared.world.dividend(s, t as Tick);
+            let cents = shared.rules.dividend_cents(d);
             match &b[t] {
                 Some(b) => writeln!(
                     csv,
-                    "{t},{},{},{},{},{},{},{},{d}",
+                    "{t},{},{},{},{},{},{},{},{d},{cents}",
                     names[s], b.open, b.high, b.low, b.close, b.volume, b.notional
                 )?,
-                None => writeln!(csv, "{t},{},,,,,0,0,{d}", names[s])?,
+                None => writeln!(csv, "{t},{},,,,,0,0,{d},{cents}", names[s])?,
             }
         }
     }
@@ -312,7 +366,7 @@ fn write_outputs(cfg: &Config, shared: &Shared, result: &MatchResult, dir: &Path
         .collect();
     let mut csv = String::from("tick,stock,price,qty,aggressor,taker,maker\n");
     for (s, m) in shared.markets.iter().enumerate() {
-        for e in &m.lock().tape {
+        for e in &m.read().tape {
             writeln!(
                 csv,
                 "{},{},{},{},{},{},{}",
@@ -419,7 +473,9 @@ pub fn reference_value(shared: &Shared, stock: usize, tick: Tick) -> Money {
     let d = shared.world.dividend(stock, tick);
     let remaining = (r.ticks_total.saturating_sub(1) / r.dividend_period)
         .saturating_sub(tick / r.dividend_period) as i64;
-    d * (remaining + shared.world.terminal_payments)
+    (r.dividend_cents(d)
+        * (remaining as f64 + r.terminal_dividend_payments(shared.world.terminal_payments as f64)))
+    .round() as Money
 }
 
 fn correlation(a: &[f64], b: &[f64]) -> f64 {
@@ -512,7 +568,13 @@ fn report_html(cfg: &Config, shared: &Shared, result: &MatchResult) -> Result<St
         .rules
         .combos
         .iter()
-        .map(|c| serde_json::json!([cfg.stocks[c.a].name, cfg.stocks[c.b].name, c.bonus]))
+        .map(|c| {
+            serde_json::json!([
+                cfg.stocks[c.a].name,
+                cfg.stocks[c.b].name,
+                shared.rules.combo_cents(c.bonus)
+            ])
+        })
         .collect();
     let seasons: Vec<_> = shared
         .world
@@ -523,6 +585,7 @@ fn report_html(cfg: &Config, shared: &Shared, result: &MatchResult) -> Result<St
     let data = serde_json::json!({
         "seed": result.seed, "ticks": cfg.ticks, "width": cw, "stocks": stocks, "corr": corr, "combos": combos,
         "seasons": seasons, "by_strategy": result.by_strategy, "wall": result.wall_seconds, "threads": result.threads,
+        "combo_period": result.combo_period,
         "accounts": result.accounts.len(), "trades": result.trades,
     });
     Ok(include_str!("report.html").replace("/*DATA*/null", &serde_json::to_string(&data)?))

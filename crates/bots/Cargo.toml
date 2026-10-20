@@ -5,6 +5,7 @@ version.workspace = true
 
 [dependencies]
 bot-api = { path = "../bot-api" }
+serde.workspace = true
 rand.workspace = true
 rand_chacha.workspace = true
 

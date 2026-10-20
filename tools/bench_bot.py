@@ -8,6 +8,7 @@ Use --scenario scenarios/baseline-v4.toml to replay the archived v4 benchmark.
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import statistics
 import subprocess
@@ -21,9 +22,15 @@ def main():
     parser.add_argument("--first-seed", type=int, default=1)
     parser.add_argument("--seeds", type=int, default=20)
     parser.add_argument("--threads", type=int)
+    parser.add_argument("--cash", type=int, help="challenger cash in cents")
+    parser.add_argument("--shares", type=int, help="challenger shares of every stock")
+    parser.add_argument("--news-multiplier", type=float, default=1.0)
     parser.add_argument("--scenario", default="scenarios/baseline.toml",
                         help="repository-relative scenario path")
     args = parser.parse_args()
+    if os.name == "nt":
+        from build_release import windows_build_budget
+        windows_build_budget()
     root = Path(__file__).resolve().parents[1]
     scenario = root / args.scenario
     out = root / "runs" / "bench" / args.name
@@ -35,6 +42,12 @@ def main():
         command += ["--params", args.params]
     if args.threads is not None:
         command += ["--threads", str(args.threads)]
+    if args.cash is not None:
+        command += ["--cash", str(args.cash)]
+    if args.shares is not None:
+        command += ["--shares", str(args.shares)]
+    if args.news_multiplier != 1.0:
+        command += ["--news-multiplier", str(args.news_multiplier)]
     if out.exists():
         parser.error(f"output already exists: {out}")
     sources = [root / "Cargo.toml", root / "Cargo.lock", scenario]
@@ -53,7 +66,10 @@ def main():
     wall_seconds = 0.0
     for seed in score["seeds"]:
         result = json.loads((out / f"seed-{seed}" / "summary.json").read_text(encoding="utf-8"))
-        accounts.append(next(a for a in result["accounts"] if a["owner"] == "challenger"))
+        challenger = next(a for a in result["accounts"] if a["owner"] == "challenger")
+        if challenger.get("news_multiplier", 1.0) != args.news_multiplier:
+            raise RuntimeError("binary did not apply the requested news multiplier; discard this run")
+        accounts.append(challenger)
         all_skipped += sum(a["stats"]["skipped"] for a in result["accounts"])
         all_disabled += sum(bool(a["disabled"]) for a in result["accounts"])
         wall_seconds += result["wall_seconds"]

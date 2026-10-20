@@ -1,8 +1,18 @@
 # llm-bot-market
 
+当前默认为 [v13：赚钱／亏钱效应群体进入基准](docs/baseline-v13.md)，10000 ticks，单股消息平均间隔约 92 ticks。期末兑现期限随机为整局的约 1/6–5/6，平均半局，私人提示也随时长缩放。共 100–224 个账户、14 种策略；Noise 调整为 9–21 人，另有 9–21 个 ProfitEffect 成员，少数成员额外追逐市场领涨股。保留两个 Swift、NewsV2 和普通权限正常缴费的十倍资金 Titan；Horizon v3 接替原 v2 的位置，资金与 Titan 相同，额外研究最大提前 1000 ticks，保留分批建仓和终值风控。50% 概率指定一个后期成长者，tick 5500 前保护身份，途中可回落或急挫；分红成长约十倍的机会不等于保证股价十倍。[Horizon v3 研究](docs/horizon-v3.md)保留其在旧 v11 背景中另加账户的历史对照，不针对大龙调参。
+
+`baseline.toml` 与 `baseline-v13.toml` 相同；[v12](docs/baseline-v12.md)、[v11](docs/baseline-v11.md)、[v10](docs/baseline-v10.md)、[v9](docs/baseline-v9.md)、[v8 长局](docs/baseline-v8.md)、3000 ticks 的 [v7](docs/baseline-v7.md)、旧八节点模型和 v6 场景均保留。普通股息、组合收益仍逐 tick 派发，闲置费仍为每 50 ticks 平均权益的 0.6%。Astra/Falcon 不加入。[交易调查台](docs/swift-debugger.md)支持整轮操作、FIFO 连线、消息收报到生效的交易关联，以及[强平与坏账账本](docs/liquidation-audit.md)；旧录制保持原貌。
+
+[Titan 十倍资金挑战](docs/titan-v6.md)记录此前普通权限未通过、增强提前消息概率后通过的研究；新基准采用其普通权限版本，不沿用消息优势，也不移植旧排名成绩。
+
 一个连续限价盘口的股票市场，让多个 LLM 各自写的交易 bot 在里面对抗，只比谁赚得多（按收益率的排名百分位计分）。完整规则见 [PRD.md](PRD.md)，内置策略的对比结果见 [docs/strategies.md](docs/strategies.md)。每个账户是一个独立的 owner；场景里写了 `owner` 的那组只能有一个账户。
 
+[当前市场设定](docs/market-settings-current.md)按实际代码说明种子差异、三层新闻、平静/动荡切换、普通股息、固定组合奖励和随机期末兑现；其中初始股息与组合奖金不随种子改变，未来股息路径与隐藏终值倍数会改变。
+
 ## 快速开始
+
+新研究：[赚钱／亏钱效应群体](docs/profit-effect-bots.md)。`profit_effect` 参考组内和自身近期实际盈亏、简单价格变化；部分成员另有[追市场领涨股的权重](docs/profit-effect-leaders.md)，不读估值或新闻。该策略已纳入 v13，独立场景 `scenarios/profit-effect-v12.toml` 和 80 局研究结果继续保留；活跃度提高不代表更赚钱。
 
 ```sh
 cargo build --release
@@ -10,14 +20,21 @@ cargo build --release
 ./target/release/llm-market run scenarios/tournament.toml --out runs/t1
 # 在 20 个随机世界里各跑一局，输出每个策略的平均排名百分位 ± 标准差
 ./target/release/llm-market series scenarios/tournament.toml --out runs/series --seeds 20
-# 基准市场 v5（含 hunter、shark、tracker、coral；旧版保留为 baseline-v1/v2/v3/v4.toml）
+# 当前默认：v13，10000 ticks、收益效应群体、十倍 Titan 和 Horizon v3
 ./target/release/llm-market series scenarios/baseline.toml --out runs/base --seeds 20
 # 打穿测试：一个挑战者账户加入基准市场，在留出种子 1001–1020 上跑
 ./target/release/llm-market challenge scenarios/baseline.toml --bot shark --out runs/ch-shark --seeds 20
+# Swift：只读盘口、成交与价格走势的挑战者
+./target/release/llm-market challenge scenarios/baseline.toml --bot swift --out runs/ch-swift --seeds 20
 # 复现 Coral 打穿 v4 的挑战（v5 已将 Coral 纳入对手阵容）
 ./target/release/llm-market challenge scenarios/baseline-v4.toml --bot coral --out runs/ch-coral-v4 --seeds 20
+# 三名 Astra 独立策略的统一留出验收和六种出场顺序对抗
+python tools/arena_gate.py --cwd . -- python tools/astra_tournament.py --out runs/astra-v5-tournament
 # 列出内置 bot
 ./target/release/llm-market bots
+# 录制完整决策输入和成交，再打开交互调查台（自动构建 release）
+python tools/swift_debugger.py run --out runs/swift-debug --seed 7 --threads 4
+python tools/swift_debugger.py serve --run runs/swift-debug --open
 ```
 
 ## 目录
@@ -26,9 +43,10 @@ cargo build --release
 |---|---|
 | `crates/bot-api` | bot 与引擎之间的全部类型：`Rules`、`Observation`、`Action`、`Bot` trait |
 | `crates/market` | 撮合、调度、结算、世界生成、计分与报告 |
-| `crates/bots` | 内置 bot：`baseline.rs` 是基础对照策略，`strategic.rs` 和 `coral.rs` 是博弈型策略 |
+| `crates/bots` | 内置 bot：基础对照、估值策略，以及 `swift.rs` 中只读价格和成交的策略 |
 | `crates/cli` | 命令行 `llm-market` |
-| `scenarios/` | `baseline.toml`（只有对照组）、`tournament.toml`（对照组 + 博弈型）、`arena.toml`（只有博弈型和两个对照） |
+| `scenarios/` | `baseline.toml` / `baseline-v13.toml`（当前）；v12、v11、v10、v9、v8、v7、v6 及更早版本（归档）；`horizon-v11.toml` 保留上轮研究阵容 |
+| `tools/debugger/` | 离线交互交易调查台；[使用方法、数据口径与验证](docs/swift-debugger.md) |
 
 ## 写一个 bot
 
@@ -45,13 +63,41 @@ pub trait Bot: Send {
 
 WASM 沙箱（让外部 LLM 提交编译好的 bot）还没做，见 PRD 第 7 节。
 
+当前默认普通股息与组合收益均每个个人 tick 发放（tick 0 除外）。`Rules.dividend_scale = 50`，股票股息和新闻变化的整数单位都是 **1/50 分**；先乘账户在该股票的持仓，再四舍五入到分，不累计余数。新闻公开不会提前改变派息，仍等 `effective_tick`。组合独立使用 `combo_scale=50`，按每条规则的整仓套数合计后对称取整，负组合也逐 tick 扣款。终值提示的每单位仍代表 50 tick。当前闲置费为每 50 ticks 平均权益的 **0.6%**，合格成交额的 1% 抵扣不变。旧场景省略新字段时保持原规则；改造前扩容场景为 `baseline-v6-periodic-combos.toml`。设计、性能和市场影响见[普通派息报告](docs/per-tick-dividends.md)及[组合与费用改造报告](docs/per-tick-combos.md)。
+
+当前运行的所有 bot 都先经过代码审查。`Start.seed` 与世界种子的关系有意保留，不作为安全边界；审查时禁止策略利用这一关系重建隐藏新闻或终值。这种可推导性本身是已接受的设计。
+
+同一策略可以分成多个未指定 `owner` 的参数组，自动名称按各组最大人数预留连续编号，因此不会重名，也不会随其他组的随机人数漂移。显式 `owner` 与这些自动名称冲突时，场景校验会报错。
+
 ## 调度容忍度
 
-当前基准固定使用 4 个工作线程。正常策略即使暂时落后也保留决策机会：只有最近 8 次实际决策中至少 6 次超过 `schedule.decision_budget_us = 2000` 微秒，并且落后达到 `skip_decision_lag`，才跳过决策。计时只包括 bot 的 `on_tick`。快账户仍受 `max_tick_skew` 约束，等待较慢的账户。
+Windows 环境只使用可用逻辑核心的一半（向下取整，至少 1 个）。引擎会将自动及显式指定的工作线程数限制在此上限内；Linux 没有半核限制。`--threads 0` / `schedule.threads = 0` 自动选择平台允许的线程数，且不会超过账户数。构建、测试和并发实验也应共享相同的 Windows CPU 预算；引擎的线程限制不会为多个独立进程分配总预算。
+
+当前基准场景配置为 4 个工作线程，可用 `--threads 0` 启用自动线程数。正常策略即使暂时落后也保留决策机会：只有最近 8 次实际决策中至少 6 次超过 `schedule.decision_budget_us = 2000` 微秒，并且落后达到 `skip_decision_lag`，才跳过决策。计时只包括 bot 的 `on_tick`。快账户仍受 `max_tick_skew` 约束，等待较慢的账户。
 
 `skip_decision_lag = 0` 禁用跳过；`decision_budget_us = 0` 可复现旧的仅按落后量跳过规则。新规则不是原生代码的硬超时。每局 `summary.json` 记录线程数、调度门槛和各账户的超时/跳过次数；旧调度下的历史分数应单独比较。
 
+多线程执行顺序不确定，同一个 seed 不保证逐笔复现；本项目优先考虑性能。性能优化及实测见 [性能记录](docs/performance.md)。
+
 Windows 上可用 `python tools/bench_bot.py coral-train --first-seed 1` 跑当前基准开发集；追加 `--scenario scenarios/baseline-v4.toml` 可选择旧版。脚本保存完整报告、命令、源码及二进制哈希和汇总诊断到 `runs/bench/`。
+
+三名 Astra medium 独立开发的 `astra_a`、`astra_b`、`astra_c` 已注册。统一赛制、冻结记录、账务修复和比赛结果见 [三方 v5 比赛](docs/astra-v5-tournament.md)。
+
+`swift` 使用主动成交方向、盘口深度和短期价格动量，完全不读取分红、新闻或清算估值。开发过程、冻结验收和复现命令见 [Swift v5 报告](docs/swift-v5.md)。
+
+固定 Swift 的后续 [跨市场压力测试](docs/swift-stress.md) 共 780 局，覆盖消息传播、波动、对手、手续费、资金容量和决策频率，并单独检验拥挤效应。原版 v5 通过复核，但小资金优势不能外推到大资金或大量同策略竞争者。
+
+新增 [News 修复与增强版](docs/news-v2.md)：`news_fixed` 补全事件退出，`news_v2` 将新闻方向与 Swift 信号、执行结合，已在 v6 替换旧 News，v7 继续保留。在此前周期派息的研究中，每组 40 局，增强版在当时 v5/v6 平均收益 +151.24%/+21.24%，同批 Swift +136.91%/+11.02%；增强版未打穿当时的 v6。旧实现与历史配置保留，这些成绩不能作为新阵容的表现。[920 局机制研究](docs/swift-mechanism.md)发现，单纯增加随机成交活跃度不足以恢复新闻环境下的高收益；真实成交方向有用，已出现大阳线不是入场必要条件，分红也贡献了大量收益。
+
+**机制审计补充：** 旧周期派息的 160 局轨迹中，15 局的普通派息超过按统一股权登记计算的全市场上限，[详情及逐局证据](docs/swift-mechanism.md)已归档。当前逐 tick 方案按用户选择保留个人时钟和邮箱结算，接受转手期间少量多派/少派，不增加统一登记；这不是严格股权归属修复。上述收益均是旧机制记录，新机制需要单独验证。
+
+[Swift 策略特性与研究档案](docs/swift-research.md) 是后续研究的统一入口，集中记录信号、执行、容量、失败条件和冻结证据。[单一狩猎者实验](docs/swift-hunt-results.md) 使用一个十倍资金的 Falcon 与一个固定 Swift 对抗，分别比较目标受损和对手是否相对胜出。Falcon 的实验模式通过参数指定，relay 为 `mode=6`，定时买卖对照为 `mode=7`。
+
+[资金优势实验](docs/swift-capital-results.md) 已完成矩阵、独立确认与[现金/库存机制核验](docs/swift-capital-cash-results.md)，共 2,140 局。大本金、大初始库存的 relay 往往能百分比少亏；只多给现金的证据较弱，猎手本身仍亏损，且会恶化盘口流动性。
+
+[猎手研究的重要发现](docs/swift-hunter-findings.md) 已归档。多 Swift 实验按用户要求中止，500 局成组结果见[中止报告](docs/swift-crowding-hunt-results.md)；另有 8 个未完成配置的原始摘要，不纳入统计。实验不会自动续跑。
+
+[周期派息 v6](docs/baseline-v6.md) 加入五个不同参数的小资金 Swift，现保存在 `baseline-v6-five-swift.toml`；当前默认已改为两个 Swift、逐 tick 普通股息。旧研究脚本已绑定归档。在当时引擎的 80 局固定验收中，默认 Swift 挑战 v5/v6 的平均百分位分别为 **96.51 / 60.21**，v6 未打穿。该历史结果不能当作当前基准的成绩；派息改造见[改造报告](docs/per-tick-dividends.md)，历史阵容见[两个 Swift 的 v6](docs/baseline-v6-current.md)，当前见 [v13](docs/baseline-v13.md)。
 
 ## 开发
 
@@ -60,3 +106,13 @@ cargo fmt && cargo clippy --all-targets -- -D warnings && cargo test
 ```
 
 release 构建关闭整数溢出检查；`cargo build --profile release-checked` 打开。
+
+release 已启用 ThinLTO 和单个 codegen unit，以增加跨模块优化机会；首次 release 构建会更慢。用 `python tools/build_release.py` 构建时，Windows 的 Cargo、LLVM 和链接器子进程会共享半核 CPU 预算。追加 `--native` 可为本机 CPU 指令集优化，产物单独保存在 `target/native/release/`，仅适合本机或指令集兼容的 CPU；普通 `target/release/` 构建不启用此本机指令集限定。
+
+Windows 下用 `cargo build --release -j N` 限制构建并发，`N` 不超过逻辑核心数的一半；测试建议 `cargo test -j N -- --test-threads=1`，避免多个内含工作线程的测试同时运行。例如 20 个逻辑核心的机器取 `N=10`。Linux 无半核限制。
+
+比较两个 release 可执行文件的性能（交替顺序、预热、保留完整报告和哈希）：
+
+```sh
+python tools/perf_engine.py --binary before=runs/llm-market-before.exe --binary after=target/release/llm-market.exe --threads 1 4 10 --repeats 3 --out runs/perf-comparison
+```

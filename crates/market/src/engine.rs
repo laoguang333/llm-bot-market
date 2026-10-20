@@ -7,55 +7,72 @@ use crate::config::Config;
 use crate::world::World;
 use anyhow::{bail, Result};
 use bot_api::*;
-use parking_lot::{Condvar, Mutex};
+use parking_lot::{Condvar, Mutex, RwLock};
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 use std::panic::{catch_unwind, AssertUnwindSafe};
-use std::sync::atomic::{AtomicI64, AtomicU64, Ordering};
+use std::sync::atomic::{AtomicI64, AtomicU32, AtomicU64, Ordering};
 use std::time::Instant;
 
 pub type BotFactory<'f> = dyn Fn(&str, &Start) -> Option<Box<dyn Bot>> + Sync + 'f;
 
-const MAX_CONSECUTIVE_BOT_ERRORS: u32 = 20;
-
-/// Fenwick tree over completed-tick values, for the lower median.
-struct Fenwick {
-    tree: Vec<i64>,
+/// Optional read-only diagnostic hook. Called outside the bot decision timer.
+/// Observers must not trade or modify simulation state. I/O can change concurrent
+/// scheduling, so a traced match is a separate run, not a replay of another match.
+pub trait MatchObserver: Sync {
+    fn step(
+        &self,
+        account: &Account,
+        tick: Tick,
+        observation: Option<&Observation>,
+        actions: &[Action],
+        gross: Money,
+    );
+    fn finish(&self, account: &Account);
 }
 
-impl Fenwick {
-    fn new(n: usize) -> Self {
+const MAX_CONSECUTIVE_BOT_ERRORS: u32 = 20;
+
+/// Completed ticks only advance by one. The lower median therefore moves only
+/// forward, at most `ticks` times across the entire run, rather than requiring
+/// a tree search and two tree updates per account tick under the scheduler lock.
+struct TickProgress {
+    counts: Vec<usize>,
+    rank: usize,
+    reference: Tick,
+    at_or_below: usize,
+}
+
+impl TickProgress {
+    fn new(ticks: Tick, accounts: usize) -> Self {
+        let mut counts = vec![0; ticks as usize + 1];
+        counts[0] = accounts;
         Self {
-            tree: vec![0; n + 1],
+            counts,
+            rank: accounts.div_ceil(2),
+            reference: 0,
+            at_or_below: accounts,
         }
     }
-    fn add(&mut self, i: usize, v: i64) {
-        let mut i = i + 1;
-        while i < self.tree.len() {
-            self.tree[i] += v;
-            i += i.isolate_lowest_one();
+    fn complete(&mut self, tick: Tick) {
+        self.counts[tick as usize] -= 1;
+        self.counts[tick as usize + 1] += 1;
+        // Moving a value below the reference keeps it at or below; only a
+        // value equal to the reference can cross this boundary in one step.
+        if tick == self.reference {
+            self.at_or_below -= 1;
         }
-    }
-    /// Smallest value with cumulative count >= k (k >= 1).
-    fn kth(&self, mut k: i64) -> usize {
-        let mut pos = 0;
-        let mut step = self.tree.len().next_power_of_two();
-        while step > 0 {
-            let next = pos + step;
-            if next < self.tree.len() && self.tree[next] < k {
-                pos = next;
-                k -= self.tree[next];
-            }
-            step >>= 1;
+        while self.at_or_below < self.rank {
+            self.reference += 1;
+            self.at_or_below += self.counts[self.reference as usize];
         }
-        pos
     }
 }
 
 struct Sched {
     idle: BinaryHeap<Reverse<(Tick, u32)>>,
     running: Vec<(u32, Tick)>,
-    fen: Fenwick,
+    progress: TickProgress,
     finished: usize,
     next_check: Tick,
     pausing: bool,
@@ -74,8 +91,9 @@ pub struct Shared<'a> {
     pub cfg: &'a Config,
     pub rules: Rules,
     pub world: World,
-    pub markets: Vec<Mutex<StockMarket>>,
+    pub markets: Vec<RwLock<StockMarket>>,
     marks: Vec<AtomicI64>,
+    mark_ticks: Vec<AtomicU32>,
     pub accounts: Vec<Mutex<Account>>,
     pub mailboxes: Vec<Mutex<Vec<Mail>>>,
     pub treasury: AtomicI64,
@@ -87,6 +105,8 @@ pub struct Shared<'a> {
     pub initial_shares: Vec<Qty>,
     pub audits: AtomicU64,
     pub book_samples: Mutex<Vec<BookSample>>,
+    pub observer: Option<&'a dyn MatchObserver>,
+    social_groups: Vec<Mutex<crate::social::Group>>,
 }
 
 /// Order book snapshot for market-quality statistics.
@@ -108,6 +128,7 @@ pub struct RunOutput {
 
 impl<'a> Shared<'a> {
     pub fn new(cfg: &'a Config, seed: u64, factory: &BotFactory<'_>) -> Result<Shared<'a>> {
+        cfg.validate()?;
         let n_stocks = cfg.stocks.len();
         // with count_max, each world draws its own number of accounts per group
         let counts: Vec<usize> = cfg
@@ -125,10 +146,14 @@ impl<'a> Shared<'a> {
             })
             .collect();
         let mut accounts = Vec::new();
-        for (g, &count) in cfg.bots.iter().zip(&counts) {
+        let owner_offsets = cfg.auto_owner_offsets()?;
+        for ((g, &count), base) in cfg.bots.iter().zip(&counts).zip(owner_offsets) {
             for i in 0..count {
                 // one account per owner: without an explicit owner each account is its own
-                let owner = g.owner.clone().unwrap_or_else(|| format!("{}#{i}", g.bot));
+                let owner = g
+                    .owner
+                    .clone()
+                    .unwrap_or_else(|| format!("{}#{}", g.bot, base + i));
                 let mut shares = vec![g.shares_each; n_stocks];
                 for (name, q) in &g.shares {
                     shares[cfg.stock_index(name)?] = *q;
@@ -145,26 +170,61 @@ impl<'a> Shared<'a> {
             }
         }
         let n = accounts.len();
+        if n == 0 {
+            bail!("world {seed} has no accounts; give at least one group a positive minimum count");
+        }
         let initial_shares: Vec<Qty> = (0..n_stocks)
             .map(|s| accounts.iter().map(|a| a.shares[s]).sum())
             .collect();
         let initial_cash = accounts.iter().map(|a| a.cash).sum();
-        let world = World::generate(cfg, seed, n);
+        let news_multipliers: Vec<_> = cfg
+            .bots
+            .iter()
+            .zip(&counts)
+            .flat_map(|(g, &count)| std::iter::repeat_n(g.news_multiplier, count))
+            .collect();
+        let forecasts: Vec<_> = cfg
+            .bots
+            .iter()
+            .zip(&counts)
+            .flat_map(|(g, &count)| std::iter::repeat_n(g.forecast_access, count))
+            .collect();
+        let world = World::generate_with_information(cfg, seed, &news_multipliers, &forecasts);
         let mut rules = cfg.rules(&initial_shares);
         for (st, &p) in rules.stocks.iter_mut().zip(&world.opening_prices) {
             st.initial_price = p;
         }
 
+        let mut social_names = std::collections::HashMap::new();
+        let mut social_groups: Vec<Mutex<crate::social::Group>> = Vec::new();
         // create bots
         let mut idx = 0;
         for (g, &count) in cfg.bots.iter().zip(&counts) {
             for _ in 0..count {
                 let a = &mut accounts[idx];
+                if let Some(name) = &g.social_group {
+                    let group = *social_names.entry(name.clone()).or_insert_with(|| {
+                        social_groups.push(Mutex::new(crate::social::Group::new(n_stocks)));
+                        social_groups.len() - 1
+                    });
+                    social_groups[group].get_mut().members += 1;
+                    a.social = Some(crate::social::Tracker::new(
+                        group,
+                        a.cash,
+                        &a.shares,
+                        &world.opening_prices,
+                    ));
+                }
                 let start = Start {
                     account: a.name.clone(),
                     owner: a.owner.clone(),
                     account_index: idx,
                     n_accounts: n,
+                    news_multiplier: g.news_multiplier,
+                    forecast_access: g.forecast_access,
+                    // Intentionally reversible: every bot is reviewed before it runs.
+                    // Review forbids reconstructing hidden world information. Seed
+                    // derivability itself is accepted, not an information-isolation bug.
                     seed: seed.wrapping_mul(0x9e3779b97f4a7c15)
                         ^ (idx as u64).wrapping_mul(0xd1b54a32d192ed03),
                     params: g.params.clone(),
@@ -181,21 +241,26 @@ impl<'a> Shared<'a> {
             }
         }
 
-        let mut fen = Fenwick::new(cfg.ticks as usize + 1);
-        fen.add(0, n as i64);
         let idle = (0..n as u32).map(|i| Reverse((0, i))).collect();
         let check = cfg.schedule.check_interval;
         Ok(Shared {
             markets: world
                 .opening_prices
                 .iter()
-                .map(|&p| Mutex::new(StockMarket::new(p, cfg.margin.mark_window)))
+                .map(|&p| {
+                    RwLock::new(StockMarket::with_depth_cache(
+                        p,
+                        cfg.margin.mark_window,
+                        cfg.market.book_depth,
+                    ))
+                })
                 .collect(),
             marks: world
                 .opening_prices
                 .iter()
                 .map(|&p| AtomicI64::new(p))
                 .collect(),
+            mark_ticks: (0..n_stocks).map(|_| AtomicU32::new(0)).collect(),
             accounts: accounts.into_iter().map(Mutex::new).collect(),
             mailboxes: (0..n).map(|_| Mutex::new(Vec::new())).collect(),
             treasury: AtomicI64::new(0),
@@ -204,7 +269,7 @@ impl<'a> Shared<'a> {
             sched: Mutex::new(Sched {
                 idle,
                 running: Vec::new(),
-                fen,
+                progress: TickProgress::new(cfg.ticks, n),
                 finished: 0,
                 next_check: if check == 0 { Tick::MAX } else { check },
                 pausing: false,
@@ -218,6 +283,8 @@ impl<'a> Shared<'a> {
             initial_shares,
             audits: AtomicU64::new(0),
             book_samples: Mutex::new(Vec::new()),
+            observer: None,
+            social_groups,
         })
     }
 
@@ -232,15 +299,36 @@ impl<'a> Shared<'a> {
             .collect()
     }
 
+    fn gross_at_marks(&self, a: &Account) -> Money {
+        a.shares
+            .iter()
+            .zip(&self.marks)
+            .map(|(shares, mark)| shares * mark.load(Ordering::Relaxed))
+            .sum()
+    }
+
+    /// The mark clock is the highest personal tick reached for each book, as
+    /// it already was for trades. Refresh before settlement/risk checks; other
+    /// accounts at the same or an older tick only read the published counters.
+    fn advance_marks(&self, tick: Tick) {
+        for (s, market) in self.markets.iter().enumerate() {
+            if self.mark_ticks[s].load(Ordering::Acquire) >= tick {
+                continue;
+            }
+            let mut m = market.write();
+            let old_mark = m.mark;
+            m.advance_to(tick);
+            if m.mark != old_mark {
+                self.marks[s].store(m.mark, Ordering::Relaxed);
+            }
+            self.mark_ticks[s].store(m.mark_tick(), Ordering::Release);
+        }
+    }
+
     // ---- scheduler -----------------------------------------------------
 
     pub fn run(&self) -> Result<RunOutput> {
-        let threads = match self.cfg.schedule.threads {
-            0 => std::thread::available_parallelism()
-                .map(|n| n.get())
-                .unwrap_or(4),
-            t => t,
-        };
+        let threads = self.cfg.schedule.worker_threads(self.n_accounts());
         let t0 = Instant::now();
         std::thread::scope(|s| {
             for _ in 0..threads {
@@ -254,6 +342,9 @@ impl<'a> Shared<'a> {
         for i in 0..self.n_accounts() {
             let mut a = self.accounts[i].lock();
             self.drain_mailbox(&mut a);
+            if let Some(observer) = self.observer {
+                observer.finish(&a);
+            }
         }
         self.audit()?;
         Ok(RunOutput {
@@ -266,53 +357,55 @@ impl<'a> Shared<'a> {
         let ticks = self.cfg.ticks;
         let n = self.n_accounts();
         let skew = self.cfg.schedule.max_tick_skew.max(1);
+        let mut obs = self.empty_observation();
+        // Complete one job and claim the next under the same scheduler guard.
+        // Dropping/reacquiring it between those operations doubles lock traffic.
+        let mut s = self.sched.lock();
         loop {
-            let (idx, tick, reference) = {
-                let mut s = self.sched.lock();
-                loop {
-                    if s.finished == n || s.error.is_some() {
-                        self.cv.notify_all();
-                        return;
-                    }
-                    let min = s.min_completed(ticks);
-                    if !s.pausing && min >= s.next_check {
-                        s.pausing = true;
-                    }
-                    if s.pausing {
-                        if s.running.is_empty() {
-                            if let Err(e) = self.audit() {
-                                s.error = Some(e.to_string());
-                                continue;
-                            }
-                            s.next_check = s
-                                .next_check
-                                .saturating_add(self.cfg.schedule.check_interval.max(1));
-                            s.pausing = false;
-                            self.cv.notify_all();
+            let (idx, tick, reference) = loop {
+                if s.finished == n || s.error.is_some() {
+                    self.cv.notify_all();
+                    return;
+                }
+                let min = s.min_completed(ticks);
+                if !s.pausing && min >= s.next_check {
+                    s.pausing = true;
+                }
+                if s.pausing {
+                    if s.running.is_empty() {
+                        if let Err(e) = self.audit() {
+                            s.error = Some(e.to_string());
                             continue;
                         }
-                    } else if let Some(&Reverse((t, i))) = s.idle.peek() {
-                        if t - min < skew {
-                            s.idle.pop();
-                            s.running.push((i, t));
-                            let k = (n as i64 - 1) / 2 + 1;
-                            let reference = s.fen.kth(k) as Tick;
-                            break (i as usize, t, reference);
-                        }
+                        s.next_check = s
+                            .next_check
+                            .saturating_add(self.cfg.schedule.check_interval.max(1));
+                        s.pausing = false;
+                        self.cv.notify_all();
+                        continue;
                     }
-                    self.cv.wait(&mut s);
+                } else if let Some(&Reverse((t, i))) = s.idle.peek() {
+                    if t - min < skew {
+                        s.idle.pop();
+                        s.running.push((i, t));
+                        let reference = s.progress.reference;
+                        break (i as usize, t, reference);
+                    }
                 }
+                self.cv.wait(&mut s);
             };
-            let result = catch_unwind(AssertUnwindSafe(|| self.step(idx, tick, reference)));
-            let mut s = self.sched.lock();
+            drop(s);
+            let result = catch_unwind(AssertUnwindSafe(|| {
+                self.step_with_observation(idx, tick, reference, &mut obs)
+            }));
+            s = self.sched.lock();
             if result.is_err() {
                 s.error = Some(format!(
                     "engine panic while stepping account {idx} at tick {tick}"
                 ));
             }
             s.running.retain(|r| r.0 as usize != idx);
-            s.fen.add(tick as usize, -1);
-            s.fen.add(tick as usize + 1, 1);
+            s.progress.complete(tick);
             if tick + 1 < ticks {
                 s.idle.push(Reverse((tick + 1, idx as u32)));
             } else {
@@ -327,7 +420,7 @@ impl<'a> Shared<'a> {
     fn sample_books(&self, tick: Tick) {
         let mut out = Vec::with_capacity(self.markets.len());
         for (stock, m) in self.markets.iter().enumerate() {
-            let m = m.lock();
+            let m = m.read();
             let (bid, ask) = (m.best(Side::Buy), m.best(Side::Sell));
             let (mut bid_depth, mut ask_depth) = (0, 0);
             if let (Some(b), Some(a)) = (bid, ask) {
@@ -355,16 +448,29 @@ impl<'a> Shared<'a> {
         self.book_samples.lock().extend(out);
     }
 
+    #[cfg(test)]
     fn step(&self, idx: usize, tick: Tick, reference: Tick) {
+        self.step_with_observation(idx, tick, reference, &mut self.empty_observation());
+    }
+
+    fn step_with_observation(
+        &self,
+        idx: usize,
+        tick: Tick,
+        reference: Tick,
+        obs: &mut Observation,
+    ) {
+        self.advance_marks(tick);
         if idx == 0 && tick.is_multiple_of(10) {
             self.sample_books(tick);
         }
         let mut guard = self.accounts[idx].lock();
         let a = &mut *guard;
+        let mut observed = false;
+        let mut traced_actions = Vec::new();
         self.drain_mailbox(a);
         self.settle_world(a, tick);
-        let marks = self.marks();
-        self.periodic_charges(a, tick, &marks);
+        self.periodic_charges(a, tick);
         self.check_liquidation(a, tick);
 
         let lag = reference.saturating_sub(tick);
@@ -378,10 +484,11 @@ impl<'a> Shared<'a> {
             a.stats.skipped += 1;
             a.skipped_since += 1;
         } else {
-            let obs = self.observation(a, tick, reference);
+            self.observation(a, tick, reference, obs);
+            observed = true;
             let mut bot = a.bot.take().unwrap();
             let t0 = Instant::now();
-            let res = catch_unwind(AssertUnwindSafe(|| bot.on_tick(&obs)));
+            let res = catch_unwind(AssertUnwindSafe(|| bot.on_tick(obs)));
             let ns = t0.elapsed().as_nanos() as u64;
             a.stats.decisions += 1;
             a.stats.decision_nanos_total += ns;
@@ -392,6 +499,9 @@ impl<'a> Shared<'a> {
             }
             match res {
                 Ok(actions) => {
+                    if self.observer.is_some() {
+                        traced_actions.clone_from(&actions);
+                    }
                     a.bot = Some(bot);
                     a.consecutive_errors = 0;
                     self.apply_actions(a, tick, actions);
@@ -410,9 +520,11 @@ impl<'a> Shared<'a> {
             }
         }
         // end-of-tick samples for the idle fee and interest
-        let marks = self.marks();
-        let gross = a.gross(&marks);
+        let gross = self.gross_at_marks(a);
         let equity = a.cash + gross;
+        if let Some(observer) = self.observer {
+            observer.step(a, tick, observed.then_some(obs), &traced_actions, gross);
+        }
         a.equity_sum += equity.max(0) as i128;
         a.loan_sum += (-a.cash).max(0) as i128;
         a.samples += 1;
@@ -473,7 +585,7 @@ impl<'a> Shared<'a> {
         let deliveries = &w.deliveries[a.idx];
         while a.delivery_cursor < deliveries.len() && deliveries[a.delivery_cursor].tick <= tick {
             let d = deliveries[a.delivery_cursor];
-            a.inbox.news.push(w.view(d.event, a.idx, d.stage));
+            a.inbox.news.push(w.delivery_view(d, a.idx));
             a.delivery_cursor += 1;
         }
         while a.hint_cursor < w.hints_due(tick) {
@@ -491,10 +603,12 @@ impl<'a> Shared<'a> {
             a.season_cursor += 1;
         }
         let period = self.rules.dividend_period;
+        let mut total = 0;
         if tick > 0 && tick.is_multiple_of(period) {
-            let mut total = 0;
             for s in 0..a.shares.len() {
-                let amt = a.shares[s] * w.dividend(s, tick);
+                let amt = self
+                    .rules
+                    .dividend_payment(a.shares[s], w.dividend(s, tick));
                 if amt != 0 {
                     total += amt;
                     a.stats.dividends += amt;
@@ -504,9 +618,11 @@ impl<'a> Shared<'a> {
                     });
                 }
             }
+        }
+        if tick > 0 && tick.is_multiple_of(self.rules.combo_period) {
             for (r, c) in self.rules.combos.iter().enumerate() {
                 if c.active(tick) {
-                    let amt = c.sets(&a.shares) * c.bonus;
+                    let amt = self.rules.combo_payment(c.sets(&a.shares), c.bonus);
                     if amt != 0 {
                         total += amt;
                         a.stats.combo_dividends += amt;
@@ -517,12 +633,14 @@ impl<'a> Shared<'a> {
                     }
                 }
             }
+        }
+        if total != 0 {
             a.cash += total;
             self.treasury.fetch_sub(total, Ordering::Relaxed);
         }
     }
 
-    fn periodic_charges(&self, a: &mut Account, tick: Tick, marks: &[Price]) {
+    fn periodic_charges(&self, a: &mut Account, tick: Tick) {
         if tick == 0 {
             return;
         }
@@ -540,14 +658,17 @@ impl<'a> Shared<'a> {
         }
         if tick.is_multiple_of(self.rules.idle_period) && a.samples > 0 {
             let (gross_fee, credit, due) = self.idle_estimate(a);
-            if due > 0 {
-                self.charge_idle(a, due, marks);
-            }
+            let credit_applied = credit.min(gross_fee - a.idle_fee_carry);
+            let paid = if due > 0 {
+                self.charge_idle(a, due, &self.marks())
+            } else {
+                0
+            };
             if gross_fee > 0 {
                 a.inbox.income.push(Income::IdleFee {
-                    paid: due,
+                    paid,
                     gross: gross_fee,
-                    credit: credit.min(gross_fee),
+                    credit: credit_applied,
                 });
             }
             a.equity_sum = 0;
@@ -564,21 +685,24 @@ impl<'a> Shared<'a> {
         };
         let fee = (avg as f64 * self.rules.idle_rate) as Money;
         let credit = (a.credit_notional as f64 * self.rules.credit_ratio) as Money;
-        (fee, credit, (fee - credit).max(0))
+        (
+            fee + a.idle_fee_carry,
+            credit,
+            (fee - credit).max(0) + a.idle_fee_carry,
+        )
     }
 
     /// Takes `due` from positive cash and every stock in the same proportion. Cash goes to
     /// the treasury, shares are burned.
-    fn charge_idle(&self, a: &mut Account, due: Money, marks: &[Price]) {
+    fn charge_idle(&self, a: &mut Account, due: Money, marks: &[Price]) -> Money {
         let pos_cash = a.cash.max(0);
         let base = pos_cash + a.gross(marks);
         if base <= 0 {
-            return;
+            a.idle_fee_carry = due;
+            return 0;
         }
         let cash_part = ((pos_cash as i128 * due as i128) / base as i128) as Money;
-        a.cash -= cash_part;
-        self.treasury.fetch_add(cash_part, Ordering::Relaxed);
-        let mut paid = cash_part;
+        let mut paid = 0;
         for s in 0..a.shares.len() {
             if a.shares[s] <= 0 {
                 continue;
@@ -589,16 +713,55 @@ impl<'a> Shared<'a> {
             if whole <= 0 {
                 continue;
             }
-            a.share_frac[s] -= whole * 1_000_000;
             if a.sellable(s) < whole {
                 self.free_shares(a, s, whole);
             }
+            // A concurrent taker may already have bought these shares. Cancel
+            // only frees the resting remainder; pending fills stay reserved.
+            // Defer the uncollectible fraction until shares are available again.
+            let whole = whole.min(a.sellable(s).max(0));
+            a.share_frac[s] -= whole * 1_000_000;
             a.shares[s] -= whole;
             a.stats.burned_shares += whole;
             self.burned[s].fetch_add(whole, Ordering::Relaxed);
             paid += whole * marks[s];
         }
+        // Stock burns also reduce equity and therefore the capacity backing
+        // resting buys. Cancel newest buys against the post-fee balance sheet.
+        let gross = a.gross(marks);
+        let capacity = ((self.rules.max_leverage * (a.cash - cash_part + gross) as f64) as Money
+            - gross)
+            .max(0);
+        if a.reserved_buy > capacity {
+            let mut buys: Vec<_> = a
+                .orders
+                .iter()
+                .filter(|(_, o)| o.live && o.side == Side::Buy)
+                .map(|(id, o)| (*id, o.placed_tick))
+                .collect();
+            buys.sort_by_key(|(id, t)| Reverse((*t, *id)));
+            for (id, _) in buys {
+                if a.reserved_buy <= capacity {
+                    break;
+                }
+                self.cancel_order(a, id, AckStatus::Cancelled);
+            }
+        }
+        // Cancellation cannot release buys already matched by another worker.
+        // Keep their reservation intact, just as idle burns preserve pending
+        // sells. Carry the uncollectible fee into the next period, without
+        // advancing mailbox delivery or discarding the amount owed.
+        let headroom = self.buying_power(a, a.cash + gross, gross);
+        let affordable = (headroom as f64 / self.rules.max_leverage).floor() as Money;
+        let cash_paid = cash_part.min(pos_cash).min(affordable);
+        a.idle_fee_carry = cash_part - cash_paid;
+        a.cash -= cash_paid;
+        self.treasury.fetch_add(cash_paid, Ordering::Relaxed);
+        paid += cash_paid;
         a.stats.idle_fees += paid;
+        a.stats.idle_cash_fees += cash_paid;
+        a.stats.idle_stock_fees += paid - cash_paid;
+        paid
     }
 
     /// Cancels this account's sell orders on `stock`, newest first, until `need` shares are free.
@@ -619,8 +782,7 @@ impl<'a> Shared<'a> {
     }
 
     fn check_liquidation(&self, a: &mut Account, tick: Tick) {
-        let marks = self.marks();
-        let gross = a.gross(&marks);
+        let gross = self.gross_at_marks(a);
         let equity = a.cash + gross;
         let breach = if equity <= 0 {
             gross > 0 || a.cash < 0
@@ -630,30 +792,59 @@ impl<'a> Shared<'a> {
         if !breach {
             return;
         }
+        let mut event = crate::account::LiquidationEvent {
+            tick,
+            cash_before: a.cash,
+            gross_before: gross,
+            shares_before: a.shares.clone(),
+            marks_before: self
+                .marks
+                .iter()
+                .map(|m| m.load(Ordering::Relaxed))
+                .collect(),
+            cash_after: 0,
+            gross_after: 0,
+            shares_after: Vec::new(),
+            sale_notional: 0,
+            fills: Vec::new(),
+            trade_fees: 0,
+            bad_debt: 0,
+            pending_orders: 0,
+        };
+        let fees_before = a.stats.trade_fees;
+        let fill_start = a.inbox.fills.len();
+        let debt_before = a.stats.bad_debt;
         a.stats.liquidations += 1;
         a.inbox.income.push(Income::Liquidation);
         self.cancel_all(a, None, AckStatus::CancelledByLiquidation);
-        let frac = if equity <= 0 {
-            1.0
-        } else {
-            let target = self.rules.max_leverage * 0.9 * equity as f64;
-            ((gross as f64 - target) / gross as f64).clamp(0.0, 1.0)
-        };
-        for s in 0..a.shares.len() {
-            let q = ((a.shares[s] as f64) * frac).ceil() as Qty;
-            let q = q.min(a.sellable(s));
-            if q > 0 {
-                self.place(
-                    a,
-                    tick,
-                    Action::Market {
-                        stock: s,
-                        side: Side::Sell,
-                        qty: q,
-                        cid: 0,
-                    },
-                    true,
-                );
+        loop {
+            let gross = self.gross_at_marks(a);
+            let equity = a.cash + gross;
+            if gross == 0 || (equity > 0 && gross as f64 <= self.rules.max_leverage * equity as f64)
+            {
+                break;
+            }
+            let frac = if equity <= 0 {
+                1.0
+            } else {
+                let target = self.rules.max_leverage * 0.9 * equity as f64;
+                ((gross as f64 - target) / gross as f64).clamp(0.0, 1.0)
+            };
+            let mut sold = false;
+            for s in 0..a.shares.len() {
+                let q = ((a.shares[s] as f64) * frac).ceil() as Qty;
+                let q = q.min(a.sellable(s)).min(crate::config::MAX_SHARES);
+                if q > 0 {
+                    let before = a.shares[s];
+                    self.place(a, tick, Action::market(s, Side::Sell, q), true);
+                    sold |= a.shares[s] < before;
+                }
+            }
+            // Reassess actual prices/fees before the next proportional pass.
+            // Every successful pass reduces inventory; an empty book or only
+            // pending sells stops immediately rather than spinning forever.
+            if !sold {
+                break;
             }
         }
         if a.shares.iter().all(|&s| s == 0) && a.cash < 0 && a.orders.is_empty() {
@@ -665,40 +856,68 @@ impl<'a> Shared<'a> {
                 .income
                 .push(Income::BadDebtWrittenOff { amount: debt });
         }
+        event.cash_after = a.cash;
+        event.gross_after = self.gross_at_marks(a);
+        event.shares_after = a.shares.clone();
+        event.trade_fees = a.stats.trade_fees - fees_before;
+        event.bad_debt = a.stats.bad_debt - debt_before;
+        event.fills = a.inbox.fills[fill_start..].to_vec();
+        event.sale_notional = event.fills.iter().map(|f| f.price * f.qty).sum();
+        event.pending_orders = a.orders.len();
+        a.liquidation_events.push(event);
     }
 
     // ---- observation -------------------------------------------------------
 
-    fn observation(&self, a: &mut Account, tick: Tick, reference: Tick) -> Observation {
+    fn empty_observation(&self) -> Observation {
+        Observation {
+            tick: 0,
+            ticks_total: self.rules.ticks_total,
+            reference_tick: 0,
+            season: self.world.season(0),
+            account: AccountView::default(),
+            open_orders: Vec::new(),
+            books: vec![BookView::default(); self.markets.len()],
+            trades: vec![Vec::new(); self.markets.len()],
+            skipped: 0,
+            fills: Vec::new(),
+            acks: Vec::new(),
+            rejects: Vec::new(),
+            news: Vec::new(),
+            season_changes: Vec::new(),
+            income: Vec::new(),
+            terminal_hints: Vec::new(),
+            social: None,
+        }
+    }
+
+    fn observation(&self, a: &mut Account, tick: Tick, reference: Tick, obs: &mut Observation) {
         let depth = self.rules.book_depth;
         let limit = self.cfg.market.trade_tape_limit;
-        let mut books = Vec::with_capacity(self.markets.len());
-        let mut trades = Vec::with_capacity(self.markets.len());
         for (s, m) in self.markets.iter().enumerate() {
-            let m = m.lock();
-            books.push(BookView {
-                bids: m.depth(Side::Buy, depth),
-                asks: m.depth(Side::Sell, depth),
-                last: m.last,
-                mark: m.mark,
-                dividend: self.world.dividend(s, tick),
-            });
+            let m = m.read();
+            let book = &mut obs.books[s];
+            m.depth_into(Side::Buy, depth, &mut book.bids);
+            m.depth_into(Side::Sell, depth, &mut book.asks);
+            book.last = m.last;
+            book.mark = m.mark;
+            book.dividend = self.world.dividend(s, tick);
             let start = a.tape_seen[s].max(m.tape.len().saturating_sub(limit));
-            trades.push(
-                m.tape[start..]
-                    .iter()
-                    .map(|e| Trade {
-                        tick: e.tick,
-                        price: e.price,
-                        qty: e.qty,
-                        aggressor: e.aggressor,
-                    })
-                    .collect(),
-            );
+            obs.trades[s].clear();
+            obs.trades[s].extend(m.tape[start..].iter().map(|e| Trade {
+                tick: e.tick,
+                price: e.price,
+                qty: e.qty,
+                aggressor: e.aggressor,
+            }));
             a.tape_seen[s] = m.tape.len();
         }
-        let marks: Vec<Price> = books.iter().map(|b| b.mark).collect();
-        let gross = a.gross(&marks);
+        let gross: Money = a
+            .shares
+            .iter()
+            .zip(&obs.books)
+            .map(|(q, b)| q * b.mark)
+            .sum();
         let equity = a.cash + gross;
         let (fee, credit, due) = self.idle_estimate(a);
         let period_end = (tick / self.rules.idle_period + 1) * self.rules.idle_period;
@@ -707,10 +926,15 @@ impl<'a> Shared<'a> {
         } else {
             (-a.cash).max(0)
         };
-        let account = AccountView {
+        let shares = &mut obs.account.shares;
+        shares.clone_from(&a.shares);
+        let sellable = &mut obs.account.sellable;
+        sellable.clear();
+        sellable.extend((0..a.shares.len()).map(|s| a.sellable(s)));
+        obs.account = AccountView {
             cash: a.cash,
-            shares: a.shares.clone(),
-            sellable: (0..a.shares.len()).map(|s| a.sellable(s)).collect(),
+            shares: std::mem::take(&mut obs.account.shares),
+            sellable: std::mem::take(&mut obs.account.sellable),
             equity,
             gross,
             leverage: if equity > 0 {
@@ -733,40 +957,46 @@ impl<'a> Shared<'a> {
             },
             interest_estimate: (avg_loan as f64 * self.rules.loan_rate) as Money,
         };
-        let mut open_orders: Vec<OpenOrder> = a
-            .orders
-            .iter()
-            .filter(|(_, o)| o.live)
-            .map(|(id, o)| OpenOrder {
-                order_id: *id,
-                stock: o.stock,
-                side: o.side,
-                price: o.price,
-                remaining: o.remaining,
-                placed_tick: o.placed_tick,
-            })
-            .collect();
-        open_orders.sort_by_key(|o| o.order_id);
-        let inbox = std::mem::take(&mut a.inbox);
-        let skipped = std::mem::take(&mut a.skipped_since);
-        Observation {
-            tick,
-            ticks_total: self.rules.ticks_total,
-            reference_tick: reference,
-            season: self.world.season(tick),
-            account,
-            open_orders,
-            books,
-            trades,
-            skipped,
-            fills: inbox.fills,
-            acks: inbox.acks,
-            rejects: inbox.rejects,
-            news: inbox.news,
-            season_changes: inbox.season_changes,
-            income: inbox.income,
-            terminal_hints: inbox.terminal_hints,
+        obs.open_orders.clear();
+        obs.open_orders.extend(
+            a.orders
+                .iter()
+                .filter(|(_, o)| o.live)
+                .map(|(id, o)| OpenOrder {
+                    order_id: *id,
+                    stock: o.stock,
+                    side: o.side,
+                    price: o.price,
+                    remaining: o.remaining,
+                    placed_tick: o.placed_tick,
+                }),
+        );
+        // OrderStore already yields increasing IDs, including after removals.
+        obs.tick = tick;
+        obs.reference_tick = reference;
+        obs.season = self.world.season(tick);
+        obs.skipped = std::mem::take(&mut a.skipped_since);
+        // Give the account empty buffers for subsequent events. The worker may
+        // serve another account next; never retain any previous event contents.
+        fn receive<T>(out: &mut Vec<T>, incoming: &mut Vec<T>) {
+            out.clear();
+            std::mem::swap(out, incoming);
         }
+        receive(&mut obs.fills, &mut a.inbox.fills);
+        receive(&mut obs.acks, &mut a.inbox.acks);
+        receive(&mut obs.rejects, &mut a.inbox.rejects);
+        receive(&mut obs.news, &mut a.inbox.news);
+        receive(&mut obs.season_changes, &mut a.inbox.season_changes);
+        receive(&mut obs.income, &mut a.inbox.income);
+        receive(&mut obs.terminal_hints, &mut a.inbox.terminal_hints);
+        // No other account lock, no world barrier. Only opted-in members pay
+        // this O(stocks + fills) cost. Reset when a worker switches accounts.
+        obs.social = if let Some(member) = &mut a.social {
+            member.update(obs);
+            Some(self.social_groups[member.group].lock().publish(member))
+        } else {
+            None
+        };
     }
 
     fn buying_power(&self, a: &Account, equity: Money, gross: Money) -> Money {
@@ -820,7 +1050,7 @@ impl<'a> Shared<'a> {
             let o = &a.orders[&id];
             (o.stock, o.side, o.reserve_per_share)
         };
-        let on_book = self.markets[stock].lock().cancel(id);
+        let on_book = self.markets[stock].write().cancel(id);
         match side {
             Side::Buy => a.reserved_buy -= on_book * rps,
             Side::Sell => a.reserved_sell[stock] -= on_book,
@@ -889,7 +1119,6 @@ impl<'a> Shared<'a> {
             return self.reject(a, act, RejectReason::SelfCross);
         }
 
-        let marks = self.marks();
         let rps = match (side, limit) {
             (Side::Buy, Some(p)) => self.rules.buy_reserve_per_share(p),
             _ => 0,
@@ -903,7 +1132,7 @@ impl<'a> Shared<'a> {
                 a.reserved_sell[stock] += qty;
             }
             Side::Buy => {
-                let gross = a.gross(&marks);
+                let gross = self.gross_at_marks(a);
                 power = self.buying_power(a, a.cash + gross, gross);
                 if limit.is_some() {
                     let need = qty * rps;
@@ -931,8 +1160,9 @@ impl<'a> Shared<'a> {
             take
         };
         let idx = a.idx as u32;
-        let (fills, rested, new_mark) = {
-            let mut m = self.markets[stock].lock();
+        let (fills, rested) = {
+            let mut m = self.markets[stock].write();
+            let old_mark = m.mark;
             let fills = m.take(side, limit, qty, idx, tick, &mut cap);
             let filled: Qty = fills.iter().map(|f| f.qty).sum();
             let remaining = qty - filled;
@@ -947,9 +1177,17 @@ impl<'a> Shared<'a> {
                     reserve_per_share: rps,
                 });
             }
-            (fills, rested, m.mark)
+            if m.mark != old_mark {
+                // Avoid invalidating readers' cache lines on unchanged prices.
+                // Publish under the book lock so an older writer cannot replace
+                // a newer mark after releasing the lock.
+                self.marks[stock].store(m.mark, Ordering::Relaxed);
+            }
+            if m.mark_tick() > self.mark_ticks[stock].load(Ordering::Relaxed) {
+                self.mark_ticks[stock].store(m.mark_tick(), Ordering::Release);
+            }
+            (fills, rested)
         };
-        self.marks[stock].store(new_mark, Ordering::Relaxed);
 
         let credit_taker = self.rules.credit_side != "maker";
         let mut filled = 0;
@@ -1057,7 +1295,7 @@ impl<'a> Shared<'a> {
         let mut book_buy_reserve: Vec<i128> = vec![0; self.n_accounts()];
         let mut book_sell: Vec<Vec<i128>> = vec![vec![0; n_stocks]; self.n_accounts()];
         for (s, m) in self.markets.iter().enumerate() {
-            for o in m.lock().resting_orders() {
+            for o in m.read().resting_orders() {
                 match o.side {
                     Side::Buy => {
                         book_buy_reserve[o.account as usize] +=
@@ -1111,6 +1349,85 @@ impl<'a> Shared<'a> {
 mod scheduling_tests {
     use super::*;
 
+    #[test]
+    fn published_marks_follow_books_after_concurrent_orders() {
+        struct Trader(usize);
+        impl Bot for Trader {
+            fn on_tick(&mut self, obs: &Observation) -> Vec<Action> {
+                let stock = self.0 % obs.books.len();
+                let side = if self.0 < obs.books.len() {
+                    Side::Sell
+                } else {
+                    Side::Buy
+                };
+                let price = if side == Side::Sell {
+                    100 + i64::from(obs.tick % 17)
+                } else {
+                    200
+                };
+                vec![
+                    Action::CancelAll { stock: Some(stock) },
+                    Action::limit(stock, side, price, 1),
+                ]
+            }
+        }
+        let mut cfg = config();
+        cfg.bots[0].count = cfg.stocks.len() * 2;
+        cfg.bots[0].cash = 1_000_000;
+        cfg.bots[0].shares_each = 1000;
+        cfg.schedule.threads = 4;
+        cfg.schedule.check_interval = 13;
+        let factory = |_: &str, start: &Start| -> Option<Box<dyn Bot>> {
+            Some(Box::new(Trader(start.account_index)))
+        };
+        let shared = Shared::new(&cfg, 7, &factory).unwrap();
+        shared.run().unwrap();
+        assert!(shared.markets.iter().any(|m| !m.read().tape.is_empty()));
+        for (stock, market) in shared.markets.iter().enumerate() {
+            assert_eq!(
+                shared.marks[stock].load(Ordering::Relaxed),
+                market.read().mark
+            );
+        }
+    }
+
+    #[test]
+    fn incremental_reference_matches_sorted_accounts_with_skew_and_early_finishes() {
+        use rand::{Rng, SeedableRng};
+        let mut rng = rand_chacha::ChaCha8Rng::seed_from_u64(37);
+        for accounts in [1, 2, 3, 4, 52, 53] {
+            let ticks = 91;
+            let mut progress = TickProgress::new(ticks, accounts);
+            let mut completed = vec![0; accounts];
+            let mut active: Vec<_> = (0..accounts).collect();
+            while !active.is_empty() {
+                let pos = if rng.gen_bool(0.5) {
+                    0
+                } else {
+                    rng.gen_range(0..active.len())
+                };
+                let account = active[pos];
+                progress.complete(completed[account]);
+                completed[account] += 1;
+                if completed[account] == ticks {
+                    active.swap_remove(pos);
+                }
+                let mut sorted = completed.clone();
+                sorted.sort_unstable();
+                assert_eq!(progress.reference, sorted[(accounts - 1) / 2]);
+                assert_eq!(
+                    progress.at_or_below,
+                    completed
+                        .iter()
+                        .filter(|&&t| t <= progress.reference)
+                        .count()
+                );
+            }
+            assert_eq!(progress.reference, ticks);
+            assert_eq!(progress.counts[ticks as usize], accounts);
+        }
+    }
+
     struct Idle;
     impl Bot for Idle {
         fn on_tick(&mut self, _: &Observation) -> Vec<Action> {
@@ -1119,7 +1436,10 @@ mod scheduling_tests {
     }
 
     fn config() -> Config {
-        let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../scenarios/baseline.toml");
+        let path = concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../scenarios/baseline-v6.toml"
+        );
         let mut c = Config::load(std::path::Path::new(path)).unwrap();
         c.ticks = 100;
         c.bots.truncate(1);
@@ -1130,6 +1450,113 @@ mod scheduling_tests {
         c.world.news.sector.events_per_1000_ticks = 0.0;
         c.world.news.stock.events_per_1000_ticks = 0.0;
         c
+    }
+
+    #[test]
+    fn scheduler_handles_skew_waits_audits_and_finishing_workers() {
+        use std::sync::{atomic::AtomicU32, Arc};
+        use std::time::Duration;
+
+        struct Delayed {
+            idx: usize,
+            calls: Arc<Vec<AtomicU32>>,
+        }
+        impl Bot for Delayed {
+            fn on_tick(&mut self, obs: &Observation) -> Vec<Action> {
+                assert_eq!(
+                    self.calls[self.idx].fetch_add(1, Ordering::Relaxed),
+                    obs.tick
+                );
+                if self.idx == 0 && obs.tick.is_multiple_of(7) {
+                    std::thread::sleep(Duration::from_millis(1));
+                }
+                vec![]
+            }
+        }
+
+        for accounts in [1, 4, 7] {
+            let mut cfg = config();
+            cfg.ticks = 19;
+            cfg.bots[0].count = accounts;
+            cfg.schedule.threads = 4;
+            cfg.schedule.max_tick_skew = 1;
+            cfg.schedule.skip_decision_lag = 0;
+            cfg.schedule.check_interval = 3;
+            let calls = Arc::new((0..accounts).map(|_| AtomicU32::new(0)).collect::<Vec<_>>());
+            let factory = |_: &str, start: &Start| -> Option<Box<dyn Bot>> {
+                Some(Box::new(Delayed {
+                    idx: start.account_index,
+                    calls: Arc::clone(&calls),
+                }))
+            };
+            let shared = Shared::new(&cfg, 1, &factory).unwrap();
+            let run = shared.run().unwrap();
+            assert_eq!(run.threads, cfg.schedule.worker_threads(accounts));
+            assert!(shared.audits.load(Ordering::Relaxed) >= 2);
+            for (idx, account) in shared.accounts.iter().enumerate() {
+                assert_eq!(calls[idx].load(Ordering::Relaxed), cfg.ticks);
+                assert_eq!(account.lock().stats.bot_errors, 0);
+                assert_eq!(account.lock().stats.skipped, 0);
+            }
+        }
+    }
+
+    #[test]
+    fn reused_observation_keeps_account_cursors_and_delivers_events_once() {
+        let mut cfg = config();
+        cfg.bots[0].count = 2;
+        cfg.market.trade_tape_limit = 1;
+        let factory = |_: &str, _: &Start| -> Option<Box<dyn Bot>> { Some(Box::new(Idle)) };
+        let shared = Shared::new(&cfg, 1, &factory).unwrap();
+        let mut obs = shared.empty_observation();
+        {
+            let mut seller = shared.accounts[0].lock();
+            shared.place(&mut seller, 0, Action::limit(0, Side::Sell, 100, 10), false);
+            seller.inbox.terminal_hints.push((10, 20));
+        }
+        {
+            let mut buyer = shared.accounts[1].lock();
+            for tick in [1, 2] {
+                shared.place(&mut buyer, tick, Action::market(0, Side::Buy, 1), false);
+            }
+        }
+        {
+            let mut seller = shared.accounts[0].lock();
+            shared.drain_mailbox(&mut seller);
+            shared.observation(&mut seller, 3, 3, &mut obs);
+            assert_eq!(obs.fills.len(), 2);
+            assert_eq!(obs.acks.len(), 1);
+            assert_eq!(obs.open_orders[0].remaining, 8);
+            assert_eq!(obs.terminal_hints, [(10, 20)]);
+            assert_eq!(obs.trades[0].len(), 1);
+            assert_eq!(obs.trades[0][0].tick, 2);
+        }
+        {
+            let mut buyer = shared.accounts[1].lock();
+            shared.observation(&mut buyer, 3, 3, &mut obs);
+            assert_eq!(obs.account.shares, buyer.shares);
+            assert_eq!(obs.fills.len(), 2);
+            assert!(obs.fills.iter().all(|fill| !fill.maker));
+            assert_eq!(obs.acks.len(), 2);
+            assert!(obs.open_orders.is_empty());
+            assert!(obs.terminal_hints.is_empty());
+            assert_eq!(obs.trades[0].len(), 1);
+        }
+        {
+            let mut seller = shared.accounts[0].lock();
+            shared.observation(&mut seller, 4, 4, &mut obs);
+            assert!(obs.fills.is_empty());
+            assert!(obs.acks.is_empty());
+            assert!(obs.terminal_hints.is_empty());
+            assert!(obs.trades.iter().all(Vec::is_empty));
+            assert_eq!(obs.books[0].asks[0].qty, 8);
+            shared.cancel_all(&mut seller, None, AckStatus::Cancelled);
+            shared.observation(&mut seller, 5, 5, &mut obs);
+            assert!(obs.books[0].asks.is_empty());
+            assert!(obs.open_orders.is_empty());
+            assert_eq!(obs.acks.len(), 1);
+        }
+        shared.audit().unwrap();
     }
 
     #[test]
@@ -1201,5 +1628,158 @@ mod scheduling_tests {
         let shared = Shared::new(&cfg, 1, &factory).unwrap();
         shared.step(0, 0, 10);
         assert_eq!(shared.accounts[0].lock().stats.decisions, 1);
+    }
+
+    #[test]
+    fn idle_burn_preserves_shares_already_sold_with_pending_settlement() {
+        // Reproduce fills arriving between a tick's mailbox drain and idle fee.
+        // Cancel releases only the still-resting quantity, never pending fills.
+        for (sold, owed, expected_burn) in [(20, 1, 0), (13, 10, 7)] {
+            let mut cfg = config();
+            cfg.bots[0].count = 2;
+            cfg.bots[0].shares_each = 20;
+            let factory = |_: &str, _: &Start| -> Option<Box<dyn Bot>> { Some(Box::new(Idle)) };
+            let shared = Shared::new(&cfg, 1, &factory).unwrap();
+            let marks = shared.marks();
+            {
+                let mut seller = shared.accounts[0].lock();
+                shared.place(
+                    &mut seller,
+                    1,
+                    Action::Limit {
+                        stock: 0,
+                        side: Side::Sell,
+                        price: marks[0],
+                        qty: 20,
+                        tif: Tif::Gtc,
+                        cid: 0,
+                    },
+                    false,
+                );
+            }
+            {
+                let mut buyer = shared.accounts[1].lock();
+                shared.place(
+                    &mut buyer,
+                    1,
+                    Action::Limit {
+                        stock: 0,
+                        side: Side::Buy,
+                        price: marks[0],
+                        qty: sold,
+                        tif: Tif::Ioc,
+                        cid: 0,
+                    },
+                    false,
+                );
+            }
+            {
+                let mut seller = shared.accounts[0].lock();
+                assert_eq!(seller.shares[0], 20);
+                seller.share_frac[0] = owed * 1_000_000;
+                shared.charge_idle(&mut seller, 1, &marks);
+                assert_eq!(seller.stats.burned_shares, expected_burn);
+                assert!(seller.share_frac[0] >= (owed - expected_burn) * 1_000_000);
+            }
+            shared.audit().unwrap();
+            {
+                let mut seller = shared.accounts[0].lock();
+                shared.drain_mailbox(&mut seller);
+                assert_eq!(seller.shares[0], 20 - sold - expected_burn);
+                assert_eq!(seller.reserved_sell[0], 0);
+            }
+            shared.audit().unwrap();
+        }
+    }
+
+    #[test]
+    fn idle_fee_preserves_pending_buy_reservations_and_collects_carry_once() {
+        for (bought, due, cash_paid, carry) in
+            [(10, 300, 0, 100), (7, 300, 100, 0), (9, 600, 100, 100)]
+        {
+            let mut cfg = config();
+            cfg.stocks.truncate(1);
+            cfg.combos.clear();
+            cfg.stocks[0].initial_price = 100;
+            cfg.market.opening_spread = None;
+            cfg.bots[0].count = 2;
+            cfg.bots[0].cash = 1000;
+            cfg.bots[0].shares_each = 20;
+            cfg.fees.trade_fee_bps = 0;
+            cfg.fees.credit_ratio = 0.0;
+            cfg.margin.max_leverage = 1.0;
+            let shared = Shared::new(&cfg, 1, &|_, _| Some(Box::new(Idle))).unwrap();
+            {
+                let mut buyer = shared.accounts[0].lock();
+                shared.place(&mut buyer, 0, Action::limit(0, Side::Buy, 100, 10), false);
+            }
+            {
+                let mut seller = shared.accounts[1].lock();
+                shared.place(&mut seller, 1, Action::market(0, Side::Sell, bought), false);
+            }
+            {
+                let mut buyer = shared.accounts[0].lock();
+                let paid = shared.charge_idle(&mut buyer, due, &[100]);
+                assert_eq!(buyer.cash, 1000 - cash_paid);
+                assert_eq!(buyer.idle_fee_carry, carry);
+                assert_eq!(buyer.reserved_buy, bought * 100);
+                assert_eq!(paid, due - carry);
+                assert!(
+                    buyer.inbox.fills.is_empty(),
+                    "fee collection must not consume maker mail early"
+                );
+            }
+            shared.audit().unwrap();
+            {
+                let mut buyer = shared.accounts[0].lock();
+                shared.drain_mailbox(&mut buyer);
+                assert_eq!(buyer.cash, 1000 - cash_paid - bought * 100);
+                assert!(buyer.cash >= 0);
+                assert_eq!(buyer.reserved_buy, 0);
+                assert_eq!(buyer.inbox.fills.len(), 1);
+                let (_, _, owed) = shared.idle_estimate(&buyer);
+                assert_eq!(owed, carry);
+                if owed > 0 {
+                    shared.charge_idle(&mut buyer, owed, &[100]);
+                }
+                assert_eq!(buyer.idle_fee_carry, 0);
+                assert_eq!(buyer.stats.idle_fees, due);
+                shared.drain_mailbox(&mut buyer);
+                assert_eq!(
+                    buyer.inbox.fills.len(),
+                    1,
+                    "maker fill must not be replayed"
+                );
+            }
+            shared.audit().unwrap();
+        }
+    }
+
+    #[test]
+    fn stock_idle_burn_trims_buys_backed_by_margin_equity() {
+        let mut cfg = config();
+        cfg.stocks.truncate(1);
+        cfg.combos.clear();
+        cfg.stocks[0].initial_price = 100;
+        cfg.market.opening_spread = None;
+        cfg.bots[0].cash = 1000;
+        cfg.bots[0].shares_each = 20;
+        cfg.fees.trade_fee_bps = 0;
+        let shared = Shared::new(&cfg, 1, &|_, _| Some(Box::new(Idle))).unwrap();
+        {
+            let mut a = shared.accounts[0].lock();
+            // G=2000, E=3000, L=4: original buying power=10000.
+            shared.place(&mut a, 0, Action::limit(0, Side::Buy, 100, 50), false);
+            shared.place(&mut a, 1, Action::limit(0, Side::Buy, 100, 50), false);
+            assert_eq!(a.reserved_buy, 10000);
+            shared.charge_idle(&mut a, 300, &[100]);
+            assert_eq!(a.cash, 900);
+            assert_eq!(a.shares, [18]);
+            assert_eq!(a.reserved_buy, 5000);
+            assert_eq!(a.live_orders(), 1);
+            assert_eq!(a.orders.values().next().unwrap().placed_tick, 0);
+            assert_eq!(a.idle_fee_carry, 0);
+        }
+        shared.audit().unwrap();
     }
 }

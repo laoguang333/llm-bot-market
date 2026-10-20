@@ -94,7 +94,7 @@ pub struct Grid {
     rng: ChaCha8Rng,
     rules: Rules,
     know: Knowledge,
-    step: f64,
+    level_factors: Vec<f64>,
     levels: i32,
     lot: Qty,
     active: usize,
@@ -113,6 +113,8 @@ impl Grid {
         let n = s.rules.stocks.len();
         let value_weight = jittered(s, "value_weight", 0.8, 0.25).clamp(0.0, 1.0);
         let anchor_noise = jittered(s, "anchor_noise", 0.06, 0.5);
+        let step = jittered(s, "step", 0.006, 0.5);
+        let levels = jittered(s, "levels", 8.0, 0.4).round().max(2.0) as i32;
         let terminal = Knowledge::default().terminal(&s.rules, Estimate::Mid);
         let anchor = (0..n)
             .map(|k| {
@@ -133,8 +135,8 @@ impl Grid {
             rng,
             rules: s.rules.clone(),
             know: Knowledge::default(),
-            step: jittered(s, "step", 0.006, 0.5),
-            levels: jittered(s, "levels", 8.0, 0.4).round().max(2.0) as i32,
+            level_factors: (-levels..=levels).map(|k| (1.0 + step).powi(k)).collect(),
+            levels,
             lot: jittered(s, "lot", 15.0, 0.5).max(1.0) as Qty,
             active: (s.rules.max_open_orders / s.rules.stocks.len().max(1) / 2).max(1),
             patience: jittered(s, "patience", 150.0, 0.6) as Tick,
@@ -148,7 +150,10 @@ impl Grid {
     }
 
     fn level(&self, s: usize, k: i32) -> Price {
-        round_tick(&self.rules, self.anchor[s] * (1.0 + self.step).powi(k))
+        round_tick(
+            &self.rules,
+            self.anchor[s] * self.level_factors[(k + self.levels) as usize],
+        )
     }
 }
 

@@ -1,0 +1,3900 @@
+{
+  "note": "Post hoc audit, 160 existing matches / 40 seeds. Ordinary cash dividends only; excludes combos and terminal settlement. Quote windows are descriptive, not causal estimates or executed returns.",
+  "bounds": "For each stock, final float * cumulative dividend <= legitimate total payment <= initial float * cumulative dividend; shares only decrease by burns. Violations prove an entitlement inconsistency, not its allocation to Swift or its impact on strategy returns.",
+  "quotes": "Change from payment tick - 5 to tick + h, stocks with two-sided quotes and positive current payout; average within world, then across worlds. Other simultaneous fees/news and asynchronous personal clocks remain confounders.",
+  "script_sha256": "75f58c506f872b1d6fb047cc13aca23a8246cb621900acccf277d5ebcb8beec2",
+  "groups": {
+    "v5-swift-plain": {
+      "worlds": [
+        {
+          "seed": 21001,
+          "actual_ordinary_dividends_cents": 224282488,
+          "legal_lower_bound_cents": 221106993,
+          "legal_upper_bound_cents": 226412000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.20747289337802746,
+            "5": 0.16922754782027313,
+            "10": 0.16489225288425358,
+            "25": 0.3714165293289318
+          },
+          "mean_mid_change_pct": {
+            "0": 0.2619067160545278,
+            "5": 0.11757293359997291,
+            "10": 0.056627431686835074,
+            "25": 0.30474875412603053
+          },
+          "hashes": {
+            "summary.json": "cdf5e903c235fe81d98317011c348e9a7344558574090aa0531ce8db5e404e61",
+            "signals.csv": "5f0903c00bb9787b42f63e4a1ed57f4633134be6971ea21630e86945cf7265ce"
+          }
+        },
+        {
+          "seed": 21002,
+          "actual_ordinary_dividends_cents": 84637145,
+          "legal_lower_bound_cents": 83442459,
+          "legal_upper_bound_cents": 84646520,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.3979286593132923,
+            "5": -0.09784888028251788,
+            "10": -0.234084280776998,
+            "25": -0.6817539753534049
+          },
+          "mean_mid_change_pct": {
+            "0": 0.31227122845359845,
+            "5": -0.2815863567185186,
+            "10": -0.5051829030874415,
+            "25": -1.0074813506411495
+          },
+          "hashes": {
+            "summary.json": "88c21da9aab6fcb1c862fe54e31ba078b8e4ef8d7eecdd0db85ccf9778e0760b",
+            "signals.csv": "9061673d999273ed4c6dcedea1402e180e6ac454c7e87737c6ae9660dfcc037a"
+          }
+        },
+        {
+          "seed": 21003,
+          "actual_ordinary_dividends_cents": 96664126,
+          "legal_lower_bound_cents": 95166967,
+          "legal_upper_bound_cents": 96655160,
+          "above_upper_cents": 8966,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.0746858670769081,
+            "5": -0.3812522084733563,
+            "10": -0.6064758081038155,
+            "25": -0.9577368166688616
+          },
+          "mean_mid_change_pct": {
+            "0": -0.18372863126464395,
+            "5": -0.9817456795279412,
+            "10": -1.5559549041224263,
+            "25": -2.441089340796506
+          },
+          "hashes": {
+            "summary.json": "ecb265e08b1bfc53d128f8ab407e41b25254a5b5de6d2f7de7b4446c0141fd9f",
+            "signals.csv": "988b40fc730ac39719a4171eecdc471f9c213de7fa2bda54b517454b27532166"
+          }
+        },
+        {
+          "seed": 21004,
+          "actual_ordinary_dividends_cents": 141834763,
+          "legal_lower_bound_cents": 139071054,
+          "legal_upper_bound_cents": 142917680,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.05221827287913926,
+            "5": -0.29668651801730883,
+            "10": -0.43498474791946795,
+            "25": -0.6410470250790153
+          },
+          "mean_mid_change_pct": {
+            "0": -0.16274484045025933,
+            "5": -0.7870209304062394,
+            "10": -1.1834501419666275,
+            "25": -1.7597951951099757
+          },
+          "hashes": {
+            "summary.json": "b83b1bccc490fd66314ee063b4a5a729bd5c04f76044287f578d0e0b3b79bc18",
+            "signals.csv": "71552fbc9c113ee2bf6b1e8dd8750aa36415e76fbd2ab3725acbb0470b2a99cd"
+          }
+        },
+        {
+          "seed": 21005,
+          "actual_ordinary_dividends_cents": 84013323,
+          "legal_lower_bound_cents": 82207264,
+          "legal_upper_bound_cents": 84679140,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.3684423795479973,
+            "5": -0.7028495435535375,
+            "10": -0.9494636494245196,
+            "25": -1.4383680095572766
+          },
+          "mean_mid_change_pct": {
+            "0": -0.4411524440156712,
+            "5": -0.8586531163962212,
+            "10": -1.1590403274234657,
+            "25": -1.694003377986452
+          },
+          "hashes": {
+            "summary.json": "e2d5986f454f1d0fc4acd47e4bf81ab80841cc744138af5cfd6ed1c49a855688",
+            "signals.csv": "3aeba19cc1d7e111fed63a8f80b02dc8f9efe35b333c7e8bd9ca08353078a5ef"
+          }
+        },
+        {
+          "seed": 21006,
+          "actual_ordinary_dividends_cents": 116090789,
+          "legal_lower_bound_cents": 114293174,
+          "legal_upper_bound_cents": 116434700,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.0036037418784259623,
+            "5": -0.27060756322006047,
+            "10": -0.37065550673231684,
+            "25": -0.41772077171711874
+          },
+          "mean_mid_change_pct": {
+            "0": -0.0039641715164408465,
+            "5": -0.35522363379536787,
+            "10": -0.4714120562543826,
+            "25": -0.5588135366473405
+          },
+          "hashes": {
+            "summary.json": "6fe6c0bbaad6e19bd4ad22e45bf196bee9e72d725223bcf25e1334ab811559a3",
+            "signals.csv": "cb12b582c260c51bc18e1784711d0d4faf8d1aab7c2eb8859120028f2ce36bed"
+          }
+        },
+        {
+          "seed": 21007,
+          "actual_ordinary_dividends_cents": 96220909,
+          "legal_lower_bound_cents": 95276089,
+          "legal_upper_bound_cents": 96227200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.09404706934335218,
+            "5": -0.23554756941980617,
+            "10": -0.4598593626096447,
+            "25": -0.6138019959108841
+          },
+          "mean_mid_change_pct": {
+            "0": 0.06221489614477048,
+            "5": -0.4903652073153533,
+            "10": -0.7871717547124547,
+            "25": -1.086027816822029
+          },
+          "hashes": {
+            "summary.json": "1163b93eabccd1eaa5dee9b659cdce9b25d931e7d639d93bb1a090eef3ddfa08",
+            "signals.csv": "c41a681cf35c8c6087100564959a2bea885954efa8582ebd58574183ad85e0be"
+          }
+        },
+        {
+          "seed": 21008,
+          "actual_ordinary_dividends_cents": 114778501,
+          "legal_lower_bound_cents": 113327428,
+          "legal_upper_bound_cents": 114922080,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.011283541409131091,
+            "5": -0.26606499582330306,
+            "10": -0.5040322015078917,
+            "25": -0.6695587556945918
+          },
+          "mean_mid_change_pct": {
+            "0": 0.023574371374644708,
+            "5": -0.4483873916168475,
+            "10": -0.7668830917279574,
+            "25": -1.0020304109656442
+          },
+          "hashes": {
+            "summary.json": "1f16987f8d7332f33d45e81dfa7a5736937b70c4de62dd7fb1ee458a61aeaba1",
+            "signals.csv": "3ca8abd07aef3abab8a78385d71f785aafd906f4d03c7f0978738853c5f00391"
+          }
+        },
+        {
+          "seed": 21009,
+          "actual_ordinary_dividends_cents": 69249645,
+          "legal_lower_bound_cents": 68079489,
+          "legal_upper_bound_cents": 69289200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.11794770457695453,
+            "5": -0.5258431821474288,
+            "10": -0.7795900639226984,
+            "25": -1.42641861657561
+          },
+          "mean_mid_change_pct": {
+            "0": -0.16965813572349056,
+            "5": -0.9195640841457362,
+            "10": -1.3571652629295834,
+            "25": -2.4357340466352477
+          },
+          "hashes": {
+            "summary.json": "b7dbbfe7ebabc9637e472e0fa6dafb4380446a9c047de6b6c9cda2184e44ee20",
+            "signals.csv": "995d93f4e39e0041081587a9f032eab8ce7d30e340fba9f2510b32b32bc59f09"
+          }
+        },
+        {
+          "seed": 21010,
+          "actual_ordinary_dividends_cents": 94730591,
+          "legal_lower_bound_cents": 93419226,
+          "legal_upper_bound_cents": 94950000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.15412981283406915,
+            "5": -0.5390403885721753,
+            "10": -0.67029284234076,
+            "25": -0.8138762175793748
+          },
+          "mean_mid_change_pct": {
+            "0": -0.21704375826069047,
+            "5": -0.850546474101543,
+            "10": -1.1059483650560584,
+            "25": -1.47277698592253
+          },
+          "hashes": {
+            "summary.json": "5898889f2733552da8d0c94cb312b627b6e470935291bc2ed76d9f750eaf052d",
+            "signals.csv": "e8e1ae1286c50f1246272f1531c6be82cc366112a50df58ccdec893042ca8b0a"
+          }
+        },
+        {
+          "seed": 21011,
+          "actual_ordinary_dividends_cents": 120717108,
+          "legal_lower_bound_cents": 118324522,
+          "legal_upper_bound_cents": 120989100,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.06531800169205326,
+            "5": -0.4347009576201882,
+            "10": -0.6553810289041296,
+            "25": -0.865102670748206
+          },
+          "mean_mid_change_pct": {
+            "0": -0.15911361842608004,
+            "5": -0.9751286540216092,
+            "10": -1.4091816055005881,
+            "25": -1.8917015820037564
+          },
+          "hashes": {
+            "summary.json": "ae47014e69b85cf197a90c36669ecaad53e277a32b941490399ec2649a4350ac",
+            "signals.csv": "c0a78e26e0fcdceedcd791694be87add15bb80e5d718401f57514e36f7b370a9"
+          }
+        },
+        {
+          "seed": 21012,
+          "actual_ordinary_dividends_cents": 85268762,
+          "legal_lower_bound_cents": 83747226,
+          "legal_upper_bound_cents": 85785480,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.06487705897912593,
+            "5": -0.3859168685314681,
+            "10": -0.6070130521144251,
+            "25": -1.0226936768332564
+          },
+          "mean_mid_change_pct": {
+            "0": -0.16037091600485806,
+            "5": -0.7843551379771956,
+            "10": -1.1825157944652915,
+            "25": -1.8966070319810115
+          },
+          "hashes": {
+            "summary.json": "7d1a58eeb8dbcff3133b2bacd0069b54a93c22f82fc244a77d8a977d6feb9930",
+            "signals.csv": "6a9762765506775da1eba864279426d0098806dbfcacdab7a1e2327193c115eb"
+          }
+        },
+        {
+          "seed": 21013,
+          "actual_ordinary_dividends_cents": 86248116,
+          "legal_lower_bound_cents": 85027382,
+          "legal_upper_bound_cents": 86135940,
+          "above_upper_cents": 112176,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.035397965579147775,
+            "5": -0.6121657521249719,
+            "10": -0.6258807092446081,
+            "25": -1.2028085421756125
+          },
+          "mean_mid_change_pct": {
+            "0": 0.010938292211305111,
+            "5": -0.8598023809512256,
+            "10": -0.9678965978766354,
+            "25": -1.7025235999050394
+          },
+          "hashes": {
+            "summary.json": "42282114d08270247aefad6202786fa4ef2e68880aa4534bcffc9da3c3f5762e",
+            "signals.csv": "a5c97bb2e8d6db63c4a480e2ba298508a202ac1b408969ddf3dfde738ce499b1"
+          }
+        },
+        {
+          "seed": 21014,
+          "actual_ordinary_dividends_cents": 101898836,
+          "legal_lower_bound_cents": 100479379,
+          "legal_upper_bound_cents": 102362880,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.07496514825496202,
+            "5": -0.3679376430048124,
+            "10": -0.6109886268400804,
+            "25": -0.9503969784893527
+          },
+          "mean_mid_change_pct": {
+            "0": -0.13559027197413784,
+            "5": -0.6762008067601066,
+            "10": -1.0874967274667615,
+            "25": -1.6877146656133526
+          },
+          "hashes": {
+            "summary.json": "4974d62afc0898f33c0b1e30bf1cc4c3ba0768cab0cacb4f997e98601e87c705",
+            "signals.csv": "955b684e7ac506b1f737da81bf7932f4f0ed61d7a43af2b83c5887ac25369af7"
+          }
+        },
+        {
+          "seed": 21015,
+          "actual_ordinary_dividends_cents": 79387971,
+          "legal_lower_bound_cents": 77773022,
+          "legal_upper_bound_cents": 79689440,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.0979592741113423,
+            "5": -0.576084429113537,
+            "10": -0.8252452467009862,
+            "25": -1.2013601839206385
+          },
+          "mean_mid_change_pct": {
+            "0": -0.209519539740106,
+            "5": -1.3904480041270868,
+            "10": -1.9143815712042915,
+            "25": -2.755960268098681
+          },
+          "hashes": {
+            "summary.json": "7c7a1ed28196280a7bd2233ab8fc20a28d57e65b472eab4e5e61634f0efd4d27",
+            "signals.csv": "72ad87ee95ec1d0e07a0ff2b2d39824b017eec7de4723d6f3416f5762dd393e2"
+          }
+        },
+        {
+          "seed": 21016,
+          "actual_ordinary_dividends_cents": 84693306,
+          "legal_lower_bound_cents": 83011134,
+          "legal_upper_bound_cents": 85022080,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.04181123009250638,
+            "5": -0.47078802384413043,
+            "10": -0.685872141377547,
+            "25": -1.1109385550509252
+          },
+          "mean_mid_change_pct": {
+            "0": -0.09513923884365845,
+            "5": -0.9284545834915383,
+            "10": -1.3189508802079208,
+            "25": -2.0510565350981063
+          },
+          "hashes": {
+            "summary.json": "f20454aba9ea5369faddda21e9a22bd7454db9b83c682dd59ae4871b5d064639",
+            "signals.csv": "bbc447a861087e9101cfff02007dfe087d4d88084225eb21477a9d560c602651"
+          }
+        },
+        {
+          "seed": 21017,
+          "actual_ordinary_dividends_cents": 64742523,
+          "legal_lower_bound_cents": 63628454,
+          "legal_upper_bound_cents": 64748460,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.6646406598117071,
+            "5": 0.999216987188439,
+            "10": -0.7335968385114691,
+            "25": -2.3473030109489934
+          },
+          "mean_mid_change_pct": {
+            "0": 0.8985275041348014,
+            "5": 0.3240805770201811,
+            "10": -0.5423101614634223,
+            "25": -2.2164788642253352
+          },
+          "hashes": {
+            "summary.json": "c86b8f6043ee7c5f2e16906311b51e29960c996dc53d05a52d1c7f3e85814201",
+            "signals.csv": "d7d00acb2423e28773cc3a3faadc2f2017b9ead149e63356f8e3a1ed88451bc0"
+          }
+        },
+        {
+          "seed": 21018,
+          "actual_ordinary_dividends_cents": 115795235,
+          "legal_lower_bound_cents": 114055508,
+          "legal_upper_bound_cents": 116390000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.09412115607835807,
+            "5": -0.37065852457378984,
+            "10": -0.5178334031720873,
+            "25": -0.7843691466750382
+          },
+          "mean_mid_change_pct": {
+            "0": -0.22054907093374188,
+            "5": -0.8092345460993108,
+            "10": -1.108578586290341,
+            "25": -1.6624122590446748
+          },
+          "hashes": {
+            "summary.json": "a06d6e7de99ae6559db4824280f3e271d48d147c56da67221ffbe6e4859fd98d",
+            "signals.csv": "373200441d9ac38292c1368c220d4175019591d428669905c4d74050993f1a87"
+          }
+        },
+        {
+          "seed": 21019,
+          "actual_ordinary_dividends_cents": 118985557,
+          "legal_lower_bound_cents": 117073860,
+          "legal_upper_bound_cents": 120055880,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.040416456954093356,
+            "5": -0.24120452417815474,
+            "10": -0.3692858640022572,
+            "25": -0.665471715213425
+          },
+          "mean_mid_change_pct": {
+            "0": -0.053197912859987456,
+            "5": -0.5509002082999914,
+            "10": -0.8270405588075191,
+            "25": -1.3886073391943383
+          },
+          "hashes": {
+            "summary.json": "add1e8e93490d98bc2cf557f82f7962096e66e53038e294c6bee4b07dc770920",
+            "signals.csv": "6d55689d31367e473df7b1f658e638c02a7a7feeb0d6c3018cdd91a02dca4479"
+          }
+        },
+        {
+          "seed": 21020,
+          "actual_ordinary_dividends_cents": 116108430,
+          "legal_lower_bound_cents": 114924007,
+          "legal_upper_bound_cents": 116457480,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.008052021148114806,
+            "5": -0.27083276275226703,
+            "10": -0.43537052080417193,
+            "25": -0.8369572972035276
+          },
+          "mean_mid_change_pct": {
+            "0": -0.005896619407306671,
+            "5": -0.4275995566517379,
+            "10": -0.675254860425858,
+            "25": -1.2366028783995937
+          },
+          "hashes": {
+            "summary.json": "f25ee1cdf76b465bcefb8f1b09a1689ef578b946f0ecfb180609fd28f0392a6e",
+            "signals.csv": "d15f47761f26de70c3e7fe4e389851836208636967c07cb808cd182ebfdfd048"
+          }
+        },
+        {
+          "seed": 21021,
+          "actual_ordinary_dividends_cents": 167690281,
+          "legal_lower_bound_cents": 165692918,
+          "legal_upper_bound_cents": 168489460,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.21453581878849204,
+            "5": 0.05500512664590995,
+            "10": 0.10631016535146576,
+            "25": 0.26272847060686455
+          },
+          "mean_mid_change_pct": {
+            "0": 0.19832324661541406,
+            "5": -0.07879091128600502,
+            "10": -0.054688165978446626,
+            "25": 0.11847220366426738
+          },
+          "hashes": {
+            "summary.json": "85a59acdd3d17da2056d61db6d9812716964480ef121f10c3ecef277e02298a7",
+            "signals.csv": "c480ce3cf0f785a0040aaf51ab8ec28dce8fd435b71399685ffb1c53c800b30e"
+          }
+        },
+        {
+          "seed": 21022,
+          "actual_ordinary_dividends_cents": 167665819,
+          "legal_lower_bound_cents": 165806075,
+          "legal_upper_bound_cents": 169153040,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.3008769507672007,
+            "5": -0.34401149966196726,
+            "10": -0.16384306113903765,
+            "25": 0.6132932964823704
+          },
+          "mean_mid_change_pct": {
+            "0": 0.12560398687246574,
+            "5": -0.13289643938027484,
+            "10": 0.04611303357284663,
+            "25": 0.36824984342088224
+          },
+          "hashes": {
+            "summary.json": "f73a49c91a3aebebd1760fe7ebc58edefe96ef7350c265b7c38544c8d99d09ad",
+            "signals.csv": "0aa651cb4f6301c6184e9c0682d1786f63c35cbf975b23b033ad5c0a4b0cf148"
+          }
+        },
+        {
+          "seed": 21023,
+          "actual_ordinary_dividends_cents": 86475306,
+          "legal_lower_bound_cents": 84988932,
+          "legal_upper_bound_cents": 86625000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.02639684344900454,
+            "5": -0.42988462682386885,
+            "10": -1.1649806891859094,
+            "25": -1.7357100206471014
+          },
+          "mean_mid_change_pct": {
+            "0": -0.041680072296523894,
+            "5": -0.8351950222321455,
+            "10": -1.593978036900708,
+            "25": -2.3686447077387527
+          },
+          "hashes": {
+            "summary.json": "6567e47af994d4f4026833d3b97570b8fbc8465c6c7c6fec0f2978cfb2fada35",
+            "signals.csv": "93d6c8b22bd8430619d3b1cef57cdfd8e04452ab33b53cccc4ae69a9ccc98cd5"
+          }
+        },
+        {
+          "seed": 21024,
+          "actual_ordinary_dividends_cents": 101160875,
+          "legal_lower_bound_cents": 98989269,
+          "legal_upper_bound_cents": 101991840,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.08653435768282418,
+            "5": -0.21245944317318857,
+            "10": -0.3205983024350813,
+            "25": -0.48794595844698485
+          },
+          "mean_mid_change_pct": {
+            "0": -0.11850893109169956,
+            "5": -0.3324603630304414,
+            "10": -0.4842094882347188,
+            "25": -0.755919245702387
+          },
+          "hashes": {
+            "summary.json": "5c9f6adab059d1a9669923906226eb2bf0729715a59039734aa4b3d4188cc491",
+            "signals.csv": "15b7bb65126412d26d821e592c586cdefb4f4c035ee580e3def3e4e3b8391da1"
+          }
+        },
+        {
+          "seed": 21025,
+          "actual_ordinary_dividends_cents": 99143992,
+          "legal_lower_bound_cents": 98079060,
+          "legal_upper_bound_cents": 99299040,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.04567329938548047,
+            "5": -0.30919080473010946,
+            "10": -0.47019392684671363,
+            "25": -0.6635914927095649
+          },
+          "mean_mid_change_pct": {
+            "0": -0.0673266688736087,
+            "5": -0.4619088526454436,
+            "10": -0.6700563637849053,
+            "25": -0.9104047980859189
+          },
+          "hashes": {
+            "summary.json": "d64a236a735771de229d2f6b89ccc43e4bc5c52bc172610e43e635a4e86124f1",
+            "signals.csv": "3403eee4c659d77a3632f783ae9447b919b3dba587ebf6a3d410db10d531525f"
+          }
+        },
+        {
+          "seed": 21026,
+          "actual_ordinary_dividends_cents": 110586969,
+          "legal_lower_bound_cents": 108901886,
+          "legal_upper_bound_cents": 110577060,
+          "above_upper_cents": 9909,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.07842646748514966,
+            "5": -0.41594931984232464,
+            "10": -0.6035362929328323,
+            "25": -0.9720032230417167
+          },
+          "mean_mid_change_pct": {
+            "0": -0.1233465160122604,
+            "5": -1.039260892884724,
+            "10": -1.5274670799164456,
+            "25": -2.274509161331445
+          },
+          "hashes": {
+            "summary.json": "10470350d9434e7499b7e4e58d76f552c66608e43e63bfab54f3b22e64191545",
+            "signals.csv": "86ba520e97f66e51c0b40c18f744b291fceb785cdb5d596b3f55baf4b0b8334f"
+          }
+        },
+        {
+          "seed": 21027,
+          "actual_ordinary_dividends_cents": 107326804,
+          "legal_lower_bound_cents": 105570852,
+          "legal_upper_bound_cents": 107936000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.04606216833142751,
+            "5": -0.30383366132498063,
+            "10": -0.49056025996065683,
+            "25": -0.8015891636449277
+          },
+          "mean_mid_change_pct": {
+            "0": 0.007580440572538526,
+            "5": -0.5958098058494371,
+            "10": -0.8926168414723921,
+            "25": -1.3238824042831578
+          },
+          "hashes": {
+            "summary.json": "76d06ec22e065945845a938a2d2ea0b48e8709d824e7a03ad5d82e3d8b40495b",
+            "signals.csv": "87a592054c4ce5fdb13ccf78b39c3c0e89d92baf8d9ab37e285c3ea90bf5d2ee"
+          }
+        },
+        {
+          "seed": 21028,
+          "actual_ordinary_dividends_cents": 161811546,
+          "legal_lower_bound_cents": 158981031,
+          "legal_upper_bound_cents": 162731300,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.036703047984556494,
+            "5": -0.3179177248999093,
+            "10": -0.4763441987136641,
+            "25": -0.747353305360341
+          },
+          "mean_mid_change_pct": {
+            "0": -0.1407591992681776,
+            "5": -0.8666695358011991,
+            "10": -1.2466518059180351,
+            "25": -1.8516741892598911
+          },
+          "hashes": {
+            "summary.json": "26e0633735a0632d225e7ac8dbf12abb5520c3331a994261b733501d589fe43e",
+            "signals.csv": "d7e5ee4d21bcb742ac755efd01d6245a1dfb75b8268c1399b7c5c3614e63dd1d"
+          }
+        },
+        {
+          "seed": 21029,
+          "actual_ordinary_dividends_cents": 93963076,
+          "legal_lower_bound_cents": 92820762,
+          "legal_upper_bound_cents": 94288320,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.05796066760842086,
+            "5": -0.3390151842929753,
+            "10": -0.5430026661433686,
+            "25": -0.8857538867855621
+          },
+          "mean_mid_change_pct": {
+            "0": -0.08800970757635443,
+            "5": -0.44742325335786826,
+            "10": -0.6951108499411415,
+            "25": -1.1102457262242171
+          },
+          "hashes": {
+            "summary.json": "b50b1b60ef5b522b6ff39031fb9b7528fb0e6e3f7d2464a8f59c40fd4614dc70",
+            "signals.csv": "a4a146c938a993dd2ed463765a76703d60f5f46aa4ee4d1d679d4080c4bff6a6"
+          }
+        },
+        {
+          "seed": 21030,
+          "actual_ordinary_dividends_cents": 102898811,
+          "legal_lower_bound_cents": 101463291,
+          "legal_upper_bound_cents": 103282720,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.02982389100584025,
+            "5": -0.3323980995140143,
+            "10": -0.5427838803111514,
+            "25": -0.9424915526657044
+          },
+          "mean_mid_change_pct": {
+            "0": -0.05653215349859447,
+            "5": -0.5699051376024923,
+            "10": -0.9227595860833521,
+            "25": -1.6596858063263071
+          },
+          "hashes": {
+            "summary.json": "d80a8ce87889ab16794baf84fc933c9ee7890afd2dd7cdd63936c96727baf0a3",
+            "signals.csv": "5a2340f706c2634e598466158d49845adecfba7e41515f26a101b9961b1de4cc"
+          }
+        },
+        {
+          "seed": 21031,
+          "actual_ordinary_dividends_cents": 110334008,
+          "legal_lower_bound_cents": 108580237,
+          "legal_upper_bound_cents": 111117700,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.0011139083001650808,
+            "5": -0.2943011002063287,
+            "10": -0.4203257362663207,
+            "25": -0.5446000528743417
+          },
+          "mean_mid_change_pct": {
+            "0": 0.006166068721375456,
+            "5": -0.45499980178523586,
+            "10": -0.6439579273681746,
+            "25": -0.8187764858539168
+          },
+          "hashes": {
+            "summary.json": "01e3624e7d69e686fca793a80ef2f7baee4dc8166455a978e198c83e7143ca01",
+            "signals.csv": "28940ee5e8cb12c2c4fbd7dd3a56bc3188416c6b89ba33532ca426c8ca79284f"
+          }
+        },
+        {
+          "seed": 21032,
+          "actual_ordinary_dividends_cents": 120314149,
+          "legal_lower_bound_cents": 119318796,
+          "legal_upper_bound_cents": 120507200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.04004512979980671,
+            "5": -0.3721180146882811,
+            "10": -0.3084393458660741,
+            "25": -0.39186193791964263
+          },
+          "mean_mid_change_pct": {
+            "0": -0.04601378071803081,
+            "5": -0.49011703360852743,
+            "10": -0.47756919356571265,
+            "25": -0.6006920480100657
+          },
+          "hashes": {
+            "summary.json": "ba5b7f36385458dc0a531dc71fd1a3b64b43ed4be6e9b08e57c8e94564e11440",
+            "signals.csv": "0d97b115e2c154879914005c12a095700b0a112c93a8e22b416d7b7fd53d3a43"
+          }
+        },
+        {
+          "seed": 21033,
+          "actual_ordinary_dividends_cents": 98686850,
+          "legal_lower_bound_cents": 96992217,
+          "legal_upper_bound_cents": 99141720,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.07930986377104576,
+            "5": -0.3970390058509708,
+            "10": -0.4846969641185529,
+            "25": -0.6846232678731662
+          },
+          "mean_mid_change_pct": {
+            "0": -0.10824953835203936,
+            "5": -0.8645804666192024,
+            "10": -1.102196535349707,
+            "25": -1.4964037216724475
+          },
+          "hashes": {
+            "summary.json": "59029d7c2ec88efd501526301e185b4956ac59c0aa80e5827f3dd888b62e6176",
+            "signals.csv": "191ea1fc2ef9a75d638e49f4dc1617a03a2817037c8f8413a4e4c13a7361c470"
+          }
+        },
+        {
+          "seed": 21034,
+          "actual_ordinary_dividends_cents": 121462503,
+          "legal_lower_bound_cents": 119662658,
+          "legal_upper_bound_cents": 121921140,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.06012938606085303,
+            "5": -0.19383821139960303,
+            "10": -0.40362258815010565,
+            "25": -0.6863415254290364
+          },
+          "mean_mid_change_pct": {
+            "0": 0.03007474731368945,
+            "5": -0.5735263807312896,
+            "10": -1.0045460855105581,
+            "25": -1.6224146380093498
+          },
+          "hashes": {
+            "summary.json": "885da769dc0192830a9d79716480b26ddad1f115ca82acfb89259cf7db32a1d8",
+            "signals.csv": "9006fc5007a50862404b38cb8f920464cb85798f6c2c82789e13a92beffe63b2"
+          }
+        },
+        {
+          "seed": 21035,
+          "actual_ordinary_dividends_cents": 117596396,
+          "legal_lower_bound_cents": 115879388,
+          "legal_upper_bound_cents": 118225540,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.002735091658136936,
+            "5": -0.12970308743551234,
+            "10": -0.13710351840540855,
+            "25": -0.34594382134015383
+          },
+          "mean_mid_change_pct": {
+            "0": -0.01987827768982657,
+            "5": -0.2805876004939273,
+            "10": -0.3540951156910391,
+            "25": -0.6406833420392429
+          },
+          "hashes": {
+            "summary.json": "dccb0d6c7e1f867a4415c2f18940ac81c4156b0f21b4c8fa3d9b0ec353a9bdb6",
+            "signals.csv": "80c27952577b5458dc70f0cca1cac7cf416dbb52ebe1c629aab2047a8ca4d8ee"
+          }
+        },
+        {
+          "seed": 21036,
+          "actual_ordinary_dividends_cents": 139272781,
+          "legal_lower_bound_cents": 137527217,
+          "legal_upper_bound_cents": 139710900,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.016935283672295222,
+            "5": -0.25742102126521743,
+            "10": -0.4473608167773711,
+            "25": -0.6338398432224112
+          },
+          "mean_mid_change_pct": {
+            "0": -0.06510188428326374,
+            "5": -0.6010982340272226,
+            "10": -0.9268098306527164,
+            "25": -1.2981579008224313
+          },
+          "hashes": {
+            "summary.json": "4b943f3260a1f77635863677e083268bfe261eb2afae76e4831ff6cb6bb8c959",
+            "signals.csv": "acaab86ee4b0aaf9250a89781b14d03689db5f484e148d1ca5bf750ecaf0072e"
+          }
+        },
+        {
+          "seed": 21037,
+          "actual_ordinary_dividends_cents": 92798203,
+          "legal_lower_bound_cents": 91304240,
+          "legal_upper_bound_cents": 92764700,
+          "above_upper_cents": 33503,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.014797695421942508,
+            "5": -0.45100944460768605,
+            "10": -0.6576113087240514,
+            "25": -1.095800904137997
+          },
+          "mean_mid_change_pct": {
+            "0": -0.09429740207650084,
+            "5": -1.1696067661136946,
+            "10": -1.6179897388722826,
+            "25": -2.5586333309298075
+          },
+          "hashes": {
+            "summary.json": "1e24806ff3673b10441df53dff108183cd60298a31a6a9d903414a9cf9901aa4",
+            "signals.csv": "881012abf743b2939f3ff36ebf6babd1983bad3fdf53d00aea26eb4f90ff6667"
+          }
+        },
+        {
+          "seed": 21038,
+          "actual_ordinary_dividends_cents": 121526047,
+          "legal_lower_bound_cents": 120177909,
+          "legal_upper_bound_cents": 121975680,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.012600461043143463,
+            "5": -0.2864827143200878,
+            "10": -0.48119301354455873,
+            "25": -0.5424676370898632
+          },
+          "mean_mid_change_pct": {
+            "0": -0.0491592169144745,
+            "5": -0.4910822199375809,
+            "10": -0.757562559435678,
+            "25": -0.8680795022201204
+          },
+          "hashes": {
+            "summary.json": "3ea4f6de6a4857f4448d6546bd12a81b9492a6901c62bfcd0d17d3f85f8560b4",
+            "signals.csv": "e45e919ba5f4e9a5d06addf922f471b02248b3961204ac2212b5523b79a108c4"
+          }
+        },
+        {
+          "seed": 21039,
+          "actual_ordinary_dividends_cents": 122531079,
+          "legal_lower_bound_cents": 121132130,
+          "legal_upper_bound_cents": 122891760,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.023501928242150107,
+            "5": -0.33629500401329926,
+            "10": -0.5315450706133588,
+            "25": -0.7545964243964373
+          },
+          "mean_mid_change_pct": {
+            "0": -0.03774397156057335,
+            "5": -0.6995174191879878,
+            "10": -1.0425777186943996,
+            "25": -1.4582228038590699
+          },
+          "hashes": {
+            "summary.json": "5f10bbef727523da00c4b06ebaab07aa838807765e1c15d346819fea541991c7",
+            "signals.csv": "ca3eafa829bbc1871124dbf2d8d81050745f75523c86cc49c9dae8b80a2a38e6"
+          }
+        },
+        {
+          "seed": 21040,
+          "actual_ordinary_dividends_cents": 121615723,
+          "legal_lower_bound_cents": 119677253,
+          "legal_upper_bound_cents": 122228200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.149096428479193,
+            "5": -0.14463382906866917,
+            "10": -0.38127152974751943,
+            "25": -0.527227130292527
+          },
+          "mean_mid_change_pct": {
+            "0": 0.16933042967189732,
+            "5": -0.2915171549333458,
+            "10": -0.6281215101477706,
+            "25": -0.8965422698729059
+          },
+          "hashes": {
+            "summary.json": "08d07051f8a41a77957fac4fba60c02f7ad849ef20cd7e998ee64c1938c2bab9",
+            "signals.csv": "c076a9d4fa708645498ee55d4edb6af943c3b7bdebc1ffbf3c60a3bb6c0fc274"
+          }
+        }
+      ],
+      "worlds_above_upper": 4,
+      "worlds_below_lower": 0,
+      "max_proven_excess_yuan": 1121.76,
+      "mean_mid_change_per_dividend": {
+        "0": -0.006779370701879998,
+        "5": -0.29225206176792967,
+        "10": -0.4958429161663973,
+        "25": -0.7710996703213606
+      }
+    },
+    "v6-swift-plain": {
+      "worlds": [
+        {
+          "seed": 21001,
+          "actual_ordinary_dividends_cents": 236592066,
+          "legal_lower_bound_cents": 233649690,
+          "legal_upper_bound_cents": 237732600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.08879777382962556,
+            "5": 0.09089011888428089,
+            "10": 0.04583723655247834,
+            "25": 0.33978669455254246
+          },
+          "mean_mid_change_pct": {
+            "0": 0.08160841305510921,
+            "5": -0.033680771257851704,
+            "10": -0.1324798212902601,
+            "25": 0.2272775240893183
+          },
+          "hashes": {
+            "summary.json": "e44a7d6ff620e028207e96383f04c0e6919782348de6cca2f2d149df9b5b6beb",
+            "signals.csv": "fe8a22a0c8681bcc3cd974e91cb2b83b62d41239fd443f130cf475d0d3be0588"
+          }
+        },
+        {
+          "seed": 21002,
+          "actual_ordinary_dividends_cents": 88948895,
+          "legal_lower_bound_cents": 87961645,
+          "legal_upper_bound_cents": 88965220,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.09676370589757437,
+            "5": -0.48010743195931566,
+            "10": -0.6483031684868438,
+            "25": -0.9049962977142082
+          },
+          "mean_mid_change_pct": {
+            "0": -0.0763763116927427,
+            "5": -0.5772458462910971,
+            "10": -0.7795666089438195,
+            "25": -1.0950719837771503
+          },
+          "hashes": {
+            "summary.json": "8e2a063dc3c240737ee1850a6a7b0830b59b8d9408ac2ad487a09cde32c17579",
+            "signals.csv": "f3c06437868de5a3f52f60bffe2b9ee17a8cccbe51ee64bdf34b70628ccf9e24"
+          }
+        },
+        {
+          "seed": 21003,
+          "actual_ordinary_dividends_cents": 102485331,
+          "legal_lower_bound_cents": 101028998,
+          "legal_upper_bound_cents": 102477760,
+          "above_upper_cents": 7571,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.09633757376136795,
+            "5": -0.4682101122504368,
+            "10": -0.7413932127179443,
+            "25": -1.0881102383931767
+          },
+          "mean_mid_change_pct": {
+            "0": -0.18353506393145477,
+            "5": -1.1133787506483255,
+            "10": -1.7410370405596154,
+            "25": -2.617943781830647
+          },
+          "hashes": {
+            "summary.json": "d5ba75dbd2e0227f2fcb87a3caef184e294125dce118c39cff6ebc52a8f826a6",
+            "signals.csv": "d5b2c504c95fae097caf719a4a99ae3de873f5f08efebc8708d3fb1e6b6e5187"
+          }
+        },
+        {
+          "seed": 21004,
+          "actual_ordinary_dividends_cents": 148729793,
+          "legal_lower_bound_cents": 146156038,
+          "legal_upper_bound_cents": 149659080,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.0032306299793735892,
+            "5": -0.2491745595153996,
+            "10": -0.4359384446108948,
+            "25": -0.6301281648720295
+          },
+          "mean_mid_change_pct": {
+            "0": -0.10311883668934983,
+            "5": -0.7396011095675868,
+            "10": -1.1304224172720594,
+            "25": -1.621344117083163
+          },
+          "hashes": {
+            "summary.json": "07802bec2605e6d7a405b19bf0da88a6a739cf80220f860319061c7b86952eed",
+            "signals.csv": "60a1613fb517bc1adc75f90c39bd7b49f89794643b95315a97c0c77c934002a5"
+          }
+        },
+        {
+          "seed": 21005,
+          "actual_ordinary_dividends_cents": 88735764,
+          "legal_lower_bound_cents": 87042520,
+          "legal_upper_bound_cents": 89331840,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.12717930588280904,
+            "5": -0.6191915536046989,
+            "10": -0.9032054882519961,
+            "25": -1.3418494193734551
+          },
+          "mean_mid_change_pct": {
+            "0": -0.0823956230859622,
+            "5": -0.6898908090101702,
+            "10": -1.0174654823269647,
+            "25": -1.54620900926515
+          },
+          "hashes": {
+            "summary.json": "58f5dc402e985e13190be9b4371a936a21efcda09cdeb293efc39020d1cba2bb",
+            "signals.csv": "d2b4a68741a2c709f7c2cd008a4af5d002ff94fefa66e96e7fce2820a2de92fb"
+          }
+        },
+        {
+          "seed": 21006,
+          "actual_ordinary_dividends_cents": 123098711,
+          "legal_lower_bound_cents": 121294725,
+          "legal_upper_bound_cents": 123283800,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.060657940894812135,
+            "5": -0.5372822468117225,
+            "10": -0.6785645629070718,
+            "25": -0.5653811900939267
+          },
+          "mean_mid_change_pct": {
+            "0": -0.04652186016588629,
+            "5": -0.6021884785362005,
+            "10": -0.7751854584819825,
+            "25": -0.6930265846298542
+          },
+          "hashes": {
+            "summary.json": "0287b0aff7ba91a7e660fcd41c506d036402a7fd865cf3d0bd2a69eef2207525",
+            "signals.csv": "16105ca6bed572c1625de8e22386435832ff53463f6f33802b368650b26e0774"
+          }
+        },
+        {
+          "seed": 21007,
+          "actual_ordinary_dividends_cents": 102271374,
+          "legal_lower_bound_cents": 101338048,
+          "legal_upper_bound_cents": 102241400,
+          "above_upper_cents": 29974,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.0020870286867273797,
+            "5": -0.3676334299234483,
+            "10": -0.5750039993890076,
+            "25": -0.9570963733747349
+          },
+          "mean_mid_change_pct": {
+            "0": -0.027396295109637054,
+            "5": -0.5635520832366613,
+            "10": -0.8834077120864008,
+            "25": -1.400266999745312
+          },
+          "hashes": {
+            "summary.json": "b73af887eddbe03b64e5c3c4c37c8e07a31ca042718418deae642d768bca93b0",
+            "signals.csv": "511c3cdba2f0bb874fd9c8cf5512a4ef618af1a07c5fcc36ad31dc817be99afc"
+          }
+        },
+        {
+          "seed": 21008,
+          "actual_ordinary_dividends_cents": 120510737,
+          "legal_lower_bound_cents": 119005889,
+          "legal_upper_bound_cents": 120447180,
+          "above_upper_cents": 63557,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.1264316539022518,
+            "5": -0.3423489059232122,
+            "10": -0.48448030932290903,
+            "25": -0.6394317459847472
+          },
+          "mean_mid_change_pct": {
+            "0": -0.20483861215237487,
+            "5": -0.5867346931860878,
+            "10": -0.8209353680272575,
+            "25": -1.0767125191282672
+          },
+          "hashes": {
+            "summary.json": "611ca2f562452a4092f41942103880df10f056af54ce803c5d6a9f47ce7bf108",
+            "signals.csv": "4dc631502cae028c5a656fad840f8329a7ad0069b8878628102c48dfa1dca084"
+          }
+        },
+        {
+          "seed": 21009,
+          "actual_ordinary_dividends_cents": 72937107,
+          "legal_lower_bound_cents": 71802957,
+          "legal_upper_bound_cents": 72936000,
+          "above_upper_cents": 1107,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.1568194569038132,
+            "5": -0.6456742290469207,
+            "10": -0.9032888115950654,
+            "25": -1.5537317589909054
+          },
+          "mean_mid_change_pct": {
+            "0": -0.19678572232024644,
+            "5": -1.1073874867363414,
+            "10": -1.5428052981483094,
+            "25": -2.655073233855958
+          },
+          "hashes": {
+            "summary.json": "18a46277482fd2d42c68bde7b50d9d07fe0843882636888a1a8aa85361ec375e",
+            "signals.csv": "486315f6466a7e6d1f520f7b83a49dae0f87e97b5905efe8cc3f262b7856c283"
+          }
+        },
+        {
+          "seed": 21010,
+          "actual_ordinary_dividends_cents": 100066939,
+          "legal_lower_bound_cents": 98719786,
+          "legal_upper_bound_cents": 100225000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.12457755354576068,
+            "5": -0.5770945917198493,
+            "10": -0.8150259983086424,
+            "25": -1.0969643980304635
+          },
+          "mean_mid_change_pct": {
+            "0": -0.19579716613756656,
+            "5": -0.8345208690231964,
+            "10": -1.218526315081734,
+            "25": -1.7106168176556447
+          },
+          "hashes": {
+            "summary.json": "994163a693bfbb601bd35c7e04561453e6f8931789cd042505134bb9b88c0da9",
+            "signals.csv": "621641de1de1ba3264bfe3b2f1910897e1e21fa46500d65739787a0756dd8579"
+          }
+        },
+        {
+          "seed": 21011,
+          "actual_ordinary_dividends_cents": 126133438,
+          "legal_lower_bound_cents": 123721584,
+          "legal_upper_bound_cents": 126342600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.02289001149474141,
+            "5": -0.4299700335164642,
+            "10": -0.6571118826825533,
+            "25": -0.9070011809784205
+          },
+          "mean_mid_change_pct": {
+            "0": -0.10880242170153755,
+            "5": -0.9745171485209243,
+            "10": -1.413324794535287,
+            "25": -1.9092988146111238
+          },
+          "hashes": {
+            "summary.json": "404eb8b48af163970cc28a0e02841207313e2f55844f05d3fbefb9f731bcfad5",
+            "signals.csv": "21cbfc3ce24502a0f1ee8caa73489c343017d88af150d889e7e29a367da8f644"
+          }
+        },
+        {
+          "seed": 21012,
+          "actual_ordinary_dividends_cents": 90456659,
+          "legal_lower_bound_cents": 89123990,
+          "legal_upper_bound_cents": 90715680,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.08262546899046376,
+            "5": -0.4163714935362606,
+            "10": -0.6824723839918481,
+            "25": -1.0270417630650739
+          },
+          "mean_mid_change_pct": {
+            "0": -0.15117811589792274,
+            "5": -0.7836024632148726,
+            "10": -1.2221112482277954,
+            "25": -1.8564753271473449
+          },
+          "hashes": {
+            "summary.json": "22218fdc2c4d8a7d0f74e9a63f734c9918b1aa5290d44a76e9100f7be5bfd68a",
+            "signals.csv": "d02d17c3b31bde2ed6b396745bc8a568a4c8c3245c67fc93e8cc358f80072f62"
+          }
+        },
+        {
+          "seed": 21013,
+          "actual_ordinary_dividends_cents": 90640615,
+          "legal_lower_bound_cents": 89398540,
+          "legal_upper_bound_cents": 90486240,
+          "above_upper_cents": 154375,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.006007129221857678,
+            "5": -0.6323925639935005,
+            "10": -0.859688450114118,
+            "25": -1.264258456047686
+          },
+          "mean_mid_change_pct": {
+            "0": -0.01092537091511379,
+            "5": -0.9408743396979683,
+            "10": -1.3028207266312375,
+            "25": -1.8369939751112592
+          },
+          "hashes": {
+            "summary.json": "a0adb1ed929bcf75f92b0c0a6aa16f5d243ef6ff146bd3ec49b5982163aff7e5",
+            "signals.csv": "c52c0343fdd17191812d9d0620ae1126e4ae4d31c49d130e1becdd9457c4abdb"
+          }
+        },
+        {
+          "seed": 21014,
+          "actual_ordinary_dividends_cents": 107606292,
+          "legal_lower_bound_cents": 106320523,
+          "legal_upper_bound_cents": 107926080,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.052758277090474696,
+            "5": -0.2710009564503591,
+            "10": -0.5522809854938597,
+            "25": -1.033852807120403
+          },
+          "mean_mid_change_pct": {
+            "0": 0.021821235938484413,
+            "5": -0.5196364768533146,
+            "10": -0.9654087956082351,
+            "25": -1.7762792472997029
+          },
+          "hashes": {
+            "summary.json": "ef16cb604e91b8515b269062a4e5bb29cf1c756896d6569379bb1ea24faaebfb",
+            "signals.csv": "9d21166da362673c2fe37c279cbc3767de779444a3ffb76452976ae716bbaa2f"
+          }
+        },
+        {
+          "seed": 21015,
+          "actual_ordinary_dividends_cents": 83699950,
+          "legal_lower_bound_cents": 82056048,
+          "legal_upper_bound_cents": 83928240,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.07876158343770327,
+            "5": -0.6055362171409872,
+            "10": -0.8494269014730876,
+            "25": -1.2623181443309475
+          },
+          "mean_mid_change_pct": {
+            "0": -0.2094330043182668,
+            "5": -1.4074899956187108,
+            "10": -1.9206237220822933,
+            "25": -2.8749537200672535
+          },
+          "hashes": {
+            "summary.json": "4457c3a3488c82ff6d656b85317a549ed645f7d551c48fffdb28188991422717",
+            "signals.csv": "10070a5afe4461106f6504a15aa9dc24f1b4fb99d4f35b0f5905f1a97acc0748"
+          }
+        },
+        {
+          "seed": 21016,
+          "actual_ordinary_dividends_cents": 89637920,
+          "legal_lower_bound_cents": 88082413,
+          "legal_upper_bound_cents": 89852880,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.03251017294959722,
+            "5": -0.3882456312502907,
+            "10": -0.5775681153161308,
+            "25": -1.049061454913337
+          },
+          "mean_mid_change_pct": {
+            "0": -0.09038491693238612,
+            "5": -0.8268977788772008,
+            "10": -1.194709177712257,
+            "25": -1.9219852174181842
+          },
+          "hashes": {
+            "summary.json": "d555a2653bc2ba3a9683436ed40888f169c6e08645cf101ccecf3b74f58caac9",
+            "signals.csv": "04d735212fa1be2d12bcc5e8744cced0f01c3bce30abe1643fa45f269528dfc4"
+          }
+        },
+        {
+          "seed": 21017,
+          "actual_ordinary_dividends_cents": 68327308,
+          "legal_lower_bound_cents": 67328277,
+          "legal_upper_bound_cents": 68229560,
+          "above_upper_cents": 97748,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.1657125511555134,
+            "5": 0.289740165234245,
+            "10": -0.2795149662086212,
+            "25": -2.500895810880601
+          },
+          "mean_mid_change_pct": {
+            "0": 0.30293131316920047,
+            "5": 0.16798202181510372,
+            "10": -0.2278861390846341,
+            "25": -1.838431095087844
+          },
+          "hashes": {
+            "summary.json": "4accb4db9c9f2ce032b087b65323ecb517f38ece2db8ab9697ccf0dff77fb9b3",
+            "signals.csv": "2fddf670865e845d311afd9fc2c0d04154c272672365923d8ffb7be3f823bdab"
+          }
+        },
+        {
+          "seed": 21018,
+          "actual_ordinary_dividends_cents": 121769318,
+          "legal_lower_bound_cents": 120220566,
+          "legal_upper_bound_cents": 122209500,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.08458899179749393,
+            "5": -0.29401898738544247,
+            "10": -0.44848068384330114,
+            "25": -0.7750733713861936
+          },
+          "mean_mid_change_pct": {
+            "0": -0.21377918616309602,
+            "5": -0.6953371092159369,
+            "10": -0.9954085850561867,
+            "25": -1.634908681325963
+          },
+          "hashes": {
+            "summary.json": "f84936f5307b78a12d55c482e065e5c132765df611cacf4fe74fad24c42055a8",
+            "signals.csv": "62e35d27be65c4310b8c367273a425202b5d7b0624373f4e9cd663a4d912a2dd"
+          }
+        },
+        {
+          "seed": 21019,
+          "actual_ordinary_dividends_cents": 125486772,
+          "legal_lower_bound_cents": 123751084,
+          "legal_upper_bound_cents": 126181180,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.025032162530834685,
+            "5": -0.21448561551487724,
+            "10": -0.37337516426873396,
+            "25": -0.608678773865525
+          },
+          "mean_mid_change_pct": {
+            "0": -0.021803230029221597,
+            "5": -0.4873888567658988,
+            "10": -0.790385059395207,
+            "25": -1.2036882151919348
+          },
+          "hashes": {
+            "summary.json": "d80563e2d8d281cfe550f9e6f1edfb973c61e078c00d8fddcf7239d665340f73",
+            "signals.csv": "17333803739bf0b689aa710904e1d99db822c22b4025981fb852a9a8fec4d68a"
+          }
+        },
+        {
+          "seed": 21020,
+          "actual_ordinary_dividends_cents": 121944330,
+          "legal_lower_bound_cents": 120815349,
+          "legal_upper_bound_cents": 122166180,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.0010612668845389802,
+            "5": -0.2651079820103648,
+            "10": -0.3622520597000891,
+            "25": -0.5927252862420205
+          },
+          "mean_mid_change_pct": {
+            "0": -0.029835559730449823,
+            "5": -0.4202998692725235,
+            "10": -0.6005313436730424,
+            "25": -0.9711397261004756
+          },
+          "hashes": {
+            "summary.json": "fe06731aa8a5b96008e380833c7cc1a3b7193d6c87fe37bbfe17784c03e86313",
+            "signals.csv": "00c89f90d54d6c4e8bfb1a9b0fda7570a5589aa5ca65a84a29bc9800001b977d"
+          }
+        },
+        {
+          "seed": 21021,
+          "actual_ordinary_dividends_cents": 177215680,
+          "legal_lower_bound_cents": 175285850,
+          "legal_upper_bound_cents": 177955160,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.16061898202992164,
+            "5": 0.09537982027834561,
+            "10": 0.08663866151907068,
+            "25": 0.17497392776467072
+          },
+          "mean_mid_change_pct": {
+            "0": 0.13329940523197165,
+            "5": -0.07607550299915597,
+            "10": -0.08836049239944377,
+            "25": -0.06695536038991301
+          },
+          "hashes": {
+            "summary.json": "a96a4d5b62daf27a9aa6f01ad2392966b1ec9d5417f0813f5a829c4c2144bb0c",
+            "signals.csv": "6b759897da47714f35966c2674fe747f835acbed73292471b038ad57c295b90f"
+          }
+        },
+        {
+          "seed": 21022,
+          "actual_ordinary_dividends_cents": 177377914,
+          "legal_lower_bound_cents": 175374709,
+          "legal_upper_bound_cents": 178346140,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.538529977036772,
+            "5": 0.6049188347863085,
+            "10": 0.7276181342796249,
+            "25": 0.818127994389128
+          },
+          "mean_mid_change_pct": {
+            "0": 0.32240038971166635,
+            "5": 0.29880742526149995,
+            "10": 0.32520656556065464,
+            "25": 0.6445642582333551
+          },
+          "hashes": {
+            "summary.json": "6eed10d618d56f957dd0d2727e8cdec17ae15722c63de09f5d601e5cfdebbedc",
+            "signals.csv": "af51f4915b2807feab797dbef75dbc9a4295d2ebbff1019c3a2b6ac90edf5caf"
+          }
+        },
+        {
+          "seed": 21023,
+          "actual_ordinary_dividends_cents": 90617124,
+          "legal_lower_bound_cents": 89055502,
+          "legal_upper_bound_cents": 90750000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.25536107854779316,
+            "5": -0.22177130669843442,
+            "10": -1.038570721880266,
+            "25": -1.8239816544108647
+          },
+          "mean_mid_change_pct": {
+            "0": -0.28568896438411995,
+            "5": -0.7390220037514071,
+            "10": -1.4212756471452745,
+            "25": -1.6192649349189858
+          },
+          "hashes": {
+            "summary.json": "d1789ed2e280c70dd81af5615968e3e20bd61eab38d1ab60dc3b7bedf8d27327",
+            "signals.csv": "735a6efa3dd4d6105068c26e9903a7a63737426da7ca164b5dd5ccf3031b4333"
+          }
+        },
+        {
+          "seed": 21024,
+          "actual_ordinary_dividends_cents": 107195725,
+          "legal_lower_bound_cents": 105066457,
+          "legal_upper_bound_cents": 107853440,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.018555774626103968,
+            "5": -0.1739773838120481,
+            "10": -0.32604920667018433,
+            "25": -0.3924063343017565
+          },
+          "mean_mid_change_pct": {
+            "0": -0.027651525436314776,
+            "5": -0.29638900495571047,
+            "10": -0.4869044846806903,
+            "25": -0.5975317009507618
+          },
+          "hashes": {
+            "summary.json": "1dd7c3bf53c1e90606faa11260141c0aa533b7672504e5e7fcd87784c767c1ae",
+            "signals.csv": "dbbf6307c5b180800d64a0798dc1851e3ae3c6775942174f31e4c677e7fd50a7"
+          }
+        },
+        {
+          "seed": 21025,
+          "actual_ordinary_dividends_cents": 105064996,
+          "legal_lower_bound_cents": 104073837,
+          "legal_upper_bound_cents": 105072240,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.02423075094122462,
+            "5": -0.33399177443879635,
+            "10": -0.3782197496639734,
+            "25": -0.626186743655401
+          },
+          "mean_mid_change_pct": {
+            "0": -0.05546266498357105,
+            "5": -0.462661928308227,
+            "10": -0.5272392477026087,
+            "25": -0.8429529982761085
+          },
+          "hashes": {
+            "summary.json": "640620247ed84685fd779aca31aeb18852ae0e44f583046bc8e1c74dfebbae93",
+            "signals.csv": "ff3394075bea5f979e61c19d7d2417f032c725266957f056d590fc670be81e72"
+          }
+        },
+        {
+          "seed": 21026,
+          "actual_ordinary_dividends_cents": 116221405,
+          "legal_lower_bound_cents": 114637166,
+          "legal_upper_bound_cents": 116161760,
+          "above_upper_cents": 59645,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.08319592938632131,
+            "5": -0.47133782057377105,
+            "10": -0.6646653249248443,
+            "25": -1.03945764000282
+          },
+          "mean_mid_change_pct": {
+            "0": -0.14582810843783334,
+            "5": -1.1841412652777465,
+            "10": -1.6322667991340383,
+            "25": -2.404199120629317
+          },
+          "hashes": {
+            "summary.json": "584e5a9fabe380cf26f2c729539440d4278cf764c1459a9b1582f669136bf585",
+            "signals.csv": "f61306cd15aea4f8727fa53d77822fde3bae8137b26a6ee48c35d91b01feea3f"
+          }
+        },
+        {
+          "seed": 21027,
+          "actual_ordinary_dividends_cents": 112797605,
+          "legal_lower_bound_cents": 111091248,
+          "legal_upper_bound_cents": 113332800,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.06681924457406149,
+            "5": -0.24144825560369512,
+            "10": -0.43071271714732956,
+            "25": -0.8552681163958786
+          },
+          "mean_mid_change_pct": {
+            "0": 0.03535863902629275,
+            "5": -0.46700255744711816,
+            "10": -0.6938754579997274,
+            "25": -1.1936749112162848
+          },
+          "hashes": {
+            "summary.json": "39b484038c29d35f75528044922082e746def0beddca7454e5d1481c10f7a72d",
+            "signals.csv": "c01e16315f8c5387763bddda691b6633433ac637524cf43a67eb7e11b9b9a36d"
+          }
+        },
+        {
+          "seed": 21028,
+          "actual_ordinary_dividends_cents": 169532087,
+          "legal_lower_bound_cents": 166931546,
+          "legal_upper_bound_cents": 169931800,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.04948600026539778,
+            "5": -0.3711838754271484,
+            "10": -0.527881246171975,
+            "25": -0.7189970528395901
+          },
+          "mean_mid_change_pct": {
+            "0": -0.18435032024054812,
+            "5": -1.0157099621816479,
+            "10": -1.3948863522296484,
+            "25": -1.9086833787716078
+          },
+          "hashes": {
+            "summary.json": "924f0fc4865d18977ac3907289770b353353b00a299ac3f0676fde7dfd484d6c",
+            "signals.csv": "8fa7c7ea8fafa134111cedccc08a1d9c11a3eb4de4e778e600eb64da4d4eb16d"
+          }
+        },
+        {
+          "seed": 21029,
+          "actual_ordinary_dividends_cents": 98485979,
+          "legal_lower_bound_cents": 97302440,
+          "legal_upper_bound_cents": 98653520,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.03361772482947767,
+            "5": -0.25690297867288037,
+            "10": -0.4781832943900962,
+            "25": -0.9252340241068207
+          },
+          "mean_mid_change_pct": {
+            "0": -0.056761778274455554,
+            "5": -0.3622073802153378,
+            "10": -0.6243313629596222,
+            "25": -1.1423714463372803
+          },
+          "hashes": {
+            "summary.json": "4fb0ec3ce1c957bcf1b6ba9e51bc0b047f06459a4dd2f21c3929f1faea2316fd",
+            "signals.csv": "587af66018ed83deb986735643459445aaadad197b10d55bc3d45f48f2599c5b"
+          }
+        },
+        {
+          "seed": 21030,
+          "actual_ordinary_dividends_cents": 108789449,
+          "legal_lower_bound_cents": 107417906,
+          "legal_upper_bound_cents": 109085120,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.011638613834366577,
+            "5": -0.28489630266402544,
+            "10": -0.4447181884223384,
+            "25": -0.8499378312749598
+          },
+          "mean_mid_change_pct": {
+            "0": -0.029572769366640408,
+            "5": -0.5419602867355334,
+            "10": -0.8247693646697105,
+            "25": -1.5113719275846538
+          },
+          "hashes": {
+            "summary.json": "150ff71f7035c48f611ccb1a914d79a87dc0dad2efeb423684f5504217a628a8",
+            "signals.csv": "f05d0c8746ba49d8b3e37e2b25d6c98dddfaf2555a2dbc2ae1067c656e8398fe"
+          }
+        },
+        {
+          "seed": 21031,
+          "actual_ordinary_dividends_cents": 116356045,
+          "legal_lower_bound_cents": 114656415,
+          "legal_upper_bound_cents": 116966000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.04414800805766345,
+            "5": -0.2348251427230815,
+            "10": -0.42157136186502275,
+            "25": -0.6196380496350881
+          },
+          "mean_mid_change_pct": {
+            "0": 0.04399540713435769,
+            "5": -0.3689680276543448,
+            "10": -0.6234386095423866,
+            "25": -0.8870994511405385
+          },
+          "hashes": {
+            "summary.json": "fabdcfd4a5372ff9d26dc5165b522297400c29b825571a5e4f22eb12a45292c6",
+            "signals.csv": "95625b48437ef596761b25e03e34c1307e326a5dcc027eedd3cdf893e0539479"
+          }
+        },
+        {
+          "seed": 21032,
+          "actual_ordinary_dividends_cents": 127375505,
+          "legal_lower_bound_cents": 126323716,
+          "legal_upper_bound_cents": 127354200,
+          "above_upper_cents": 21305,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.09445242578058986,
+            "5": -0.43784833419055025,
+            "10": -0.38833776229148564,
+            "25": -0.46952796633222477
+          },
+          "mean_mid_change_pct": {
+            "0": -0.11038366704069599,
+            "5": -0.5795649860605488,
+            "10": -0.5633608939496728,
+            "25": -0.6600631259302978
+          },
+          "hashes": {
+            "summary.json": "99a50cdf9cbde1e447857a69ef9348251e931837cef44148c1ec4affc0af44aa",
+            "signals.csv": "47340835e3a08ab2edaff5d8bb09d8cc772d7e69508eb13c912efd901da60e05"
+          }
+        },
+        {
+          "seed": 21033,
+          "actual_ordinary_dividends_cents": 104518241,
+          "legal_lower_bound_cents": 102705384,
+          "legal_upper_bound_cents": 104839520,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.005648921845738523,
+            "5": -0.3388823555697458,
+            "10": -0.5015457300963397,
+            "25": -0.7772836886043387
+          },
+          "mean_mid_change_pct": {
+            "0": -0.03539288491753628,
+            "5": -0.7810474164404787,
+            "10": -1.0700852710889475,
+            "25": -1.5991547554848264
+          },
+          "hashes": {
+            "summary.json": "7ddb61ae41695d37c5375d6190a28f062ed45b6e2d56bdb711837780ddd979e8",
+            "signals.csv": "105025ef28011d4c930136f4a11501f84266d135dbab32b30ad94eba04b343cf"
+          }
+        },
+        {
+          "seed": 21034,
+          "actual_ordinary_dividends_cents": 128112769,
+          "legal_lower_bound_cents": 126454532,
+          "legal_upper_bound_cents": 128476040,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.006781645201301979,
+            "5": -0.34668890824563303,
+            "10": -0.47823697535140763,
+            "25": -0.7422528356282765
+          },
+          "mean_mid_change_pct": {
+            "0": -0.07247761447110199,
+            "5": -0.8113268165509888,
+            "10": -1.0915313483142859,
+            "25": -1.6434848983063448
+          },
+          "hashes": {
+            "summary.json": "025b2e41bf731a9a083689b4eced8aef9a1e5ad7e5ac542f44ffb3d3797926c9",
+            "signals.csv": "3531cd250b45a6640bfd62710e233ba2affb34347c7132b8569d896bc8886def"
+          }
+        },
+        {
+          "seed": 21035,
+          "actual_ordinary_dividends_cents": 123886498,
+          "legal_lower_bound_cents": 122181195,
+          "legal_upper_bound_cents": 124319640,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.004592929437931835,
+            "5": -0.26432768656488825,
+            "10": -0.32906561408899615,
+            "25": -0.6088336720425822
+          },
+          "mean_mid_change_pct": {
+            "0": -0.0299478628291798,
+            "5": -0.3864035153058938,
+            "10": -0.5212232034015932,
+            "25": -0.9040467991780026
+          },
+          "hashes": {
+            "summary.json": "e2c216d74d224fba53442ba93828556b54713c9c52e6704f2b767ff04e1e8d8a",
+            "signals.csv": "d7874ed87d817b1e66a1c812bb1cc18a67989fcc430475f19b4bf75d24e2645b"
+          }
+        },
+        {
+          "seed": 21036,
+          "actual_ordinary_dividends_cents": 146077202,
+          "legal_lower_bound_cents": 144418205,
+          "legal_upper_bound_cents": 146363800,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.004441550519729349,
+            "5": -0.24952752428541686,
+            "10": -0.4145002854687766,
+            "25": -0.5605986066252385
+          },
+          "mean_mid_change_pct": {
+            "0": -0.04115517468753416,
+            "5": -0.5408895831036239,
+            "10": -0.8636739206119401,
+            "25": -1.1077417934984881
+          },
+          "hashes": {
+            "summary.json": "9956f270340bf4ab9b49b534a3740a290a82fd8ed000bf3363a4e3c105d50473",
+            "signals.csv": "71044df5ee3d6743f69f6550886902a62a073f99460a71448fd4107940562b43"
+          }
+        },
+        {
+          "seed": 21037,
+          "actual_ordinary_dividends_cents": 97990515,
+          "legal_lower_bound_cents": 96459818,
+          "legal_upper_bound_cents": 97976200,
+          "above_upper_cents": 14315,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.06940204644267513,
+            "5": -0.5367432132455022,
+            "10": -0.6758341565708103,
+            "25": -0.9764029522748265
+          },
+          "mean_mid_change_pct": {
+            "0": -0.13875354581314986,
+            "5": -1.2433362352793964,
+            "10": -1.666144611150313,
+            "25": -2.390927993952446
+          },
+          "hashes": {
+            "summary.json": "413bd3f62820fae18fc708a27b6eeb777b1f78c6419050e085ec4490bade9a27",
+            "signals.csv": "072ed16a0702308266adf76c210b7ddc4f4578bfabda3a5e3214eefdfad25566"
+          }
+        },
+        {
+          "seed": 21038,
+          "actual_ordinary_dividends_cents": 127790336,
+          "legal_lower_bound_cents": 126494407,
+          "legal_upper_bound_cents": 128014080,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.004341980704101844,
+            "5": -0.18755779934997097,
+            "10": -0.2877459682990292,
+            "25": -0.38075411551394334
+          },
+          "mean_mid_change_pct": {
+            "0": -0.0397971039869918,
+            "5": -0.3499560415667218,
+            "10": -0.5145695304929543,
+            "25": -0.721316221615193
+          },
+          "hashes": {
+            "summary.json": "3f5630df0c42d0cc242bfae5b64273d07b806208cd6fadb3643500d3a670a8b7",
+            "signals.csv": "dc82011858a9e9b45f3ab62df544f96b7e044efdd91c361d26012d1726e57090"
+          }
+        },
+        {
+          "seed": 21039,
+          "actual_ordinary_dividends_cents": 129461670,
+          "legal_lower_bound_cents": 128343093,
+          "legal_upper_bound_cents": 129570660,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.011854744629583533,
+            "5": -0.33937501714578505,
+            "10": -0.5460426847831064,
+            "25": -0.7594503982888156
+          },
+          "mean_mid_change_pct": {
+            "0": -0.0386319307699431,
+            "5": -0.7058712459966473,
+            "10": -1.0789485630792115,
+            "25": -1.4116015401524675
+          },
+          "hashes": {
+            "summary.json": "b28e4ad73f273e5eaf8d6cdec2ebbedddfa79c85c4191fe1857aff011c2c3197",
+            "signals.csv": "58a2be158fa049e365bbd68f2513758568c07dcbb5430e1791f0264e8ce5fad6"
+          }
+        },
+        {
+          "seed": 21040,
+          "actual_ordinary_dividends_cents": 128163404,
+          "legal_lower_bound_cents": 126323416,
+          "legal_upper_bound_cents": 128729700,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.041687244907893155,
+            "5": -0.27823369896801,
+            "10": -0.35368905941338774,
+            "25": -0.6040433186447645
+          },
+          "mean_mid_change_pct": {
+            "0": 0.042291429003232246,
+            "5": -0.4265876583770233,
+            "10": -0.57727316974025,
+            "25": -0.9763829201978538
+          },
+          "hashes": {
+            "summary.json": "ada1eb19be9a2b3615166507e60bfee1c583d93f842b643cba15de9af16af655",
+            "signals.csv": "9cbf0d3601b76bb572952acd9b03760cf33d5f347f408d3c2e7ffce6fdc4a697"
+          }
+        }
+      ],
+      "worlds_above_upper": 9,
+      "worlds_below_lower": 0,
+      "max_proven_excess_yuan": 1543.75,
+      "mean_mid_change_per_dividend": {
+        "0": -0.014782044764700592,
+        "5": -0.30731092451374387,
+        "10": -0.49132129009577286,
+        "25": -0.8048990754882426
+      }
+    },
+    "no_news-swift-plain": {
+      "worlds": [
+        {
+          "seed": 21001,
+          "actual_ordinary_dividends_cents": 112397710,
+          "legal_lower_bound_cents": 110557740,
+          "legal_upper_bound_cents": 113280000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.06854382575992746,
+            "5": -0.31893330257313307,
+            "10": -0.47100203515881484,
+            "25": -0.6999569521815284
+          },
+          "mean_mid_change_pct": {
+            "0": -0.10589957931557904,
+            "5": -0.5967056709233591,
+            "10": -0.898792286023225,
+            "25": -1.2989622489073165
+          },
+          "hashes": {
+            "summary.json": "23538f9c21363daf550e7b9933374df5eac13745633ef20177f9846dac5b426b",
+            "signals.csv": "bf2aa5aecfbdcffba4d2e8720600630082d25a24deaaec84af7a5aa3d3ec7999"
+          }
+        },
+        {
+          "seed": 21002,
+          "actual_ordinary_dividends_cents": 110171260,
+          "legal_lower_bound_cents": 108508670,
+          "legal_upper_bound_cents": 111014400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.05372152941220738,
+            "5": -0.22950965465396705,
+            "10": -0.35386813855829136,
+            "25": -0.6020268813107796
+          },
+          "mean_mid_change_pct": {
+            "0": -0.06816898394028795,
+            "5": -0.30592570288295545,
+            "10": -0.4789073573783559,
+            "25": -0.8097142970987211
+          },
+          "hashes": {
+            "summary.json": "54f88ea4e28a2a5ea7d24db85538ede533da94d8ea1618d409cd4237cd10bc28",
+            "signals.csv": "b71b0fd392b89f91806662b7a08ad7007ea39b02be1f5929ae0971ed3c022770"
+          }
+        },
+        {
+          "seed": 21003,
+          "actual_ordinary_dividends_cents": 93942140,
+          "legal_lower_bound_cents": 92441200,
+          "legal_upper_bound_cents": 94022400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.0415731034566651,
+            "5": -0.3316703726995322,
+            "10": -0.5276893798977847,
+            "25": -0.8844861068050723
+          },
+          "mean_mid_change_pct": {
+            "0": -0.07500528480884734,
+            "5": -0.8613318610412115,
+            "10": -1.346824919139568,
+            "25": -2.1877936458281155
+          },
+          "hashes": {
+            "summary.json": "108a9f1468e0a34d1803a112af9fb3ac704cd64c9b52b807e9f25865621fccb8",
+            "signals.csv": "11270f98694fcf21ced2d98be6aaec7130f7ddf9c7e6616f8f111bcac7b81107"
+          }
+        },
+        {
+          "seed": 21004,
+          "actual_ordinary_dividends_cents": 118629920,
+          "legal_lower_bound_cents": 116270710,
+          "legal_upper_bound_cents": 120076800,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.08697265117180371,
+            "5": -0.2897470806030128,
+            "10": -0.4241114826792793,
+            "25": -0.6820218547930412
+          },
+          "mean_mid_change_pct": {
+            "0": -0.19188296538623442,
+            "5": -0.7272007014831078,
+            "10": -1.0972613512236389,
+            "25": -1.736621418106509
+          },
+          "hashes": {
+            "summary.json": "834beb9cd806d57cddbecc6fa5c796fa875b8c4abfa9d05c1d3b2b01fb1930bf",
+            "signals.csv": "a148f277f6c56633477044069c14847a526bd740815fdc4da5aac422dd4e858b"
+          }
+        },
+        {
+          "seed": 21005,
+          "actual_ordinary_dividends_cents": 102253360,
+          "legal_lower_bound_cents": 100476410,
+          "legal_upper_bound_cents": 103084800,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.04818342476237213,
+            "5": -0.3036739156900447,
+            "10": -0.4525388260108124,
+            "25": -0.7074551792293727
+          },
+          "mean_mid_change_pct": {
+            "0": -0.07095796618415004,
+            "5": -0.5516320792274614,
+            "10": -0.8232797990629732,
+            "25": -1.252239679820992
+          },
+          "hashes": {
+            "summary.json": "359eac1688f22d539c8731625fb3fc659fb85631989c0a1e10bc86b35a2154c2",
+            "signals.csv": "8d4abdee73b7b8bcd0b983b6aa067d45827a1b579340546a1c2387bde9ab93aa"
+          }
+        },
+        {
+          "seed": 21006,
+          "actual_ordinary_dividends_cents": 95711060,
+          "legal_lower_bound_cents": 94457230,
+          "legal_upper_bound_cents": 96288000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.05878734124907594,
+            "5": -0.21221901424363224,
+            "10": -0.3326648653176667,
+            "25": -0.5033605962043992
+          },
+          "mean_mid_change_pct": {
+            "0": -0.07285934829900631,
+            "5": -0.2878016285393975,
+            "10": -0.4612182984301794,
+            "25": -0.70882472059484
+          },
+          "hashes": {
+            "summary.json": "b2fb3f73d81fbe46ce9dfc11d975df1edc851ee4e3d1c8d640482f92f3ee8b30",
+            "signals.csv": "fb15eece31c1079e85cffb278f0f82713e19e9a2f6d08e8c11e83d9184d237d3"
+          }
+        },
+        {
+          "seed": 21007,
+          "actual_ordinary_dividends_cents": 90204300,
+          "legal_lower_bound_cents": 89072890,
+          "legal_upper_bound_cents": 90624000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.06176369440352491,
+            "5": -0.28982442275238884,
+            "10": -0.4069638341884105,
+            "25": -0.7111029349823917
+          },
+          "mean_mid_change_pct": {
+            "0": -0.0888864144158432,
+            "5": -0.4873580511632311,
+            "10": -0.7095235700546312,
+            "25": -1.1685082996513183
+          },
+          "hashes": {
+            "summary.json": "97759fa87f670174434de406cef4ff5af813a7ebfa5275d0c4ed126a9fdd70d1",
+            "signals.csv": "33dcf098311756e3b1a6990fb08fa2dd33dfe813f9a0a5257f89d0dcc9ffe358"
+          }
+        },
+        {
+          "seed": 21008,
+          "actual_ordinary_dividends_cents": 116981280,
+          "legal_lower_bound_cents": 115284820,
+          "legal_upper_bound_cents": 117811200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.0648677057405871,
+            "5": -0.2589567508762424,
+            "10": -0.3843660727220049,
+            "25": -0.6635319299344723
+          },
+          "mean_mid_change_pct": {
+            "0": -0.09433098483264753,
+            "5": -0.4235101234263871,
+            "10": -0.638599552875393,
+            "25": -1.064949608119333
+          },
+          "hashes": {
+            "summary.json": "809d97df9a34adaa6b55ca86da8e3a27b5878b81bead91bb429efe00dc75a174",
+            "signals.csv": "faf7c09ff418ae9a908d7527860e2b84843a52747ebbd2d0ad938030874a85fa"
+          }
+        },
+        {
+          "seed": 21009,
+          "actual_ordinary_dividends_cents": 107033620,
+          "legal_lower_bound_cents": 105673720,
+          "legal_upper_bound_cents": 107616000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.07182183745959256,
+            "5": -0.28931724124326164,
+            "10": -0.4515253203901163,
+            "25": -0.7282823502083706
+          },
+          "mean_mid_change_pct": {
+            "0": -0.12044202681127346,
+            "5": -0.5501758380048863,
+            "10": -0.8714816965184927,
+            "25": -1.4309560450412373
+          },
+          "hashes": {
+            "summary.json": "1c37b348627dae21578d1708f95f56d716bc42b423c8b0c0e8fe5bfccf45131c",
+            "signals.csv": "c3efb6dd66558ac0864f4f58838fb1ae6d598da464162c5264e0a2ed238a0837"
+          }
+        },
+        {
+          "seed": 21010,
+          "actual_ordinary_dividends_cents": 101425010,
+          "legal_lower_bound_cents": 99918270,
+          "legal_upper_bound_cents": 101952000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.06197732917120672,
+            "5": -0.308308434892762,
+            "10": -0.4300310970498364,
+            "25": -0.6949320366243443
+          },
+          "mean_mid_change_pct": {
+            "0": -0.09527056453242208,
+            "5": -0.5474426721825886,
+            "10": -0.7840279789483372,
+            "25": -1.1988943077350782
+          },
+          "hashes": {
+            "summary.json": "8174b610673e51a3d0f9784324a274059349ee1a7f95d6172b2a16eda9f8081c",
+            "signals.csv": "dea070bfcef8c4f356cb7bbac46b9e7f61bf65e300dcc5e30f2dee9b11eaef7d"
+          }
+        },
+        {
+          "seed": 21011,
+          "actual_ordinary_dividends_cents": 126731340,
+          "legal_lower_bound_cents": 124363740,
+          "legal_upper_bound_cents": 128006400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.0749574248726791,
+            "5": -0.3087269571294995,
+            "10": -0.47312104185833,
+            "25": -0.7857369781818935
+          },
+          "mean_mid_change_pct": {
+            "0": -0.14377405212310723,
+            "5": -0.6697062890745542,
+            "10": -1.0283673510819253,
+            "25": -1.65719119342215
+          },
+          "hashes": {
+            "summary.json": "4c9d4c8e132778fa0eb9c85cfc0e6d52372990bbbe15e8ce0d8736e427f3290a",
+            "signals.csv": "471cabe147927c9ceea6df9b560e31d30101afc42e57e65c178e8fa328a4a7b3"
+          }
+        },
+        {
+          "seed": 21012,
+          "actual_ordinary_dividends_cents": 97621690,
+          "legal_lower_bound_cents": 95781190,
+          "legal_upper_bound_cents": 98553600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.055786121946836235,
+            "5": -0.2703600339569727,
+            "10": -0.40617529956815673,
+            "25": -0.6744160193393584
+          },
+          "mean_mid_change_pct": {
+            "0": -0.0883875899450569,
+            "5": -0.5298110026593789,
+            "10": -0.7927935344351027,
+            "25": -1.249822078482973
+          },
+          "hashes": {
+            "summary.json": "3414ead8998455e5eb615778e92ce8ca35b5e63c71748dbc80920f254a352632",
+            "signals.csv": "2b1f90028dff74efa600d1f5c3b63577b7e1193d13ad4a3a009e2ea1c26fd039"
+          }
+        },
+        {
+          "seed": 21013,
+          "actual_ordinary_dividends_cents": 111493610,
+          "legal_lower_bound_cents": 109635570,
+          "legal_upper_bound_cents": 112147200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.08348059238313475,
+            "5": -0.37436509770831805,
+            "10": -0.5184244606617489,
+            "25": -0.7353505331768043
+          },
+          "mean_mid_change_pct": {
+            "0": -0.11456848475475975,
+            "5": -0.6720031953805252,
+            "10": -0.9301921437979064,
+            "25": -1.2775478391365576
+          },
+          "hashes": {
+            "summary.json": "35b73b40bd89c9c7d5cfd3dd297eb96753928181228d02c72fe2f0febf88604b",
+            "signals.csv": "a669e4ea07d41233583099601f322c0ec0ba4ebdaf051997b040e48ca2c576f6"
+          }
+        },
+        {
+          "seed": 21014,
+          "actual_ordinary_dividends_cents": 103256550,
+          "legal_lower_bound_cents": 101508320,
+          "legal_upper_bound_cents": 104217600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.06575759127877771,
+            "5": -0.22729762986542648,
+            "10": -0.3578816734113344,
+            "25": -0.6544680700655277
+          },
+          "mean_mid_change_pct": {
+            "0": -0.11409155331711804,
+            "5": -0.4063927467196826,
+            "10": -0.6414627268450838,
+            "25": -1.1365133825822566
+          },
+          "hashes": {
+            "summary.json": "4c4166278cf5ab358ca85337d8a508363ee372fe1b61c0908ba7dc91e572fe3e",
+            "signals.csv": "528ac1f9d7c85f6f49e346c3a5b5d1b4d434930e0421b5381e3b59e59b2e181c"
+          }
+        },
+        {
+          "seed": 21015,
+          "actual_ordinary_dividends_cents": 105572700,
+          "legal_lower_bound_cents": 103503700,
+          "legal_upper_bound_cents": 106483200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.06398171794076231,
+            "5": -0.40943928843246247,
+            "10": -0.614862752908828,
+            "25": -0.9210015933733883
+          },
+          "mean_mid_change_pct": {
+            "0": -0.13495026346297037,
+            "5": -1.043079322750276,
+            "10": -1.5374853377049784,
+            "25": -2.232976313765585
+          },
+          "hashes": {
+            "summary.json": "ec6df78a1363a56c540c84159c147df46a4fa3c9b0320c353c7c7d008ca9cec2",
+            "signals.csv": "a72543be09e3fe24bebab670c5ea495f110995063f8745882f588f6f1b767f22"
+          }
+        },
+        {
+          "seed": 21016,
+          "actual_ordinary_dividends_cents": 98687690,
+          "legal_lower_bound_cents": 96605420,
+          "legal_upper_bound_cents": 99686400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.04638209342446631,
+            "5": -0.3756015491100237,
+            "10": -0.5437805165644148,
+            "25": -0.7785571457732474
+          },
+          "mean_mid_change_pct": {
+            "0": -0.07867131676726523,
+            "5": -0.7875433895494173,
+            "10": -1.1111820020787948,
+            "25": -1.5203261054785684
+          },
+          "hashes": {
+            "summary.json": "8ff9996fe3152ec1afc37b2ec0589a92fa9cf1dd0a76363e418f80af89963c90",
+            "signals.csv": "f8517d4a2815e08aa9da89184c2f619ce8a8499450d88a47e6feb468dc513ac8"
+          }
+        },
+        {
+          "seed": 21017,
+          "actual_ordinary_dividends_cents": 104378900,
+          "legal_lower_bound_cents": 102710150,
+          "legal_upper_bound_cents": 105350400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.07515209460972173,
+            "5": -0.25353697291409155,
+            "10": -0.3832371178727111,
+            "25": -0.6294740118638423
+          },
+          "mean_mid_change_pct": {
+            "0": -0.11342273333912865,
+            "5": -0.4105095576452511,
+            "10": -0.6212680636761738,
+            "25": -1.009313262988716
+          },
+          "hashes": {
+            "summary.json": "4b1a5a06c4e6c27ac98236baea8466c271a0e8f4ae8504ce3c2108f54da0e73d",
+            "signals.csv": "87adc680b26a955a3b8cae9f63156d8ecc5e18d847452a78f7f4aa69baf6fb12"
+          }
+        },
+        {
+          "seed": 21018,
+          "actual_ordinary_dividends_cents": 112160010,
+          "legal_lower_bound_cents": 110124090,
+          "legal_upper_bound_cents": 113280000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.07683151837751497,
+            "5": -0.28405552662366973,
+            "10": -0.4236792490114466,
+            "25": -0.7193919656909435
+          },
+          "mean_mid_change_pct": {
+            "0": -0.1398695262000882,
+            "5": -0.5730792219376926,
+            "10": -0.8542966553986452,
+            "25": -1.412633086759501
+          },
+          "hashes": {
+            "summary.json": "d586409347962c6cc7802aca5f12ef88259243302f31d91b7e1c3f200b28f12b",
+            "signals.csv": "5c90091db3a0cd45a0002c677d63bbe92e9a713de939fec7693ea6cbfba7dc7c"
+          }
+        },
+        {
+          "seed": 21019,
+          "actual_ordinary_dividends_cents": 109323900,
+          "legal_lower_bound_cents": 106667870,
+          "legal_upper_bound_cents": 111014400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.08743315310917352,
+            "5": -0.23395331859130836,
+            "10": -0.35527237784890847,
+            "25": -0.7108350082626063
+          },
+          "mean_mid_change_pct": {
+            "0": -0.1893951259709556,
+            "5": -0.5298390023980611,
+            "10": -0.8136744685849487,
+            "25": -1.5906301106909408
+          },
+          "hashes": {
+            "summary.json": "841c4019d9425b594c6d9022eb0ee2723ca98f5e2895bd62206e18241f396077",
+            "signals.csv": "7ad788d1b30dd41902ed49123090928c28e843a31b3aafc07a68531f7b66e93d"
+          }
+        },
+        {
+          "seed": 21020,
+          "actual_ordinary_dividends_cents": 114321610,
+          "legal_lower_bound_cents": 112384970,
+          "legal_upper_bound_cents": 115545600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.0818659151694866,
+            "5": -0.22026679236576846,
+            "10": -0.33234358689791627,
+            "25": -0.6371231744109503
+          },
+          "mean_mid_change_pct": {
+            "0": -0.1130488287346844,
+            "5": -0.3495853159616213,
+            "10": -0.5352659859957861,
+            "25": -1.0059798806257414
+          },
+          "hashes": {
+            "summary.json": "0a323716c781077d37fb23b918f364b8887e1788ecba5a8a53c0ec408167623e",
+            "signals.csv": "326fd9c9830641b8051510b48630fdbf503b28d9dafccce3c05889b3e2072ac0"
+          }
+        },
+        {
+          "seed": 21021,
+          "actual_ordinary_dividends_cents": 100224860,
+          "legal_lower_bound_cents": 98701690,
+          "legal_upper_bound_cents": 100819200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.04820780991856077,
+            "5": -0.2551946909855073,
+            "10": -0.3789109645306589,
+            "25": -0.6263080390886513
+          },
+          "mean_mid_change_pct": {
+            "0": -0.06648138128489801,
+            "5": -0.3949165490684769,
+            "10": -0.5950142416848565,
+            "25": -0.9541195330433615
+          },
+          "hashes": {
+            "summary.json": "477a68cf710126fc85fe29440c1537310aa5b2eff5c2fe771b7ae5f26731f0b0",
+            "signals.csv": "935eab49d2c05f1ca15e87f82703e48393e25bb3f004b917ec8fde1925db5151"
+          }
+        },
+        {
+          "seed": 21022,
+          "actual_ordinary_dividends_cents": 103220110,
+          "legal_lower_bound_cents": 101523660,
+          "legal_upper_bound_cents": 104217600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.04780498318763625,
+            "5": -0.2070145543232278,
+            "10": -0.3599171919316723,
+            "25": -0.6204614612891353
+          },
+          "mean_mid_change_pct": {
+            "0": -0.07351301884871787,
+            "5": -0.3367181772708534,
+            "10": -0.569253900903056,
+            "25": -0.9791193114000846
+          },
+          "hashes": {
+            "summary.json": "5d819749ad8d0a39673d3150aec051e059f1bfd73b00e1c00c2ed1ab9b405a64",
+            "signals.csv": "93eba32c735ac8805ac5773b067eb13e8c6df7b816946c0e41a4d645f536cd11"
+          }
+        },
+        {
+          "seed": 21023,
+          "actual_ordinary_dividends_cents": 117736400,
+          "legal_lower_bound_cents": 115468900,
+          "legal_upper_bound_cents": 118944000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.07366925212264196,
+            "5": -0.32293970436343317,
+            "10": -0.4730750718208345,
+            "25": -0.7316217097403538
+          },
+          "mean_mid_change_pct": {
+            "0": -0.10703802326239045,
+            "5": -0.5725884931012672,
+            "10": -0.8428911610487086,
+            "25": -1.2726349219078767
+          },
+          "hashes": {
+            "summary.json": "27846b326104a1e59c85e7098a9709a942deef18ed1dfcf5eddc008cce486318",
+            "signals.csv": "11bdb80debb37c0557abd044cdd91da8bcc37d68539a983003eb379aa64acb75"
+          }
+        },
+        {
+          "seed": 21024,
+          "actual_ordinary_dividends_cents": 97459040,
+          "legal_lower_bound_cents": 95331610,
+          "legal_upper_bound_cents": 98553600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.0304991674049399,
+            "5": -0.28962929637802304,
+            "10": -0.45698456467132187,
+            "25": -0.7016670072994351
+          },
+          "mean_mid_change_pct": {
+            "0": -0.048597522603009036,
+            "5": -0.4666390194812135,
+            "10": -0.7280917092636747,
+            "25": -1.0903079317773399
+          },
+          "hashes": {
+            "summary.json": "8c8ceb69e8e5dc446d3d53b402944dc6cf1363cc16edee0d0b8360bf0bc7f141",
+            "signals.csv": "f07927f2e7de399c52c6694cf6fd2f54934af27c8ab1459c19163f77947a3072"
+          }
+        },
+        {
+          "seed": 21025,
+          "actual_ordinary_dividends_cents": 96773630,
+          "legal_lower_bound_cents": 95381760,
+          "legal_upper_bound_cents": 97420800,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.03499873331505984,
+            "5": -0.23375228431255596,
+            "10": -0.3802887105348905,
+            "25": -0.6352010001882668
+          },
+          "mean_mid_change_pct": {
+            "0": -0.05190210004544082,
+            "5": -0.3319698338393806,
+            "10": -0.5408655168089462,
+            "25": -0.8597777714336078
+          },
+          "hashes": {
+            "summary.json": "49b0d844b86b2216325f888280c928a23bbffcc83bcb8d5f286ca963f58c15ba",
+            "signals.csv": "7d60c5f00f9341e1d56898b0a112b02888da1ee8aaf499ea12c4c971ec7374d0"
+          }
+        },
+        {
+          "seed": 21026,
+          "actual_ordinary_dividends_cents": 111703370,
+          "legal_lower_bound_cents": 109926440,
+          "legal_upper_bound_cents": 112147200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.08957559901767738,
+            "5": -0.35192562470767597,
+            "10": -0.5113161458024472,
+            "25": -0.8172975687744524
+          },
+          "mean_mid_change_pct": {
+            "0": -0.19374315905964556,
+            "5": -0.8966286289864729,
+            "10": -1.313499868138694,
+            "25": -2.0546407700694895
+          },
+          "hashes": {
+            "summary.json": "ff52357ff78f59a595c97351bef0ce1f4f5877fef97056543397e6863c785163",
+            "signals.csv": "59e64fcd0f37b8bea0c9d7f68bb500a9b9bf6622e30505819fb9dfb59fa7b389"
+          }
+        },
+        {
+          "seed": 21027,
+          "actual_ordinary_dividends_cents": 112002430,
+          "legal_lower_bound_cents": 109767140,
+          "legal_upper_bound_cents": 113280000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.06187730348747298,
+            "5": -0.2430700960997571,
+            "10": -0.37700606643826984,
+            "25": -0.6696284703996569
+          },
+          "mean_mid_change_pct": {
+            "0": -0.09657664518375433,
+            "5": -0.41459778709235623,
+            "10": -0.643845927427694,
+            "25": -1.1192393856576326
+          },
+          "hashes": {
+            "summary.json": "bce54698be603fb7dcfec20bbb658aa84108b18c2f654c3bbcb18c9d08e2a7a6",
+            "signals.csv": "da1847b48fb862a94d648ab0cf6ab021b4af616e64007b28f453a0a7f4a47988"
+          }
+        },
+        {
+          "seed": 21028,
+          "actual_ordinary_dividends_cents": 126709440,
+          "legal_lower_bound_cents": 124324210,
+          "legal_upper_bound_cents": 128006400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.0844564743665771,
+            "5": -0.3597335151530357,
+            "10": -0.5194931039280354,
+            "25": -0.808198263524164
+          },
+          "mean_mid_change_pct": {
+            "0": -0.19570580862359435,
+            "5": -0.9047274650716682,
+            "10": -1.27930756646159,
+            "25": -1.9734865684382135
+          },
+          "hashes": {
+            "summary.json": "ff50bad965297acfbd132a27020e97255495708117a7e6f5bacc06f91141df84",
+            "signals.csv": "98ab54cf13469d20546f883cbbd383eabe7bdeea04d6dff9d031907ecf45fe0b"
+          }
+        },
+        {
+          "seed": 21029,
+          "actual_ordinary_dividends_cents": 121402410,
+          "legal_lower_bound_cents": 119529870,
+          "legal_upper_bound_cents": 122342400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.054359567114669154,
+            "5": -0.18911051125821923,
+            "10": -0.3187782642748687,
+            "25": -0.5600938605819761
+          },
+          "mean_mid_change_pct": {
+            "0": -0.07228892028790108,
+            "5": -0.2629162779879993,
+            "10": -0.4373833052577221,
+            "25": -0.7598547000429676
+          },
+          "hashes": {
+            "summary.json": "745db19d195849ba7fb820d35b65cf2b5b1fdb77709c95ac848f0ccd4fabd102",
+            "signals.csv": "d82e2025ee43d18f9d6564089b4590c5982e37f33811bfee7df13b39e69a5aea"
+          }
+        },
+        {
+          "seed": 21030,
+          "actual_ordinary_dividends_cents": 99965360,
+          "legal_lower_bound_cents": 98311700,
+          "legal_upper_bound_cents": 100819200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.06605000498463996,
+            "5": -0.23383735251731858,
+            "10": -0.34184922415822244,
+            "25": -0.6032039126691079
+          },
+          "mean_mid_change_pct": {
+            "0": -0.106518102547177,
+            "5": -0.39944288680220885,
+            "10": -0.5944335332914145,
+            "25": -1.0413157862204234
+          },
+          "hashes": {
+            "summary.json": "8ec33e96aadeda8abb139ae5a8f5f9c37635d18a273f0372fb10711e88449061",
+            "signals.csv": "e355f44a689fdbfeb9f42d3064f0b175b8b1e2b6142cb4153ed7dadb52d72521"
+          }
+        },
+        {
+          "seed": 21031,
+          "actual_ordinary_dividends_cents": 106427030,
+          "legal_lower_bound_cents": 104128510,
+          "legal_upper_bound_cents": 107616000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.08442630345172718,
+            "5": -0.2878619224466682,
+            "10": -0.42354605093588144,
+            "25": -0.6904511378452056
+          },
+          "mean_mid_change_pct": {
+            "0": -0.11703514996343004,
+            "5": -0.46170301273355857,
+            "10": -0.6772669562723378,
+            "25": -1.0871078300410586
+          },
+          "hashes": {
+            "summary.json": "48105a05484ed1d6ff24e135defeeea4fead0a71b6e072090b69f4e5f9180158",
+            "signals.csv": "1941767cac78b4bd0ed65ebc38b5418ae9eb6b6de891914800db3999e18c6df3"
+          }
+        },
+        {
+          "seed": 21032,
+          "actual_ordinary_dividends_cents": 98921940,
+          "legal_lower_bound_cents": 97490420,
+          "legal_upper_bound_cents": 99686400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.08976486790046112,
+            "5": -0.26783512955970584,
+            "10": -0.39199193791142944,
+            "25": -0.5825746131815741
+          },
+          "mean_mid_change_pct": {
+            "0": -0.11995919758178655,
+            "5": -0.3782120274127885,
+            "10": -0.5544504270320373,
+            "25": -0.8198300823997906
+          },
+          "hashes": {
+            "summary.json": "607db2df5575bde9dd78685d1f48fce8bee58b2724e07be897ffed19416adde7",
+            "signals.csv": "6c0374134a09375ecdd1545d3272437bcb17b93e107e87d57b0d9fa8c87e64aa"
+          }
+        },
+        {
+          "seed": 21033,
+          "actual_ordinary_dividends_cents": 97870960,
+          "legal_lower_bound_cents": 96235490,
+          "legal_upper_bound_cents": 98553600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.05983651505335179,
+            "5": -0.3096279688754179,
+            "10": -0.4629738463539484,
+            "25": -0.7373783774804183
+          },
+          "mean_mid_change_pct": {
+            "0": -0.09536860053952402,
+            "5": -0.6966626491793766,
+            "10": -1.0507221614609368,
+            "25": -1.6216169465263186
+          },
+          "hashes": {
+            "summary.json": "7ef5acaee7b4727a67fea158cd5a234d9644683eadc875732e71474b07654107",
+            "signals.csv": "971169d2f10fcf07063f045eb46ab53622c78121f02d6cfbd7f915bf519d0579"
+          }
+        },
+        {
+          "seed": 21034,
+          "actual_ordinary_dividends_cents": 104169200,
+          "legal_lower_bound_cents": 102286530,
+          "legal_upper_bound_cents": 105350400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.09731647887260132,
+            "5": -0.28125880685829663,
+            "10": -0.43638606999576385,
+            "25": -0.7580301902368228
+          },
+          "mean_mid_change_pct": {
+            "0": -0.1842392249562371,
+            "5": -0.5753100377227068,
+            "10": -0.9038621583592089,
+            "25": -1.5600185082837261
+          },
+          "hashes": {
+            "summary.json": "606233f36858f6a22a1a652e3a75d9cbb314a7048fba7c9194a122b1ee736c65",
+            "signals.csv": "e3b4e32093f3a4f27790754320fbd4db62773456c881fdeecd5d41141c903eff"
+          }
+        },
+        {
+          "seed": 21035,
+          "actual_ordinary_dividends_cents": 109087270,
+          "legal_lower_bound_cents": 107287370,
+          "legal_upper_bound_cents": 109881600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.05454163205016447,
+            "5": -0.18959343131271458,
+            "10": -0.30364371218466785,
+            "25": -0.5052677678786893
+          },
+          "mean_mid_change_pct": {
+            "0": -0.0766174125592168,
+            "5": -0.2926866732989363,
+            "10": -0.4706828972630432,
+            "25": -0.7933177844014431
+          },
+          "hashes": {
+            "summary.json": "0aa774b71dacf428f0d57aa9261f837c815726a9bfd12f2768f091023c256364",
+            "signals.csv": "dd148350f4851d124b066994941b4f9d4e8d3a2180cf652ec76ebc6a9b593aa9"
+          }
+        },
+        {
+          "seed": 21036,
+          "actual_ordinary_dividends_cents": 117947330,
+          "legal_lower_bound_cents": 116174540,
+          "legal_upper_bound_cents": 118944000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.05906014889065737,
+            "5": -0.24568057601532178,
+            "10": -0.38967630110002993,
+            "25": -0.6878528260816397
+          },
+          "mean_mid_change_pct": {
+            "0": -0.10811671763485943,
+            "5": -0.5014547489398737,
+            "10": -0.8119320865772479,
+            "25": -1.4587713384511685
+          },
+          "hashes": {
+            "summary.json": "a4dc7fe4fb536431e45fd8dbbfc134af0644b9869bf3a20e5814b208a02c27a7",
+            "signals.csv": "e8e7b2ad712b3991d847bf1e03b8538cd20862d4e97d53245ca1417aa555ab82"
+          }
+        },
+        {
+          "seed": 21037,
+          "actual_ordinary_dividends_cents": 100507440,
+          "legal_lower_bound_cents": 98983120,
+          "legal_upper_bound_cents": 100819200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.043467211049819744,
+            "5": -0.44589193021484685,
+            "10": -0.5847658972789863,
+            "25": -0.8123374396582439
+          },
+          "mean_mid_change_pct": {
+            "0": -0.10716808238829402,
+            "5": -1.0478108439776601,
+            "10": -1.3867578296336736,
+            "25": -1.9021676922234274
+          },
+          "hashes": {
+            "summary.json": "79e9909378560f3a20f496593e8c94c8cb1667c633b486f1102d0d3f23300dca",
+            "signals.csv": "8c2a1d6567062412fba7bce5e42b7edb0477c41db5944c46abe3fca345691aab"
+          }
+        },
+        {
+          "seed": 21038,
+          "actual_ordinary_dividends_cents": 113365330,
+          "legal_lower_bound_cents": 111515900,
+          "legal_upper_bound_cents": 114412800,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.06507664954093526,
+            "5": -0.17708876016273975,
+            "10": -0.27381679818012583,
+            "25": -0.5428703288397166
+          },
+          "mean_mid_change_pct": {
+            "0": -0.09792512856385911,
+            "5": -0.29070524581474533,
+            "10": -0.4603999987236079,
+            "25": -0.8531318667471511
+          },
+          "hashes": {
+            "summary.json": "eddcb438d6e4ada76144b2220b395f847a6902f093c01c2624dcf2b7861783a0",
+            "signals.csv": "a772e86d19e1f4b8a2e08cda99bb60f577a6e44dfbde559cbb913d5eba402a70"
+          }
+        },
+        {
+          "seed": 21039,
+          "actual_ordinary_dividends_cents": 103542630,
+          "legal_lower_bound_cents": 101954950,
+          "legal_upper_bound_cents": 104217600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.053972942262415946,
+            "5": -0.3404932508540318,
+            "10": -0.5021629702497049,
+            "25": -0.7794760884582009
+          },
+          "mean_mid_change_pct": {
+            "0": -0.11254155923979466,
+            "5": -0.7779961893555347,
+            "10": -1.1156612866602769,
+            "25": -1.5982194546229431
+          },
+          "hashes": {
+            "summary.json": "edecaf4171404b1cc7d5fc2fb64816ec95fa3a9ab5e41de70dc26b1d5075e4cf",
+            "signals.csv": "43d3bbef3e6926a5c70fcad6624593c4567ae20121a6bdab628c3d335cd7245a"
+          }
+        },
+        {
+          "seed": 21040,
+          "actual_ordinary_dividends_cents": 105670300,
+          "legal_lower_bound_cents": 104012280,
+          "legal_upper_bound_cents": 106483200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.037160961449097044,
+            "5": -0.23043364121753954,
+            "10": -0.3594679092094346,
+            "25": -0.608982184011845
+          },
+          "mean_mid_change_pct": {
+            "0": -0.053033251417277424,
+            "5": -0.37595428566404376,
+            "10": -0.5866230107505255,
+            "25": -0.936649946912328
+          },
+          "hashes": {
+            "summary.json": "8a3fe4b0747398b1767647d7f44a924af17a6f04dade9a46dd428fc653958d3b",
+            "signals.csv": "ecbab4d75759d25017a51980a5fbc5ce001d5821da8a1f5ec19e77618acc7ef4"
+          }
+        }
+      ],
+      "worlds_above_upper": 0,
+      "worlds_below_lower": 0,
+      "max_proven_excess_yuan": 0.0,
+      "mean_mid_change_per_dividend": {
+        "0": -0.06414908177851557,
+        "5": -0.28129341011353887,
+        "10": -0.4222397482517002,
+        "25": -0.6900603392409973
+      }
+    },
+    "active_no_news-swift-plain": {
+      "worlds": [
+        {
+          "seed": 21001,
+          "actual_ordinary_dividends_cents": 112803120,
+          "legal_lower_bound_cents": 111181370,
+          "legal_upper_bound_cents": 113280000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.044909366057671145,
+            "5": -0.19991138146222892,
+            "10": -0.3667154371052676,
+            "25": -0.7199361217878167
+          },
+          "mean_mid_change_pct": {
+            "0": -0.06588585177978545,
+            "5": -0.355375698309902,
+            "10": -0.6851323054521213,
+            "25": -1.3123452219846925
+          },
+          "hashes": {
+            "summary.json": "e0e40f5461f3fd5ed4a42d7599b7cc48d0ecadd72a47c9b6e3af0fc905e238f7",
+            "signals.csv": "9062160070b1d66b02ab35e17830aebd2511168e45413b748f4e75b9dc63336c"
+          }
+        },
+        {
+          "seed": 21002,
+          "actual_ordinary_dividends_cents": 110428010,
+          "legal_lower_bound_cents": 108932880,
+          "legal_upper_bound_cents": 111014400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.004947087281833047,
+            "5": -0.14560136097424234,
+            "10": -0.287550258122292,
+            "25": -0.6016364868653005
+          },
+          "mean_mid_change_pct": {
+            "0": -0.0030592289217378,
+            "5": -0.20837799155931414,
+            "10": -0.41598304961886223,
+            "25": -0.831850137479139
+          },
+          "hashes": {
+            "summary.json": "e8670c8cb802d395c554b487c9b14e0d68e9fb69d178a37df2ee9df854fea535",
+            "signals.csv": "aa430439cf5eaede14cacd5e3f62fb728b13321bc7d424bc42bf50ef92876e83"
+          }
+        },
+        {
+          "seed": 21003,
+          "actual_ordinary_dividends_cents": 94153190,
+          "legal_lower_bound_cents": 93014680,
+          "legal_upper_bound_cents": 94022400,
+          "above_upper_cents": 130790,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.026916122483919093,
+            "5": -0.24396690315334382,
+            "10": -0.5005508761483338,
+            "25": -0.9423679474950661
+          },
+          "mean_mid_change_pct": {
+            "0": -0.010671613238890673,
+            "5": -0.5295737576090486,
+            "10": -1.2189329944914076,
+            "25": -2.312683041936653
+          },
+          "hashes": {
+            "summary.json": "a4e659e62de76c06b925a09e3209f9f16166900884d79ffb24ecffe3943054c8",
+            "signals.csv": "3a73e655dec44d4b76e74443fc483e7e1f683a01cdca970b4ed2a9edb3352b72"
+          }
+        },
+        {
+          "seed": 21004,
+          "actual_ordinary_dividends_cents": 119641730,
+          "legal_lower_bound_cents": 117693790,
+          "legal_upper_bound_cents": 120076800,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.05722571449266364,
+            "5": -0.23850263343059952,
+            "10": -0.41989484291602935,
+            "25": -0.8090407469178655
+          },
+          "mean_mid_change_pct": {
+            "0": -0.1167877831499274,
+            "5": -0.5945809624068172,
+            "10": -1.0917255959139605,
+            "25": -2.0018533051935923
+          },
+          "hashes": {
+            "summary.json": "90ea0295997fd4b47b737ab42057b8d9d682a883d15b92bd8a4010d4190e084d",
+            "signals.csv": "e6e8a155196af40af365364b6a8edcd572fb97c5b22fd9182fd76472e2b5ddca"
+          }
+        },
+        {
+          "seed": 21005,
+          "actual_ordinary_dividends_cents": 102781360,
+          "legal_lower_bound_cents": 101138390,
+          "legal_upper_bound_cents": 103084800,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.027629277502158857,
+            "5": -0.16392445548801482,
+            "10": -0.345632369043386,
+            "25": -0.7144792321614355
+          },
+          "mean_mid_change_pct": {
+            "0": -0.03361865201224988,
+            "5": -0.28945320977827255,
+            "10": -0.6219516705865383,
+            "25": -1.2446161909422333
+          },
+          "hashes": {
+            "summary.json": "4d47f2946ac14303614e02b97eec3bc83f2afd0693f197589dba964f6c953b3f",
+            "signals.csv": "834d027567c32979a111e2db663bc8a9f5153d5f31348a2a80f8c26dbb3f75d9"
+          }
+        },
+        {
+          "seed": 21006,
+          "actual_ordinary_dividends_cents": 95874330,
+          "legal_lower_bound_cents": 94601780,
+          "legal_upper_bound_cents": 96288000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.024822573377658124,
+            "5": -0.13862578005798346,
+            "10": -0.28347838555041943,
+            "25": -0.5948566353608726
+          },
+          "mean_mid_change_pct": {
+            "0": -0.034008551865910806,
+            "5": -0.18880302534132656,
+            "10": -0.38808841246197867,
+            "25": -0.8086717598254392
+          },
+          "hashes": {
+            "summary.json": "d1b226e7a3ffb5724b6313566d9e756a3c9202a1559675079cdd333e4f29ad9a",
+            "signals.csv": "e4076f678d7ffe7322977ca38ff625d4713e8d77191c491eee9af9f5d2532f0c"
+          }
+        },
+        {
+          "seed": 21007,
+          "actual_ordinary_dividends_cents": 90572010,
+          "legal_lower_bound_cents": 89636930,
+          "legal_upper_bound_cents": 90624000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.01790690571199046,
+            "5": -0.19016501060145127,
+            "10": -0.40148866319494503,
+            "25": -0.7348538649559058
+          },
+          "mean_mid_change_pct": {
+            "0": -0.008999318247702132,
+            "5": -0.28428528043468654,
+            "10": -0.6296043843430812,
+            "25": -1.1539641293476672
+          },
+          "hashes": {
+            "summary.json": "4e6605852d5d9d447f495979ffb59a1550d6da688a0803a9534deeb28da15466",
+            "signals.csv": "076c2a483d61a3c5cae7252bf436cc8fa26e9b260c6198bd4af3b119eb625b85"
+          }
+        },
+        {
+          "seed": 21008,
+          "actual_ordinary_dividends_cents": 117481600,
+          "legal_lower_bound_cents": 116060670,
+          "legal_upper_bound_cents": 117811200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.035742699391004475,
+            "5": -0.20321411592174304,
+            "10": -0.35061958850941904,
+            "25": -0.6631652711695084
+          },
+          "mean_mid_change_pct": {
+            "0": -0.052841346193410514,
+            "5": -0.33896282511627324,
+            "10": -0.5867205341631905,
+            "25": -1.0746393247185368
+          },
+          "hashes": {
+            "summary.json": "7652e4fa14199f5d56f3f466373282e691c17bd49ac2f39c0e3882ed4a9c8baf",
+            "signals.csv": "6b1a81bd493ce50de3d46274144fc582e33cb8edb28cefbab60226d710ae68a4"
+          }
+        },
+        {
+          "seed": 21009,
+          "actual_ordinary_dividends_cents": 107485570,
+          "legal_lower_bound_cents": 106425380,
+          "legal_upper_bound_cents": 107616000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.04313467746942323,
+            "5": -0.22108189738698214,
+            "10": -0.4068444408698646,
+            "25": -0.7738136529195851
+          },
+          "mean_mid_change_pct": {
+            "0": -0.08077460507622042,
+            "5": -0.42096475687450263,
+            "10": -0.7886744552134588,
+            "25": -1.5019041483437914
+          },
+          "hashes": {
+            "summary.json": "07ec41520eaa229102268ae09728d6d6aa044a4d305cd7ecee7a586bc2ad2a60",
+            "signals.csv": "f1aa02aafd844e80194e831a01cecedcc35e3798a6176fa2fac85c4aa20ef7a5"
+          }
+        },
+        {
+          "seed": 21010,
+          "actual_ordinary_dividends_cents": 101659760,
+          "legal_lower_bound_cents": 100160760,
+          "legal_upper_bound_cents": 101952000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.031174451725299184,
+            "5": -0.19226835405648965,
+            "10": -0.3955538077741468,
+            "25": -0.7477646750612852
+          },
+          "mean_mid_change_pct": {
+            "0": -0.03702011863572565,
+            "5": -0.322815674452745,
+            "10": -0.6989633109134303,
+            "25": -1.3012138924201522
+          },
+          "hashes": {
+            "summary.json": "dc222b6ff5c3f41b308b158941400e3d820fb8143bb8823a1c1420cb7f2d7c51",
+            "signals.csv": "968a89b0488daf9e03fe36435fda15437b80a4920ec7bde6358d69afcd1d3ec1"
+          }
+        },
+        {
+          "seed": 21011,
+          "actual_ordinary_dividends_cents": 127649490,
+          "legal_lower_bound_cents": 125873550,
+          "legal_upper_bound_cents": 128006400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.038272879662710174,
+            "5": -0.19618999691457317,
+            "10": -0.3826362629837206,
+            "25": -0.8268037061808248
+          },
+          "mean_mid_change_pct": {
+            "0": -0.06521342349335207,
+            "5": -0.3823905660793664,
+            "10": -0.7722999982384804,
+            "25": -1.6944122465064149
+          },
+          "hashes": {
+            "summary.json": "a5532c6535a47d7f61d5abd10c49e7ff5c53400f1e08e5bcb40311c68e0a47af",
+            "signals.csv": "1889be488b6e7ae5d6a746c23419e656d28a01701264eaf35989106ebc4b4594"
+          }
+        },
+        {
+          "seed": 21012,
+          "actual_ordinary_dividends_cents": 98106800,
+          "legal_lower_bound_cents": 96719290,
+          "legal_upper_bound_cents": 98553600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.02435402309554852,
+            "5": -0.12893740111112992,
+            "10": -0.2660573743582218,
+            "25": -0.6655358958367433
+          },
+          "mean_mid_change_pct": {
+            "0": -0.03532349445836988,
+            "5": -0.22412068273180524,
+            "10": -0.48692299476802914,
+            "25": -1.2133177306335554
+          },
+          "hashes": {
+            "summary.json": "9daa3d62c0d63acf7a7dae3ff4bc63de39662a732d9e40d81b84bc57e45c940b",
+            "signals.csv": "ac10bac2e4c2ff7b09245a1cea864e21bc147a41171155e73148b834b8407071"
+          }
+        },
+        {
+          "seed": 21013,
+          "actual_ordinary_dividends_cents": 111781850,
+          "legal_lower_bound_cents": 110233830,
+          "legal_upper_bound_cents": 112147200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.02839625111235281,
+            "5": -0.21261595325578375,
+            "10": -0.4159587865053967,
+            "25": -0.7392035210552159
+          },
+          "mean_mid_change_pct": {
+            "0": -0.04636229606894162,
+            "5": -0.3849291017027286,
+            "10": -0.76474004286782,
+            "25": -1.2717794939838476
+          },
+          "hashes": {
+            "summary.json": "e796e0f17e82f74f14900f65afb265723e24023cda55b1eb7d5b091e8c2ab7c8",
+            "signals.csv": "16e7640300c1e5f48c8f129a687f248191243225fc8498d70ce4edde00d51d5f"
+          }
+        },
+        {
+          "seed": 21014,
+          "actual_ordinary_dividends_cents": 103586090,
+          "legal_lower_bound_cents": 101872940,
+          "legal_upper_bound_cents": 104217600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.043520898122593035,
+            "5": -0.1674502220942899,
+            "10": -0.3084313600711906,
+            "25": -0.6650915275872903
+          },
+          "mean_mid_change_pct": {
+            "0": -0.06896428531115426,
+            "5": -0.286755800093584,
+            "10": -0.5413245125609406,
+            "25": -1.1583434057846327
+          },
+          "hashes": {
+            "summary.json": "3c46a553618f744e6587e0b5a7e1f20a7308007e5fa16ba5ec2db0fde3e085c9",
+            "signals.csv": "c5606ee72d2f494056e7ce50911d9217e90eaeeb354542b66a97ce8c71cb0c3c"
+          }
+        },
+        {
+          "seed": 21015,
+          "actual_ordinary_dividends_cents": 105760730,
+          "legal_lower_bound_cents": 104100190,
+          "legal_upper_bound_cents": 106483200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.021069031421323443,
+            "5": -0.19897825669896976,
+            "10": -0.48349321401104084,
+            "25": -0.9755256364084887
+          },
+          "mean_mid_change_pct": {
+            "0": 0.0003903030604230966,
+            "5": -0.41470254603122186,
+            "10": -1.1556745507757984,
+            "25": -2.4059718244948436
+          },
+          "hashes": {
+            "summary.json": "c5c9c0236c2bce2273e1564a6124126f397c893b64f13166fca45503a9fef4a9",
+            "signals.csv": "30654f07170444b054b21280ba835e7c7705539f9a4770950fe514b411afe8e2"
+          }
+        },
+        {
+          "seed": 21016,
+          "actual_ordinary_dividends_cents": 99072590,
+          "legal_lower_bound_cents": 97267990,
+          "legal_upper_bound_cents": 99686400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.012017935924715586,
+            "5": -0.19302791511689818,
+            "10": -0.42722909388163627,
+            "25": -0.7626480548641565
+          },
+          "mean_mid_change_pct": {
+            "0": -0.013273614880438328,
+            "5": -0.3811612340694514,
+            "10": -0.8597688873256708,
+            "25": -1.4826949913460687
+          },
+          "hashes": {
+            "summary.json": "4b5c2a0ae6ac4e3db453e97808d16c73b5d3098b57cbbdeca38086bf8a7cbb5b",
+            "signals.csv": "b472980c16089f67d0805f02a0c45295b266f0e633089fd4558faa71bff05e5a"
+          }
+        },
+        {
+          "seed": 21017,
+          "actual_ordinary_dividends_cents": 104898610,
+          "legal_lower_bound_cents": 103604590,
+          "legal_upper_bound_cents": 105350400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.010863410130359283,
+            "5": -0.12755376450291706,
+            "10": -0.27314899648374225,
+            "25": -0.6104225336810083
+          },
+          "mean_mid_change_pct": {
+            "0": -0.016450119759277203,
+            "5": -0.20751005733771719,
+            "10": -0.44289698132282124,
+            "25": -0.9854129287164816
+          },
+          "hashes": {
+            "summary.json": "24e4c147fe378d0f38aedfe808e41ae846a4db63fceba73abc19d07438e0a857",
+            "signals.csv": "64c374fb77de002bbc2493f78067da03af4d9737bbf20b1d31183291a772f261"
+          }
+        },
+        {
+          "seed": 21018,
+          "actual_ordinary_dividends_cents": 112724670,
+          "legal_lower_bound_cents": 111200840,
+          "legal_upper_bound_cents": 113280000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.04535409176510871,
+            "5": -0.20489746364746364,
+            "10": -0.37309803473362796,
+            "25": -0.7067057965574914
+          },
+          "mean_mid_change_pct": {
+            "0": -0.07599263605169594,
+            "5": -0.39038139732444405,
+            "10": -0.7343115263436678,
+            "25": -1.390251957834714
+          },
+          "hashes": {
+            "summary.json": "b1c1e50d70e0ca0c803f299bd159e8687492c138cdfc2bf075e27bb2848186d9",
+            "signals.csv": "830e29fd582b8d0d8065a6600407271d16061757db11a35895049f7163d05970"
+          }
+        },
+        {
+          "seed": 21019,
+          "actual_ordinary_dividends_cents": 110301040,
+          "legal_lower_bound_cents": 108085640,
+          "legal_upper_bound_cents": 111014400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.054103453044131014,
+            "5": -0.16552386596454394,
+            "10": -0.30962082832421817,
+            "25": -0.7299169756796875
+          },
+          "mean_mid_change_pct": {
+            "0": -0.11889808644830639,
+            "5": -0.366244376105681,
+            "10": -0.700338133409108,
+            "25": -1.6004030945146777
+          },
+          "hashes": {
+            "summary.json": "1e8d5a467be4806c7108b59e5097113ac1b483385b9e0cec6327ef086df8d852",
+            "signals.csv": "06f0d5b59eb9b7991ca753648a75cfe37dc70926af7377ed924c2faeb0560c9e"
+          }
+        },
+        {
+          "seed": 21020,
+          "actual_ordinary_dividends_cents": 115041290,
+          "legal_lower_bound_cents": 113550810,
+          "legal_upper_bound_cents": 115545600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.011936061015008383,
+            "5": -0.1383212456093812,
+            "10": -0.3152214010095366,
+            "25": -0.6634687492356984
+          },
+          "mean_mid_change_pct": {
+            "0": -0.027101891575634113,
+            "5": -0.23519897988928748,
+            "10": -0.49732481898328845,
+            "25": -1.021086835493893
+          },
+          "hashes": {
+            "summary.json": "8ae2bc370030ad5d41b1de50f2c90be3ec71b3e817a1dfc736313df672fb16d7",
+            "signals.csv": "c8fd0b0566c191bb7b95ec26ba817de9dd791d309db4db6f8958649c821becf7"
+          }
+        },
+        {
+          "seed": 21021,
+          "actual_ordinary_dividends_cents": 100311080,
+          "legal_lower_bound_cents": 98787830,
+          "legal_upper_bound_cents": 100819200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.0008050882413127304,
+            "5": -0.14113384540379448,
+            "10": -0.28985324145765573,
+            "25": -0.6221671414795353
+          },
+          "mean_mid_change_pct": {
+            "0": -0.005097131504878864,
+            "5": -0.23098212927296105,
+            "10": -0.4632308726378953,
+            "25": -0.9561014691262888
+          },
+          "hashes": {
+            "summary.json": "50e5f82a2e0106a178b5bc5a94bdc5ccab46824092a27ae81fae024b2c77705e",
+            "signals.csv": "ff433cbbc46404490b80a90f0bf86e839df6e809d7a7617207ad7beec3eabf93"
+          }
+        },
+        {
+          "seed": 21022,
+          "actual_ordinary_dividends_cents": 103476410,
+          "legal_lower_bound_cents": 102059970,
+          "legal_upper_bound_cents": 104217600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.020876673232605437,
+            "5": -0.1528279027940045,
+            "10": -0.28397118653474585,
+            "25": -0.598725377729615
+          },
+          "mean_mid_change_pct": {
+            "0": -0.033182037400429985,
+            "5": -0.2393570586718459,
+            "10": -0.4577050776739932,
+            "25": -0.9327008215073048
+          },
+          "hashes": {
+            "summary.json": "d5764155bcff397cb30a57f5a9cde788b43f11fcc6888c79bce4d9017aa06894",
+            "signals.csv": "134cbeaf4eacb2608161acbb4760139d780363b940c539d1f53bf7d382400616"
+          }
+        },
+        {
+          "seed": 21023,
+          "actual_ordinary_dividends_cents": 117943880,
+          "legal_lower_bound_cents": 115793990,
+          "legal_upper_bound_cents": 118944000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.016812301634335534,
+            "5": -0.1627231558460372,
+            "10": -0.32231298456722185,
+            "25": -0.6661986314062586
+          },
+          "mean_mid_change_pct": {
+            "0": -0.023011420040375714,
+            "5": -0.28048431509210736,
+            "10": -0.5823455182544103,
+            "25": -1.1699469587101898
+          },
+          "hashes": {
+            "summary.json": "94fb954cdc82b0dbad3070295b0e70bd9a9cad1792b74317dfb410cd55247770",
+            "signals.csv": "79a7e57b0484aae0bcbdb0cc4aec480f5a10d1e9e778e029569cdc6fbe253ed1"
+          }
+        },
+        {
+          "seed": 21024,
+          "actual_ordinary_dividends_cents": 97885860,
+          "legal_lower_bound_cents": 96008340,
+          "legal_upper_bound_cents": 98553600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.021305044766909174,
+            "5": -0.1675131506911168,
+            "10": -0.36466745542593,
+            "25": -0.6972641929633455
+          },
+          "mean_mid_change_pct": {
+            "0": 0.032314497934583256,
+            "5": -0.2664941181207394,
+            "10": -0.5813942717256251,
+            "25": -1.0742939293162528
+          },
+          "hashes": {
+            "summary.json": "44b91fc6bee851b8f9d4745cffe3b3d97be6942eccc61a7948013538cd9e96c6",
+            "signals.csv": "c6f59675faa03f6f7de622cee7047978489b6e48d5c85b654ce57815df3a510a"
+          }
+        },
+        {
+          "seed": 21025,
+          "actual_ordinary_dividends_cents": 97121930,
+          "legal_lower_bound_cents": 95899190,
+          "legal_upper_bound_cents": 97420800,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.03469831149797194,
+            "5": -0.1771025156576004,
+            "10": -0.3271457379720092,
+            "25": -0.6496230158730159
+          },
+          "mean_mid_change_pct": {
+            "0": -0.032393097047836564,
+            "5": -0.2289703476488645,
+            "10": -0.43861972511696956,
+            "25": -0.8580871559548097
+          },
+          "hashes": {
+            "summary.json": "30553ac9bd4dadd8ac6bc0350233b75f8c7649b811f2bdc0dbee8c33ba194114",
+            "signals.csv": "4c3d096717bd8eeca316e11d86a145597473ceb4a5fad5bb4ade2b00d6b08e70"
+          }
+        },
+        {
+          "seed": 21026,
+          "actual_ordinary_dividends_cents": 112159540,
+          "legal_lower_bound_cents": 111033870,
+          "legal_upper_bound_cents": 112147200,
+          "above_upper_cents": 12340,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.022457770572177353,
+            "5": -0.20229812372185255,
+            "10": -0.4502998456345914,
+            "25": -0.9047498833558155
+          },
+          "mean_mid_change_pct": {
+            "0": -0.02907891388107764,
+            "5": -0.4817317243830517,
+            "10": -1.1284868266970973,
+            "25": -2.269785189615289
+          },
+          "hashes": {
+            "summary.json": "1d6263d76a76547be3b73939e0cb0b52a8b16778c90a23945681e3396524a232",
+            "signals.csv": "2e80f53709023dbd7cfb9cbb42ed1083fcc3ea28eb8f6ab50b61f8a0851ddcea"
+          }
+        },
+        {
+          "seed": 21027,
+          "actual_ordinary_dividends_cents": 112517800,
+          "legal_lower_bound_cents": 110587830,
+          "legal_upper_bound_cents": 113280000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.016816469312232026,
+            "5": -0.13452216662809882,
+            "10": -0.3063659621922334,
+            "25": -0.7641514375455053
+          },
+          "mean_mid_change_pct": {
+            "0": -0.020526758425515323,
+            "5": -0.21322663721510368,
+            "10": -0.4996145359016702,
+            "25": -1.2391927583839317
+          },
+          "hashes": {
+            "summary.json": "9467c6897036c54f7022b8d67f5aea2aa50ff2e1e16df4d55c033b192bde5f52",
+            "signals.csv": "685e47c6ed659612031d16552fd43f7b0e54eacd68ed34da20a4e41d457be3da"
+          }
+        },
+        {
+          "seed": 21028,
+          "actual_ordinary_dividends_cents": 127892200,
+          "legal_lower_bound_cents": 126042290,
+          "legal_upper_bound_cents": 128006400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.0260995398198788,
+            "5": -0.20161330007092718,
+            "10": -0.45313396020175684,
+            "25": -0.8738252124523311
+          },
+          "mean_mid_change_pct": {
+            "0": -0.04242030729210641,
+            "5": -0.46243392284923696,
+            "10": -1.0711277918140052,
+            "25": -2.0671022965227377
+          },
+          "hashes": {
+            "summary.json": "582b8938ec8f6769dfa5f18aea0a2678039937ccf03008a42b3f84a70de38574",
+            "signals.csv": "a5092f767f92e06539db6573729b01d2089e57dbb1555d5ebfca83ed433019a1"
+          }
+        },
+        {
+          "seed": 21029,
+          "actual_ordinary_dividends_cents": 121674630,
+          "legal_lower_bound_cents": 119929890,
+          "legal_upper_bound_cents": 122342400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.005945612583982702,
+            "5": -0.11240386382152087,
+            "10": -0.2033367355433682,
+            "25": -0.5122375144696574
+          },
+          "mean_mid_change_pct": {
+            "0": -0.014909102036329752,
+            "5": -0.16436663448104388,
+            "10": -0.2931852843211782,
+            "25": -0.708318938953924
+          },
+          "hashes": {
+            "summary.json": "58bc0956c58b790e4ca71acbe4200bcb2b52ab2e28bd74ba267441caecf8fb67",
+            "signals.csv": "77d9cfe3bd8148876a2c5d5a2f944ba23dd05cce286926d4c4b7c1eb7a6addc6"
+          }
+        },
+        {
+          "seed": 21030,
+          "actual_ordinary_dividends_cents": 100408570,
+          "legal_lower_bound_cents": 99140060,
+          "legal_upper_bound_cents": 100819200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.04301560693927761,
+            "5": -0.19142894491353396,
+            "10": -0.3208531047529335,
+            "25": -0.6218522829909816
+          },
+          "mean_mid_change_pct": {
+            "0": -0.05624990032678389,
+            "5": -0.30328906058151156,
+            "10": -0.5252950702399442,
+            "25": -1.070519687168006
+          },
+          "hashes": {
+            "summary.json": "c536554db8caf397f3764ce0a3da7fdaa45949a766889dea48ea51443a9bee21",
+            "signals.csv": "969ebf54eb076432231e615abb864258c285ee1163426cabbcc6f815a09b3ef8"
+          }
+        },
+        {
+          "seed": 21031,
+          "actual_ordinary_dividends_cents": 106737210,
+          "legal_lower_bound_cents": 104832970,
+          "legal_upper_bound_cents": 107616000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.04928566866278731,
+            "5": -0.09689995738724552,
+            "10": -0.2790066458964764,
+            "25": -0.6988151340185238
+          },
+          "mean_mid_change_pct": {
+            "0": 0.07861064941382487,
+            "5": -0.1644663170301536,
+            "10": -0.45986061799135847,
+            "25": -1.0942235489937366
+          },
+          "hashes": {
+            "summary.json": "c69a6fc26be046cc7e3d61e7cf929ae0182f489ed45e4ac2f829ecba70ba6b78",
+            "signals.csv": "cbda05f9936ca52572d4157a529509fc31124153562db1e6c83ac751797a4af3"
+          }
+        },
+        {
+          "seed": 21032,
+          "actual_ordinary_dividends_cents": 99300200,
+          "legal_lower_bound_cents": 98259190,
+          "legal_upper_bound_cents": 99686400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.00503539586590434,
+            "5": -0.15149404076398984,
+            "10": -0.3195000681992207,
+            "25": -0.60523632723209
+          },
+          "mean_mid_change_pct": {
+            "0": 0.006794691448229318,
+            "5": -0.20291350562427488,
+            "10": -0.43056808027145943,
+            "25": -0.8324665450393511
+          },
+          "hashes": {
+            "summary.json": "a8da3eb9e32209f0f484e9814ba9546327e7107cc96622319dc670dda4aad0a3",
+            "signals.csv": "e6da260d8fd1b37ac610dc3d8f2fe5260424b888791425ea795a344d3046cab4"
+          }
+        },
+        {
+          "seed": 21033,
+          "actual_ordinary_dividends_cents": 98347660,
+          "legal_lower_bound_cents": 97213120,
+          "legal_upper_bound_cents": 98553600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.03450929706023085,
+            "5": -0.2250777231634617,
+            "10": -0.4329710470627279,
+            "25": -0.8168769468599689
+          },
+          "mean_mid_change_pct": {
+            "0": -0.056777232544782286,
+            "5": -0.4693520066288556,
+            "10": -0.9425368369050423,
+            "25": -1.693509840347327
+          },
+          "hashes": {
+            "summary.json": "433d68e55805f7c40f0bf1ac59df254d74ffad5ae1dc0d10688a9081cb99404d",
+            "signals.csv": "5e562f2f8ebfea2bd99be47c67f5b794d91911b40f729a2633ee96fe9d7d7287"
+          }
+        },
+        {
+          "seed": 21034,
+          "actual_ordinary_dividends_cents": 104735940,
+          "legal_lower_bound_cents": 103240560,
+          "legal_upper_bound_cents": 105350400,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.06052035441018492,
+            "5": -0.19634137190493123,
+            "10": -0.36715787037820935,
+            "25": -0.7733965389600983
+          },
+          "mean_mid_change_pct": {
+            "0": -0.10548817403484959,
+            "5": -0.39484723676147226,
+            "10": -0.7703103612661465,
+            "25": -1.6090818729700676
+          },
+          "hashes": {
+            "summary.json": "84925c1b084a96eaa9037b3a6cce8907b73cc117bf82ad5f3af79e9d45e04d57",
+            "signals.csv": "de80481625526b756375e2aa8fe95557f87b0568046c65395cec7fb0531fabd9"
+          }
+        },
+        {
+          "seed": 21035,
+          "actual_ordinary_dividends_cents": 109338460,
+          "legal_lower_bound_cents": 107721610,
+          "legal_upper_bound_cents": 109881600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": 0.0018956939118229444,
+            "5": -0.1149265194341595,
+            "10": -0.2434837974761444,
+            "25": -0.603607172868633
+          },
+          "mean_mid_change_pct": {
+            "0": -0.005739316567196286,
+            "5": -0.17923222442554157,
+            "10": -0.38397531428497395,
+            "25": -0.8874481948174917
+          },
+          "hashes": {
+            "summary.json": "f9d876ff4105e0b3a58e340e93900a5e0a78bdd58086f9dba950fd534792df47",
+            "signals.csv": "5aecfc603d82325bb9a666775bd9c8422f9da74f35dc792851757eb2bfde377e"
+          }
+        },
+        {
+          "seed": 21036,
+          "actual_ordinary_dividends_cents": 118613510,
+          "legal_lower_bound_cents": 117145090,
+          "legal_upper_bound_cents": 118944000,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.0470553427896382,
+            "5": -0.1944464226921854,
+            "10": -0.3477413349362502,
+            "25": -0.6981928819767803
+          },
+          "mean_mid_change_pct": {
+            "0": -0.08644146011955355,
+            "5": -0.38809911939031605,
+            "10": -0.7049899131525644,
+            "25": -1.4088006785620322
+          },
+          "hashes": {
+            "summary.json": "58ce4ecd9bebe22a94b12a268b50644b59b612c5cb1329460824cabb92615ab8",
+            "signals.csv": "76b528b973845b6875a3f1cc03a8f075972b441ec089a9877fddd19a83b32042"
+          }
+        },
+        {
+          "seed": 21037,
+          "actual_ordinary_dividends_cents": 100787840,
+          "legal_lower_bound_cents": 99441550,
+          "legal_upper_bound_cents": 100819200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.0013972976176366008,
+            "5": -0.2566791574771201,
+            "10": -0.5124101374143747,
+            "25": -0.9379437417573011
+          },
+          "mean_mid_change_pct": {
+            "0": 0.0059136348223056915,
+            "5": -0.5214287718463548,
+            "10": -1.1144514666893794,
+            "25": -2.1835043117391404
+          },
+          "hashes": {
+            "summary.json": "b10d424a665c64f659f8eebe004c1ee2b0e6401e5e717f2e3683873baa61e75b",
+            "signals.csv": "092fb131ddf85926fdb2c429ea0c20c7b1bc07d77d0a22cb72e9d60a37fff134"
+          }
+        },
+        {
+          "seed": 21038,
+          "actual_ordinary_dividends_cents": 113907630,
+          "legal_lower_bound_cents": 112528930,
+          "legal_upper_bound_cents": 114412800,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.02901545582477786,
+            "5": -0.12550926286519506,
+            "10": -0.24714791141062328,
+            "25": -0.5705944309927361
+          },
+          "mean_mid_change_pct": {
+            "0": -0.049168618171862154,
+            "5": -0.20567118776183926,
+            "10": -0.40121886996654343,
+            "25": -0.8933986559659295
+          },
+          "hashes": {
+            "summary.json": "8496fa8afdb43de33dd015ada5133fce151f4576250fce948e7482ecbb7a9c3c",
+            "signals.csv": "a8c442618b587b6100f038ea84e1b3303fec8aca44b01e6c225c7b40850ede63"
+          }
+        },
+        {
+          "seed": 21039,
+          "actual_ordinary_dividends_cents": 103876530,
+          "legal_lower_bound_cents": 102729030,
+          "legal_upper_bound_cents": 104217600,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.008196933230889087,
+            "5": -0.2105844702364227,
+            "10": -0.4313150681614179,
+            "25": -0.847526397390574
+          },
+          "mean_mid_change_pct": {
+            "0": -0.008075591982405742,
+            "5": -0.4521131257093121,
+            "10": -0.9343011698505629,
+            "25": -1.741003650639017
+          },
+          "hashes": {
+            "summary.json": "faf767764d633b0a6147e89e988e813950b4cadceeb4212b9b3c7030b24651d2",
+            "signals.csv": "dbbf97c7fae2fe8b3bfd65f70f232ed2578b4de63c7bebf51de94fc124cacafa"
+          }
+        },
+        {
+          "seed": 21040,
+          "actual_ordinary_dividends_cents": 106130440,
+          "legal_lower_bound_cents": 104505520,
+          "legal_upper_bound_cents": 106483200,
+          "above_upper_cents": 0,
+          "below_lower_cents": 0,
+          "mean_mid_change_per_dividend": {
+            "0": -0.024414770257990596,
+            "5": -0.15704594369848607,
+            "10": -0.2950733701326922,
+            "25": -0.565564309513462
+          },
+          "mean_mid_change_pct": {
+            "0": -0.03595009404337981,
+            "5": -0.24591960521900172,
+            "10": -0.4716218724101198,
+            "25": -0.8811883948014201
+          },
+          "hashes": {
+            "summary.json": "d4d8e522de6140b30eae81b95806fd0ef1c3b11107852eff71ed6a8b06801495",
+            "signals.csv": "e411397a2b403cc9334c202212b865209412c69dc28d2e5a0428236270fc80aa"
+          }
+        }
+      ],
+      "worlds_above_upper": 2,
+      "worlds_below_lower": 0,
+      "max_proven_excess_yuan": 1307.9,
+      "mean_mid_change_per_dividend": {
+        "0": -0.022737943951037617,
+        "5": -0.17608324541551784,
+        "10": -0.3527742871736755,
+        "25": -0.7168946400904369
+      }
+    }
+  }
+}
