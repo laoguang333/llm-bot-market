@@ -47,6 +47,7 @@ def prepare():
 
 def frozen():
     paths=[*sorted((ROOT/'crates').rglob('*.rs')),*sorted((ROOT/'scenarios').glob('foundation-repair-v22-*.toml')),
+           ROOT/'scenarios/ecology-v22-base-current.toml',ROOT/'tools/test_foundation_repair.py',
            PROTOCOL,ROOT/'docs/ecology-v22-protocol.md',ROOT/'tools/research_foundation_repair.py',
            ROOT/'tools/research_ecology_v22.py',ROOT/'tools/market_health.py',ROOT/'tools/test_market_health.py',
            ROOT/'tools/validate_v18.py',ROOT/'target/release/llm-market.exe',ROOT/'scenarios/baseline.toml']
@@ -54,12 +55,13 @@ def frozen():
 
 
 def plan(stage):
-    if stage=='dev': return {a:ROOT/f'scenarios/foundation-repair-v22-base-{a}.toml' for a in ARMS},91401,6
+    legacy=ROOT/'scenarios/ecology-v22-base-current.toml'
+    if stage=='dev': return {'legacy':legacy,**{a:ROOT/f'scenarios/foundation-repair-v22-base-{a}.toml' for a in ARMS}},91401,6
     dev=json.loads((ROOT/'docs/ecology-v22-repair-dev-results.json').read_text())
     assert frozen()==dev['frozen'],'No tuning between development and independent evaluation'
     selected=dev['selected'] or 'both'
     if stage=='holdout':
-        return {a:ROOT/f'scenarios/foundation-repair-v22-base-{a}.toml' for a in dict.fromkeys(['control',selected])},91501,10
+        return {'legacy':legacy,**{a:ROOT/f'scenarios/foundation-repair-v22-base-{a}.toml' for a in dict.fromkeys(['control',selected])}},91501,10
     holdout=json.loads((ROOT/'docs/ecology-v22-repair-holdout-results.json').read_text())
     if not dev['selected'] or not holdout['aggregate'][selected]['accepted']:
         save(ROOT/'docs/ecology-v22-repair-competition-status.json',dict(ran=False,reason='foundation_not_qualified',selected=dev['selected']))
@@ -104,7 +106,7 @@ def run(stage):
                 print(f"{len(rows)}/{n*2*len(arms)} repair-{stage} {arm} {seed} r{repeat} "
                       f"Coral={m['groups']['coral']['net_return']:+.3f} Noise ruin={m['groups']['noise']['ruined']:.3f} "
                       f"both={m['health']['normal']['both']:.3f}",flush=True)
-    stats=aggregate(rows);base=stats['base' if stage=='competition' else 'control']
+    stats=aggregate(rows);base=stats['base' if stage=='competition' else 'legacy']
     for a,v in stats.items():
         v['checks']=foundation_checks(v,base);v['accepted']=all(v['checks'].values())
     selected=next((a for a in ARMS if stats[a]['accepted']),None) if stage=='dev' else None
