@@ -186,12 +186,14 @@ fn main() -> Result<()> {
                 .get("cash")
                 .map(|s| s.parse())
                 .transpose()?
+                .or(cfg.scoring.challenger_cash)
                 .unwrap_or(2_000_000);
             g.shares_each = a
                 .flags
                 .get("shares")
                 .map(|s| s.parse())
                 .transpose()?
+                .or(cfg.scoring.challenger_shares)
                 .unwrap_or(20);
             g.shares = Default::default();
             cfg.bots.push(g);

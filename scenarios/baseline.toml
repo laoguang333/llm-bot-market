@@ -1,5 +1,5 @@
-# v18: normalize Grid endowments and distribute the conserved surplus across five strategies.
-# Same 105..229 accounts and 19 strategies as v17; total cash and each stock are conserved.
+# v23 arena: no idle fee, bounded crowd risk, league-sized named accounts.
+# Same 105..229 accounts and 19 strategies as v18. docs/baseline-v23.md.
 ticks = 10000
 seed = 7
 
@@ -14,8 +14,9 @@ trade_tape_limit = 200
 [fees]
 trade_fee_bps = 5
 idle_period = 50
-idle_rate = 0.006
-credit_ratio = 0.01
+# No idle fee and so no turnover credit; trade fees and loan interest remain.
+idle_rate = 0.0
+credit_ratio = 0.0
 credit_side = "both"
 
 [margin]
@@ -96,6 +97,9 @@ terminal_ratio_range = [0.16666666666666666, 0.8333333333333334]
 terminal_hint_fractions = [[0.0, 0.5], [0.3333333333333333, 0.26666666666666666], [0.6666666666666666, 0.1]]
 objective = "rank_percentile"
 series_seeds = 20
+# League-sized challenger, like every named account below.
+challenger_cash = 20_000_000
+challenger_shares = 200
 
 
 [[stocks]]
@@ -238,6 +242,8 @@ count = 9
 count_max = 21
 cash = 2_000_000
 shares_each = 20
+# Smaller random orders, so Noise does not trade itself out of capital (v22).
+params = { max_qty = 4.0 }
 
 [[bots]]
 bot = "hold"
@@ -274,7 +280,8 @@ count_max = 20
 cash = 2_000_000
 shares_each = 20
 # Diversify the crowd; the standalone challenger's default parameters stay fixed.
-params = { jitter = 1.0 }
+# Target leverage 1 removes most of Coral's interest bill (v22).
+params = { jitter = 1.0, leverage = 1.0 }
 
 # Swift profiles use public trade/book signals only; each keeps a small account.
 
@@ -282,17 +289,16 @@ params = { jitter = 1.0 }
 bot = "swift"
 owner = "swift-standard"
 count = 1
-cash = 2_000_000
-shares_each = 20
+cash = 20_000_000
+shares_each = 200
 params = { entry = 0.15, exit = -0.3, depth = 0.3, momentum = 5.0, cap = 0.35, leverage = 1.5, spread = 0.012 }
 
 [[bots]]
 bot = "swift"
 owner = "swift-early-single"
 count = 1
-# One tenth of standard Swift capital and starting inventory.
-cash = 200_000
-shares_each = 2
+cash = 20_000_000
+shares_each = 200
 params = { entry = 0.05, exit = -0.1, depth = 0.2, momentum = 3.0, cap = 0.25, leverage = 1.0, spread = 0.01, single_entry = 1.0 }
 
 
@@ -305,7 +311,7 @@ shares_each = 200
 news_multiplier = 1.0
 
 
-# Reviewed Horizon v3, promoted from the fixed-parameter research configuration.
+# Reviewed Horizon v3. v23 arena: ordinary news only, no forecast research.
 [[bots]]
 bot = "horizon"
 owner = "horizon-incumbent"
@@ -313,7 +319,6 @@ count = 1
 cash = 20_000_000
 shares_each = 200
 news_multiplier = 1.0
-forecast_access = { horizon = 1000, coverage = 0.5, range_width = 3.0 }
 params = { leverage = 2.0, cap = 0.45, clip = 0.025, research = 1.0, staged = 1.0, terminal_guard = 1.0 }
 
 # Reviewed ProfitEffect crowd: group-only P&L sharing plus individual price signals.
@@ -370,16 +375,16 @@ params = { leader_weight = 1.1, leader_min_return = 0.005, confidence = 0.25, ca
 bot = "tide"
 owner = "tide-incumbent"
 count = 1
-cash = 2_000_000
-shares_each = 20
+cash = 20_000_000
+shares_each = 200
 news_multiplier = 1.0
 
 [[bots]]
 bot = "kestrel"
 owner = "kestrel-incumbent"
 count = 1
-cash = 2_000_000
-shares_each = 20
+cash = 20_000_000
+shares_each = 200
 news_multiplier = 1.0
 
 # Reviewed online learner: ordinary capital and news, no extra research.
@@ -387,8 +392,8 @@ news_multiplier = 1.0
 bot = "lattice"
 owner = "lattice-incumbent"
 count = 1
-cash = 2_000_000
-shares_each = 20
+cash = 20_000_000
+shares_each = 200
 news_multiplier = 1.0
 
 # Reviewed challengers: ordinary capital/news, default parameters, no extra research.
@@ -396,16 +401,16 @@ news_multiplier = 1.0
 bot = "almanac"
 owner = "almanac-incumbent"
 count = 1
-cash = 2_000_000
-shares_each = 20
+cash = 20_000_000
+shares_each = 200
 news_multiplier = 1.0
 
 [[bots]]
 bot = "osprey"
 owner = "osprey-incumbent"
 count = 1
-cash = 2_000_000
-shares_each = 20
+cash = 20_000_000
+shares_each = 200
 news_multiplier = 1.0
 
 # Conserved opening allocation, applied once before Start; named accounts are excluded.

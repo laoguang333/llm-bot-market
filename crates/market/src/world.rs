@@ -78,7 +78,7 @@ fn mix(mut x: u64) -> u64 {
     x ^ (x >> 31)
 }
 
-fn unit(seed: u64, a: u64, b: u64) -> f64 {
+pub(crate) fn unit(seed: u64, a: u64, b: u64) -> f64 {
     (mix(seed ^ mix(a.wrapping_mul(0x9e3779b97f4a7c15) ^ mix(b))) >> 11) as f64
         / (1u64 << 53) as f64
 }
@@ -334,8 +334,13 @@ impl World {
                     None => st.initial_price,
                     Some(spread) => {
                         let (lo, hi) = cfg.terminal_payments_range();
-                        let payments = ((ticks.saturating_sub(1)) / cfg.world.dividend_period)
-                            as f64
+                        // In-game payments expected; integer for a fixed length, as before.
+                        let in_game = if cfg.scoring.random_end.is_some() {
+                            (cfg.expected_ticks() - 1.0).max(0.0) / cfg.world.dividend_period as f64
+                        } else {
+                            ((ticks.saturating_sub(1)) / cfg.world.dividend_period) as f64
+                        };
+                        let payments = in_game
                             + (lo + hi) as f64 / 2.0
                                 * (cfg.terminal_payment_ticks() / cfg.world.dividend_period) as f64;
                         let u = unit(seed ^ 0x09e7, i as u64, 1) * 2.0 - 1.0;

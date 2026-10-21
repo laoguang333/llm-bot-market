@@ -217,6 +217,17 @@ impl Default for DividendRiskRules {
     }
 }
 
+/// Public rule for a game of hidden length. No game ends before `min_tick`; at every
+/// later tick it ends with probability `hazard_per_tick`, and it always ends by
+/// `Rules::ticks_total`. The realized end is never announced: the last observation looks
+/// like any other, and the terminal value uses the dividends in effect at that tick.
+#[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct RandomEndRules {
+    pub min_tick: Tick,
+    pub hazard_per_tick: f64,
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Rules {
     pub stocks: Vec<StockInfo>,
@@ -269,6 +280,9 @@ pub struct Rules {
     /// impairment/suspension scales the entire path, including dragon growth.
     #[serde(default)]
     pub dividend_risk: Option<DividendRiskRules>,
+    /// When present, `ticks_total` is only the longest possible game.
+    #[serde(default)]
+    pub random_end: Option<RandomEndRules>,
     pub season_calm_to_turbulent: f64,
     pub season_turbulent_to_calm: f64,
     pub season_turbulent_rate_mult: f64,
