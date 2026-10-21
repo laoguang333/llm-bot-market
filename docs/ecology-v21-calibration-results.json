@@ -1,0 +1,52 @@
+{
+  "v18": {
+    "stocks": 1000,
+    "early_cuts": 92,
+    "recovered": 86,
+    "persistent": 6,
+    "long_zero": 0,
+    "low_final": 0.04,
+    "final_multiple": 2.2101188222888224,
+    "seconds": 0.2532848999835551,
+    "scenario_sha256": "085ce565f012c9b601687f64025989c0a2a071cc7b0a2ff1e49b206bf6583414",
+    "accepted": false
+  },
+  "v20": {
+    "stocks": 1000,
+    "early_cuts": 410,
+    "recovered": 114,
+    "persistent": 296,
+    "long_zero": 0.21,
+    "low_final": 0.506,
+    "final_multiple": 0.8373355938505939,
+    "seconds": 0.25259529997128993,
+    "scenario_sha256": "e1a305b0b3f64c54a8244a01d6ff6c6c6a902081a011788ea681f316f847489a",
+    "accepted": false
+  },
+  "moderate": {
+    "stocks": 1000,
+    "early_cuts": 188,
+    "recovered": 86,
+    "persistent": 102,
+    "long_zero": 0.087,
+    "low_final": 0.235,
+    "final_multiple": 1.5557078221778222,
+    "seconds": 0.29296140000224113,
+    "scenario_sha256": "ad9abdfbc77fda5297f20dbb199dc5b695b6ed896056d8b412255139557487cf",
+    "accepted": true
+  },
+  "mild": {
+    "stocks": 1000,
+    "early_cuts": 156,
+    "recovered": 93,
+    "persistent": 63,
+    "long_zero": 0.076,
+    "low_final": 0.165,
+    "final_multiple": 1.737450374902875,
+    "seconds": 0.25722480000695214,
+    "scenario_sha256": "65527e9e83ee0dfdf5b670093ca3609c3afe6d4ab83b608843c7a04bc36d3f8f",
+    "accepted": false
+  },
+  "selected": "moderate",
+  "experimental_world": "moderate"
+}

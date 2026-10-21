@@ -8,6 +8,12 @@
 
 [五类支付群体改造](docs/payer-v19.md)新增公开新闻过度反应者 `news_reactor`、价格反应迟到者 `latecomer` 和库存受限网格 `grid_v2`。候选为 `scenarios/payer-v19-balanced.toml` / `payer-v19-social.toml`；第五轮五类亏损份额达到 67%–70%，但质量与盘口深度未通过保护条件，暂未晋级默认。300 局开发及完整失败记录见报告，独立留出尚未使用。
 
+[v20 分红风险实验](docs/dividend-v20.md)已实现长期减息、持续停息与不确定恢复，只通过分红及消息区间表达。世界形态检查通过，但开发组市场质量与深度下降，暂不替换默认；现有生产 bot 保持不变。
+
+[v21 生态实验](docs/ecology-v21.md)完成 Tide 消融、分红压力校准与 Harbor / Relay 群体竞争，共 136 局。中等风险路径通过校准，但两种新策略未改善生态，独立验证失败，默认继续保留 v18。新增按分红状态区分的卖盘覆盖与股数深度诊断，并核对闲置费造成的现金损耗。
+
+[Swift 退化诊断](docs/swift-v21-diagnosis.md)复核 v21 的 88 局并新增 68 局逐笔记录/参数消融：Coral 的成交服务未被 Relay 接替，短线优势减弱，standard 持续调仓进一步放大损失。生产 Swift 和市场规则未修改。
+
 `baseline.toml` 与 `baseline-v18.toml` 相同；[v17](docs/baseline-v17.md)、[v16](docs/baseline-v16.md)、[v15](docs/baseline-v15.md)、[v14](docs/baseline-v14.md)、[v13](docs/baseline-v13.md)、[v12](docs/baseline-v12.md)、[v11](docs/baseline-v11.md)、[v10](docs/baseline-v10.md)、[v9](docs/baseline-v9.md)、[v8 长局](docs/baseline-v8.md)、3000 ticks 的 [v7](docs/baseline-v7.md)、旧八节点模型和 v6 场景均保留。普通股息、组合收益仍逐 tick 派发，闲置费仍为每 50 ticks 平均权益的 0.6%。Astra/Falcon 不加入。[交易调查台](docs/swift-debugger.md)支持整轮操作、FIFO 连线、消息收报到生效的交易关联，以及[强平与坏账账本](docs/liquidation-audit.md)；旧录制保持原貌。
 
 新挑战者 [Almanac](docs/almanac.md) 以普通账户打穿 v15：正式留出 1001–1020 平均百分位 99.57、20/20 进前 25%。它按实测的消息消化曲线买入价格尚未消化的部分，并按比赛阶段调整基础仓位；现已作为普通账户加入 v17。

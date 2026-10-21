@@ -186,6 +186,37 @@ pub struct DragonRules {
     pub peak_extra: (f64, f64),
 }
 
+/// Public dividend-process distribution. Realized retention and suspension paths
+/// are private world state, never company labels in an observation.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(default, deny_unknown_fields)]
+pub struct DividendRiskRules {
+    /// Independent review spacing as fractions of the game length.
+    pub review_fraction: (f64, f64),
+    pub impairment_probability: f64,
+    pub suspension_probability: f64,
+    pub recovery_probability: f64,
+    /// Fraction of the last unimpaired level retained after a cut / recovery.
+    pub impaired_retention: (f64, f64),
+    pub recovered_retention: (f64, f64),
+    /// Release a changed level in four dividend updates over this duration.
+    pub adjustment_fraction: f64,
+}
+
+impl Default for DividendRiskRules {
+    fn default() -> Self {
+        Self {
+            review_fraction: (0.12, 0.28),
+            impairment_probability: 0.22,
+            suspension_probability: 0.06,
+            recovery_probability: 0.18,
+            impaired_retention: (0.02, 0.30),
+            recovered_retention: (0.35, 0.85),
+            adjustment_fraction: 0.025,
+        }
+    }
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Rules {
     pub stocks: Vec<StockInfo>,
@@ -224,13 +255,20 @@ pub struct Rules {
     /// [offset from first reveal, cumulative fraction informed]
     pub news_stages: Vec<(Tick, f64)>,
     /// Range width at each private stage, in units of the event's uncertainty scale.
-    /// Normal news uses `max(dividend, initial / 2) * loading * change_sd * size_mult`;
+    /// Legacy normal news uses `max(dividend, initial / 2) * loading * change_sd * size_mult`;
     /// legacy pulse news uses `max(abs(delta) / 2, initial * news_stock.change_sd)`.
     /// Trend updates use the same uncertainty formula as ordinary stock news.
+    /// With dividend_risk, ordinary shocks use their lognormal standard deviation,
+    /// scaled by retention; retention updates use max(half absolute change,
+    /// max(previous, next dividend) * stock change_sd).
     /// The true change sits at a uniformly random position inside each account's range.
     pub news_range_widths: Vec<f64>,
     #[serde(default)]
     pub dragon: Option<DragonRules>,
+    /// When present, ordinary shocks are multiplicative and persistent dividend
+    /// impairment/suspension scales the entire path, including dragon growth.
+    #[serde(default)]
+    pub dividend_risk: Option<DividendRiskRules>,
     pub season_calm_to_turbulent: f64,
     pub season_turbulent_to_calm: f64,
     pub season_turbulent_rate_mult: f64,

@@ -60,6 +60,7 @@ pub fn start() -> Start {
             news_stages: vec![],
             news_range_widths: vec![],
             dragon: None,
+            dividend_risk: None,
             season_calm_to_turbulent: 0.002,
             season_turbulent_to_calm: 0.01,
             season_turbulent_rate_mult: 3.0,

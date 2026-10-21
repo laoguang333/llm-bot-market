@@ -1,0 +1,170 @@
+{
+  "method": "Pooled stock/tick book samples classified using effective news reconstruction: zero / positive <= 25% initial / > 25%. Not causal decomposition.",
+  "results": {
+    "dev:v18": {
+      "above_quarter": {
+        "samples": 195986,
+        "both": 184366,
+        "bid": 195786,
+        "ask": 184366,
+        "two_sided": 0.9407100507179085,
+        "bid_coverage": 0.9989795189452307,
+        "ask_coverage": 0.9407100507179085
+      },
+      "low_positive": {
+        "samples": 3994,
+        "both": 2180,
+        "bid": 3994,
+        "ask": 2180,
+        "two_sided": 0.5458187280921382,
+        "bid_coverage": 1.0,
+        "ask_coverage": 0.5458187280921382
+      },
+      "zero": {
+        "samples": 20,
+        "both": 2,
+        "bid": 20,
+        "ask": 2,
+        "two_sided": 0.1,
+        "bid_coverage": 1.0,
+        "ask_coverage": 0.1
+      }
+    },
+    "dev:v20": {
+      "above_quarter": {
+        "samples": 151576,
+        "both": 144338,
+        "bid": 151376,
+        "ask": 144338,
+        "two_sided": 0.952248377051776,
+        "bid_coverage": 0.9986805298991925,
+        "ask_coverage": 0.952248377051776
+      },
+      "low_positive": {
+        "samples": 29356,
+        "both": 15504,
+        "bid": 29356,
+        "ask": 15504,
+        "two_sided": 0.5281373484125903,
+        "bid_coverage": 1.0,
+        "ask_coverage": 0.5281373484125903
+      },
+      "zero": {
+        "samples": 19068,
+        "both": 5434,
+        "bid": 19068,
+        "ask": 5434,
+        "two_sided": 0.28498007132368364,
+        "bid_coverage": 1.0,
+        "ask_coverage": 0.28498007132368364
+      }
+    },
+    "holdout:v18": {
+      "above_quarter": {
+        "samples": 197678,
+        "both": 187943,
+        "bid": 197478,
+        "ask": 187943,
+        "two_sided": 0.9507532451764992,
+        "bid_coverage": 0.9989882536245814,
+        "ask_coverage": 0.9507532451764992
+      },
+      "low_positive": {
+        "samples": 2030,
+        "both": 1152,
+        "bid": 2030,
+        "ask": 1152,
+        "two_sided": 0.5674876847290641,
+        "bid_coverage": 1.0,
+        "ask_coverage": 0.5674876847290641
+      },
+      "zero": {
+        "samples": 292,
+        "both": 72,
+        "bid": 292,
+        "ask": 72,
+        "two_sided": 0.2465753424657534,
+        "bid_coverage": 1.0,
+        "ask_coverage": 0.2465753424657534
+      }
+    },
+    "holdout:v20": {
+      "above_quarter": {
+        "samples": 147960,
+        "both": 142036,
+        "bid": 147760,
+        "ask": 142036,
+        "two_sided": 0.9599621519329549,
+        "bid_coverage": 0.9986482833198161,
+        "ask_coverage": 0.9599621519329549
+      },
+      "low_positive": {
+        "samples": 32646,
+        "both": 17031,
+        "bid": 32646,
+        "ask": 17031,
+        "two_sided": 0.5216871898548061,
+        "bid_coverage": 1.0,
+        "ask_coverage": 0.5216871898548061
+      },
+      "zero": {
+        "samples": 19394,
+        "both": 5001,
+        "bid": 19394,
+        "ask": 5001,
+        "two_sided": 0.2578632566773229,
+        "bid_coverage": 1.0,
+        "ask_coverage": 0.2578632566773229
+      }
+    },
+    "interaction:balanced": {
+      "above_quarter": {
+        "samples": 59594,
+        "both": 58157,
+        "bid": 59544,
+        "ask": 58157,
+        "two_sided": 0.9758868342450582,
+        "bid_coverage": 0.9991609893613451,
+        "ask_coverage": 0.9758868342450582
+      },
+      "low_positive": {
+        "samples": 406,
+        "both": 250,
+        "bid": 406,
+        "ask": 250,
+        "two_sided": 0.6157635467980296,
+        "bid_coverage": 1.0,
+        "ask_coverage": 0.6157635467980296
+      }
+    },
+    "interaction:balanced-risk": {
+      "above_quarter": {
+        "samples": 46426,
+        "both": 45894,
+        "bid": 46366,
+        "ask": 45894,
+        "two_sided": 0.988540903803903,
+        "bid_coverage": 0.9987076207297635,
+        "ask_coverage": 0.988540903803903
+      },
+      "low_positive": {
+        "samples": 9772,
+        "both": 8765,
+        "bid": 9772,
+        "ask": 8765,
+        "two_sided": 0.8969504707327057,
+        "bid_coverage": 1.0,
+        "ask_coverage": 0.8969504707327057
+      },
+      "zero": {
+        "samples": 3802,
+        "both": 3285,
+        "bid": 3802,
+        "ask": 3285,
+        "two_sided": 0.8640189374013677,
+        "bid_coverage": 1.0,
+        "ask_coverage": 0.8640189374013677
+      }
+    }
+  }
+}

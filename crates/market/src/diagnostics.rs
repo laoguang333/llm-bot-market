@@ -13,6 +13,14 @@ pub struct StockPath {
     /// counted separately rather than silently divided by one cent.
     pub dividend_trough_to_later_peak: Option<f64>,
     pub zero_rate_ticks: u32,
+    pub longest_zero_rate_run: u32,
+    pub low_rate_ticks: u32,
+    pub mean_dividend_initial_multiple: f64,
+    pub final_dividend_initial_multiple: f64,
+    /// First rate <= 25% of initial in the first half, and whether a later
+    /// rate reaches 75% of initial. Measured outcomes, not hidden regime labels.
+    pub early_cut_tick: Option<u32>,
+    pub recovered_after_early_cut: Option<bool>,
     pub max_dividend_drawdown: f64,
     pub negative_updates: usize,
     pub peak_tick: u32,
@@ -50,11 +58,27 @@ pub fn world(cfg: &Config, w: &World) -> WorldDiagnostics {
         let mut low = None::<i64>;
         let mut ratio = None::<f64>;
         let mut zero = 0;
+        let mut zero_run = 0;
+        let mut longest_zero = 0;
+        let mut low_ticks = 0;
+        let mut sum = 0_i128;
+        let mut early_cut = None;
+        let mut recovered = false;
         let mut dd = 0.0_f64;
         let mut negative = 0;
         let mut previous = initial;
         for t in 0..cfg.ticks {
             let rate = w.dividend(s, t);
+            sum += i128::from(rate);
+            if initial > 0 && i128::from(rate) * 4 <= i128::from(initial) {
+                low_ticks += 1;
+                if t < cfg.ticks / 2 && early_cut.is_none() {
+                    early_cut = Some(t);
+                }
+            }
+            if early_cut.is_some() && i128::from(rate) * 4 >= i128::from(initial) * 3 {
+                recovered = true;
+            }
             if rate > peak {
                 peak = rate;
                 peak_tick = t;
@@ -64,7 +88,10 @@ pub fn world(cfg: &Config, w: &World) -> WorldDiagnostics {
             }
             if rate == 0 {
                 zero += 1;
+                zero_run += 1;
+                longest_zero = longest_zero.max(zero_run);
             } else {
+                zero_run = 0;
                 low = Some(low.map_or(rate, |l| l.min(rate)));
                 let q = rate as f64 / low.unwrap() as f64;
                 ratio = Some(ratio.map_or(q, |r| r.max(q)));
@@ -82,6 +109,13 @@ pub fn world(cfg: &Config, w: &World) -> WorldDiagnostics {
             dividend_peak_initial_multiple: peak as f64 / initial.max(1) as f64,
             dividend_trough_to_later_peak: ratio,
             zero_rate_ticks: zero,
+            longest_zero_rate_run: longest_zero,
+            low_rate_ticks: low_ticks,
+            mean_dividend_initial_multiple: sum as f64 / cfg.ticks as f64 / initial.max(1) as f64,
+            final_dividend_initial_multiple: w.dividend(s, cfg.ticks - 1) as f64
+                / initial.max(1) as f64,
+            early_cut_tick: early_cut,
+            recovered_after_early_cut: early_cut.map(|_| recovered),
             max_dividend_drawdown: dd,
             negative_updates: negative,
             peak_tick,

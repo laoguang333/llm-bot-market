@@ -119,6 +119,8 @@ pub struct BookSample {
     /// Resting notional within 2% of the mid on each side.
     pub bid_depth: Money,
     pub ask_depth: Money,
+    pub bid_shares: Qty,
+    pub ask_shares: Qty,
 }
 
 pub struct RunOutput {
@@ -424,16 +426,19 @@ impl<'a> Shared<'a> {
             let m = m.read();
             let (bid, ask) = (m.best(Side::Buy), m.best(Side::Sell));
             let (mut bid_depth, mut ask_depth) = (0, 0);
+            let (mut bid_shares, mut ask_shares) = (0, 0);
             if let (Some(b), Some(a)) = (bid, ask) {
                 let mid = (a + b) as f64 / 2.0;
                 for l in m.depth(Side::Buy, 100) {
                     if (l.price as f64) >= mid * 0.98 {
                         bid_depth += l.price * l.qty;
+                        bid_shares += l.qty;
                     }
                 }
                 for l in m.depth(Side::Sell, 100) {
                     if (l.price as f64) <= mid * 1.02 {
                         ask_depth += l.price * l.qty;
+                        ask_shares += l.qty;
                     }
                 }
             }
@@ -444,6 +449,8 @@ impl<'a> Shared<'a> {
                 ask,
                 bid_depth,
                 ask_depth,
+                bid_shares,
+                ask_shares,
             });
         }
         self.book_samples.lock().extend(out);
@@ -1349,6 +1356,35 @@ impl<'a> Shared<'a> {
 #[cfg(test)]
 mod scheduling_tests {
     use super::*;
+
+    #[test]
+    fn book_sampling_reports_share_depth_without_changing_reservations() {
+        let mut cfg = config();
+        cfg.bots[0].count = 2;
+        cfg.bots[0].cash = 1_000_000;
+        cfg.bots[0].shares_each = 100;
+        let shared = Shared::new(&cfg, 1, &|_, _| Some(Box::new(Idle))).unwrap();
+        shared.place(
+            &mut shared.accounts[0].lock(),
+            0,
+            Action::limit(0, Side::Buy, 99, 7),
+            false,
+        );
+        shared.place(
+            &mut shared.accounts[1].lock(),
+            0,
+            Action::limit(0, Side::Sell, 101, 11),
+            false,
+        );
+        shared.audit().unwrap();
+        let reserved = shared.accounts[0].lock().reserved_buy;
+        shared.sample_books(1);
+        let sample = shared.book_samples.lock()[0];
+        assert_eq!((sample.bid_shares, sample.ask_shares), (7, 11));
+        assert_eq!((sample.bid_depth, sample.ask_depth), (693, 1111));
+        assert_eq!(shared.accounts[0].lock().reserved_buy, reserved);
+        shared.audit().unwrap();
+    }
 
     #[test]
     fn published_marks_follow_books_after_concurrent_orders() {

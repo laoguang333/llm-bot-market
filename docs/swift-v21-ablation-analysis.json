@@ -1,0 +1,382 @@
+{
+  "arms": {
+    "both": {
+      "swift-standard": {
+        "dividends": 0.4049161892432157,
+        "combo_dividends": 0.00490818364987741,
+        "idle_cash_fees": 0.07485589120715573,
+        "idle_stock_fees": 0.009433483009246927,
+        "trade_fees": 0.10136563150341692,
+        "interest": 0.06920563015459061,
+        "bad_debt": 0.0,
+        "volume_notional": 201.71143086934407,
+        "net_return": -0.7692836316923027,
+        "final_cash": 0.23071636830769726,
+        "terminal_value": 0.0,
+        "trades": 8001,
+        "liquidations": 0,
+        "max_leverage": 1.5075575176174036,
+        "shares": 0,
+        "trading_inventory_terminal": -0.9336808517202326,
+        "runs": 12,
+        "wins": 2,
+        "median_return": -0.9379652239135661,
+        "min_return": -0.9802307621707378,
+        "max_return": 0.13876174892499704
+      },
+      "swift-early-single": {
+        "dividends": 0.5803978324668436,
+        "combo_dividends": 0.00621848963673368,
+        "idle_cash_fees": 0.36384505866367367,
+        "idle_stock_fees": 0.0018991717087154508,
+        "trade_fees": 0.18152937491705323,
+        "interest": 0.0,
+        "bad_debt": 0.0,
+        "volume_notional": 360.60771307107393,
+        "net_return": 0.04874755749038251,
+        "final_cash": 1.0487475574903824,
+        "terminal_value": 0.0,
+        "trades": 1913.25,
+        "liquidations": 0,
+        "max_leverage": 0.9999430334597212,
+        "shares": 0,
+        "trading_inventory_terminal": 0.007505668967532082,
+        "runs": 12,
+        "wins": 3,
+        "median_return": -0.3737221177626151,
+        "min_return": -0.7043871035414127,
+        "max_return": 2.750771845706965
+      }
+    },
+    "control": {
+      "swift-standard": {
+        "dividends": 0.9189065842178225,
+        "combo_dividends": 0.005207371944520066,
+        "idle_cash_fees": 0.450492976786091,
+        "idle_stock_fees": 0.0694941017145539,
+        "trade_fees": 0.1779039279853728,
+        "interest": 0.10354833410875033,
+        "bad_debt": 0.0,
+        "volume_notional": 354.6111660830029,
+        "net_return": 0.3988982507110184,
+        "final_cash": 1.3864531251146655,
+        "terminal_value": 0.012445125596352913,
+        "trades": 9311,
+        "liquidations": 0,
+        "max_leverage": 1.5033660894904932,
+        "shares": 5.916666666666667,
+        "trading_inventory_terminal": 0.20672953342889003,
+        "runs": 12,
+        "wins": 5,
+        "median_return": -0.16782192771215376,
+        "min_return": -0.6544610928107256,
+        "max_return": 4.192310209673123
+      },
+      "swift-early-single": {
+        "dividends": 0.6781884934869784,
+        "combo_dividends": 0.003988943634867663,
+        "idle_cash_fees": 1.178548938248121,
+        "idle_stock_fees": 0.03043478734362412,
+        "trade_fees": 0.18206520936621334,
+        "interest": 0.0,
+        "bad_debt": 0.0,
+        "volume_notional": 362.32154884021656,
+        "net_return": 1.883734933370252,
+        "final_cash": 2.8837349333702518,
+        "terminal_value": 0.0,
+        "trades": 1416.9166666666667,
+        "liquidations": 0,
+        "max_leverage": 0.9998266450232309,
+        "shares": 0,
+        "trading_inventory_terminal": 2.56217164386274,
+        "runs": 12,
+        "wins": 12,
+        "median_return": 1.2258267736130755,
+        "min_return": 0.1104846303677618,
+        "max_return": 7.674231642502885
+      }
+    },
+    "no-depth": {
+      "swift-standard": {
+        "dividends": 0.4097836708236011,
+        "combo_dividends": 0.0048554237280364464,
+        "idle_cash_fees": 0.08068632037914203,
+        "idle_stock_fees": 0.009205089826688821,
+        "trade_fees": 0.10352553145532117,
+        "interest": 0.07547462123950929,
+        "bad_debt": 0.0,
+        "volume_notional": 206.08652336259004,
+        "net_return": -0.7304886667352171,
+        "final_cash": 0.2695113332647829,
+        "terminal_value": 0.0,
+        "trades": 7549.833333333333,
+        "liquidations": 0,
+        "max_leverage": 1.5068124883307772,
+        "shares": 0,
+        "trading_inventory_terminal": -0.8854412882128823,
+        "runs": 12,
+        "wins": 1,
+        "median_return": -0.9563784639272445,
+        "min_return": -0.9855444544965845,
+        "max_return": 0.9466022299174246
+      },
+      "swift-early-single": {
+        "dividends": 0.5648540548810856,
+        "combo_dividends": 0.0054230882936410025,
+        "idle_cash_fees": 0.3561751487993017,
+        "idle_stock_fees": 0.00197348114886834,
+        "trade_fees": 0.16322162438710816,
+        "interest": 0.0,
+        "bad_debt": 0.0,
+        "volume_notional": 324.2503758654395,
+        "net_return": 0.09830156224039903,
+        "final_cash": 1.098301562240399,
+        "terminal_value": 0.0,
+        "trades": 1717.5833333333333,
+        "liquidations": 0,
+        "max_leverage": 0.9997052228914173,
+        "shares": 0,
+        "trading_inventory_terminal": 0.0474211922520822,
+        "runs": 12,
+        "wins": 3,
+        "median_return": -0.46098710659960246,
+        "min_return": -0.7625662591346942,
+        "max_return": 3.9784466684424826
+      }
+    },
+    "no-momentum": {
+      "swift-standard": {
+        "dividends": 0.3823143759721726,
+        "combo_dividends": 0.004716293493043315,
+        "idle_cash_fees": 0.012613005193617056,
+        "idle_stock_fees": 0.0007460858057341942,
+        "trade_fees": 0.09952581100335355,
+        "interest": 0.06791097797076373,
+        "bad_debt": 0.0,
+        "volume_notional": 197.95988194990397,
+        "net_return": -0.9006877598998857,
+        "final_cash": 0.09760390518123097,
+        "terminal_value": 0.0017083349188832654,
+        "trades": 8631.166666666666,
+        "liquidations": 0,
+        "max_leverage": 1.5091210913266333,
+        "shares": 3.0833333333333335,
+        "trading_inventory_terminal": -1.1076686351973675,
+        "runs": 12,
+        "wins": 0,
+        "median_return": -0.9264678271853586,
+        "min_return": -0.9864359044959289,
+        "max_return": -0.5508506158275936
+      },
+      "swift-early-single": {
+        "dividends": 0.5637173411150493,
+        "combo_dividends": 0.006233982455018723,
+        "idle_cash_fees": 0.19943886190506743,
+        "idle_stock_fees": 0.0,
+        "trade_fees": 0.1820334706149786,
+        "interest": 0.0,
+        "bad_debt": 0.0,
+        "volume_notional": 361.4700967274646,
+        "net_return": -0.1608936041657052,
+        "final_cash": 0.8391063958342948,
+        "terminal_value": 0.0,
+        "trades": 2045.5833333333333,
+        "liquidations": 0,
+        "max_leverage": 0.999861468238121,
+        "shares": 5.5,
+        "trading_inventory_terminal": -0.3493725952157273,
+        "runs": 12,
+        "wins": 3,
+        "median_return": -0.25493893192522804,
+        "min_return": -0.7220299204132741,
+        "max_return": 1.4879257201567793
+      }
+    },
+    "standard-single": {
+      "swift-standard": {
+        "dividends": 0.2905779676158179,
+        "combo_dividends": 0.0022885583755476546,
+        "idle_cash_fees": 0.19891074617199866,
+        "idle_stock_fees": 0.030605681953029575,
+        "trade_fees": 0.06511713494267114,
+        "interest": 0.006019626492300182,
+        "bad_debt": 0.0,
+        "volume_notional": 129.800566743972,
+        "net_return": -0.5912337060107926,
+        "final_cash": 0.40876629398920733,
+        "terminal_value": 0.0,
+        "trades": 3399.9166666666665,
+        "liquidations": 0,
+        "max_leverage": 1.4636767504885415,
+        "shares": 0,
+        "trading_inventory_terminal": -0.6140527243951882,
+        "runs": 12,
+        "wins": 1,
+        "median_return": -0.7617030139529704,
+        "min_return": -0.8683396924045156,
+        "max_return": 0.38065185128810075
+      },
+      "swift-early-single": {
+        "dividends": 0.6496446864568031,
+        "combo_dividends": 0.0068475416754746445,
+        "idle_cash_fees": 0.39619057442945277,
+        "idle_stock_fees": 0.0,
+        "trade_fees": 0.19678977078415505,
+        "interest": 0.0,
+        "bad_debt": 0.0,
+        "volume_notional": 391.0435688742,
+        "net_return": 0.3737504128672433,
+        "final_cash": 1.3737504128672433,
+        "terminal_value": 0.0,
+        "trades": 2002.75,
+        "liquidations": 0,
+        "max_leverage": 0.9998858347122584,
+        "shares": 0,
+        "trading_inventory_terminal": 0.3102385299485733,
+        "runs": 12,
+        "wins": 4,
+        "median_return": -0.09330149539631488,
+        "min_return": -0.6623268071915069,
+        "max_return": 4.118923855550059
+      }
+    }
+  },
+  "paired": {
+    "both minus control: swift-standard": {
+      "worlds": 6,
+      "mean": -1.1681818824033212,
+      "descriptive_bootstrap95": [
+        -2.062128472094089,
+        -0.5977135925228366
+      ],
+      "positive_worlds": 0,
+      "differences": [
+        -0.8869816934870025,
+        -1.0679768975599524,
+        -3.332141951114325,
+        -0.7446816428672781,
+        -0.4025770645611966,
+        -0.5747320448301729
+      ]
+    },
+    "both minus control: swift-early-single": {
+      "worlds": 6,
+      "mean": -1.8349873758798696,
+      "descriptive_bootstrap95": [
+        -2.768727062983153,
+        -1.045513473872713
+      ],
+      "positive_worlds": 0,
+      "differences": [
+        -1.729736102247885,
+        -2.6365095910527216,
+        -3.8712634930299226,
+        -0.9603066186809076,
+        -0.8106230533587973,
+        -1.0014853969089834
+      ]
+    },
+    "no-depth minus both: swift-standard": {
+      "worlds": 6,
+      "mean": 0.03879496495708562,
+      "descriptive_bootstrap95": [
+        -0.02053066012414097,
+        0.1394681257900041
+      ],
+      "positive_worlds": 2,
+      "differences": [
+        -0.010634205474782665,
+        -0.009034601214123694,
+        0.28866889912097116,
+        0.014105233285605534,
+        -0.039206795780515,
+        -0.011128740194641606
+      ]
+    },
+    "no-depth minus both: swift-early-single": {
+      "worlds": 6,
+      "mean": 0.04955400475001653,
+      "descriptive_bootstrap95": [
+        -0.13803714490860283,
+        0.3739444376154189
+      ],
+      "positive_worlds": 1,
+      "differences": [
+        -0.12851720576438602,
+        -0.03419869147360011,
+        0.8451539251874118,
+        -0.07152199992260355,
+        -0.18451274689498715,
+        -0.12907925263173586
+      ]
+    },
+    "no-momentum minus both: swift-standard": {
+      "worlds": 6,
+      "mean": -0.131404128207583,
+      "descriptive_bootstrap95": [
+        -0.4107899598391351,
+        0.01439109761575628
+      ],
+      "positive_worlds": 4,
+      "differences": [
+        0.015751020659219073,
+        -0.01239887765671499,
+        -0.8262353336631276,
+        0.003458199502083259,
+        0.022906920109204143,
+        0.00809330180383816
+      ]
+    },
+    "no-momentum minus both: swift-early-single": {
+      "worlds": 6,
+      "mean": -0.20964116165608773,
+      "descriptive_bootstrap95": [
+        -0.7326641224431933,
+        0.12305958548878458
+      ],
+      "positive_worlds": 3,
+      "differences": [
+        0.15087688274144062,
+        -0.09038534660215813,
+        -1.4862196684297986,
+        -0.09460869677386063,
+        0.25608377446519437,
+        0.006406084662655909
+      ]
+    },
+    "standard-single minus both: swift-standard": {
+      "worlds": 6,
+      "mean": 0.1780499256815101,
+      "descriptive_bootstrap95": [
+        0.09766382026506217,
+        0.25093770632209145
+      ],
+      "positive_worlds": 6,
+      "differences": [
+        0.26663392612298153,
+        0.13263481886480744,
+        0.00922346106523586,
+        0.29783954439327687,
+        0.212838859764929,
+        0.14912894387782982
+      ]
+    },
+    "standard-single minus both: swift-early-single": {
+      "worlds": 6,
+      "mean": 0.32500285537686074,
+      "descriptive_bootstrap95": [
+        0.00040404547243722,
+        0.7452839586083224
+      ],
+      "positive_worlds": 4,
+      "differences": [
+        -0.03900289346957503,
+        0.29709187218922495,
+        1.3225959891928913,
+        0.2810933529404177,
+        0.26182532460041785,
+        -0.17358651319221235
+      ]
+    }
+  }
+}

@@ -4,6 +4,10 @@
 
 v17 在 v16 阵容末尾加入普通 Almanac 与 Osprey v2 各一个，合计 105–229 个账户、19 种策略；保留 Tide 与 Kestrel 各一个普通账户、两个 Swift、NewsV2、普通权限十倍 Titan、Horizon v3 和 ProfitEffect 群体。Lattice、Almanac 与 Osprey v2 均为现金 20,000 元、每股 20 股、消息倍率 1，无额外研究。费用、撮合、原有 bot 决策频率和终值规则不变；Lattice 每 5 ticks 决策，新增交易者会改变竞争和成交路径。v18 保留该阵容，单独调整开局资本分布；正式场景与对照见 [v18](baseline-v18.md)，此前阵容见 [v17](baseline-v17.md)，成长时间见 [v15](baseline-v15.md)，原阵容见 [v14](baseline-v14.md)，终值缩放见 [v10](baseline-v10.md)，另见[远期策略与权限](horizon-bot.md)、[强平核对](liquidation-audit.md)。v17 及更早场景均保留。
 
+另有 [v20 分红风险实验](dividend-v20.md)，显式开启 `world.dividend_risk` 后支持持久衰退和长期零分红。实验未替换默认，以下仍描述 v18；新字段缺省时历史世界保持原机制。
+
+[v21](ecology-v21.md)进一步校准了中等分红风险，并实现 Harbor / Relay 对照场景和按分红状态分类的盘口诊断。新策略开发与独立生态验收均失败，未切换默认；固定组合与全部费用规则继续保持原样。
+
 ## 种子改变什么
 
 另有可独立运行的 [v19 五类支付群体实验](payer-v19.md)，新增信息弱者、迟到者与有限库存网格。它尚未替换默认；下文的人口、资本和策略说明仍对应 v18。

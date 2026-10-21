@@ -2,8 +2,8 @@
 
 use anyhow::{bail, Context, Result};
 use bot_api::{
-    ComboRule, DragonModel, DragonRules, Money, NewsLayerRules, Price, Qty, Rules, StockInfo, Tick,
-    TrendRules,
+    ComboRule, DividendRiskRules, DragonModel, DragonRules, Money, NewsLayerRules, Price, Qty,
+    Rules, StockInfo, Tick, TrendRules,
 };
 use serde::Deserialize;
 use std::collections::BTreeMap;
@@ -218,6 +218,8 @@ pub struct WorldCfg {
     pub news: NewsCfg,
     #[serde(default)]
     pub dragon: DragonCfg,
+    /// Opt-in persistent cuts and suspensions; absent preserves historical worlds.
+    pub dividend_risk: Option<DividendRiskRules>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -661,6 +663,33 @@ impl Config {
         if self.world.min_dividend < 0 {
             bail!("world.min_dividend must be non-negative");
         }
+        if let Some(r) = &self.world.dividend_risk {
+            let range = |(lo, hi): (f64, f64)| {
+                lo.is_finite() && hi.is_finite() && lo > 0.0 && lo <= hi && hi <= 1.0
+            };
+            if self.world.min_dividend != 0
+                || !range(r.review_fraction)
+                || !range(r.impaired_retention)
+                || !range(r.recovered_retention)
+                || r.impaired_retention.1 >= r.recovered_retention.0
+                || !r.adjustment_fraction.is_finite()
+                || r.adjustment_fraction <= 0.0
+                || r.adjustment_fraction >= r.review_fraction.0
+                || r.adjustment_fraction * (self.ticks as f64) < 4.0
+                || self.ticks <= self.world.news.disclosure.lead_ticks
+                || [
+                    r.impairment_probability,
+                    r.suspension_probability,
+                    r.recovery_probability,
+                ]
+                .iter()
+                .any(|p| !p.is_finite() || !(0.0..=1.0).contains(p))
+                || r.impairment_probability + r.suspension_probability > 1.0
+                || r.recovery_probability + r.suspension_probability > 1.0
+            {
+                bail!("world.dividend_risk requires min_dividend=0, ordered retention ranges in (0,1], valid probabilities, 4 <= adjustment ticks < minimum review ticks, and ticks > news lead");
+            }
+        }
         for s in &self.stocks {
             if s.name.is_empty() || !names.insert(&s.name) {
                 bail!("stock names must be non-empty and unique");
@@ -870,6 +899,7 @@ impl Config {
                 divergence_tick: self.dragon_start_tick(),
                 peak_extra: self.world.dragon.peak_extra,
             }),
+            dividend_risk: self.world.dividend_risk.clone(),
             season_calm_to_turbulent: self.world.seasons.calm_to_turbulent,
             season_turbulent_to_calm: self.world.seasons.turbulent_to_calm,
             season_turbulent_rate_mult: self.world.seasons.turbulent_rate_mult,

@@ -386,18 +386,22 @@ fn write_outputs(cfg: &Config, shared: &Shared, result: &MatchResult, dir: &Path
     }
     std::fs::write(dir.join("trades.csv"), csv)?;
 
-    let mut csv = String::from("tick,stock,bid,ask,bid_depth_2pct,ask_depth_2pct\n");
+    let mut csv = String::from(
+        "tick,stock,bid,ask,bid_depth_2pct,ask_depth_2pct,bid_shares_2pct,ask_shares_2pct\n",
+    );
     for b in shared.book_samples.lock().iter() {
         let opt = |p: Option<Price>| p.map(|x| x.to_string()).unwrap_or_default();
         writeln!(
             csv,
-            "{},{},{},{},{},{}",
+            "{},{},{},{},{},{},{},{}",
             b.tick,
             names[b.stock],
             opt(b.bid),
             opt(b.ask),
             b.bid_depth,
-            b.ask_depth
+            b.ask_depth,
+            b.bid_shares,
+            b.ask_shares
         )?;
     }
     std::fs::write(dir.join("books.csv"), csv)?;

@@ -10,6 +10,7 @@ use rand::{Rng, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 use rand_distr::{Distribution, Normal};
 
+mod dividend_risk;
 mod dragon;
 pub use dragon::DragonOutcome;
 
@@ -217,13 +218,30 @@ impl World {
                 let mut changes = Vec::new();
                 let mut sigma = Vec::new();
                 for (i, loading) in aff {
-                    let base = div[i].max(initial[i] / 2).max(1) as f64;
-                    let mut delta = (base * loading * x).round() as Money;
+                    let multiplicative = cfg.world.dividend_risk.is_some();
+                    let base = if multiplicative {
+                        div[i] as f64
+                    } else {
+                        div[i].max(initial[i] / 2).max(1) as f64
+                    };
+                    // A lognormal shock has no reflecting zero boundary or
+                    // initial-dividend-sized rebound. Subtract its variance/2
+                    // so the unrounded ordinary shock has unchanged expectation.
+                    let mut delta = if multiplicative {
+                        let variance = (loading * sd * sm).powi(2);
+                        (base * (loading * x - variance / 2.0).exp()).round() as Money - div[i]
+                    } else {
+                        (base * loading * x).round() as Money
+                    };
                     delta = delta.max(min_div - div[i]);
                     if delta != 0 {
                         div[i] += delta;
                         changes.push((i, delta));
-                        sigma.push(base * loading.abs() * sd * sm);
+                        sigma.push(if multiplicative {
+                            base * (loading * sd * sm).powi(2).exp_m1().sqrt()
+                        } else {
+                            base * loading.abs() * sd * sm
+                        });
                         timelines[i].push((t + lead, div[i]));
                     }
                 }
@@ -258,6 +276,8 @@ impl World {
             &mut events,
             &mut timelines,
         );
+
+        dividend_risk::overlay(cfg, seed, &sector_of, &mut events, &mut timelines);
 
         // A privately informed account hears at its first stage and again at every later one.
         let stages = &news.disclosure.stages;

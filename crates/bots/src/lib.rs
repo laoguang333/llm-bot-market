@@ -8,8 +8,10 @@ pub mod baseline;
 pub mod common;
 pub mod coral;
 mod crowd_execution;
+mod ecology_execution;
 pub mod falcon;
 pub mod grid_v2;
+pub mod harbor;
 pub mod horizon;
 pub mod horizon_v1;
 pub mod horizon_v2;
@@ -24,6 +26,7 @@ pub mod news_v2;
 pub mod osprey;
 pub mod osprey_v1;
 pub mod profit_effect;
+pub mod relay;
 pub mod strategic;
 pub mod swift;
 pub mod tide;
@@ -70,6 +73,8 @@ pub const NAMES: &[&str] = &[
     "news_reactor",
     "latecomer",
     "grid_v2",
+    "harbor",
+    "relay",
 ];
 
 /// `start` with extra parameter defaults; parameters set in the scenario win.
@@ -84,6 +89,8 @@ fn with_defaults(start: &Start, defaults: &[(&str, f64)]) -> Start {
 pub fn factory(name: &str, start: &Start) -> Option<Box<dyn Bot>> {
     Some(match name {
         "noise" => Box::new(baseline::Noise::new(start)),
+        "harbor" => Box::new(harbor::Harbor::new(start)),
+        "relay" => Box::new(relay::Relay::new(start)),
         "profit_effect" => Box::new(profit_effect::ProfitEffect::new(start)),
         "news_reactor" => Box::new(news_reactor::NewsReactor::new(start)),
         "latecomer" => Box::new(latecomer::Latecomer::new(start)),

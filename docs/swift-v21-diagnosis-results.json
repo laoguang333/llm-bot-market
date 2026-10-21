@@ -1,0 +1,1336 @@
+{
+  "trace_summary": {
+    "control": {
+      "swift-standard": {
+        "realized_new_price": 0.05682975404468567,
+        "realized_initial_price": -0.07022480840634863,
+        "burned_cost": 0.056834746919416396,
+        "terminal_minus_open_cost": 0.0,
+        "paired_price_return": -0.00023564517408167994,
+        "paired_qty_weighted_holding_ticks": 60.57997872141364,
+        "max_drawdown": 0.5709462993576765,
+        "mean_gross_per_initial": 0.803127493654643,
+        "worlds": 4,
+        "buy_intent_rates": {
+          "buy_intent_buy": 0.13555440837332106,
+          "buy_intent_wide_spread": 0.5792537935978237,
+          "buy_intent_one_sided_book": 0.12007603732448335,
+          "buy_intent_no_budget": 0.16511576070437195
+        },
+        "holding_rates": {
+          "held_ask_missing": 0.02782100684581159,
+          "held_bid_missing": 1.0710307600034273e-05,
+          "held_low_volume": 0.010390020299210047,
+          "held_depth_hides_exit": 0.01841688696323193
+        },
+        "buy_notional_share": {
+          "counterparty_tracker": 0.11035516030752629,
+          "low": 0.014072464551050498,
+          "counterparty_grid": 0.07882874433001749,
+          "counterparty_coral": 0.40313419171837317,
+          "depth_needed": 0.0397217476537302,
+          "counterparty_value": 0.030698491488945056,
+          "counterparty_tide": 0.002930933718710902,
+          "add": 0.7532772804605063,
+          "counterparty_profit_effect": 0.0003422452697227558,
+          "all": 1.0,
+          "normal": 0.9859006048831785,
+          "entry": 0.24672271953949368,
+          "counterparty_titan": 0.07102663713134245,
+          "counterparty_horizon": 0.12555753237628806,
+          "not_fresh_entry_signal": 0.20537034277904526,
+          "counterparty_hold": 0.001114450273914441,
+          "counterparty_shark": 0.11206047927727744,
+          "zero": 2.6930565770972604e-05,
+          "add_below_cost": 0.13839931474983214,
+          "counterparty_noise": 0.0639511341078819
+        },
+        "markouts": {
+          "counterparty_shark_30": {
+            "worlds": 4,
+            "mean": 0.003780856645858401
+          },
+          "counterparty_noise_100": {
+            "worlds": 4,
+            "mean": 0.012819076021882451
+          },
+          "add_below_cost_100": {
+            "worlds": 4,
+            "mean": -0.025339992559139223
+          },
+          "low_10": {
+            "worlds": 4,
+            "mean": -0.006135570860678647
+          },
+          "low_30": {
+            "worlds": 4,
+            "mean": 0.0364177808249661
+          },
+          "counterparty_titan_10": {
+            "worlds": 4,
+            "mean": -0.005459801021088802
+          },
+          "counterparty_titan_30": {
+            "worlds": 4,
+            "mean": -0.006568144223784898
+          },
+          "low_100": {
+            "worlds": 4,
+            "mean": 0.266786885438501
+          },
+          "counterparty_noise_10": {
+            "worlds": 4,
+            "mean": 0.0004758579560759934
+          },
+          "entry_10": {
+            "worlds": 4,
+            "mean": -0.0023353247180580724
+          },
+          "counterparty_tracker_10": {
+            "worlds": 4,
+            "mean": 0.00038696960578474347
+          },
+          "counterparty_shark_10": {
+            "worlds": 4,
+            "mean": 0.0021698931315825946
+          },
+          "counterparty_value_30": {
+            "worlds": 4,
+            "mean": 0.0027958355740227295
+          },
+          "counterparty_tracker_30": {
+            "worlds": 4,
+            "mean": 0.0053653968599836075
+          },
+          "counterparty_titan_100": {
+            "worlds": 4,
+            "mean": 0.010148269783061933
+          },
+          "counterparty_grid_100": {
+            "worlds": 4,
+            "mean": 0.009359645548085715
+          },
+          "add_100": {
+            "worlds": 4,
+            "mean": -0.00018216166865441972
+          },
+          "counterparty_shark_100": {
+            "worlds": 4,
+            "mean": 0.0013768073846665793
+          },
+          "add_30": {
+            "worlds": 4,
+            "mean": -0.001832241874632441
+          },
+          "counterparty_hold_100": {
+            "worlds": 4,
+            "mean": 0.03893198897255391
+          },
+          "entry_100": {
+            "worlds": 4,
+            "mean": 0.0035083414523932334
+          },
+          "normal_30": {
+            "worlds": 4,
+            "mean": -0.0006024065189327137
+          },
+          "add_10": {
+            "worlds": 4,
+            "mean": -0.002693663443052525
+          },
+          "counterparty_tide_30": {
+            "worlds": 4,
+            "mean": -0.09835663959789881
+          },
+          "depth_needed_100": {
+            "worlds": 4,
+            "mean": 0.00020299149885094799
+          },
+          "counterparty_coral_10": {
+            "worlds": 4,
+            "mean": -0.002298420135836545
+          },
+          "counterparty_horizon_30": {
+            "worlds": 4,
+            "mean": -0.012451417024716794
+          },
+          "not_fresh_entry_signal_30": {
+            "worlds": 4,
+            "mean": -0.009440735909549382
+          },
+          "not_fresh_entry_signal_100": {
+            "worlds": 4,
+            "mean": -0.00677522690130402
+          },
+          "zero_10": {
+            "worlds": 3,
+            "mean": 0.09238505397415825
+          },
+          "counterparty_coral_30": {
+            "worlds": 4,
+            "mean": -0.001004128309264652
+          },
+          "add_below_cost_30": {
+            "worlds": 4,
+            "mean": -0.012688670579256933
+          },
+          "counterparty_hold_10": {
+            "worlds": 4,
+            "mean": 0.016582836786217553
+          },
+          "depth_needed_30": {
+            "worlds": 4,
+            "mean": 0.01194602413039464
+          },
+          "counterparty_profit_effect_100": {
+            "worlds": 2,
+            "mean": 0.0722060321439447
+          },
+          "counterparty_grid_30": {
+            "worlds": 4,
+            "mean": 0.004659927673755671
+          },
+          "counterparty_tide_10": {
+            "worlds": 4,
+            "mean": -0.03761862290924827
+          },
+          "counterparty_horizon_100": {
+            "worlds": 4,
+            "mean": -0.015659985745890847
+          },
+          "all_30": {
+            "worlds": 4,
+            "mean": -0.0007052495749000772
+          },
+          "normal_100": {
+            "worlds": 4,
+            "mean": -0.0015262410488064743
+          },
+          "entry_30": {
+            "worlds": 4,
+            "mean": 0.0032883871021250253
+          },
+          "not_fresh_entry_signal_10": {
+            "worlds": 4,
+            "mean": -0.007199522021964732
+          },
+          "zero_100": {
+            "worlds": 3,
+            "mean": -0.20910500145013625
+          },
+          "all_100": {
+            "worlds": 4,
+            "mean": 0.0007365514392599317
+          },
+          "add_below_cost_10": {
+            "worlds": 4,
+            "mean": -0.0072931113111180425
+          },
+          "normal_10": {
+            "worlds": 4,
+            "mean": -0.0024612298567429696
+          },
+          "counterparty_profit_effect_10": {
+            "worlds": 2,
+            "mean": -0.03908792196719238
+          },
+          "counterparty_hold_30": {
+            "worlds": 4,
+            "mean": 0.028540459734337408
+          },
+          "counterparty_tide_100": {
+            "worlds": 4,
+            "mean": -0.12405464624970877
+          },
+          "counterparty_horizon_10": {
+            "worlds": 4,
+            "mean": -0.013253221626845777
+          },
+          "counterparty_profit_effect_30": {
+            "worlds": 2,
+            "mean": -0.03849402235828038
+          },
+          "counterparty_tracker_100": {
+            "worlds": 4,
+            "mean": 0.007852361362286082
+          },
+          "counterparty_value_10": {
+            "worlds": 4,
+            "mean": -0.0011068632946748254
+          },
+          "all_10": {
+            "worlds": 4,
+            "mean": -0.002665844126928112
+          },
+          "counterparty_coral_100": {
+            "worlds": 4,
+            "mean": -0.002526134313494132
+          },
+          "depth_needed_10": {
+            "worlds": 4,
+            "mean": 0.004366337276564201
+          },
+          "counterparty_grid_10": {
+            "worlds": 4,
+            "mean": 0.0013739653401195655
+          },
+          "counterparty_noise_30": {
+            "worlds": 4,
+            "mean": 0.007339174941516263
+          },
+          "counterparty_value_100": {
+            "worlds": 4,
+            "mean": 0.01702680876154835
+          },
+          "zero_30": {
+            "worlds": 3,
+            "mean": 0.07478639464354905
+          }
+        },
+        "fill_to_requested_qty": {
+          "buy_entry": 0.1573524948537735,
+          "buy_add": 0.19451175539482612,
+          "signal_exit": 0.16972131265009446,
+          "resize_sell": 0.8817657608035463
+        },
+        "signal_forward": {
+          "positive": {
+            "mean": 0.012120958252903578,
+            "observations": 7344
+          },
+          "negative": {
+            "mean": -0.0031142536090188267,
+            "observations": 20920
+          },
+          "neutral": {
+            "mean": 0.001895874674691221,
+            "observations": 5938
+          }
+        },
+        "counterparty_markout30_contribution": {
+          "counterparty_shark_30": 0.0003556568920462583,
+          "counterparty_titan_30": -0.00040066117342856797,
+          "counterparty_value_30": 8.909114103680323e-05,
+          "counterparty_tracker_30": 0.00060111972681403,
+          "counterparty_tide_30": -0.0004414303131057232,
+          "counterparty_horizon_30": -0.0014902278147370129,
+          "counterparty_coral_30": -0.00016329743863985173,
+          "counterparty_grid_30": 0.0002816675476536343,
+          "counterparty_hold_30": 2.3588234931562934e-05,
+          "counterparty_profit_effect_30": -1.2875475816840835e-05,
+          "counterparty_noise_30": 0.0004521190983456347
+        }
+      },
+      "swift-early-single": {
+        "realized_new_price": 2.2315932690052276,
+        "realized_initial_price": -0.07019037688908863,
+        "burned_cost": 0.010856692706692064,
+        "terminal_minus_open_cost": 0.0,
+        "paired_price_return": 0.014127511188359077,
+        "paired_qty_weighted_holding_ticks": 42.928327196754694,
+        "max_drawdown": 0.38302078265646106,
+        "mean_gross_per_initial": 0.6408667615803852,
+        "worlds": 4,
+        "buy_intent_rates": {
+          "buy_intent_buy": 0.05376612780244654,
+          "buy_intent_wide_spread": 0.7350753238793949,
+          "buy_intent_one_sided_book": 0.16868927925341798,
+          "buy_intent_no_budget": 0.042469269064740564
+        },
+        "holding_rates": {
+          "held_ask_missing": 0.022717561467871336,
+          "held_bid_missing": 1.5247621371066114e-05,
+          "held_low_volume": 0.011398897583680503,
+          "held_depth_hides_exit": 0.01703886343899828
+        },
+        "buy_notional_share": {
+          "not_fresh_entry_signal": 0.07007939293841599,
+          "counterparty_value": 0.03879827066402918,
+          "counterparty_tracker": 0.11302052758440448,
+          "depth_needed": 0.09036636900693994,
+          "counterparty_hold": 0.0019244482775045365,
+          "low": 0.009132502606717163,
+          "all": 1.0,
+          "counterparty_tide": 0.0032991262458406693,
+          "counterparty_shark": 0.1179389520111077,
+          "normal": 0.9906546296108438,
+          "counterparty_grid": 0.12643382465217998,
+          "entry": 1.0,
+          "counterparty_titan": 0.03895187675534575,
+          "counterparty_horizon": 0.12362641627188156,
+          "zero": 0.00021286778243907628,
+          "counterparty_noise": 0.07743785619049558,
+          "counterparty_coral": 0.35856870134721053
+        },
+        "markouts": {
+          "counterparty_shark_30": {
+            "worlds": 4,
+            "mean": -0.003289133703258242
+          },
+          "counterparty_noise_100": {
+            "worlds": 4,
+            "mean": 0.008684482270444977
+          },
+          "low_10": {
+            "worlds": 4,
+            "mean": -0.028780013708257106
+          },
+          "low_30": {
+            "worlds": 4,
+            "mean": -0.022953616090246806
+          },
+          "counterparty_titan_10": {
+            "worlds": 4,
+            "mean": 0.0017037870247991803
+          },
+          "counterparty_titan_30": {
+            "worlds": 4,
+            "mean": 0.013267653059755212
+          },
+          "low_100": {
+            "worlds": 4,
+            "mean": 0.12115592590091077
+          },
+          "counterparty_noise_10": {
+            "worlds": 4,
+            "mean": 3.422037336832715e-05
+          },
+          "entry_10": {
+            "worlds": 4,
+            "mean": -0.0017368779929071484
+          },
+          "counterparty_tracker_10": {
+            "worlds": 4,
+            "mean": 0.0030757338935130606
+          },
+          "counterparty_shark_10": {
+            "worlds": 4,
+            "mean": 0.0004967116100857969
+          },
+          "counterparty_value_30": {
+            "worlds": 4,
+            "mean": -1.2585413026542074e-05
+          },
+          "counterparty_tracker_30": {
+            "worlds": 4,
+            "mean": 0.008774438849283108
+          },
+          "counterparty_titan_100": {
+            "worlds": 4,
+            "mean": 0.028912716234042787
+          },
+          "counterparty_grid_100": {
+            "worlds": 4,
+            "mean": 0.016678449418540423
+          },
+          "counterparty_shark_100": {
+            "worlds": 4,
+            "mean": -0.0052228241794075566
+          },
+          "counterparty_hold_100": {
+            "worlds": 4,
+            "mean": 0.1308183361846392
+          },
+          "entry_100": {
+            "worlds": 4,
+            "mean": 0.007654474535642471
+          },
+          "normal_30": {
+            "worlds": 4,
+            "mean": 0.003929351089889679
+          },
+          "counterparty_tide_30": {
+            "worlds": 2,
+            "mean": -0.3377984463917315
+          },
+          "depth_needed_100": {
+            "worlds": 4,
+            "mean": -0.005776611894568255
+          },
+          "counterparty_coral_10": {
+            "worlds": 4,
+            "mean": -0.0025959914988777713
+          },
+          "counterparty_horizon_30": {
+            "worlds": 4,
+            "mean": 0.0007901865038523074
+          },
+          "not_fresh_entry_signal_30": {
+            "worlds": 4,
+            "mean": -0.015600861878684246
+          },
+          "not_fresh_entry_signal_100": {
+            "worlds": 4,
+            "mean": -0.013159364541093142
+          },
+          "zero_10": {
+            "worlds": 2,
+            "mean": -0.13805858811442
+          },
+          "counterparty_coral_30": {
+            "worlds": 4,
+            "mean": 0.00439035599780685
+          },
+          "counterparty_hold_10": {
+            "worlds": 4,
+            "mean": 0.037861617654434916
+          },
+          "depth_needed_30": {
+            "worlds": 4,
+            "mean": -0.002174006512671002
+          },
+          "counterparty_grid_30": {
+            "worlds": 4,
+            "mean": 0.017234398312464073
+          },
+          "counterparty_tide_10": {
+            "worlds": 2,
+            "mean": -0.1642566348662112
+          },
+          "counterparty_horizon_100": {
+            "worlds": 4,
+            "mean": 0.000717086472372043
+          },
+          "all_30": {
+            "worlds": 4,
+            "mean": 0.0033356273661671256
+          },
+          "normal_100": {
+            "worlds": 4,
+            "mean": 0.007273304791552081
+          },
+          "entry_30": {
+            "worlds": 4,
+            "mean": 0.0033356273661671256
+          },
+          "not_fresh_entry_signal_10": {
+            "worlds": 4,
+            "mean": -0.010486861669692319
+          },
+          "zero_100": {
+            "worlds": 2,
+            "mean": 0.16195557377001807
+          },
+          "all_100": {
+            "worlds": 4,
+            "mean": 0.007654474535642471
+          },
+          "normal_10": {
+            "worlds": 4,
+            "mean": -0.0012525597132314848
+          },
+          "counterparty_hold_30": {
+            "worlds": 4,
+            "mean": 0.07590426170688841
+          },
+          "counterparty_tide_100": {
+            "worlds": 2,
+            "mean": -0.3312230838305092
+          },
+          "counterparty_horizon_10": {
+            "worlds": 4,
+            "mean": -0.010610081266034766
+          },
+          "counterparty_tracker_100": {
+            "worlds": 4,
+            "mean": 0.0018094361181221486
+          },
+          "counterparty_value_10": {
+            "worlds": 4,
+            "mean": -0.0064418373855061615
+          },
+          "all_10": {
+            "worlds": 4,
+            "mean": -0.0017368779929071484
+          },
+          "counterparty_coral_100": {
+            "worlds": 4,
+            "mean": 0.013911645535248646
+          },
+          "depth_needed_10": {
+            "worlds": 4,
+            "mean": 0.004800820544306257
+          },
+          "counterparty_grid_10": {
+            "worlds": 4,
+            "mean": 0.008198733836553425
+          },
+          "counterparty_noise_30": {
+            "worlds": 4,
+            "mean": 0.0015669793729086723
+          },
+          "counterparty_value_100": {
+            "worlds": 4,
+            "mean": 0.010278615559944226
+          },
+          "zero_30": {
+            "worlds": 2,
+            "mean": 0.21742121056450014
+          }
+        },
+        "fill_to_requested_qty": {
+          "buy_entry": 0.3737798284388172,
+          "buy_add": 0.0,
+          "signal_exit": 0.5282047973194914,
+          "resize_sell": 0.0
+        },
+        "signal_forward": {
+          "positive": {
+            "mean": 0.01051334734457424,
+            "observations": 8241
+          },
+          "negative": {
+            "mean": -0.002649419405218046,
+            "observations": 23863
+          },
+          "neutral": {
+            "mean": 0.004143950191437177,
+            "observations": 2097
+          }
+        },
+        "counterparty_markout30_contribution": {
+          "counterparty_shark_30": -0.0004307907029226802,
+          "counterparty_titan_30": 0.00029940315618520854,
+          "counterparty_value_30": -0.00018342744819210298,
+          "counterparty_tracker_30": 0.0010645434117414335,
+          "counterparty_tide_30": -0.0010119928808093467,
+          "counterparty_horizon_30": -0.00015786576071131282,
+          "counterparty_coral_30": 0.001590563480853898,
+          "counterparty_grid_30": 0.0019181506023731062,
+          "counterparty_hold_30": 4.266078719021603e-05,
+          "counterparty_noise_30": 0.0002043827204587088
+        }
+      }
+    },
+    "both": {
+      "swift-standard": {
+        "realized_new_price": -1.0138415669480292,
+        "realized_initial_price": -0.05436752537719606,
+        "burned_cost": 0.00012519346946926956,
+        "terminal_minus_open_cost": 0.0,
+        "paired_price_return": -0.012045632569766594,
+        "paired_qty_weighted_holding_ticks": 52.71114839980207,
+        "max_drawdown": 0.9320916883067479,
+        "mean_gross_per_initial": 0.4828534244915095,
+        "worlds": 4,
+        "buy_intent_rates": {
+          "buy_intent_buy": 0.13366760011719964,
+          "buy_intent_wide_spread": 0.4908872273601931,
+          "buy_intent_one_sided_book": 0.17925876399020824,
+          "buy_intent_no_budget": 0.19618640853239905
+        },
+        "holding_rates": {
+          "held_ask_missing": 0.04401469007126472,
+          "held_bid_missing": 0.00015842839036755386,
+          "held_low_volume": 0.009541550722466124,
+          "held_depth_hides_exit": 0.021318473575342313
+        },
+        "buy_notional_share": {
+          "counterparty_relay": 0.0012568016271707785,
+          "counterparty_tracker": 0.2772149049968042,
+          "low": 0.008419047304112926,
+          "counterparty_grid": 0.12076709837785762,
+          "depth_needed": 0.03949481737623376,
+          "counterparty_tide": 0.0027077048876202985,
+          "add": 0.6472521129102937,
+          "counterparty_profit_effect": 0.0002079114784000908,
+          "all": 1.0,
+          "normal": 0.9914057101682271,
+          "entry": 0.3527478870897063,
+          "counterparty_harbor": 0.007340791366071282,
+          "counterparty_titan": 0.12854532436135013,
+          "counterparty_horizon": 0.11991509799386149,
+          "not_fresh_entry_signal": 0.16827087040428923,
+          "counterparty_hold": 0.0015608548813235762,
+          "counterparty_shark": 0.28066842862783,
+          "zero": 0.00017524252765997866,
+          "add_below_cost": 0.11914237703423326,
+          "counterparty_noise": 0.05981508140171056
+        },
+        "markouts": {
+          "counterparty_shark_30": {
+            "worlds": 4,
+            "mean": -0.0014889466183499172
+          },
+          "counterparty_noise_100": {
+            "worlds": 4,
+            "mean": 0.013828728236838795
+          },
+          "add_below_cost_100": {
+            "worlds": 4,
+            "mean": -0.01733114169588254
+          },
+          "low_10": {
+            "worlds": 4,
+            "mean": -0.002285441064217386
+          },
+          "low_30": {
+            "worlds": 4,
+            "mean": -0.0026975877326557455
+          },
+          "counterparty_titan_10": {
+            "worlds": 4,
+            "mean": -0.006449483963123086
+          },
+          "counterparty_relay_30": {
+            "worlds": 4,
+            "mean": 0.04545819950890506
+          },
+          "counterparty_titan_30": {
+            "worlds": 4,
+            "mean": -0.010962683752341194
+          },
+          "low_100": {
+            "worlds": 4,
+            "mean": 0.1968568027090855
+          },
+          "counterparty_noise_10": {
+            "worlds": 4,
+            "mean": -9.077727733408449e-05
+          },
+          "entry_10": {
+            "worlds": 4,
+            "mean": -0.0010704187685977656
+          },
+          "counterparty_tracker_10": {
+            "worlds": 4,
+            "mean": 0.000959353481904205
+          },
+          "counterparty_harbor_10": {
+            "worlds": 4,
+            "mean": 0.009451654035113697
+          },
+          "counterparty_shark_10": {
+            "worlds": 4,
+            "mean": 0.001857320807492057
+          },
+          "counterparty_tracker_30": {
+            "worlds": 4,
+            "mean": -0.001177411333683503
+          },
+          "counterparty_titan_100": {
+            "worlds": 4,
+            "mean": -0.01641551347298121
+          },
+          "counterparty_grid_100": {
+            "worlds": 4,
+            "mean": 0.002830196714546724
+          },
+          "add_100": {
+            "worlds": 4,
+            "mean": -0.0017493758116084784
+          },
+          "counterparty_shark_100": {
+            "worlds": 4,
+            "mean": 0.002078447527066948
+          },
+          "add_30": {
+            "worlds": 4,
+            "mean": -0.006439423280318955
+          },
+          "counterparty_hold_100": {
+            "worlds": 4,
+            "mean": 0.018750452019242376
+          },
+          "entry_100": {
+            "worlds": 4,
+            "mean": -0.006248885481109044
+          },
+          "normal_30": {
+            "worlds": 4,
+            "mean": -0.004779801869189654
+          },
+          "add_10": {
+            "worlds": 4,
+            "mean": -0.0028308473174964983
+          },
+          "counterparty_tide_30": {
+            "worlds": 4,
+            "mean": -0.04644429586994014
+          },
+          "depth_needed_100": {
+            "worlds": 4,
+            "mean": -0.001157596004188536
+          },
+          "counterparty_horizon_30": {
+            "worlds": 4,
+            "mean": -0.017452771915545652
+          },
+          "not_fresh_entry_signal_30": {
+            "worlds": 4,
+            "mean": -0.01811909359082532
+          },
+          "not_fresh_entry_signal_100": {
+            "worlds": 4,
+            "mean": -0.018270940656512007
+          },
+          "counterparty_relay_10": {
+            "worlds": 4,
+            "mean": 0.048118259302467145
+          },
+          "zero_10": {
+            "worlds": 1,
+            "mean": -0.21930477520929142
+          },
+          "counterparty_harbor_100": {
+            "worlds": 4,
+            "mean": 0.033300572412015984
+          },
+          "add_below_cost_30": {
+            "worlds": 4,
+            "mean": -0.01685040090549623
+          },
+          "depth_needed_30": {
+            "worlds": 4,
+            "mean": 0.005830266884669974
+          },
+          "counterparty_hold_10": {
+            "worlds": 4,
+            "mean": 0.014540295365483255
+          },
+          "counterparty_grid_30": {
+            "worlds": 4,
+            "mean": -0.0011317686049274894
+          },
+          "counterparty_profit_effect_100": {
+            "worlds": 3,
+            "mean": -0.030788460443288
+          },
+          "counterparty_tide_10": {
+            "worlds": 4,
+            "mean": -0.021496829864364277
+          },
+          "counterparty_horizon_100": {
+            "worlds": 4,
+            "mean": -0.02455312278476775
+          },
+          "all_30": {
+            "worlds": 4,
+            "mean": -0.004618989665722747
+          },
+          "normal_100": {
+            "worlds": 4,
+            "mean": -0.004978930537429362
+          },
+          "entry_30": {
+            "worlds": 4,
+            "mean": -0.0009064381541684494
+          },
+          "not_fresh_entry_signal_10": {
+            "worlds": 4,
+            "mean": -0.013479703646860583
+          },
+          "counterparty_relay_100": {
+            "worlds": 4,
+            "mean": 0.08951311871961791
+          },
+          "all_100": {
+            "worlds": 4,
+            "mean": -0.0034178176797126153
+          },
+          "add_below_cost_10": {
+            "worlds": 4,
+            "mean": -0.012802360730476959
+          },
+          "normal_10": {
+            "worlds": 4,
+            "mean": -0.002285027137106326
+          },
+          "counterparty_profit_effect_10": {
+            "worlds": 3,
+            "mean": -0.0924266946798241
+          },
+          "zero_100": {
+            "worlds": 1,
+            "mean": -0.03452467140482721
+          },
+          "counterparty_hold_30": {
+            "worlds": 4,
+            "mean": 0.02527177063741707
+          },
+          "counterparty_tide_100": {
+            "worlds": 4,
+            "mean": -0.045868302356938596
+          },
+          "counterparty_horizon_10": {
+            "worlds": 4,
+            "mean": -0.016263876511797126
+          },
+          "counterparty_profit_effect_30": {
+            "worlds": 3,
+            "mean": -0.09803034400545026
+          },
+          "counterparty_tracker_100": {
+            "worlds": 4,
+            "mean": -0.00021576181288978822
+          },
+          "all_10": {
+            "worlds": 4,
+            "mean": -0.002269861649966792
+          },
+          "counterparty_grid_10": {
+            "worlds": 4,
+            "mean": -0.0013531256732061405
+          },
+          "depth_needed_10": {
+            "worlds": 4,
+            "mean": 0.0005747394262791611
+          },
+          "counterparty_harbor_30": {
+            "worlds": 4,
+            "mean": 0.023330512051040697
+          },
+          "counterparty_noise_30": {
+            "worlds": 4,
+            "mean": 0.003090166166142579
+          },
+          "zero_30": {
+            "worlds": 1,
+            "mean": -0.2059345970694103
+          }
+        },
+        "fill_to_requested_qty": {
+          "buy_entry": 0.34682890685349826,
+          "buy_add": 0.4145797602819813,
+          "signal_exit": 0.21328858434082837,
+          "resize_sell": 0.8946824834140099
+        },
+        "signal_forward": {
+          "positive": {
+            "mean": 0.0009494335379980671,
+            "observations": 8237
+          },
+          "negative": {
+            "mean": -0.005337213673474919,
+            "observations": 17646
+          },
+          "neutral": {
+            "mean": -0.0014085785888584004,
+            "observations": 6571
+          }
+        },
+        "counterparty_markout30_contribution": {
+          "counterparty_shark_30": -0.00034039799091950594,
+          "counterparty_relay_30": 5.267024180944181e-05,
+          "counterparty_titan_30": -0.001536335241403928,
+          "counterparty_tracker_30": -0.0004319832005273052,
+          "counterparty_tide_30": -0.00014819912364847645,
+          "counterparty_horizon_30": -0.0023786295197007474,
+          "counterparty_grid_30": -0.00022753103163839153,
+          "counterparty_hold_30": 2.814549090156649e-05,
+          "counterparty_profit_effect_30": -3.774903657213833e-05,
+          "counterparty_harbor_30": 0.0001241222416273536,
+          "counterparty_noise_30": 0.00027689750434938513
+        }
+      },
+      "swift-early-single": {
+        "realized_new_price": 0.045924552523663814,
+        "realized_initial_price": -0.05400924082636519,
+        "burned_cost": 0.0,
+        "terminal_minus_open_cost": 0.0,
+        "paired_price_return": -0.0004607058938621237,
+        "paired_qty_weighted_holding_ticks": 39.58433805858867,
+        "max_drawdown": 0.6676729999053513,
+        "mean_gross_per_initial": 0.6565542934461608,
+        "worlds": 4,
+        "buy_intent_rates": {
+          "buy_intent_buy": 0.07170174255743211,
+          "buy_intent_wide_spread": 0.6143778653825666,
+          "buy_intent_one_sided_book": 0.27381337015088786,
+          "buy_intent_no_budget": 0.04010702190911346
+        },
+        "holding_rates": {
+          "held_ask_missing": 0.0404377811296258,
+          "held_bid_missing": 8.571288632022335e-05,
+          "held_low_volume": 0.01121436977391436,
+          "held_depth_hides_exit": 0.01649050732522413
+        },
+        "buy_notional_share": {
+          "counterparty_relay": 0.0014486259443425731,
+          "not_fresh_entry_signal": 0.05573392448202753,
+          "counterparty_hold": 0.0012953489521492128,
+          "counterparty_tracker": 0.23072644628775912,
+          "depth_needed": 0.07942120320947386,
+          "low": 0.010171342215978957,
+          "counterparty_tide": 0.010115369631854516,
+          "all": 1.0,
+          "counterparty_profit_effect": 0.00038919182135693857,
+          "counterparty_shark": 0.22077192330846113,
+          "normal": 0.9896115126583499,
+          "counterparty_grid": 0.141481143037672,
+          "entry": 1.0,
+          "counterparty_harbor": 0.006037823789690295,
+          "counterparty_titan": 0.13793873981104846,
+          "counterparty_horizon": 0.17623710635517248,
+          "zero": 0.00021714512567114823,
+          "counterparty_noise": 0.07355828106049328
+        },
+        "markouts": {
+          "counterparty_shark_30": {
+            "worlds": 4,
+            "mean": -0.002599363010332097
+          },
+          "counterparty_noise_100": {
+            "worlds": 4,
+            "mean": 0.01562364814824158
+          },
+          "low_10": {
+            "worlds": 4,
+            "mean": 0.024695998505305867
+          },
+          "low_30": {
+            "worlds": 4,
+            "mean": 0.009169514281742189
+          },
+          "counterparty_titan_10": {
+            "worlds": 4,
+            "mean": -0.005972623017085122
+          },
+          "counterparty_titan_30": {
+            "worlds": 4,
+            "mean": -0.0035763946017206886
+          },
+          "counterparty_relay_30": {
+            "worlds": 3,
+            "mean": 0.04612288694663276
+          },
+          "low_100": {
+            "worlds": 4,
+            "mean": 0.061234357087351005
+          },
+          "counterparty_noise_10": {
+            "worlds": 4,
+            "mean": 0.005278541597413645
+          },
+          "entry_10": {
+            "worlds": 4,
+            "mean": -0.0017394672749166404
+          },
+          "counterparty_tracker_10": {
+            "worlds": 4,
+            "mean": 0.0021570039439245277
+          },
+          "counterparty_harbor_10": {
+            "worlds": 4,
+            "mean": 0.012947758660663998
+          },
+          "counterparty_shark_10": {
+            "worlds": 4,
+            "mean": -0.0006017111783904732
+          },
+          "counterparty_tracker_30": {
+            "worlds": 4,
+            "mean": 0.005587979190525161
+          },
+          "counterparty_titan_100": {
+            "worlds": 4,
+            "mean": 0.010360059136525757
+          },
+          "counterparty_grid_100": {
+            "worlds": 4,
+            "mean": 0.016392077232444836
+          },
+          "counterparty_shark_100": {
+            "worlds": 4,
+            "mean": -0.004521895848101858
+          },
+          "counterparty_hold_100": {
+            "worlds": 4,
+            "mean": -0.031422196463855544
+          },
+          "entry_100": {
+            "worlds": 4,
+            "mean": -0.0005189373052334229
+          },
+          "normal_30": {
+            "worlds": 4,
+            "mean": -0.0019985543932329024
+          },
+          "counterparty_tide_30": {
+            "worlds": 4,
+            "mean": -0.019597150769686184
+          },
+          "depth_needed_100": {
+            "worlds": 4,
+            "mean": 0.0012635913707765717
+          },
+          "counterparty_horizon_30": {
+            "worlds": 4,
+            "mean": -0.01871453932529019
+          },
+          "not_fresh_entry_signal_30": {
+            "worlds": 4,
+            "mean": -0.005931005345273643
+          },
+          "not_fresh_entry_signal_100": {
+            "worlds": 4,
+            "mean": -0.004356751113239203
+          },
+          "counterparty_harbor_30": {
+            "worlds": 4,
+            "mean": 0.03560236505627864
+          },
+          "counterparty_relay_10": {
+            "worlds": 3,
+            "mean": 0.04738082408877843
+          },
+          "zero_10": {
+            "worlds": 1,
+            "mean": -0.1746044020161262
+          },
+          "counterparty_harbor_100": {
+            "worlds": 4,
+            "mean": 0.06907627234491422
+          },
+          "counterparty_hold_10": {
+            "worlds": 4,
+            "mean": 0.0285780418544424
+          },
+          "depth_needed_30": {
+            "worlds": 4,
+            "mean": 0.007559988689959487
+          },
+          "counterparty_profit_effect_100": {
+            "worlds": 1,
+            "mean": -0.046164001593352495
+          },
+          "counterparty_grid_30": {
+            "worlds": 4,
+            "mean": 0.010906755076297188
+          },
+          "counterparty_tide_10": {
+            "worlds": 4,
+            "mean": -0.013383680517015616
+          },
+          "counterparty_horizon_100": {
+            "worlds": 4,
+            "mean": -0.029162214127696796
+          },
+          "all_30": {
+            "worlds": 4,
+            "mean": -0.001679477058543915
+          },
+          "normal_100": {
+            "worlds": 4,
+            "mean": -0.0017682377000083536
+          },
+          "entry_30": {
+            "worlds": 4,
+            "mean": -0.001679477058543915
+          },
+          "not_fresh_entry_signal_10": {
+            "worlds": 4,
+            "mean": -0.009994437613605796
+          },
+          "counterparty_relay_100": {
+            "worlds": 3,
+            "mean": 0.037365544993474456
+          },
+          "all_100": {
+            "worlds": 4,
+            "mean": -0.0005189373052334229
+          },
+          "zero_100": {
+            "worlds": 1,
+            "mean": 0.09960422627290813
+          },
+          "normal_10": {
+            "worlds": 4,
+            "mean": -0.0018786395192364126
+          },
+          "counterparty_profit_effect_10": {
+            "worlds": 1,
+            "mean": -0.07027826779718867
+          },
+          "counterparty_hold_30": {
+            "worlds": 4,
+            "mean": -0.010210132985917374
+          },
+          "counterparty_tide_100": {
+            "worlds": 4,
+            "mean": -6.476578970951961e-05
+          },
+          "counterparty_horizon_10": {
+            "worlds": 4,
+            "mean": -0.016466511420536435
+          },
+          "counterparty_profit_effect_30": {
+            "worlds": 1,
+            "mean": -0.061685540317531956
+          },
+          "counterparty_tracker_100": {
+            "worlds": 4,
+            "mean": 0.0038922941293860237
+          },
+          "all_10": {
+            "worlds": 4,
+            "mean": -0.0017394672749166404
+          },
+          "depth_needed_10": {
+            "worlds": 4,
+            "mean": 0.006658985962401824
+          },
+          "counterparty_grid_10": {
+            "worlds": 4,
+            "mean": 0.00785340588119556
+          },
+          "counterparty_noise_30": {
+            "worlds": 4,
+            "mean": 0.00683922845950036
+          },
+          "zero_30": {
+            "worlds": 1,
+            "mean": -0.18079056329216256
+          }
+        },
+        "fill_to_requested_qty": {
+          "buy_entry": 0.46262790252392794,
+          "buy_add": 0.0,
+          "signal_exit": 0.4508175724713836,
+          "resize_sell": 0.0
+        },
+        "signal_forward": {
+          "positive": {
+            "mean": -0.0004781727125678036,
+            "observations": 9547
+          },
+          "negative": {
+            "mean": -0.004341641174348257,
+            "observations": 20575
+          },
+          "neutral": {
+            "mean": -0.0002767929288815449,
+            "observations": 2332
+          }
+        },
+        "counterparty_markout30_contribution": {
+          "counterparty_shark_30": -0.0006619708930546192,
+          "counterparty_titan_30": -0.0005610055130486208,
+          "counterparty_relay_30": 8.731530176636641e-05,
+          "counterparty_tracker_30": 0.0013425754769169577,
+          "counterparty_tide_30": -0.00024396620643428408,
+          "counterparty_horizon_30": -0.003792087409874035,
+          "counterparty_harbor_30": 0.00020665466892952456,
+          "counterparty_grid_30": 0.0015480146502667516,
+          "counterparty_hold_30": -3.361619915003736e-05,
+          "counterparty_profit_effect_30": -2.4007507787567127e-05,
+          "counterparty_noise_30": 0.0004526165729256497
+        }
+      }
+    }
+  },
+  "factorial": {
+    "swift-standard": {
+      "replace_value": {
+        "worlds": 6,
+        "mean": -0.20131190978752028,
+        "negative_worlds": 6,
+        "descriptive_bootstrap95": [
+          -0.2779060213494434,
+          -0.12092356781599273
+        ],
+        "differences": [
+          -0.17193063512796972,
+          -0.207870163942258,
+          -0.18220375686156015,
+          -0.36168863912118876,
+          -0.03847781475034545,
+          -0.2457004489217997
+        ]
+      },
+      "replace_coral": {
+        "worlds": 6,
+        "mean": -0.4887561069138815,
+        "negative_worlds": 5,
+        "descriptive_bootstrap95": [
+          -0.681392441810199,
+          -0.2520857797873912
+        ],
+        "differences": [
+          -0.7199865175950235,
+          0.002977242627641097,
+          -0.6114248753588156,
+          -0.7098998356142938,
+          -0.26695890447832366,
+          -0.6272437510644734
+        ]
+      },
+      "interaction": {
+        "worlds": 6,
+        "mean": -0.00248639085751338,
+        "negative_worlds": 4,
+        "descriptive_bootstrap95": [
+          -0.14080134516655185,
+          0.15430257700502126
+        ],
+        "differences": [
+          0.14461408636498835,
+          -0.1499164629663543,
+          -0.07127990129425388,
+          -0.22986307714386361,
+          -0.029417823056355208,
+          0.3209448329507584
+        ]
+      }
+    },
+    "swift-early-single": {
+      "replace_value": {
+        "worlds": 6,
+        "mean": -0.5111131189447442,
+        "negative_worlds": 6,
+        "descriptive_bootstrap95": [
+          -0.6361302716925644,
+          -0.4085262515361605
+        ],
+        "differences": [
+          -0.7881820415658989,
+          -0.5035826704779194,
+          -0.5493352470161657,
+          -0.47805157275372157,
+          -0.4155004499088645,
+          -0.3320267319458955
+        ]
+      },
+      "replace_coral": {
+        "worlds": 6,
+        "mean": -0.6635471831259417,
+        "negative_worlds": 6,
+        "descriptive_bootstrap95": [
+          -0.9785244725318195,
+          -0.3434083333033785
+        ],
+        "differences": [
+          -0.5648713836762671,
+          -0.010891995042186575,
+          -0.36435828675026444,
+          -0.9572058996203474,
+          -0.9455911494851044,
+          -1.1383643841814803
+        ]
+      },
+      "interaction": {
+        "worlds": 6,
+        "mean": 0.011657584538936607,
+        "negative_worlds": 3,
+        "descriptive_bootstrap95": [
+          -0.1292035243813092,
+          0.13604916857790186
+        ],
+        "differences": [
+          -0.0841974574188793,
+          -0.13835895843452,
+          0.15174245857883917,
+          -0.24156544769011967,
+          0.21029329956239629,
+          0.17203161263590316
+        ]
+      }
+    }
+  },
+  "source_hashes": {
+    "swift-v21-history-analysis.json": "48efde8e0bdf2213025b763067dfc9527cf3e0fff322424ea3ba0a6ffee469e7",
+    "swift-v21-trace-analysis.json": "f436df02e47e3fc258e433730fb628916e9a4fd03a9722f477d6472e9902576f",
+    "swift-v21-ablation-analysis.json": "897e88a0cfc8068eea70f288a6fcf2101211bd6973cdbf5fafa6de05f6e243b0"
+  },
+  "analysis_sha256": "7427d050e71f41a6f722d21e5cd6731c4da7214f81ff64c30ca56320b016a8ff"
+}
