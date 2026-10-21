@@ -3,7 +3,7 @@
 use anyhow::{bail, Context, Result};
 use bot_api::{
     ComboRule, DividendRiskRules, DragonModel, DragonRules, Money, NewsLayerRules, Price, Qty,
-    RandomEndRules, Rules, StockInfo, Tick, TrendRules,
+    Rules, StockInfo, Tick, TrendRules,
 };
 use serde::Deserialize;
 use std::collections::BTreeMap;
@@ -356,8 +356,6 @@ pub struct ScoringCfg {
     pub terminal_hint_fractions: Option<Vec<(f64, f64)>>,
     pub objective: String,
     pub series_seeds: u32,
-    /// Hidden game length: `ticks` becomes the longest possible game. See `RandomEndRules`.
-    pub random_end: Option<RandomEndRules>,
     /// Endowment of a `challenge` account when the CLI gives none. Defaults 20,000 yuan
     /// and 20 shares of each stock.
     pub challenger_cash: Option<Money>,
@@ -374,7 +372,6 @@ impl Default for ScoringCfg {
             terminal_hint_fractions: None,
             objective: "rank_percentile".into(),
             series_seeds: 20,
-            random_end: None,
             challenger_cash: None,
             challenger_shares: None,
         }
@@ -429,14 +426,8 @@ impl Config {
             // Keep historical integer rounding byte-for-byte reproducible.
             (self.ticks as u64 * 55 / 100) as Tick
         } else {
-            (self.world_duration() * self.world.dragon.start_fraction).floor() as Tick
+            (self.ticks as f64 * self.world.dragon.start_fraction).floor() as Tick
         }
-    }
-
-    /// Time scale of the world's business phases and growth: the game length, or its
-    /// expectation under a random end, so the hidden end is not written into the world.
-    pub fn world_duration(&self) -> f64 {
-        self.expected_ticks()
     }
 
     pub fn load(path: &Path) -> Result<Config> {
@@ -651,16 +642,6 @@ impl Config {
                 bail!("terminal_hint_fractions requires ordered times in [0,1), finite nonnegative widths, and no absolute terminal_hints");
             }
         }
-        if let Some(e) = self.scoring.random_end {
-            if e.min_tick == 0
-                || e.min_tick >= self.ticks
-                || !e.hazard_per_tick.is_finite()
-                || e.hazard_per_tick <= 0.0
-                || e.hazard_per_tick >= 1.0
-            {
-                bail!("scoring.random_end needs 0 < min_tick < ticks and 0 < hazard_per_tick < 1");
-            }
-        }
         let (lo, hi) = self.terminal_payments_range();
         if lo < 0
             || hi < lo
@@ -848,34 +829,6 @@ impl Config {
             .unwrap_or(self.world.dividend_period)
     }
 
-    /// Number of ticks this world's game actually runs. With `random_end` it is hidden
-    /// from bots and drawn from the seed alone, independent of news and accounts.
-    pub fn end_tick(&self, seed: u64) -> Tick {
-        let Some(e) = self.scoring.random_end else {
-            return self.ticks;
-        };
-        let u = crate::world::unit(seed ^ 0xe7d_0f_6a3e, 0, 0).max(f64::MIN_POSITIVE);
-        // ticks after min_tick until the end draw succeeds: geometric with this hazard
-        let extra = (u.ln() / (1.0 - e.hazard_per_tick).ln()).floor();
-        let end = e.min_tick as f64 + 1.0 + extra;
-        if end >= self.ticks as f64 {
-            self.ticks
-        } else {
-            end as Tick
-        }
-    }
-
-    /// Expected number of ticks the game runs, as bots can compute it from the rules.
-    pub fn expected_ticks(&self) -> f64 {
-        let Some(e) = self.scoring.random_end else {
-            return self.ticks as f64;
-        };
-        let q = 1.0 - e.hazard_per_tick;
-        let span = (self.ticks - e.min_tick) as f64;
-        // min_tick + sum over k in 1..=span of P(the game reaches k more ticks)
-        e.min_tick as f64 + (1.0 - q.powf(span)) / e.hazard_per_tick
-    }
-
     pub fn terminal_ticks(&self) -> Tick {
         (self.scoring.terminal_ratio * self.ticks as f64).ceil() as Tick
     }
@@ -953,7 +906,6 @@ impl Config {
                 peak_extra: self.world.dragon.peak_extra,
             }),
             dividend_risk: self.world.dividend_risk.clone(),
-            random_end: self.scoring.random_end,
             season_calm_to_turbulent: self.world.seasons.calm_to_turbulent,
             season_turbulent_to_calm: self.world.seasons.turbulent_to_calm,
             season_turbulent_rate_mult: self.world.seasons.turbulent_rate_mult,

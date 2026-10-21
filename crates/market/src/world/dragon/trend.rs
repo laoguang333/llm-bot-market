@@ -23,7 +23,7 @@ pub(super) fn events(
     let trend = &cfg.world.dragon.trend;
     let lead = cfg.world.news.disclosure.lead_ticks;
     let last_reveal = cfg.ticks.saturating_sub(lead + 1);
-    let duration = cfg.world_duration();
+    let duration = cfg.ticks as f64;
     let mut episodes = Vec::new();
     for stock in 0..cfg.stocks.len() {
         let mut rng = ChaCha8Rng::seed_from_u64(seed ^ mix(stock as u64) ^ 0xd2a7_b051);

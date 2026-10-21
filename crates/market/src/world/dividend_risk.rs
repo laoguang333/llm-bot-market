@@ -21,7 +21,7 @@ struct Release {
 
 fn releases(cfg: &Config, seed: u64) -> Vec<Release> {
     let r = cfg.world.dividend_risk.as_ref().unwrap();
-    let duration = cfg.world_duration();
+    let duration = cfg.ticks as f64;
     let mut result = Vec::new();
     for stock in 0..cfg.stocks.len() {
         let mut rng = ChaCha8Rng::seed_from_u64(seed ^ mix(stock as u64) ^ 0xd171_d3ad);

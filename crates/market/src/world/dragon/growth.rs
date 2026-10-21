@@ -21,7 +21,7 @@ pub(super) fn events(
     let tr = &cfg.world.dragon.trend;
     let lead = cfg.world.news.disclosure.lead_ticks;
     let end = cfg.ticks.saturating_sub(lead + 1);
-    let duration = cfg.world_duration();
+    let duration = cfg.ticks as f64;
     let start = cfg.world.dragon.start_fraction;
     let mut episodes = Vec::new();
     for stock in 0..cfg.stocks.len() {

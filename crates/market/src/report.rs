@@ -164,17 +164,6 @@ pub fn run_match_observed(
     let mut shared = Shared::new(cfg, seed, factory)?;
     shared.observer = observer;
     let run = shared.run()?;
-    // Reports cover the ticks actually played, which a random end can make shorter.
-    let played;
-    let cfg = if shared.rules.ticks_total == cfg.ticks {
-        cfg
-    } else {
-        played = Config {
-            ticks: shared.rules.ticks_total,
-            ..cfg.clone()
-        };
-        &played
-    };
     let rules = &shared.rules;
     let final_div = shared.world.dividends(rules.last_tick());
     let mut accounts: Vec<AccountResult> = Vec::new();

@@ -89,10 +89,7 @@ impl Sched {
 
 pub struct Shared<'a> {
     pub cfg: &'a Config,
-    /// Settlement rules. With a random end, `ticks_total` is this world's hidden length.
     pub rules: Rules,
-    /// The game length bots are told: the longest possible game under a random end.
-    public_ticks_total: Tick,
     pub world: World,
     pub markets: Vec<RwLock<StockMarket>>,
     marks: Vec<AtomicI64>,
@@ -200,9 +197,6 @@ impl<'a> Shared<'a> {
         for (st, &p) in rules.stocks.iter_mut().zip(&world.opening_prices) {
             st.initial_price = p;
         }
-        // Bots see the longest possible game; the engine runs and settles the hidden one.
-        let public_rules = rules.clone();
-        rules.ticks_total = cfg.end_tick(seed);
 
         let mut social_names = std::collections::HashMap::new();
         let mut social_groups: Vec<Mutex<crate::social::Group>> = Vec::new();
@@ -239,7 +233,7 @@ impl<'a> Shared<'a> {
                     params: g.params.clone(),
                     cash: a.cash,
                     shares: a.shares.clone(),
-                    rules: public_rules.clone(),
+                    rules: rules.clone(),
                 };
                 match catch_unwind(AssertUnwindSafe(|| factory(&g.bot, &start))) {
                     Ok(Some(b)) => a.bot = Some(b),
@@ -278,7 +272,7 @@ impl<'a> Shared<'a> {
             sched: Mutex::new(Sched {
                 idle,
                 running: Vec::new(),
-                progress: TickProgress::new(rules.ticks_total, n),
+                progress: TickProgress::new(cfg.ticks, n),
                 finished: 0,
                 next_check: if check == 0 { Tick::MAX } else { check },
                 pausing: false,
@@ -286,7 +280,6 @@ impl<'a> Shared<'a> {
             }),
             cv: Condvar::new(),
             cfg,
-            public_ticks_total: public_rules.ticks_total,
             rules,
             world,
             initial_cash,
@@ -364,7 +357,7 @@ impl<'a> Shared<'a> {
     }
 
     fn worker(&self) {
-        let ticks = self.rules.ticks_total;
+        let ticks = self.cfg.ticks;
         let n = self.n_accounts();
         let skew = self.cfg.schedule.max_tick_skew.max(1);
         let mut obs = self.empty_observation();
@@ -887,7 +880,7 @@ impl<'a> Shared<'a> {
     fn empty_observation(&self) -> Observation {
         Observation {
             tick: 0,
-            ticks_total: self.public_ticks_total,
+            ticks_total: self.rules.ticks_total,
             reference_tick: 0,
             season: self.world.season(0),
             account: AccountView::default(),

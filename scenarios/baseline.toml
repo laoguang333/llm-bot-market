@@ -283,7 +283,7 @@ shares_each = 20
 # Target leverage 1 removes most of Coral's interest bill (v22).
 params = { jitter = 1.0, leverage = 1.0 }
 
-# Swift profiles use public trade/book signals only; each keeps a small account.
+# Swift profiles use public trade/book signals only.
 
 [[bots]]
 bot = "swift"

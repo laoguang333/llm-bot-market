@@ -53,7 +53,7 @@ fn autocorr1(x: &[f64]) -> f64 {
 }
 
 pub fn measure(shared: &Shared) -> Quality {
-    let ticks = shared.rules.ticks_total;
+    let ticks = shared.cfg.ticks;
     let n_stocks = shared.markets.len();
     let samples = shared.book_samples.lock().clone();
     let n_buckets = ticks.div_ceil(BUCKET) as usize;
