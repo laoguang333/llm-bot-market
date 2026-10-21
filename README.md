@@ -1,5 +1,7 @@
 # llm-bot-market
 
+**定位：LLM bot 竞技场。** 挑战按[联赛排名](docs/arena-league.md)验收：只和场景中的命名强 bot 比，背景群体只是环境；每次挑战默认使用没人见过的新种子，并输出收益归因。
+
 当前默认为 [v18：分散 Grid 初始资本](docs/baseline-v18.md)，共 105–229 个账户、19 种策略。Almanac 与 Osprey v2 各一个普通账户，现金 20,000 元、每股 20 股、消息倍率 1、无额外研究；Lattice 继续保留。Grid 保留简单网格逻辑和人数，实际开局降到普通账户规模；多出的现金、每只股票按 Coral、Value、Hunter、Momentum、Shark 各 20% 分配，逐分逐股守恒。沿用 v15 的全部市场规则：10000 ticks，大龙从 tick 3333 起允许与其他候选分化，成长高点仍在后段，分红约十倍不保证股价十倍；指定成长者概率 50%，期末兑现期限约为整局 1/6–5/6。保留 Tide、Kestrel、两个 Swift、NewsV2、ProfitEffect 群体及普通权限十倍资金 Titan；Horizon v3 资金与 Titan 相同，额外研究最大提前 1000 ticks。[Horizon v3 研究](docs/horizon-v3.md)保留其在旧 v11 背景中的历史对照。
 
 [v16 生态调查](docs/ecology-v16.md)保留升级前的 80 局评估及全部 35 个注册策略的评价。v16 基准 20 个世界各重复两次；Almanac、Osprey 各另做 20 局普通挑战，之后按用户要求加入 v17。
@@ -48,7 +50,7 @@ cargo build --release
 ./target/release/llm-market series scenarios/tournament.toml --out runs/series --seeds 20
 # 当前默认：v18，保留原有策略与规则，分散开局资本
 ./target/release/llm-market series scenarios/baseline.toml --out runs/base --seeds 20
-# 打穿测试：一个挑战者账户加入基准市场，在留出种子 1001–1020 上跑
+# 挑战：一个挑战者账户加入基准市场，按联赛排名验收，默认每次用新的随机种子（--first-seed 复现）
 ./target/release/llm-market challenge scenarios/baseline.toml --bot shark --out runs/ch-shark --seeds 20
 # Swift：只读盘口、成交与价格走势的挑战者
 ./target/release/llm-market challenge scenarios/baseline.toml --bot swift --out runs/ch-swift --seeds 20

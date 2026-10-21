@@ -125,7 +125,12 @@ fn main() -> Result<()> {
             let a = parse(&args[1..]);
             let cfg = load(&a)?;
             let (n, first) = seeds(&a, &cfg, 1)?;
-            run_series(&cfg, &a.out, n, first)?;
+            let (results, _) = run_series(&cfg, &a.out, n, first)?;
+            let league = league_summary(&cfg, &results);
+            std::fs::write(
+                a.out.join("league.json"),
+                serde_json::to_string_pretty(&league)?,
+            )?;
         }
         "challenge" => {
             // one account of the challenger joins the scenario's market, like any other owner
@@ -191,8 +196,21 @@ fn main() -> Result<()> {
             g.shares = Default::default();
             cfg.bots.push(g);
             cfg.validate()?;
-            let (n, first) = seeds(&a, &cfg, 1001)?;
+            // Fresh worlds by default, so no challenger is tuned on the worlds it is judged
+            // on; --first-seed reproduces a run.
+            let (n, first) = seeds(&a, &cfg, fresh_seed())?;
             let (results, _) = run_series(&cfg, &a.out, n, first)?;
+            let league = league_summary(&cfg, &results);
+            let league_pct: Vec<f64> = league["per_world"]["challenger"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .map(|v| v.as_f64().unwrap())
+                .collect();
+            let (lm, lsd) = mean_sd(&league_pct);
+            let top_half =
+                league_pct.iter().filter(|p| **p > 50.0).count() as f64 / league_pct.len() as f64;
+            let league_pass = lm >= LEAGUE_MEAN_BAR && top_half >= LEAGUE_TOP_HALF_BAR;
             let pct: Vec<f64> = results
                 .iter()
                 .map(|r| {
@@ -205,24 +223,127 @@ fn main() -> Result<()> {
                 .collect();
             let (m, sd) = mean_sd(&pct);
             let top25 = pct.iter().filter(|p| **p >= 75.0).count() as f64 / pct.len() as f64;
-            let pass = m >= 90.0 && top25 >= 0.8;
+            let market_pass = m >= 90.0 && top25 >= 0.8;
+            let members = league["owners"].as_array().unwrap().len();
             println!(
-                "\nchallenger {bot}: mean percentile {m:.1} ± {sd:.1}, top 25% in {:.0}% of worlds -> {}",
-                top25 * 100.0,
-                if pass { "BEATS the market" } else { "does not beat the market" }
+                "\nchallenger {bot} (seeds {first}..{}):\n  league of {members}: mean percentile {lm:.1} ± {lsd:.1}, top half in {:.0}% of worlds -> {}",
+                first + n - 1,
+                top_half * 100.0,
+                if league_pass { "JOINS the league" } else { "does not join the league" }
             );
-            println!("(bar: mean >= 90 and top 25% in at least 80% of worlds)");
+            println!(
+                "  (bar: league mean >= {LEAGUE_MEAN_BAR} and top half in at least {:.0}% of worlds)",
+                LEAGUE_TOP_HALF_BAR * 100.0
+            );
+            println!(
+                "  whole market (old bar, for reference): mean percentile {m:.1} ± {sd:.1}, top 25% in {:.0}% of worlds -> {}",
+                top25 * 100.0,
+                if market_pass { "beats the crowd" } else { "does not beat the crowd" }
+            );
+            let at = &league["by_owner"]["challenger"]["attribution"];
+            println!(
+                "  return {:+.0}% = dividends {:+.0}% + combos {:+.0}% - fees {:.0}% - interest {:.0}% + price/inventory {:+.0}%",
+                at["net"].as_f64().unwrap() * 100.0,
+                at["dividends"].as_f64().unwrap() * 100.0,
+                at["combos"].as_f64().unwrap() * 100.0,
+                (at["trade_fees"].as_f64().unwrap()
+                    + at["idle_cash_fees"].as_f64().unwrap()
+                    + at["idle_stock_fees"].as_f64().unwrap())
+                    * 100.0,
+                at["interest"].as_f64().unwrap() * 100.0,
+                at["capital"].as_f64().unwrap() * 100.0,
+            );
+            std::fs::write(
+                a.out.join("league.json"),
+                serde_json::to_string_pretty(&league)?,
+            )?;
             std::fs::write(
                 a.out.join("challenge.json"),
                 serde_json::to_string_pretty(&serde_json::json!({
                     "bot": bot, "seeds": results.iter().map(|r| r.seed).collect::<Vec<_>>(),
-                    "percentiles": pct, "mean": m, "sd": sd, "top25_share": top25, "pass": pass,
+                    "league": {
+                        "members": members, "percentiles": league_pct, "mean": lm, "sd": lsd,
+                        "top_half_share": top_half, "pass": league_pass,
+                        "bar": {"mean": LEAGUE_MEAN_BAR, "top_half_share": LEAGUE_TOP_HALF_BAR},
+                    },
+                    "attribution": at,
+                    "market": {"percentiles": pct, "mean": m, "sd": sd, "top25_share": top25, "pass": market_pass},
+                    "pass": league_pass,
                 }))?,
             )?;
         }
         _ => usage(),
     }
     Ok(())
+}
+
+/// A challenger joins the league when it beats the median incumbent on average and
+/// finishes in the league's top half in most worlds.
+const LEAGUE_MEAN_BAR: f64 = 50.0;
+const LEAGUE_TOP_HALF_BAR: f64 = 0.6;
+
+/// A first seed nobody has tuned on: far above the archived ranges, different per run.
+fn fresh_seed() -> u64 {
+    let nanos = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_nanos() as u64)
+        .unwrap_or(0);
+    let mix = nanos ^ (u64::from(std::process::id()) << 32);
+    10_000_000 + mix % 1_000_000_000
+}
+
+/// League percentiles and return attribution of every named owner, over worlds.
+fn league_summary(cfg: &Config, results: &[MatchResult]) -> serde_json::Value {
+    use market::league::{attribution, league_owners, league_percentiles, mean_attribution};
+    let owners = league_owners(cfg);
+    let mut per_world: BTreeMap<String, Vec<f64>> = BTreeMap::new();
+    let mut market: BTreeMap<String, Vec<f64>> = BTreeMap::new();
+    let mut attr: BTreeMap<String, Vec<market::league::Attribution>> = BTreeMap::new();
+    for r in results {
+        for (o, p) in league_percentiles(r, &owners) {
+            let acc = r.accounts.iter().find(|a| a.owner == o).unwrap();
+            per_world.entry(o.clone()).or_default().push(p);
+            market.entry(o.clone()).or_default().push(acc.percentile);
+            attr.entry(o).or_default().push(attribution(acc));
+        }
+    }
+    let mut rows: Vec<_> = owners
+        .iter()
+        .filter(|o| per_world.contains_key(*o))
+        .map(|o| (o.clone(), mean_sd(&per_world[o])))
+        .collect();
+    rows.sort_by(|x, y| y.1 .0.total_cmp(&x.1 .0));
+    println!("\nleague of {} named owners (mean ± sd of league percentile; return attribution / initial equity)", rows.len());
+    println!(
+        "{:<22}{:>15}{:>9}{:>9}{:>9}{:>9}{:>9}{:>9}{:>9}",
+        "owner", "league", "market", "return", "divid", "combos", "fees", "interest", "capital"
+    );
+    for (o, (m, sd)) in &rows {
+        let at = mean_attribution(&attr[o]);
+        println!(
+            "{:<22}{:>8.1} ± {:>4.1}{:>9.1}{:>8.0}%{:>8.0}%{:>8.0}%{:>8.0}%{:>8.0}%{:>8.0}%",
+            o,
+            m,
+            sd,
+            mean_sd(&market[o]).0,
+            at.net * 100.0,
+            at.dividends * 100.0,
+            at.combos * 100.0,
+            (at.trade_fees + at.idle_cash_fees + at.idle_stock_fees) * 100.0,
+            at.interest * 100.0,
+            at.capital * 100.0
+        );
+    }
+    serde_json::json!({
+        "worlds": results.iter().map(|r| r.seed).collect::<Vec<_>>(),
+        "owners": rows.iter().map(|(o, _)| o.clone()).collect::<Vec<_>>(),
+        "per_world": per_world,
+        "by_owner": rows.iter().map(|(o, (m, sd))| (o.clone(), serde_json::json!({
+            "league_mean": m, "league_sd": sd,
+            "market_mean": mean_sd(&market[o]).0,
+            "attribution": mean_attribution(&attr[o]),
+        }))).collect::<serde_json::Map<_, _>>(),
+    })
 }
 
 fn seeds(a: &Args, cfg: &Config, default_first: u64) -> Result<(u64, u64)> {

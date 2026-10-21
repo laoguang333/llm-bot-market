@@ -4,6 +4,7 @@ mod capital;
 pub mod config;
 pub mod diagnostics;
 pub mod engine;
+pub mod league;
 mod pace;
 mod social;
 pub mod quality;
