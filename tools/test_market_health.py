@@ -58,6 +58,13 @@ class HealthTests(unittest.TestCase):
         self.assertEqual(a['event_samples'],2)
         self.assertEqual(a['total_audits'],80)
 
+    def test_after_terminal_news_is_not_a_price_discovery_target(self):
+        events={'A':[dict(id=1,delta=10,first=890,public=950,effective=1010)]}
+        books={('A',t):self.book(t) for t in range(0,1000,10)}
+        out=information_response(self.cfg,events,{'A':[0.]*1001},books)
+        self.assertEqual(out['used'],0)
+        self.assertEqual(out['boundary_or_timing'],1)
+
     def test_slots_keep_assets_and_ordinary_information(self):
         src=[dict(bot='horizon',owner='horizon-incumbent',cash=20000000,shares_each=200,count=1,
                   forecast_access={'horizon':1000},params={'research':1}),

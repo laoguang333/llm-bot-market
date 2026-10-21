@@ -61,7 +61,8 @@ def information_response(cfg, events, dividends, books):
                 continue
             counts['large_events'] += 1
             t = e['first']
-            if t < 150 or t+100 >= cfg['ticks'] or e['public'] != t+60:
+            if (t < 150 or t+100 >= cfg['ticks'] or e['effective'] >= cfg['ticks']
+                    or e['public'] != t+60):
                 counts['boundary_or_timing'] += 1
                 continue
             left, right = bisect_left(times, t-120), bisect_left(times, t+101)
