@@ -47,8 +47,19 @@ def foundation_groups(groups):
     return result
 
 
-def assemble(prefix, groups):
-    return prefix+'\n'+''.join('[[bots]]\n'+'\n'.join(f'{k} = {toml_value(v)}' for k,v in b.items())+'\n\n' for b in groups)
+def assemble(prefix, groups, capital_plan):
+    # In historical files the capital table is AFTER the bot array. Splitting at
+    # the first [[bots]] must not silently drop that root-level policy.
+    allocation='\n[capital_redistribution]\n'+'\n'.join(f'{k} = {toml_value(v)}' for k,v in capital_plan.items())+'\n'
+    population=''.join('[[bots]]\n'+'\n'.join(f'{k} = {toml_value(v)}' for k,v in b.items())+'\n\n' for b in groups)
+    return (prefix+allocation+'\n'+population).rstrip()+'\n'
+
+
+def validate_generated(text, source, groups, fee):
+    expected=deepcopy(source)
+    expected['bots']=groups
+    expected['fees']['idle_rate'],expected['fees']['credit_ratio']=FEES[fee]
+    assert tomllib.loads(text)==expected,'Generated scenario lost or changed a source policy'
 
 
 def prepare():
@@ -65,8 +76,9 @@ def prepare():
     for arm in FEES:
         (ROOT/f'scenarios/ecology-v22-fees-{arm}.toml').write_text(
             '# v22 frozen fee ablation, original roster.\n'+fee_text(control,arm),encoding='utf-8')
-        (ROOT/f'scenarios/ecology-v22-base-{arm}.toml').write_text(
-            '# v22 experimental foundation, not the default baseline.\n'+fee_text(assemble(prefix,groups),arm),encoding='utf-8')
+        text='# v22 experimental foundation, not the default baseline.\n'+fee_text(assemble(prefix,groups,cfg['capital_redistribution']),arm)
+        validate_generated(text,cfg,groups,arm)
+        (ROOT/f'scenarios/ecology-v22-base-{arm}.toml').write_text(text,encoding='utf-8')
         for challenge,owners in {'swift':['swift-standard'],'tide':['tide-incumbent'],
                 'almanac':['almanac-incumbent'],'all':['swift-standard','tide-incumbent','almanac-incumbent']}.items():
             changed=deepcopy(groups)
@@ -76,8 +88,9 @@ def prepare():
                 group['bot']=original[owner]['bot']
                 group.pop('params',None)
                 if 'params' in original[owner]: group['params']=original[owner]['params']
-            (ROOT/f'scenarios/ecology-v22-{challenge}-{arm}.toml').write_text(
-                '# v22 ordinary-information equal-capital slot replacement.\n'+fee_text(assemble(prefix,changed),arm),encoding='utf-8')
+            text='# v22 ordinary-information equal-capital slot replacement.\n'+fee_text(assemble(prefix,changed,cfg['capital_redistribution']),arm)
+            validate_generated(text,cfg,changed,arm)
+            (ROOT/f'scenarios/ecology-v22-{challenge}-{arm}.toml').write_text(text,encoding='utf-8')
     print('Prepared 24 scenarios; default untouched.',flush=True)
 
 

@@ -213,6 +213,12 @@ b = "E3"
 bonus = -20
 
 
+[capital_redistribution]
+from_bot = "grid_v2"
+cash_each = 2000000
+shares_each = 100
+recipients = { profit_effect = 25, news_reactor = 10, latecomer = 10, noise = 10, coral = 20, value = 25 }
+
 [[bots]]
 bot = "grid_v2"
 count = 24
@@ -404,4 +410,3 @@ cash = 2000000
 shares_each = 20
 news_multiplier = 1.0
 params = { jitter = 1.0 }
-

@@ -1,8 +1,9 @@
 """Checks for diagnostics that can otherwise make a broken market look healthy."""
 from copy import deepcopy
 import unittest
+import tomllib
 from market_health import rates_and_events,liquidity,quote_window,information_response,aggregate
-from research_ecology_v22 import foundation_groups,CORE
+from research_ecology_v22 import foundation_groups,assemble,validate_generated,CORE
 
 
 class HealthTests(unittest.TestCase):
@@ -68,6 +69,15 @@ class HealthTests(unittest.TestCase):
             self.assertNotIn('forecast_access',b)
         self.assertEqual(new[0]['owner'],'slot-horizon-incumbent')
         self.assertNotIn('owner',new[1])
+
+    def test_generator_keeps_capital_table_after_bot_array(self):
+        source='ticks = 1000\n[fees]\nidle_rate = 0.006\ncredit_ratio = 0.01\n[[bots]]\nbot = "value"\ncount = 1\n[capital_redistribution]\nfrom_bot = "grid_v2"\ncash_each = 20\nshares_each = 10\nrecipients = { value = 1 }\n'
+        cfg=tomllib.loads(source)
+        rebuilt=assemble(source.split('[[bots]]')[0],cfg['bots'],cfg['capital_redistribution'])
+        validate_generated(rebuilt,cfg,cfg['bots'],'current')
+        self.assertEqual(tomllib.loads(rebuilt)['capital_redistribution'],cfg['capital_redistribution'])
+        with self.assertRaises(AssertionError):
+            validate_generated(source.split('[capital_redistribution]')[0],cfg,cfg['bots'],'current')
 
 
 if __name__=='__main__': unittest.main()
