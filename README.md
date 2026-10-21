@@ -14,6 +14,8 @@
 
 [Swift 退化诊断](docs/swift-v21-diagnosis.md)复核 v21 的 88 局并新增 68 局逐笔记录/参数消融：Coral 的成交服务未被 Relay 接替，短线优势减弱，standard 持续调仓进一步放大损失。生产 Swift 和市场规则未修改。
 
+[v22 市场功能与基础生态研究](docs/ecology-v22.md)增加分状态流动性、消息响应及群体持续性报告，独立比较收费与基础阵容，再检验 Coral 杠杆和 Noise 单笔规模。较低收费没有使成交和消息响应消失，但群体风险与亏损集中仍须处理；实验未晋级默认，强 bot 回填受基础生态验收约束。完整协议、失败及追加对照均保留。
+
 `baseline.toml` 与 `baseline-v18.toml` 相同；[v17](docs/baseline-v17.md)、[v16](docs/baseline-v16.md)、[v15](docs/baseline-v15.md)、[v14](docs/baseline-v14.md)、[v13](docs/baseline-v13.md)、[v12](docs/baseline-v12.md)、[v11](docs/baseline-v11.md)、[v10](docs/baseline-v10.md)、[v9](docs/baseline-v9.md)、[v8 长局](docs/baseline-v8.md)、3000 ticks 的 [v7](docs/baseline-v7.md)、旧八节点模型和 v6 场景均保留。普通股息、组合收益仍逐 tick 派发，闲置费仍为每 50 ticks 平均权益的 0.6%。Astra/Falcon 不加入。[交易调查台](docs/swift-debugger.md)支持整轮操作、FIFO 连线、消息收报到生效的交易关联，以及[强平与坏账账本](docs/liquidation-audit.md)；旧录制保持原貌。
 
 新挑战者 [Almanac](docs/almanac.md) 以普通账户打穿 v15：正式留出 1001–1020 平均百分位 99.57、20/20 进前 25%。它按实测的消息消化曲线买入价格尚未消化的部分，并按比赛阶段调整基础仓位；现已作为普通账户加入 v17。
